@@ -214,4 +214,4 @@ The human brain finds it incredibly difficult, if not impossible, to fake random
 “Root cause analyses.” we suggest beginning with two of the simplest: The Five Whys and the Socratic Method. 
 Doing this, you’re driven to ask a more accurate and constructive question.
 
-I know you won’t believe me, but the highest form of human excellence is to question oneself and others. ~ Socrates 
+I know you won’t believe me, but the highest form of human excellence is to question oneself and others. ~ Socrates
