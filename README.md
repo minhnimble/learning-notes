@@ -7,6 +7,7 @@ This repository is for containing the notes on the books that I read and the cod
 * [Personal Kanban: Mapping Work, Navigating Life](books/personal-kanban.md) by **Jim Benson** and **Tonianne DeMaria Barry**, 2011.
 * [The Effective Engineer: How to Leverage Your Efforts in Software Engineering to Make a Disproportionate and Meaningful Impact](books/effective-engineer.md) by **Edmond Lau**, 2015.
 * [The Effective Kotlin: Best practices](books/effective-kotlin.md) by **Marcin Moskala**, 2021.
+* [Hiring Engineers](books/hiring-engineers.md) by **Marianne Bellotti**, 2020.
 
 ### Studied Projects
 
