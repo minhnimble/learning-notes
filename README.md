@@ -8,6 +8,7 @@ This repository is for containing the notes on the books that I read and the cod
 * [The Effective Engineer: How to Leverage Your Efforts in Software Engineering to Make a Disproportionate and Meaningful Impact](books/effective-engineer.md) by **Edmond Lau**, 2015.
 * [The Effective Kotlin: Best practices](books/effective-kotlin.md) by **Marcin Moskala**, 2021.
 * [Hiring Engineers](books/hiring-engineers.md) by **Marianne Bellotti**, 2020.
+* [On Writing Well: The Classic Guide to Writing Nonfiction](books/writing-well.md) by **William Zinsser**, 2001.
 
 ### Studied Projects
 
