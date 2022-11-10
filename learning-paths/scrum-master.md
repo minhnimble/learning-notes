@@ -90,6 +90,8 @@ Transparency is actually challenging to achieve. For example:
 
 A software-development company that setup all the teams and have all the tools needed and they still failed to deliver software to the market.
 
+![Screenshot 2022-11-09 at 17 23 40](https://user-images.githubusercontent.com/70877098/201023951-031f1f56-76c8-4a0a-a6f1-c235db0aee96.png)
+
 To analysize the situation, here were a few points discussed:
 - "The mute button" creates a lot of tensions in distributed group discussions - when the project manager was asking questions, there was nothing in return.
 - The scrum teams say nothing in public chat rooms (the organization), they create their own private chat rooms (the trenches) and discuss things there (confidentially) → The scrum teams use public methods doesn't feel safe to provide transparency there.
@@ -100,8 +102,11 @@ To analysize the situation, here were a few points discussed:
 - Give them the environment and support the need, and trust them to get the job done.
 - Creative workers should focus on trust first → interpersonal relationships can only be built when people actually meet each other face to face, meet, and shake hands, go for diner events.
 - Professionally craft a healthy working agreement at the very beginning (as early as possible):
- - Job titles, politics, bias thinking, and criticism are left out of the room.
- - Confidentially, practices for obtaining consensus, be respectful of each others, promote openness and honesty are kept in the room.
+  - Job titles, politics, bias thinking, and criticism are left out of the room.
+  - Confidentially, practices for obtaining consensus, be respectful of each others, promote openness and honesty are kept in the room.
+
+  ![Screenshot 2022-11-09 at 17 50 52](https://user-images.githubusercontent.com/70877098/201024163-b01ad3bc-552f-454a-8810-80260aa4a6d2.png)
+
 - The company can offer nice webcams for each members after the face-to-face period of 2 weeks so they can make use of it at to their remote locations.
 - Promote face-to-face interactions → respectfully request the remote developers to disable the mute button for a 15 minutes daily scrum → no more mute/camera disable button usage (ideally) + use tools that can support it during discussions (whiteboarding, conference calls, etc.).
 - The executive leader can make an emotional and physical pled to gather everyone together and build the trust, even if it shows the vulnerability. For example: we have a true business crisis and urgency that we don't figure out a way to put our heads together to create value for our customers in an aggressive time, we are going out of business. I don't want that to happen, we have such smart people here, we have great idea, we are well-positioned in the market, but I am desperately needs your help and I'm willing to let my own guard down to do what I need to do as a leader to support you all. I am open to re-craft the way we work together.
@@ -135,3 +140,44 @@ Some more good advice:
 - How to reward trust/transparency: 
   - Extrinsic motivation → external rewards → not effective for complex and creative work.
   - Intrinsic motivation → the rewards came within himself/herself by doing something for someone else → create a subculture with a small group so the larger organization can see -> For example. each person has $10 Starbucks cards → then let's say person A will reward another person B based on the transparency the person B can help the person A to learn and be better at → The peers in the group are rewarding each others.
+
+## So What is Agile Really About?
+
+- Agile is a set of values and principles ([Agile Manifesto](http://www.agilemanifesto.org/))
+- Agile is a way of developing software that reminds us that although computers run the code, it's people who create and maintain it ([The Agile Samurai](http://www.amazon.com/The-Agile-Samurai-Pragmatic-Programmers/dp/1934356581/ref=cm_cr_pr_product_top?ie=UTF8)).
+- Agile is the courage to be honest enough to admit that building software is complex and it can-t be perfectly planned since requirements change.
+
+These 7 principles describe what Agile is really all about:
+1. __Delighting Clients__ - "Focus work on delighting the client"
+  - The purpose of work is to delight clients, not merely to produce goods or services or `make money` for shareholders. 
+  - The key to an enduring future is to have a customer who is willing to buy goods and services both today and tomorrow. It's not about a transaction: it's about forging a relationship.
+
+2. __Self-Organizing Teams__ - "Do work through self-organizing teams"
+  - It's hard for those who have never been on a high performance team to understand just how cool it is.
+  - When working together with people who have different interpretations, perspectives, ways of solving problems, we are often able to solve problems that wouldn't be able to solve alone.
+  - A complex problem, like discovering ways to delight clients, is best solved by a cognitively diverse group of people that is given responsibility for solving the problem, self-organizes, and works together to solve it. → Kinda generic and board here ⚠️
+
+3. __Client-Driven Iterations__ - "Do work in client-driven iterations"
+  - Small client-driven iterations is easy to direct.
+  - Through client-driven iterations companies are able to keep inventory and work in process as small as possible and customize their product not only to meet the customer's original perceived needs but also to adjust it to meet any changes in those needs.
+  - Client-driven iterations improve productivity for the organization by focusing work on the elements that really add value and eliminating work that doesn't add value or unproductive planning time → This reduces risk by providing management not with unreliable progress reports, but with evidence of whether actual progress is made.
+
+4. __Delivering Value to Clients in Each Iteration__ - "Deliver value to clients in each iteration"
+  - Client-driven iterations (and Radical Management) imply a mental revolution, a different way of thinking about work. The key to success is delivering value to clients at the end of each iteration.
+  - A small thing delivered sooner can delight more than a big thing delivered later.
+  - The primary focus is on performing at a level of quality that delights clients and then provides that sooner.
+
+5. __Radical Transparency__ - "Be totally open about impediments to improvement"
+  - The truth will set you free. But first, it will piss you off.
+  - Achieving the complex goal of client delight requires total openness about any impediments to the work: everyone levels with everyone else.
+  - Radical Management accepts the inevitability of failure and puts arrangements in place to learn rapidly from failure and so progress toward success.
+
+6. __Continuous Self-Improvement__ - "Create a context for continuous self-improvement by the team"
+  - Is a deeply rooted set of values and attitudes focused on fixing problems as soon as they occur.
+  - Is fragile and therefore needs every day nurturing and attention.
+  - Is a top management responsibility.
+
+7. __Interactive Communication__ - "Interactively share stories, questions, conversations"
+  - The modern organization cannot be an organization of 'boss' and 'subordinate': it must be organized as a team of associates.
+  - Traditional managers speak to employees as employees, and power is the currency of communication.
+  - The Radical Manager communicates as one human being to another. Hierarchy is present but in the background.
