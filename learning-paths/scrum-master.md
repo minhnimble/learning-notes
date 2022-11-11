@@ -1,8 +1,10 @@
-# Empiricism
+# Understanding and Applying Scrum
 
-## Manifesto for Agile Software Development
+## Empiricism
 
-### Principles
+### Manifesto for Agile Software Development
+
+#### Principles
 
 Twelve principles that we should follow:
 
@@ -19,7 +21,7 @@ Twelve principles that we should follow:
 11. The best architectures, requirements, and designs emerge from self-organizing teams. → Kinda generic and ambiguous here ⚠️
 12. At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly. → We achieve this with retrospectives ✅
 
-### The Independent Signatories
+#### The Independent Signatories
 
 while there is value in the items on the right, we value the items on the left more:
    
@@ -28,7 +30,7 @@ while there is value in the items on the right, we value the items on the left m
 - __Customer collaboration__ over contract negotiation.
 - __Responding to change__ over following a plan.
 
-## The Three Pillars of Empiricism
+### The Three Pillars of Empiricism
 
 __Empiricism__ means working in a fact-based, experience-based, and evidence-based manner → Progress is based on observations of reality, not fictitious plans.
 
@@ -44,7 +46,7 @@ The three pillars of empiricism are as follows:
 
 Scrum adheres to the underlying Agile principles of iterative, value-based incremental delivery by frequently gathering customer feedback and embracing change.
 
-## Empiricism is an Essential Element of Scrum
+### Empiricism is an Essential Element of Scrum
 
 Thermostat → is an empirical device that it detects (inspects) the current temperature whether it is lower or higher than the set temperature, then it calls for the air conditioning to adjust (adapt) the current temperature to the set one, or do nothing if the current temperature is already matched with the set one. The inspection will happen again shortly.
 
@@ -53,7 +55,7 @@ Thermostat → is an empirical device that it detects (inspects) the current tem
 - Inspect and adapt frequently enough → Shorter sprints is prefered than longer sprints.
 - Transparency → Understand correctly what is being inspected and adapted to.
 
-## An Introductory to Scrum: Empiricism
+### An Introductory to Scrum: Empiricism
 
 An overview of empiricism:
 
@@ -65,9 +67,9 @@ An overview of empiricism:
 - Inspection enables adaptation.
 - The adaptation must happen as soon as possible.
 
-## Transparency In the Trenches
+### Transparency In the Trenches
 
-### What is Transparency?
+#### What is Transparency?
 
 In order to inspect things in scrum in order to make the adaptations we need to optimize the outcome of our work and the value of the product we work on effectively, the things that you do inspect has to be done transparently.
 
@@ -86,7 +88,7 @@ Transparency is actually challenging to achieve. For example:
 
 ![Screenshot 2022-11-09 at 17 19 43](https://user-images.githubusercontent.com/70877098/200804745-713bb93a-b525-4183-97f0-868f965ad16f.png)
 
-### Case Study from the Trenches
+#### Case Study from the Trenches
 
 A software-development company that setup all the teams and have all the tools needed and they still failed to deliver software to the market.
 
@@ -125,23 +127,23 @@ A sample of a correct retrospective:
 2. Storm the timeline of the sprint: can be done and updated frequently on the sprint timeline board with sticky notes on ideas (anonymously).
 3. Promote anonymously transparency → Overtime, people will start getting more comfortable to share whose ideas are on the board.
 
-### Summary
+#### Summary
 
 - Promote transparency.
 - Healthy transparency requires environment people feel safe.
 - 4 level of trusts.
 - Proximity → the value of face-to-face for people interpersonal relationships and building trusts.
 
-### QA
+#### QA
 
 Some more good advice:
 - Keep things confidentially until the group decides to change that level.
 - Discuss and point the finger at the problem/issue/idea, not at the person/personality to remove the blaming.
 - How to reward trust/transparency: 
   - Extrinsic motivation → external rewards → not effective for complex and creative work.
-  - Intrinsic motivation → the rewards came within himself/herself by doing something for someone else → create a subculture with a small group so the larger organization can see -> For example. each person has $10 Starbucks cards → then let's say person A will reward another person B based on the transparency the person B can help the person A to learn and be better at → The peers in the group are rewarding each others.
+  - Intrinsic motivation → the rewards came within himself/herself by doing something for someone else → create a subculture with a small group so the larger organization can see → For example. each person has $10 Starbucks cards → then let's say person A will reward another person B based on the transparency the person B can help the person A to learn and be better at → The peers in the group are rewarding each others.
 
-## So What is Agile Really About?
+### So What is Agile Really About?
 
 - Agile is a set of values and principles ([Agile Manifesto](http://www.agilemanifesto.org/))
 - Agile is a way of developing software that reminds us that although computers run the code, it's people who create and maintain it ([The Agile Samurai](http://www.amazon.com/The-Agile-Samurai-Pragmatic-Programmers/dp/1934356581/ref=cm_cr_pr_product_top?ie=UTF8)).
@@ -181,3 +183,384 @@ These 7 principles describe what Agile is really all about:
   - The modern organization cannot be an organization of 'boss' and 'subordinate': it must be organized as a team of associates.
   - Traditional managers speak to employees as employees, and power is the currency of communication.
   - The Radical Manager communicates as one human being to another. Hierarchy is present but in the background.
+
+### Agile is constant change
+
+Adaptation has many synonyms, of which ‘change’ is the most common → After a short time you and your team should reflect on what has happened, and how it affected the performance within the team. Building on the better understanding, the team should decide what they will do to enhance the good things, and remove the bad things – that is you should focus on changing the environment to be better.
+
+Constant Continual Learning:
+
+![Screenshot 2022-11-11 at 10 28 35](https://user-images.githubusercontent.com/70877098/201258413-8561e51e-b731-4986-9082-244772d947f8.png)
+
+Common pitfalls:
+
+1. Try to change too much.
+- Limit the number of things that you are going to change. 
+- If it is a significant or challenging thing, then only take one action. 
+- Talk about this item in each Daily Scrum.
+
+2. Don't see anything to change → There are two extremes for this mindset: being overwhelmed or not seeing any way that the team could work better.
+- Focus on a clear vision. 
+- If the team have a common goal, then the current state can be compared with that goal, and then find the one change that will give the most benefit for the least effort.
+
+3. The team is changing at a rate faster than the organization can accept → smaller teams (development and Scrum) gain the insight that agility is a continuous process and a mindset (not a state) while organizations and leaders think agile is a silver bullet, that gets invoked and that is all that is required.
+- The organization needs to move to the mindset that things will be different, every day, every week → using a framework may help to provides the robustness needed to embed an enduring change.
+- Use the phrase `“for our team, we have found …”` to describe your ways of working - regardless of what framework you started out with.
+
+## Scrum Values
+
+### The Scrum Values
+
+TBD
+
+### Updates to the Scrum Guide: The 5 Scrum Values Take Center Stage
+
+TBD
+
+### Intralinks Case Study: Scrum Reboot, This Time with the Values
+
+TBD
+
+### Visualizing Scrum Values
+
+TBD
+
+### An Introductory Video Series to Scrum: Scrum Values
+
+TBD
+
+## Scrum Team
+
+### A Day in the Life of a Scrum Master
+
+TBD
+
+### Why a Scrum Master Should Not Have Other Roles
+
+TBD
+
+### Myth 8: The Scrum Master is a Junior Agile Coach
+
+TBD
+
+### The 2 Best Scrum Masters I Ever Worked With - The Master Of Coaching And Facilitation
+
+TBD
+
+### The Truth About Job Titles in Scrum
+
+TBD
+
+### The Truth About Job Titles in Scrum
+
+TBD
+
+## Scrum Events
+
+### A Typical Sprint, Play-by-Play
+
+TBD
+
+### The Daily Scrum is NOT a Status Meeting
+
+TBD
+
+### Effective Sprint Planning
+
+TBD
+
+###  Planning in Scrum
+
+TBD
+
+### What is a Sprint Review
+
+TBD
+
+### Why You Need a Retrospective Every Sprint
+
+TBD
+
+## Scrum Artifacts
+
+### The Importance of Product Backlog Transparency
+
+TBD
+
+### Myth: The Sprint Backlog can’t change during the Sprint
+
+TBD
+
+## Sprint Goal
+
+### Myth: Having A Sprint Goal Is Optional In Scrum
+
+TBD
+
+### Scrum from the Trenches - the Sprint Goal
+
+TBD
+
+### Six Reasons Why You Need to Pay More Attention to the Sprint Goal
+
+TBD
+
+### Getting to Done: Creating Good Sprint Goals
+
+TBD
+
+### An Introductory Video Series to Scrum: Sprint Backlog and Sprint Goal
+
+TBD
+
+## Done
+
+### Getting Started with a Definition of Done (DoD)
+
+TBD
+
+### Walking Through a Definition of Done
+
+TBD
+
+### Introductory Video Series to Scrum: Increment and Definition of Done
+
+TBD
+
+## Scaling Scrum
+
+### The Nexus Guide
+
+TBD
+
+### Nexus Framework Poster
+
+TBD
+
+### An Introduction to the Nexus Framework
+
+TBD
+
+### Cross-Team Refinement in Nexus
+
+TBD
+
+### Visualizing the Nexus Sprint Backlog
+
+TBD
+
+### 3 Ideas to Improve a Scaled Sprint Review
+
+TBD
+
+### How Net Health Used Team Self-Selection to Reorganize Their Scaling Initiative
+
+TBD
+
+### The Nexus Framework for Scaling Scrum Book
+
+TBD
+
+# Developing People and Teams
+
+## Facilitation
+
+### Facilitation - Lead people and teams toward agreed-upon objectives
+
+TBD
+
+### Agile Coach Toolkit #4: Effective Facilitation
+
+TBD
+
+### Agile Coach Toolkit #6: Building Consensus
+
+TBD
+
+### A Powerful Technique to Improve Your Scrum Events
+
+TBD
+
+## Leadership Styles
+
+### Leading High Performing Teams
+
+TBD
+
+### The 28 Characteristics of a Great Scrum Master
+
+TBD
+
+### What is Servant Leadership
+
+TBD
+
+### 5 Agile Leadership Tips for Creating Mature Scrum Teams
+
+TBD
+
+## Coaching and Mentoring
+
+### How to Build Trust to Enable Agility
+
+TBD
+
+### Coaching Secret: Stop being so helpful
+
+TBD
+
+### Psychological Models In Scrum
+
+TBD
+
+### Do You Know any Coaching Patterns?
+
+TBD
+
+### Agile Coach Toolkit #5: Active Listening
+
+TBD
+
+# Managing Products with Agility
+
+## Forecasting and Release Planning
+
+### Myth: Story Points are Required in Scrum
+
+TBD
+
+### Tips for Agile Product Roadmaps and Product Roadmap Examples
+
+TBD
+
+### Release Planning and Predictable Delivery
+
+TBD
+
+### Small Batch Delivery and Big Batch Finance: How to Speak the Language of Forecasting
+
+TBD
+
+### Scrum Myths: There is No Planning in Scrum
+
+TBD
+
+## Product Vision
+
+### The Professional Product Owner and the Three Vs
+
+TBD
+
+### Why, How, and What: From Product Vision to Task
+
+TBD
+
+## Product Value
+
+### How Being Yelled at by Users Changes your Perspective on Customer Value
+
+TBD
+
+### A Scrum Adoption Story - How we delivered value in 7 days
+
+TBD
+
+### Plan Driven vs. Value Driven Development
+
+TBD
+
+## Product Backlog Management
+
+### The Art of Product Backlog Refinement
+
+TBD
+
+### 5 Strategies for Product Backlog Refinement
+
+TBD
+
+### Myth 14: Refinement is a Required Meeting for the Entire Scrum Team
+
+TBD
+
+### If Your Backlog Is Not Refined Then You Are Doing It Wrong
+
+TBD
+
+### An Introductory Video Series to Scrum: Product Backlog & Product Goal
+
+TBD
+
+# Developing and Delivering Products Professionally
+
+## Emergent Software Development
+
+### Getting to Done:  Balancing Emergence and Delivery
+
+TBD
+
+### Dispelling the Myth that Scrum Teams Don't Think About Architecture
+
+TBD
+
+### The Importance of Vertically Slicing Architecture
+
+TBD
+
+## Managing Technical Risk
+
+### Slaying Technical Debt
+
+TBD
+
+### Technical Debt vs. Not "Done" Work
+
+TBD
+
+### Managing Risk
+
+TBD
+
+## Optimizing Flow
+
+### Kanban Guide for Scrum Teams
+
+TBD
+
+### Understanding the Kanban Guide for Scrum Teams
+
+TBD
+
+### Agile For Humans Podcast 108: Professional Scrum with Kanban with Yuval Yeret
+
+TBD
+
+### Limiting Work in Progress (WIP) in Scrum with Kanban - What / When / Who / How
+
+TBD
+
+### Steve Porter on Scrum with Kanban
+
+TBD
+
+# Evolving the Agile Organization
+
+## Organizational Design and Culture
+
+### Culture Change  An Important Ingredient for Organizational Agility
+
+TBD
+
+### 20 Unagile Things to Avoid Saying and Some Better Alternatives
+
+TBD
+
+### Forget building trust, focus on psychological safety
+
+TBD
+
+## Evidence-Based Management
+
+### Evidence-Based Management Guide
+
+TBD
