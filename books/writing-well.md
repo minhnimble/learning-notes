@@ -27,7 +27,7 @@ Here are the thousand and one adulterants that weaken the strength of a sentence
 - Adverb that carries the same meaning that's already in the verb.
 - Passive construction that leaves the reader unsure of who is doing what.
 
-Example of bad writing: The president of a university wrote a letter: "You are probably aware that we have been experiencing very considerable potentially explosive expressions of dissatisfaction on issues only partially related." -> it simply meant that the students had been hassling them about different things.
+Example of bad writing: The president of a university wrote a letter: "You are probably aware that we have been experiencing very considerable potentially explosive expressions of dissatisfaction on issues only partially related." → it simply meant that the students had been hassling them about different things.
 
 The answer are: 
 - Clear our heads of clutter. Clear thinking becomes clear writing.
@@ -37,7 +37,45 @@ The answer are:
 
 ## Clutter
 
-TBD
+Fighting clutter is like fighting weeds — the writer is always slightly behind.
+
+Writing improves in direct ratio to the number of things we can keep out of it that shouldn't be there. For example:
+- "now" or "today" instead of "at this point in time".
+- "up" in "free up" shouldn't be there.
+- Take the adjective "personal," as in "a personal friend of mine," "his personal feeling" or "her personal physician." → that personal can be simply identified as "her physician."
+
+Clutter is the laborious phrase that has pushed out the short word that means the same thing, or is the official language used by corporations to hide their mistakes.
+
+"Experiencing" is one of the ultimate clutters. For example, "Are you experiencing any pain?" is far worst than "Does it hurt?".
+
+Clutter is the language of the Pentagon calling an invasion a "reinforced protective reaction strike" and justifying its vast budgets on the need for "counter-force deterrence". Thus political language has to consist largely of euphemism, question-begging and sheer cloudy vagueness.
+
+Beware, then, of the long word that's no better than the short word: 
+- "assistance" (help)
+- "numerous" (many) 
+- "facilitate" (ease)
+- "individual" (man or woman)
+- "remainder" (rest)
+- "initial" (first)
+- "implement" (do)
+- "sufficient" (enough)
+- "attempt" (try)
+- "referred to as" (called)
+- "with the possible exception of" (except)
+- "due to the fact that" (because)
+- "he totally lacked the ability to" (he couldn't)
+- "until such time as" (until)
+- "for the purpose of" (for).
+
+Common examples of a piece of writing that isn't doing useful work:
+- The unnecessary preposition appended to a verb ("order up")
+- The adverb that carries the same meaning as the verb ("smile happily")
+- The adjective that states a known fact ("tall skyscraper")
+- The little qualifiers that weaken any sentence they inhabit ("a bit," "sort of") 
+- The meaningless phrases ("in a sense,")
+- An entire sentence that essentially repeats what the previous sentence said or says something readers don't need to know or can figure out for themselves
+
+→ Look for the clutter in your writing and prune it ruthlessly. Be grateful for everything you can throw away. Reexamine each sentence you put on paper. Simplify, simplify.
 
 ## Style
 
