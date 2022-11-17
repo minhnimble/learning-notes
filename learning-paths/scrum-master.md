@@ -211,11 +211,36 @@ Common pitfalls:
 
 ### The Scrum Values
 
-TBD
+There are 5 main values: __Courage__, __Focus__, __Commitment__, __Respect__, and __Openness__.
+
+![ScrumValues-Tabloid](https://user-images.githubusercontent.com/70877098/202380189-6b3c895f-34f5-4e29-b1ff-f9106db8372f.jpg)
 
 ### Updates to the Scrum Guide: The 5 Scrum Values Take Center Stage
 
-TBD
+The focuses are on:
+- Why these values are actually really difficult to adopt in most ‘traditional’ organizations, 
+- Some very simple, regular practices that can help you and your team use the values for your day-to-day work.
+
+Successful use of Scrum depends on people becoming more proficient in living these five values:
+- People personally commit to achieving the goals of the Scrum Team.
+- The Scrum Team members have courage to do the right thing and work on tough problems.
+- Everyone focuses on the work of the Sprint.
+- The Scrum Team and its stakeholders agree to be open about all the work and the challenges with performing the work.
+- Scrum Team members respect each other to be capable, independent people.
+
+Examples of misunderstanding the values:
+- __Commitment__: Committing to something that you don't understand because you are told to by your boss instead of committing yourself to the team and Sprint Goal.
+- __Focus__: Focusing on keeping the customer happy instead of being focused on the Sprint and its goal.
+- __Openness__: Telling everyone everything about all your work instead of highlighting when you have challenges and problems that are stopping you from success.
+- __Respect__: Thinking you are helping the team by being a hero instead of helping people to learn the things that you are good at and not judging the things that others aren't good at.
+- __Courage__: Even after the decision has been made continuing to push back instead of being transparent, but willing to change even if that means accepting that you are wrong, or that your opinion is not the direction that the team is going.
+
+Five ideas for encouraging the values to be transparent and considered in your Scrum Team:
+1. Put the values on a wall and have each team member write up how they are going to demonstrate the value in their working day.
+2. Add a ‘values moment’ to your retrospective. This gives everyone an opportunity to inspect and adapt on their values.
+3. Introduce a ‘values’ prize. Not a serious prize, but a fun prize that sometimes can be delivered to two people or the whole team when a value has been demonstrated and everyone is aware of it.
+4. The ‘whoops we dropped the value’ prize provides a way of demonstrating courage, but also highlighting when we missed a value. Of course, this prize could end up being a very negative thing so it should always be delivered in a fun way without negative implications.
+5. Getting external managers or stakeholders to demonstrate to the team a value and what it means to them.
 
 ### Intralinks Case Study: Scrum Reboot, This Time with the Values
 
