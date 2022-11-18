@@ -79,11 +79,69 @@ Common examples of a piece of writing that isn't doing useful work:
 
 ## Style
 
-TBD
+Simplicity carried to an extreme might seem to point to a style little more sophisticated than "Dick likes Jane" and "See Spot run".
+
+The point is that you have to strip your writing down before you can build it back up with your style.
+
+Style is organic to the person doing the writing, as much a part of him as his hair, or, if he is bald, his lack of it → Trying to add style is like adding a toupee. At first glance the formerly bald man looks young and even handsome. But at second glance, he doesn't look quite right.
+
+It's amazing how often an editor can throw away the first three or four paragraphs of an article, or even the first few pages, and start with the paragraph where the writer begins to sound like himself or herself. 
+
+The is-a-person-writing check is a sentence that says something like `"I'll never forget the day when I..."` → Writers are at their most natural when they write in the first person. 
+
+There are vast regions of writing where "I" isn't allowed:
+- Newspapers don't want "I" in their news stories.
+- Many magazines don't want it in their articles.
+- Businesses and institutions don't want it in the reports.
+- Colleges don't want "I" in their term papers or dissertations.
+- English teachers discourage any first-person pronoun except the literary "we".
+
+Sensible reasons for avoiding "I":
+- Newspaper articles should consist of news, reported objectively. 
+- Teachers who don't want to give students an easy escape into opinion before they have grappled with the discipline of assessing a work on its merits and on external sources. For example: "I think Hamlet was stupid".
+
+Takeaways:
+- Must know what the essential tools are and what job they were designed to do.
+- Never forget that you are practicing a craft that's based on certain principles.
+- If what you build is sturdy and serviceable, take satisfaction in its plain strength.
+- A fundamental rule is: be yourself → It requires writers to do two things that by their metabolism are impossible: relax and have confidence.
+- To relax effectively, don't try so hard to make an impression, just plunge in.
+- Write in the first person when possible: to use "I" and "me" and "we" and "us."
+- If it is not allowed to use "I", at least think "I" while you write, or write the first draft in the first person and then take the "I"s out → It will warm up your impersonal style.
+- Sell yourself, and your subject will exert its own appeal.
+- Believe in your own identity and your own opinions.
+- Writing is an act of ego, and you might as well admit it. Use its energy to keep yourself going.
 
 ## The Audience
 
-TBD
+"Who am I writing for?" - it s a fundamental question, and it has a fundamental answer: You are writing for yourself.
+
+Donts: 
+- Try to visualize the great mass audience → every reader is a different person.
+- Try to guess what sort of thing editors want to publish or what you think the country is in a mood to read → they don't know what they want to read until they read it. Besides, they're always looking for something new.
+- Worry about whether the reader will "get it" if you indulge a sudden impulse for humor → If it amuses you in the act of writing, put it in.
+
+You are writing primarily to please yourself, and if you go about it with enjoyment you will also entertain the readers who are worth writing for.
+
+There are 2 different issues:
+- __Craft__, is a question of mastering a precise skill → reader is an impatient bird, perched on the thin edge of distraction or sleep.
+- __Attitude__ is a question of how you use that skill to express your personality → write for yourself and not be gnawed by worry over whether the reader is tagging along.
+
+How can you think carefully about not losing readers and still be carefree about their opinion?
+- __Craft__:
+  - Work hard to master the tools. 
+  - Simplify, prune and strive for order.
+  - Think of this as a mechanical act, and soon your sentences will become cleaner.
+
+- __Attitude__:
+  - Think of this as a creative act: the expressing of who you are.
+  - Relax and say what you want to say.
+  - Only need to be true to yourself when you write.
+  - Never say anything in writing that you wouldn't comfortably say in conversation. → If you're not a person who says "indeed" or "moreover," or who calls someone an individual ("he's a fine individual"), don't write it.
+
+Mencken was never timid or evasive; tie didn't kowtow to the reader or curry anyone's favor. It takes courage to be such a writer, but it is out of such courage that revered and influential journalists are born.
+
+Any writer who uses "ain't" and "tendentious" in the same sentence, who quotes without using quotation marks, knows what he's doing. This seemingly artless style, so full of art, is ideal for Herndon's purpose. It avoids the pretentiousness that infects so much writing by people who are doing worthy work, and it allows for a rich vein of humor and common sense. 
 
 ## Words
 
