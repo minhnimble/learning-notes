@@ -350,11 +350,72 @@ Scrum will simply give you a framework, principles, and values that make the har
 
 ### Visualizing Scrum Values
 
-TBD
+The exercise used is to rate yourself of against a list of questions, giving yourself 1 point for each question you agreed with and then mark result on a scale. Once completed you should end up with something like this:
+
+![Screenshot 2022-11-21 at 11 38 11](https://user-images.githubusercontent.com/70877098/202967049-3c291508-354d-4268-bd62-363a16d66302.png)
+
+#### Questions Used (Yes/No)
+
+- Courage
+  - I work on the next highest priority Product Backlog Item (I do not cherry pick the work I pick up in the Sprint)
+  - If I see something that is wrong with what I'm being asked to do, I will say so.
+  - I will question & reproach my team members if I feel that they are doing something wrong.
+  - Regardless of the person talking, I will correct them if I believe that they are incorrect.
+  - I will stand firm if I believe I am right, even if I'm in the minority within the group.
+
+- Commitment
+  - I always know what the sprint goal is and how my work supports it.
+  - I do everything I can to ensure we achieve the goals of the sprint.
+  - In my current team, I have never thought of taking a sick day to avoid going into work.
+  - I always arrive on time for the events, my colleagues never have to wait for me to start the event.
+  - I know what it means to say that an item is done, i.e. I know the criteria that meets our Definition of Done.
+
+- Focus
+  - Whilst working on a story I do not get distracted.
+  - If I am not enjoying the work in a story I still give it the attention it needs.
+  - When enjoying working on a story I will not over work a story just to prolong it.
+  - I do not procrastinate when working on a story.
+  - As soon as the story is ready to move into a new state, I will tell my colleagues and either hand it over or ensure that they know it is ready to pick up.
+
+- Openness
+  - I do not shy away from telling difficult news to team members and stakeholders
+  - I do not hide away difficult issues in the hope that they will sort themselves out.
+  - If something / someone is annoying me I will address it / tell them.
+  - My colleagues can judge what state of mind I'm in, I can share my feelings with my them.
+  - I always say the true state of an item, and do not over/under play it.
+
+- Respect
+  - I listen with equal intensity regardless of who is talking.
+  - When listening to people I never talk over them.
+  - I value everyone's opinion equally.
+  - I am never concerned who works on what item in the backlog.
+  - I feel that my opinion is respected and that I have an equal say in the team.
+
+#### Next Steps
+
+- Discuss the outliers, talk more freely with each other, and generally felt positive that we were open with each other.
+- Look at where people recorded low against some key areas (Respect, Courage and Openness, etc.) then encourage improvements in these areas.
 
 ### An Introductory Video Series to Scrum: Scrum Values
 
-TBD
+Remember:
+- The values work hand-in-glove with each other → have __Focus__ but without __Commitment__ is pointless → need __Courage__ to be __Open__ → need __Focus__ to __Commit__ to one sprinkle at a time.
+- Focus: 
+  - Teams work within the time box of each scrum event.
+  - Focus on a single sprint goal per sprint, a single product goal at a time.
+- Openness:
+  - Everyone are open about work and challenges.
+  - Individuals require to show vulnerability.
+  - Trust each other to identify impediments as soon as they occur rather than fear of looking less able.
+- Commitment:
+  - Teams are a cross-functional effective collection of skilled equals → teams commit collectively → nobody commits on their behalf, especially external managers.
+  - Team members commit to support to each others and the product, and perform to the best of their abilities.
+- Courage:
+  - Do right things (not the easiest things).
+  - Challenge each others and their organization.
+- Respect:
+  - All team members respect their colleges and organization → zero hierarchy.
+  - Accept that everybody's voice is equal.
 
 ## Scrum Team
 
