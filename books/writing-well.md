@@ -145,11 +145,89 @@ Any writer who uses "ain't" and "tendentious" in the same sentence, who quotes w
 
 ## Words
 
-TBD
+`Journalese` - a quilt of instant words patched together out of other parts of speech:
+- Adjectives are used as nouns ("greats", "notables").
+- Nouns are used as verbs ("to host"), or they are chopped off to form verbs ("enthuse", "emote"), or they are padded to form verbs ("beef up",  "put teeth into").
+
+→ Its the death of freshness in anybody's style - the common currency of newspapers and of magazines, a mixture of cheap words, made-up words and clichés that have become so pervasive that a writer can hardly help using them.
+
+Example of such journalese phrases that only reach the nearest cliché:
+- "Shouldered his way" 
+- "only to be met" 
+- "crashing into his face" 
+- "waging a lonely war" 
+- "corruption that is rife" 
+- "sending shock"
+- "New York's finest"
+→ We know just what to expect. No surprise awaits us in the form of an unusual word, an oblique look.
+
+### Takeaway
+- Develop a respect for words and a curiosity about their shades of meaning that is almost obsessive.
+- Take the time to root around and find the ones you want.
+- Make a habit of reading what is being written today and what has been written by earlier masters.
+- Learn by reading the men and women who were doing the kind of writing that you wanted to do and trying to figure out how they did it.
+- Get in the habit of using dictionaries.
+- Learn about words' etymology and notice what curious branches they original root have put forth.
+- Master the small gradations between words that seem to be synonyms. For instances:
+  - "cajole", "wheedle", "blandish" and "coax".
+  - Look up "villain", since only a lexicographer could conjure back of iniquity, obliquity, depravity, knavery, profligacy, frailty, flagrancy, infamy, immorality, corruption, wickedness, wrongdoing, backsliding and sin.
+  - Nouns: ruffians and riffraff, miscreants and malefactors, reprobates and rapscallions, hooligans and hoodlums, scamps and scapegraces, scoundrels and scalawags, Jezebels and jades.
+  - Adjectives: foul and fiendish, devilish and diabolical.
+- Use dictionary with gratitude → you want to know how synonyms differ first, then go to the dictionary.
+- Pay attentions to how words sound when choosing and stringing them together → readers hear what they are reading far more than you realize. For example, E. B. White suggests phrases that has survived for a century:
+  - "Times like these try men's souls."
+  - "How trying it is to live in these times!"
+  - "These are trying times for men's souls."
+  - "Soulwise, these are trying times."
+- If all your sentences move at the same plodding gait, which even you recognize as deadly but don't know how to cure, read them aloud.
+- See if you can gain wordings variety so they don't all sound as if they came out of the same mold by:
+  - reversing the order of a sentence.
+  - substituting a word that has freshness or oddity.
+  - altering the length of your sentences.
 
 ## Usage
 
-TBD
+Good words:
+- "Hassle" is both a verb and a noun, meaning to give somebody a hard time, or the act of being given a hard time.
+- "Freak" means an enthusiast, and there's no missing the aura of obsession that goes with calling someone a jazz freak, or a chess freak, or a sun freak.
+
+Cheap words:
+- "notables" 
+- "greats" 
+- "upcoming"
+
+Why is one word good and another word cheap? 
+→ No concrete answer because:
+- sage has no fixed boundaries.
+- Language is a fabric that changes from one week to another.
+- Word freaks fight over what is allowable, often reaching their decision on a subjective basis such as `taste`.
+
+`The American Heritage Dictionary` - it assembled a "Usage Panel" to help them appraise the new words and dubious constructions that had come knocking at the door.
+
+The laws of usage are relative, bending with the taste of the lawmaker → In the end, it comes down to what is "correct" usage. For example:
+- "dropout" - the perfect word.
+- "cyberspace," "meltdown," "skyjacker," "wetlands," "software," "fax," "macho," "yuppie," "gentrify" - correct usage every day of science and technology, fad and fashion and social change.
+- "trip," "rap," "crash," "trash," "funky," "split," "rip-off," "vibes," "downer," "bummer" - lashing back at the self-important verbiage.
+- "can" and "may," "fewer" and "less," "eldest" and "oldest," etc. - most of the classic distinctions in grammar.
+
+Incorrect usage will lose you the readers you would most like to win. Know the difference between:
+- a "reference" and an "allusion" 
+- "connive" and "conspire" 
+- "compare with" and "compare to"
+- If you must use "comprise", use it right. It means "include" - `dinner comprises meat, potatoes, salad and dessert`.
+
+One helpful approach is to try to separate usage from jargon. For example:
+- "prioritize" is jargon - a pompous new verb that sounds more important than "rank" — and that "bottom line" is usage, a metaphor borrowed from the world of bookkeeping that conveys an image we can picture. As every businessman knows, the bottom line is the one that matters. If someone says, "The bottom line is that we just can't work together," we know what he means. I don't much like the phrase, but the bottom line is that it's here to stay.
+
+New usages also arrive with new political events. For example:
+- Vietnam gave us "escalate".
+- Watergate gave us a whole lexicon of words connoting obstruction and deceit: "stonewall," "deep-six," "launder," "enemies list" and other "gate"-suffix scandals ("Irangate").
+→ It's vivid, and we need it.
+
+A similar guideline for separating good from technical English. For example, the difference between, "printout" and "input":
+- A printout is a specific object that a computer emits. Before the advent of computers it wasn't needed; now it is. But it has stayed where it belongs. 
+- Not so with "input," which was coined to describe the information that's fed to a computer. Our input is sought on every subject, from diets to philosophical discourse ("I'd like your input on whether God really exists").
+→ Good usage consists of using good words if they already exist to express myself clearly and simply to someone else.
 
 # Methods
 
