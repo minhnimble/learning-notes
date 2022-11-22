@@ -233,7 +233,45 @@ A similar guideline for separating good from technical English. For example, the
 
 ## Unity
 
-TBD
+The only way to learn to write is to force yourself to produce a certain number of words on a regular basis. For example, if you went to work for a newspaper that required you to write two or three articles every day, you would be a better writer after six months.
+→ Your style might still be full of clutter and clichés, but you would be exercising your powers of putting the English language on paper, gaining confidence and identifying the most common problems.
+
+All writing is ultimately a question of solving a problem, for example:
+- a problem of where to obtain the facts or how to organize the material.
+- a problem of approach or attitude, tone or style.
+
+→ Unity is the anchor of good writing. It helps keep the reader from straggling off in all directions and satisfies the readers' subconscious need for order and reassures them that all is well at the helm.
+
+- __Unity of pronoun__: Are you going to write in the first person, as a participant, or in the third person, as an observer? Or even in the second person?
+- __Unity of tense__: Most people write mainly in the past tense, but some people write agreeably in the present. What is not agreeable is to switch back and forth → you must choose the tense in which you are principally going to address the reader, no matter how many glances you may take backward or forward along the way.
+- __Unity of mood__: You might want to talk to the reader in the casual voice, or approach the reader with a certain formality to describe a serious event or to present a set of important facts. But again don't mix them.
+
+Ask yourself some basic questions before you start. For example: 
+- "In what capacity am I going to address the reader?" (Reporter? Provider of information? Average man or woman?) 
+- "What pronoun and tense am I going to use?" 
+- "What style?" (Impersonal reportorial? Personal but formal? Personal and casual?) 
+- "What attitude am I going to take toward the mate- rial?" (Involved? Detached? Judgmental? Ironic? Amused?) 
+- "How much do I want to cover?"
+- "What one point do I want to make?"
+
+The last two questions are especially important. What you think is definitive today will turn infinitive by tonight, and writers who doggedly pursue every last fact will find themselves pursuing the rainbow and never settling down to write → Every writing project must be reduced before you start to write. Some tips could be:
+- Think small.
+- Decide what corner of your subject you're going to bite off, and be content to cover it well and stop.
+- Often you'll find that along the way you've managed to say almost everything you wanted to say about the entire subject.
+- Decide what single point you want to leave in the reader's mind.
+
+An unwieldy writing task is a drain on your enthusiasm. Enthusiasm is the force that keeps you going and keeps the reader in your grip.
+
+Every successful piece of nonfiction should leave the reader with one provocative thought that he or she didn't have before. Not two thoughts, or five—just one. 
+
+The single point will affect your decision about tone and attitude. Some points are best made by earnestness, some by dry understatement, some by humor.
+
+It is normal that the material begins to lead you in an unexpected direction, where you are more comfortable writing in a different tone. Some tips could be: 
+- Don't fight such a current if it feels right. 
+- Trust your material if it's taking you into terrain you didn't intend to enter but where the vibrations are good.
+- Adjust your style accordingly and proceed to whatever destination you reach.
+- Don't ever become the prisoner of a preconceived plan.
+- If this issue happens, then it's just a matter of making repairs. You can go back to the beginning and rewrite it so that your mood and your style are consistent from start to finish.
 
 ## The Lead and the Ending
 
