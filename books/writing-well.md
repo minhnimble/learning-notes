@@ -275,7 +275,22 @@ It is normal that the material begins to lead you in an unexpected direction, wh
 
 ## The Lead and the Ending
 
-TBD
+The most important sentence in any article is the first one → If it doesn't induce the reader to proceed to the second sentence, your article is dead, and it goes on the same for the subsequent sentences. Of such a progression of sentences, a writer constructs that fateful unit, the “lead.”
+
+No pat answer for a standard lead's length:
+- Some leads hook the reader with just a few well-baited sentences.
+- Others amble on for several pages, exerting a slow but steady pull.
+- May depend on the audience you're writing for. For example, readers of a literary review expect its writers to start somewhat discursively.
+
+### Takeaway
+- The lead may not be the best of all possible leads, but if it does the job it's supposed to do, be thankful and proceed.
+- Capture the reader immediately and force him to keep reading by cajole him with freshness, or novelty, or paradox, or humor, or surprise, or with an unusual idea, or an interesting fact, or a question. Anything will do, as long as it nudges his curiosity and tugs at his sleeve.
+- The lead must do some real work. It must provide hard details that tell the reader why the piece was written and why he ought to read it. But don't dwell on the reason. Coax the reader a little more; keep him inquisitive.
+- Continue to build and amplify the paragraph that preceded it. Give more thought to adding solid detail and less to entertaining the reader.
+- Take special care with the last sentence of each paragraph, try to give that sentence an extra twist of humor or surprise, like the periodic “snapper” in the routine of a stand-up comic.
+ 
+For some writing example:
+- "I've often wondered what goes into a hot dog. Now I know and I wish I didn't".
 
 ## Bits & Pieces
 
@@ -319,6 +334,8 @@ TBD
 
 TBD
 
+# Attitudes
+
 ## The Sound of Your Voice
 
 TBD
@@ -327,7 +344,7 @@ TBD
 
 TBD
 
-## The Tyranny of the Final
+## The Tyranny of the Final Product
 
 TBD
 
@@ -335,5 +352,10 @@ TBD
 
 TBD
 
+## Writing Family History and Memoir
+
+TBD
+
 ## Write as Well as You Can
- TBD
+
+TBD
