@@ -421,27 +421,284 @@ Remember:
 
 ### A Day in the Life of a Scrum Master
 
-TBD
+#### The Scrum Guide
+
+The most obvious answer can be found in the [Scrum Guide](http://scrumguides.org/scrum-guide.html) itself. It offers a clear description of the services a __Scrum Master__ provides to the __Developers__, __Product Owner__ and __the organization__:
+- Coach the __Development Team__ in self-organization and cross-functionality.
+- Help the __Product Owner__ finding techniques for effective Product Backlog management.
+- Support __the organization__ in its Scrum adoption.
+
+#### Author's Personal Description as a Scrum Master
+
+- _Create successful teams_ with strong skills in self-organization and cross-functionality and a drive for continuous improvement.
+- _Support Product Owners_ in visualizing progress, creating a transparent Product Backlog and maximizing the value of the product.
+- _Help organizations_ by supporting management in changing processes, procedures, culture and behavior.
+- Ensure _the spirit of Scrum_ is truly understood.
+
+#### Characteristics of a Great Scrum Master
+
+A great Scrum Master:
+- Ensures the entire team supports the chosen __Scrum process__;
+- Manages the __impediments__ that exceed the self-organizing capabilities of the team and it prevents them in achieving the Sprint Goal;
+- Recognizes __healthy team conflict__ and promotes constructive disagreement;
+- Is prepared to be __disruptive__ enough to enforce a change within the organization;
+- Understands the power of __self-management__;
+- Understands the value of a __steady sprint rhythm__ and does everything to create and maintain it;
+- Knows how to __truly listen__ and is comfortable with silence;
+- Understands the __strength of coaching__ and has learned some powerful questions by heart;
+- __Teaches the Product Owner__ how to maximize ROI and meet objectives;
+- Is also competent with __XP, Kanban, and Lean__.
+
+#### Important Points
+
+1. First of all, __a Scrum Master should always prevent a fully booked schedule__. Smart Scrum Masters has lots of free space in their agenda. The more the better.
+
+2. As for a daily preparation, a Scrum Master could consider some example questions like:
+  - __How is my Product Owner doing?__
+    - Is the Product Backlog in shape?
+    - How is he/she managing the stakeholders?
+    - What about delivering business value and return-on-investment?
+  - __How is the Scrum Team doing?__
+    - Are they working together?
+    - Is there conflict in the team, do they resolve that?
+    - Is the team making decisions?
+  - __How are our engineering practices doing?__
+    - Is the team caring and improving them?
+    - How is the test automation?
+    - Is the team expanding their Definition of Done?
+  - __How is my organization doing?__
+    - Is there inter-team coordination?
+    - What organizational impediments are in the way?
+    - What about the HR practices?
+
+#### A Typical Day of a Scrum Master
+
+- Start the day with an open and curious mind (and in my case some good coffee).
+- A good first question to consider is "How can I improve the life of the Scrum Team by facilitating creativity and empowerment?"
+- Remember: your agenda is as good as empty! Except for the Daily Scrum and maybe some other Scrum events.
+- You attend the Daily Scrum as an observer. You listen to what is and isn't being said.
+- You consider some of the questions I've mentioned earlier.
+- Based on your observations you determine your next steps. This might be coaching, consulting, teaching, facilitating, mentoring, managing, problem-solving, conflict navigating or... just sitting with the team, listening, and watching the team.
+- Doing "nothing" is a perfect activity for a Scrum Master! The biggest pitfall for a Scrum Master is being too busy and not noticing what is really going on.
 
 ### Why a Scrum Master Should Not Have Other Roles
 
-TBD
+Reasons:
+- There can be conflicts of interests, for example: 
+  - You are working on an important lengthy scrum task and other developers might need your help urgently on developer-related responsibilities.
+  - Product Owners are busy with stack holders, while Scrum Masters need to work with their development members.
 
 ### Myth 8: The Scrum Master is a Junior Agile Coach
 
-TBD
+Scrum provides the minimal boundaries within which teams can self-organize to solve a complex problem using an empirical approach. Unfortunately, this simplicity is not only its greatest strength, but also the source of many misinterpretations and myths surrounding Scrum.
+
+#### The Myth - The Agile Coach tends to larger organizational issues while Scrum Masters focus on Scrum Teams
+- Poor/incomplete understanding of what a Scrum Master actually does and should do according to the Scrum Framework.
+- Position the Agile Coach as being higher in a traditional hierarchical structure: The Scrum Master as the junior, Agile Coach as the medior and the Enterprise Coach as the senior → easy to match with the organization's increasing hourly rates and expensive training programs.
+
+The above myth leads to:
+- Contradictions with the services these organizations provide: advising clients to think in ‘horizontal structures’ that promote the self-organizing capabilities of the teams, yet promote a ‘vertical structure’ because it works well from a commercial/marketing perspective.
+- Artificial boundaries between what Scrum Masters and Agile Coaches do → The Scrum Master is only “allowed” to act on team level, which makes Scrum-friendly culture is far more difficult and harder to adapt. Meanwhile, the Agile Coach is expected to “implement” the necessary organizational changes, but fails because of limited experiences “from the trenches” and not knowing how to deal with “outside in” change management.
+
+#### Busting the myth
+
+It is actually remarkably easy, and requires only a simple reading of the [Scrum Guide](http://scrumguides.org/).
+→ It offers a clear description of the services that [a Scrum Master provides to the Development Team, the Product Owner and the entire organization](http://scrumguides.org/scrum-guide.html#team-sm).
+
+#### The 8 Stances of a Scrum Master
+
+The various responsibilities of the Scrum Master is captured in eight stances:
+- An __Impediment Remover__ that helps resolve issues that are blocking the team'’'s progress, taking into account the self-organizing capabilities of the Development Team;
+A __Facilitator__ that sets the stage and provides clear boundaries in which the team can collaborate. This includes facilitation of the Scrum events to ensure they'll achieve the desired outcome and - most importantly - that the empirical process is optimized;
+A __Coach__ that helps individuals and groups to continuously improve in how they deliver valuable outcomes as a team or as an organization;
+A __Teacher__ that ensures that Scrum and relevant techniques are well-understood and enacted;
+A __Servant Leader__ that creates environments where teams can work effectively with stakeholders to create valuable outcomes;
+A __Manager__ that is responsible for managing (true) impediments, eliminating waste, managing the process, managing the team’s health, managing the boundaries of self-organization, and managing the culture;
+A __Change Agent__ that helps to enable a culture in which Scrum Teams can flourish - on every level of the organization;
+A Mentor that transfers agile knowledge and experience to the team.
+
+#### Dealing with "senior" challenges
+
+_“A good Scrum Master helps a Scrum Team survive in an organization's culture. A great Scrum Master helps change the culture so Scrum Teams can thrive.”_ - Geoff Watts
+→ Being a Scrum Master means dealing with difficult challenges and influence the organization's culture in such a way that: 
+- Team success is valued over individual success;
+- Continuous improvement and experimentation are promoted;
+- “Agile contracts” are encouraged;
+- Stable team composition is supported;
+- Behavior is rewards, not individual achievements;
+
+_“The Scrum Master enables change from the inside out.”_
+→ The Scrum Masters help:
+- Teams uncover the impediments that are holding them back and the other ways by which the organization can deliver (even) more value.
+- HR departments find practices that are better aligned with Scrum. 
+- Sale departments move from ‘fixed-price/fixed-scope’-contracts to contracts that are more Agile-friendly.
+- Increase collaboration between Scrum Teams and stakeholders.
+
+_“The chances of successful Scrum adoption will increase drastically when you consider your Scrum Master as the true “inside out” change facilitators!”_
+→ Ignite the necessary organizational changes by influencing the system from the inside out with other Scrum Masters → a ‘Change Facilitator’.
+
+_“When organizations choose to work with Scrum, there should be no need for Agile Coaches.”_
+→ No need for Agile Coaches or other roles to help organizations generate valuable outcomes with Scrum.
+
+#### Should we fire all Agile Coaches?
+
+Not at all, as Scrum Masters use an “inside out” approach, Agile Coaches use an “outside in” approach.
+- “inside out” approach drives organizational change.
+- “outside in” approach can definitely work, but it's incredibly difficult because:
+  - They are powerless to affect change and have a very superficial understanding of what goes on inside the Scrum Teams (where the value is being generated).
+  - They are not part of the team, lack the necessary support from management and don't have the kind of extensive experience that is needed to drive change from “the outside in”.
+  - They barely have experience with Scrum or as a Scrum Master.
+
+_“The reality is that most Agile Coaches are junior Scrum Masters.”_
+→ The advice for organizations is:
+  - Focus on enabling Scrum Masters to facilitate change from “the inside out”. Support the Scrum Masters in creating great teams that build awesome products. Help them build the experience and the toolkit to do this, together.
+  - Get rid of ‘Seagull Coaches’ that fly in, make a lot of noise, crap all over the place and fly on to a next customer, leaving a big mess behind;
+  - If you really want to hire an Agile Coach in addition to the Scrum Masters already present within the organization, make sure that they have real, proven experience in affecting change “outside-in”. Make sure they focus their efforts on helping the teams and the Scrum Masters drive change themselves. 
+  - Don't create the artificial distinction between “change on the management level” (by Agile Coaches) and “change on the team level” (by Scrum Masters);
+
+#### What if we use Kanban/XP/DevOps?
+
+No matter what kind of framework or methodology you choose, it will involve organizational change to some degree.
+
+_“Organizational change should be driven from the inside-out by people that are truly part of the teams.”_
 
 ### The 2 Best Scrum Masters I Ever Worked With - The Master Of Coaching And Facilitation
 
-TBD
+Best Scrum Masters' traits:
+- Excellent servant leaders who fostered self organization
+- Supported the Development Team and Product Owner 
+- Guided their organizations on the path to agility.
+
+Laurence - the second Scrum Master - has acting background. Then he used his skills as a trained actor to observe and learn the behavior and characteristics that made this Scrum Master effective → He "learnt" the role of the Scrum Master, just as he would as an actor learning any other role. 
+
+His strength was in his abilities as a coach and facilitator. When the Development Team approached him with an issue or impediment, rather then trying to solve it for them, he opened and facilitated discussions with the team and helped them find their own solutions.
+
+Laurence knew he didn't have the best answers for all the issues as he had only 2 years IT experience → He had no choice but to help the team to find their own solutions. He wanted to be useful to them in this process so quickly learnt to ask the right questions and encourage the team to be open, confront the issue, explore options and then decide and fix on a course of action. He also encouraged frequent inspection and adaption to ensure the selected option was helping as planned. If a solution wasn't turning out to have the desired effect he would raise this to the team and challenge them to find another way forward → he became adept at helping the team find their own solutions and served as the conscience of the team.
 
 ### The Truth About Job Titles in Scrum
 
-TBD
+#### Remember about the types of problems we are solving:
 
-### The Truth About Job Titles in Scrum
+![Screenshot 2022-11-25 at 15 45 58](https://user-images.githubusercontent.com/70877098/203938805-b7184883-f412-4570-8ce6-e6c9aca9e64d.png)
 
-TBD
+#### Inspection and adaptation requires flexibility:
+
+![Screenshot 2022-11-25 at 16 08 18](https://user-images.githubusercontent.com/70877098/203943000-e2826bee-933a-4ac7-b577-841899a2cc91.png)
+
+#### Scrum provides a Great Framework for That:
+
+![Screenshot 2022-11-25 at 16 11 31](https://user-images.githubusercontent.com/70877098/203943618-977664cb-701e-4717-874d-e1249cdf4e45.png)
+
+#### Roles
+Scrum describes 3 main roles (+1 extra):
+- __Product Owner - PO__:
+  - Maximize the value of the product and DT.
+  - The sole person responsible for managing the product backlog.
+  - Must be empowered to make decisions about the product.
+  - No one else except PO is able to tell the development team what to do!
+- __Scrum Master - SM__:
+  - Promote and support Scrum usage.
+  - Focus on transparency.
+  - Is a servant leader - service to others, promote a sense of community, holistic approach to work, share decision-making power.
+  - Serve the PO, DT and Organization.
+- __Development Team - DT__ (recognize to titles other than `DT Member`):
+  - Self-organizing in pursuit of delivering value.
+  - Cross-functional with all the skills necessary to deliver work.
+  - Small enough to be nimble, large enough to deliver.
+- __Agile Leaders - AL__ (create the environment necessary for scrum and for agile to happen and there can be many types of leader):
+  - Create environments for agility to flourish.
+  - Manage impediments and problems.
+  - Coach and support PO, SM and DT.
+
+#### What about other roles (PM, Testers, BA, etc.)
+
+Scrum does not really care about job titles. As a matter of fact, it need skills to deliver value and care about the outcome the team deliver, but it hard to just say "I want someone to do stuff and deliver" → roles are needed.
+
+All different roles and teams needs to feel safe and valued.
+
+Ultimately, here is the rub:
+
+![Screenshot 2022-11-25 at 16 43 52](https://user-images.githubusercontent.com/70877098/203950350-6bfc245f-8209-4b24-a980-3af22fa1ffa7.png)
+
+How to manage the rub:
+- Separate work management from Talent/Skill/Job management.
+- Incrementally transition to the 4 key roles: SM, DT Member, PO, Leader of xxx.
+  - Names can be varied per organization.
+  - Put in place a community/scaling/development structure that allows growth, promotion, and a career.
+
+#### Self-Organize to Form Teams
+
+What motivates people:
+1. Autonomy
+2. Mastery
+3. Purpose
+
+Form team naturally, guided by business goals:
+- Who want changes (opt-in)
+- Who want to work together (self-organization)
+- Mutually-agreed commitments and decision processes (self-direction)
+
+#### Break Away from Command and Control
+
+- Boss trumps transparency
+- Hard to balance the needs of today vs the future
+- Scaling is about helping others, not managing
+- Installing a learning culture requires an organization
+
+#### What Shape Are Your Team Member Skills?
+
+![Screenshot 2022-11-25 at 16 57 12](https://user-images.githubusercontent.com/70877098/203954650-1db79b74-dec1-4631-b664-330d7df25046.png)
+
+#### Communities Connect People Across Teams to Share and Improve
+
+- Share experiences and grow skills via immersion and pairing
+- Use peer coaching to share knowledge and increase professionalism + consistency
+- Remove common impediments
+
+#### The Famous Spotify Model
+
+![Screenshot 2022-11-25 at 17 01 59](https://user-images.githubusercontent.com/70877098/203956442-33637f87-1a0b-449c-b117-a04deebc70f5.png)
+
+- Squad: similar to a Scrum Team
+- Tribe: collection of Squads in a related area
+- Chapter: a family of people inside a Tribe with similar skills
+- Guild: a community of practice across Tribes. 
+
+#### Project Managers
+
+In the end, find the role that makes the most sense for you:
+- SM: If you are more about enabling flow, driving processes, helping others learn, removing impediments, and raising transparency.
+- PO: If you are passionate about the solutions you provide, the problems that you solve, and the customer
+- Technical: If you want to master and share a set of skills or technology.
+- Leadership: If you want to glue together an organization, build an environment that supports agility, and delivering value.
+
+#### Summary
+
+- Job titles and specialism of labor don't connect with Scrum, but skills do.
+- Focus on the 4 roles: SM, DT Member, PO, and Leadership.
+- Everyone has to understand the customer → become more valuable.
+- Decouple work vs people management.
+- Build community around mastery and skills development → more people centric approach.
+- Focus on learning rather than job title!
+
+### Part 8 An Introductory Video Series to Scrum: Accountabilities
+
+- PO is accountable for the product value.
+  - is __one__ person.
+  - be the single the source of truth.
+  - makes decisions transparently.
+  - can delegate work to others, but still hold accountability of that work delivery.
+- SM is accountable for the effectiveness of the scrum framework.
+  - is a true leader who serves the scrum team in the wider organization.
+  - commonly seen as a coach, not boss.
+- DT developers are accountable for creating the increment output.
+  - collaborate through sprints.
+  - each developer are equally accountable for the achievement of the sprint goal.
+  - create a plan and adapt the sprint backlog everyday.
+  - commit to conforming the DoD with quality.
+  - hold each other accountable as professionals.
+
+→ The accountability is a series of tasks and actions that are instrumental to deliver product value.
 
 ## Scrum Events
 
