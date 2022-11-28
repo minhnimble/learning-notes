@@ -217,10 +217,6 @@ There are 5 main values: __Courage__, __Focus__, __Commitment__, __Respect__, an
 
 ### Updates to the Scrum Guide: The 5 Scrum Values Take Center Stage
 
-The focuses are on:
-- Why these values are actually really difficult to adopt in most ‘traditional’ organizations, 
-- Some very simple, regular practices that can help you and your team use the values for your day-to-day work.
-
 Successful use of Scrum depends on people becoming more proficient in living these five values:
 - People personally commit to achieving the goals of the Scrum Team.
 - The Scrum Team members have courage to do the right thing and work on tough problems.
@@ -345,8 +341,9 @@ work, and do not have any direct reports on the teams.
 
 #### What We Learned
 
-Scrum adoption is not only hard at first, it keeps on being hard. If it is easy, things change mostly on the surface but outcomes are the same.
-Scrum will simply give you a framework, principles, and values that make the hard work much more likely to result in positive business outcomes.
+- Scrum adoption is not only hard at first, it keeps on being hard. 
+- If it is easy, things change mostly on the surface but outcomes are the same.
+- Scrum will simply give you a framework, principles, and values that make the hard work much more likely to result in positive business outcomes.
 
 ### Visualizing Scrum Values
 
@@ -490,7 +487,7 @@ Reasons:
 
 ### Myth 8: The Scrum Master is a Junior Agile Coach
 
-Scrum provides the minimal boundaries within which teams can self-organize to solve a complex problem using an empirical approach. Unfortunately, this simplicity is not only its greatest strength, but also the source of many misinterpretations and myths surrounding Scrum.
+Scrum provides the minimal boundaries within which teams can self-organize to solve a complex problem using an empirical approach. Simplicity is not only its greatest strength, but also the source of many misinterpretations and myths surrounding Scrum.
 
 #### The Myth - The Agile Coach tends to larger organizational issues while Scrum Masters focus on Scrum Teams
 - Poor/incomplete understanding of what a Scrum Master actually does and should do according to the Scrum Framework.
@@ -509,13 +506,13 @@ It is actually remarkably easy, and requires only a simple reading of the [Scrum
 
 The various responsibilities of the Scrum Master is captured in eight stances:
 - An __Impediment Remover__ that helps resolve issues that are blocking the team'’'s progress, taking into account the self-organizing capabilities of the Development Team;
-A __Facilitator__ that sets the stage and provides clear boundaries in which the team can collaborate. This includes facilitation of the Scrum events to ensure they'll achieve the desired outcome and - most importantly - that the empirical process is optimized;
-A __Coach__ that helps individuals and groups to continuously improve in how they deliver valuable outcomes as a team or as an organization;
-A __Teacher__ that ensures that Scrum and relevant techniques are well-understood and enacted;
-A __Servant Leader__ that creates environments where teams can work effectively with stakeholders to create valuable outcomes;
-A __Manager__ that is responsible for managing (true) impediments, eliminating waste, managing the process, managing the team’s health, managing the boundaries of self-organization, and managing the culture;
-A __Change Agent__ that helps to enable a culture in which Scrum Teams can flourish - on every level of the organization;
-A Mentor that transfers agile knowledge and experience to the team.
+- A __Facilitator__ that sets the stage and provides clear boundaries in which the team can collaborate. This includes facilitation of the Scrum events to ensure they'll achieve the desired outcome and - most importantly - that the empirical process is optimized;
+- A __Coach__ that helps individuals and groups to continuously improve in how they deliver valuable outcomes as a team or as an organization;
+- A __Teacher__ that ensures that Scrum and relevant techniques are well-understood and enacted;
+- A __Servant Leader__ that creates environments where teams can work effectively with stakeholders to create valuable outcomes;
+- A __Manager__ that is responsible for managing (true) impediments, eliminating waste, managing the process, managing the team’s health, managing the boundaries of self-organization, and managing the culture;
+- A __Change Agent__ that helps to enable a culture in which Scrum Teams can flourish - on every level of the organization;
+- A __Mentor__ that transfers agile knowledge and experience to the team.
 
 #### Dealing with "senior" challenges
 
@@ -535,7 +532,7 @@ _“The Scrum Master enables change from the inside out.”_
 - Increase collaboration between Scrum Teams and stakeholders.
 
 _“The chances of successful Scrum adoption will increase drastically when you consider your Scrum Master as the true “inside out” change facilitators!”_
-→ Ignite the necessary organizational changes by influencing the system from the inside out with other Scrum Masters → a ‘Change Facilitator’.
+→ Ignite the necessary organizational changes by influencing the system from the inside out with other Scrum Masters → a `Change Facilitator`.
 
 _“When organizations choose to work with Scrum, there should be no need for Agile Coaches.”_
 → No need for Agile Coaches or other roles to help organizations generate valuable outcomes with Scrum.
@@ -565,11 +562,11 @@ _“Organizational change should be driven from the inside-out by people that ar
 ### The 2 Best Scrum Masters I Ever Worked With - The Master Of Coaching And Facilitation
 
 Best Scrum Masters' traits:
-- Excellent servant leaders who fostered self organization
-- Supported the Development Team and Product Owner 
+- Excellent servant leaders who fostered self organization.
+- Supported the Development Team and Product Owner.
 - Guided their organizations on the path to agility.
 
-Laurence - the second Scrum Master - has acting background. Then he used his skills as a trained actor to observe and learn the behavior and characteristics that made this Scrum Master effective → He "learnt" the role of the Scrum Master, just as he would as an actor learning any other role. 
+For example Laurence - the second Scrum Master - has acting background. Then he used his skills as a trained actor to observe and learn the behavior and characteristics that made this Scrum Master effective → He "learnt" the role of the Scrum Master, just as he would as an actor learning any other role. 
 
 His strength was in his abilities as a coach and facilitator. When the Development Team approached him with an issue or impediment, rather then trying to solve it for them, he opened and facilitated discussions with the team and helped them find their own solutions.
 
@@ -704,7 +701,93 @@ In the end, find the role that makes the most sense for you:
 
 ### A Typical Sprint, Play-by-Play
 
-TBD
+#### The first day: Sprint Planning
+
+The whole team, including the Product Owner, meet on the first day of the Sprint and conduct a Sprint Planning session.
+
+_Preparation_
+
+- Ensure that the Product Backlog has been refined to an appropriate level of detail, with estimates and acceptance criteria - this is the purpose of Product Backlog Refinement.
+- Product Owner should have ordered the work on the Product Backlog.
+- The team should have an idea of their capacity for this Sprint, which is to say, how much work they believe they can take on.
+
+_First plan the value that will be delivered_
+
+- Each Sprint should result in a valuable increment of completed work, fit and ready for immediate release.
+- The team work with to select which items from the Product Backlog should be worked on in a Sprint.
+
+_Be sure to agree a Sprint Goal_
+
+- This selection of work should be cohesive, and not just a grouping of unrelated and disparate items.
+- A good Sprint Goal will allow the team to demonstrate focus and commitment, and allow collaboration and the re-planning of work so it is met.
+
+_Next plan how the work will be done_
+
+- The Product Owner should be available to answer any questions the team may have, and to provide any clarification that may be needed about the scope of the work. 
+- The team should have made a good forecast of the work that will be needed to meet the Sprint Goal and begin implementing the plan immediately and with a clear understanding – such as a Sprint Burndown - of how much work remains at any given point.
+
+![Screenshot 2022-11-28 at 15 53 14](https://user-images.githubusercontent.com/70877098/204234657-9f0e3f7d-afc1-43c4-84e7-1df2ff963784.png)
+
+_Each day, every day_
+
+- Each team member will collaborate with each other, as a team, to make sure that those tasks are completed. 
+- Be sure to keep the Scrum Task Board and the Sprint Burndown updated, so the information can be relied upon by others. 
+
+_Hold a Daily Scrum_
+
+- It should never take more than 15 minutes.
+- It is a time-boxed opportunity to re-plan the Sprint Backlog as a result of new discoveries and lessons learned during the Sprint.
+- Each team member should be able to account for:
+  - What they did yesterday to help the team meet the Sprint Goal
+  - What they intend to do today to help the team meet the Sprint Goal
+  - Any impediments which are getting in their way
+
+_Refine the Product Backlog_
+
+- Product Backlog Refinement is not a formal event but an ongoing activity.
+- Refinement shouldn't take more than 10% of a team's total time during a Sprint. For example: half an hour a day, or an hour or two a couple of times a week, etc.
+- The whole team, including the Product Owner, should participate.
+- A refinement session typically begins with:
+  - The Product Owner presenting the current Product Backlog to the team.
+  - The team starts at the top of the Product Backlog and work their way downwards, refining each item in turn.
+  - The team examines each one and discuss its scope, and the acceptance criteria that will be necessary for its completion → A large item may be broken down into smaller ones which capture greater detail. Epics may be decomposed into user stories, for example.
+  - The team stops once the session's time-box runs out. They will recommence where they left off the next time, eventually starting at the top again so the backlog is kept up to date.
+
+_Always collaborate_
+
+- Each Development Team member must collaborate with his or her peers throughout the day, as they are jointly responsible for the progress of work.
+- Examples of collaboration include:
+  - Helping peers to complete work in progress before bringing in new work from a backlog
+  - Pair programming, such as taking it in turns to use the keyboard and helping and checking each other's work
+  - Peer review
+  - Asking for help, and being keen to give it
+  - Going to where the work is and helping, instead of waiting for work to be passed over to them
+  - Making sure that all work does in fact meet the Definition of Done
+  - Calling a Scrum in order to resolve problems which need the team's immediate attention
+  - Raising impediments to the Scrum Master so they can be handled in a timely manner
+  - Updating a Scrum Task board and burndown chart so that the information is up-to-date and can be relied on
+  - Skill and knowledge sharing
+
+#### The final day: Review and Retrospective
+
+_Hold a Sprint Review_
+
+- The Sprint Review looked at the Product and the value delivered, at the work which has been done, and honestly and candidly at any work which wasn't done, whatever the reason.
+- If the Product Owner thinks it would be a good idea to invite stakeholders, then those invitations ought to have been sent.
+- A Sprint Review is also an inspect-and-adapt opportunity → the Product Owner to explain how well the product is performing, to get feedback first-hand from any invited parties, and to draw any lessons which might be used to improve the Product Backlog further. If any work has not been completed, this will also be reviewed and re-estimated on the Product Backlog for possible planning into future sprints.
+
+_Then conduct a Sprint Retrospective_
+
+- A Retrospective considers the process which the team is following.
+- It's generally best to hold the Retrospective immediately after the Review, because the former can introduce ideas for consideration in the latter.
+- The whole Development Team, the Product Owner, and the Scrum Master must all attend the Retrospective.
+- Can begin with: “Regardless of what we discover, we understand and truly believe that everyone did the best job they could, given what they knew at the time, their skills and abilities, the resources available, and the situation at hand.”
+- In a “Retro”, everyone has an equal voice to identify:
+  - Things which went well
+  - Things which didn't go so well
+  - Ideas for improvement
+  - Shout-outs for team members who did something exceptional
+- Establishing a timeline can help jog attendees’ memories about significant events during the Sprint.
 
 ### The Daily Scrum is NOT a Status Meeting
 
