@@ -282,15 +282,61 @@ No pat answer for a standard lead's length:
 - Others amble on for several pages, exerting a slow but steady pull.
 - May depend on the audience you're writing for. For example, readers of a literary review expect its writers to start somewhat discursively.
 
-### Takeaway
+### The Lead
+
+#### Takeaway
+
 - The lead may not be the best of all possible leads, but if it does the job it's supposed to do, be thankful and proceed.
 - Capture the reader immediately and force him to keep reading by cajole him with freshness, or novelty, or paradox, or humor, or surprise, or with an unusual idea, or an interesting fact, or a question. Anything will do, as long as it nudges his curiosity and tugs at his sleeve.
 - The lead must do some real work. It must provide hard details that tell the reader why the piece was written and why he ought to read it. But don't dwell on the reason. Coax the reader a little more; keep him inquisitive.
 - Continue to build and amplify the paragraph that preceded it. Give more thought to adding solid detail and less to entertaining the reader.
 - Take special care with the last sentence of each paragraph, try to give that sentence an extra twist of humor or surprise, like the periodic “snapper” in the routine of a stand-up comic.
+- Another approach is to just tell a story. It's such a simple solution, so obvious and unsophisticated. However, it is the oldest and most compelling method of holding someone's attention.
+- Always look for ways to convey your information in narrative form.
+- Approach their subject in a manner that most naturally suits what they are writing about and who they are.
  
-For some writing example:
+For some writing example of a good lead sentence:
 - "I've often wondered what goes into a hot dog. Now I know and I wish I didn't".
+
+A slower lead, luring the reader more with curiosity than with humor:
+- By any reasonable standard, nobody would want to look twice—or even once—at the piece of slippery elm bark from Clear Lake, Wisc., birthplace of pitcher Burleigh Grimes, that is on display at the National Baseball Museum and Hall of Fame in Cooperstown, N.Y. As the label explains, it is the kind of bark Grimes chewed during games “to increase saliva for throwing the spitball. When wet, the ball sailed to the plate in deceptive fashion.”
+→ Learning points from this lead:
+- Salvation often lies not in the writer's style but in some odd fact he or she was able to discover.
+- You should always collect more material than you will use but you don't go on gathering facts forever. At some point you must stop researching and start writing.
+- Look for your material everywhere, not just by reading the obvious sources and interviewing the obvious people:
+  - Look at signs and at billboards and at all the junk written along the American roadside.
+  - Read the labels on our packages and the instructions on our toys, the claims on our medicines and the graffiti on our walls.
+  - Read the fillers, so rich in self-esteem, that come spilling out of your monthly statement from the electric company and the telephone company and the bank.
+  - Read menus and catalogues and second- class mail.
+  - Nose about in obscure crannies of the newspaper, like the Sunday real estate section → you can tell the temper of a society by what patio accessories it wants.
+
+Here’s the opening sentence of seven memorable nonfiction books:
+- "In the beginning God created heaven and earth". `—THE BIBLE`
+- "In the summer of the Roman year 699, now described as the year 55 before the birth of Christ, the Proconsul of Gaul, Gaius Julius Caesar, turned his gaze upon Britain". `—WINSTON S. CHURCHILL, A HISTORY OF THE ENGLISH-SPEAKING PEOPLES`
+- "Put this puzzle together and you will find milk, cheese and eggs, meat, fish, beans and cereals, greens, fruits and root vegetables—foods that contain our essential daily needs". `—IRMA S. ROMBAUER, JOY OF COOKING`
+- "To the Manus native the world is a great platter, curving upwards on all sides, from his flat lagoon village where the pile-houses stand like long-legged birds, placid and unstirred by the changing tides". `—MARGARET MEAD, GROWING UP IN NEW GUINEA`
+- "The problem lay buried, unspoken, for many years in the minds of American women". `—BETTY FRIEDAN, THE FEMININE MYSTIQUE`
+- "Within five minutes, or ten minutes, no more than that, three of the others had called her on the telephone to ask her if she had heard that something had happened out there". `-TOM WOLFE, THE RIGHT STUFF`
+- "You know more than you think you do". `—BENJAMIN SPOCK, BABY AND CHILD CARE`
+
+Bad leads per category e.g. `future archaeologist`:
+- “If a creature from Mars landed on our planet he would be amazed to see hordes of scantily clad earthlings lying on the sand barbecuing their skins”.
+- “One day not long ago a small button-nosed boy was walking with his dog, Terry, in a field outside Paramus, N.J., when he saw something that looked strangely like a balloon rising out of the ground”.
+
+### The Ending
+
+- Give as much thought to choosing your last sentence as you did to your first.
+- An article that doesn't stop where it should stop becomes a drag and therefore a failure.
+- At any age—even professional writers are adrift more often than they would like to admit. But if you're going to write good nonfiction you must wriggle out of the Ending's dread grip.
+- Failure to know where the ending sentence should occur can wreck an article that until its final stage has been tightly constructed.
+- The positive reason for ending well is that a good last sentence, or last paragraph, is a joy in itself. It gives the reader a lift, and it lingers when the article is over.
+- The perfect ending should take your readers slightly by surprise and yet seem exactly right. For example, we are in the middle of a scene (we think), when suddenly one of the actors says something funny, or outrageous, or epigrammatic, and the lights go out. We are startled to find the scene over, and then delighted by the aptness of how it ended.
+- When you're ready to stop, stop. If you have presented all the facts and made the point you want to make, look for the nearest exit.
+- Often it takes just a few sentences to wrap things up. Ideally they should encapsulate the idea of the piece and conclude with a sentence that jolts us with its fitness or unexpectedness:
+  - "We suffer most, not when the White House is a peaceful dormitory, but when it [has] a tin-pot Paul bawling from the roof. Counting out Harding as a cipher only, Dr. Coolidge was preceded by one World Saver and followed by two more. What enlightened American, having to choose between any of them and another Coolidge, would hesitate for an instant? There were no thrills while he reigned, but neither were there any headaches. He had no ideas, and he was not a nuisance".
+- Bring the story full circle to strike at the end an echo of a note that was sounded at the beginning.
+- What usually works best is a quotation → Go back through your notes to find some remark that has a sense of finality, or that's funny, or that adds an unexpected closing detail.
+- Surprise is the most refreshing element in nonfiction writing → If something surprises you it will also surprise, and delight, the people you are writing for, especially as you conclude your story and send them on their way.
 
 ## Bits & Pieces
 
