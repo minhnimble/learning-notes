@@ -791,23 +791,63 @@ _Then conduct a Sprint Retrospective_
 
 ### The Daily Scrum is NOT a Status Meeting
 
-TBD
+Daily Scrum vs Status Meeting:
+- Daily Scrum: 
+  - Inspect progress towards the Sprint Goals to sync activities and create plan for next 24 hours by the DT. 
+  - 15 minutes time box everyday.
+  - Promote self-organization - DT determines how to do tasks and owns the sprint backlog with accountability.
+  - Maximize transparency which helps enable frequent inspection and adaption.
+  - Focus on achieving valuable outcomes by identifying issues that slow down the progress and then adapting the plan.
+  - Promote collaboration and have situation awareness -> a collaborative planning session.
+- Status Meeting:
+  - Team members come together and give updates on their progress to somebody else (who maintain a plan eg. PM, TL, Manager).
+  - No self-organization and accountability, just plain reporting and decisions are made by somebody else.
+  - May not get transparency with the full story about the progress and not emphasize the inspection and adaption cycle.
+  - Focus on what tasks are being done and individual contributions.
 
 ### Effective Sprint Planning
 
-TBD
+2-week sprint: the schedule should be around 4 hours.
+Popularly divided into 2 sections:
+- What are we going to do in this sprint:
+  - Take from the product backlog and move into the sprint.
+  - DT will figure which items can be moved.
+- How are we going to do it:
+  - Visual the next steps by breaking product backlog items into sprint backlog items (smaller decomposed tasks and user stories)
+  - Involve the PO for outstanding questions.
+  - DT can have In-Progress and Done sections and see it updated daily.
 
 ###  Planning in Scrum
 
-TBD
+- "Plans are useless, planning is indispensable" → We knows that plan is going to change and we honor the agile value of adaptation.
+- Planning is collaborative:
+  - Sprint Planning event: The entire scrum team gets together for a collaborative negotiation to determine what is the valuable outcome (Sprint Goals) that we want to achieve for the Sprint. DT will create the sprint backlog items and plan how to deliver it.
+  - Daily Scrum event: DT inspects their progress and adapts their plan to meet the sprinkles.
+  - Sprint Review event: Gather the input needed to help plan the next sprint.
+  - Sprint Retrospective event: enable and plan for continuous improvement on how the team work together (tools, interactions).
+- DT owns the sprint backlog → DT is in the best position for perform planning.
+- To reduce planning waste, keep the plan lightweight and minimize the time for analyzing things too far in the future/too fine in details.
+- Accept the complexity and unpredictable nature of software development.
+- Incorporate meaningful feedback every time we plan.
 
 ### What is a Sprint Review
 
-TBD
+- 4 hour time box.
+- To inspect the increment and adapt the product backlog to get closer the product goal.
+- Stack holders are needed to play around on the product and then come up with new ideas on how to improve the product backlog → reach the product goal or get a jump in product value.
+- It's a collaborative hands-on working session (not demo, formal presentation, acceptance meeting, etc.).
 
 ### Why You Need a Retrospective Every Sprint
 
-TBD
+This questions are raised because:
+- The Retrospective was boring.
+- No value gained in the change in the process.
+- We are adult, we only do it when we believe it is needed.
+
+To be more professional and have continuous improvements (Football example) → need to reflect more frequently by thinking about when you need to:
+  - code and analyze how to test the program.
+  - maintain the product.
+  - introduce and take off the old technologies.
 
 ## Scrum Artifacts
 
