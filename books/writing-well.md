@@ -275,7 +275,7 @@ It is normal that the material begins to lead you in an unexpected direction, wh
 
 ## The Lead and the Ending
 
-The most important sentence in any article is the first one → If it doesn't induce the reader to proceed to the second sentence, your article is dead, and it goes on the same for the subsequent sentences. Of such a progression of sentences, a writer constructs that fateful unit, the “lead.”
+The most important sentence in any article is the first one → If it doesn't induce the reader to proceed to the second sentence, your article is dead, and it goes on the same for the subsequent sentences. Of such a progression of sentences, a writer constructs that fateful unit, the "lead"
 
 No pat answer for a standard lead's length:
 - Some leads hook the reader with just a few well-baited sentences.
@@ -290,7 +290,7 @@ No pat answer for a standard lead's length:
 - Capture the reader immediately and force him to keep reading by cajole him with freshness, or novelty, or paradox, or humor, or surprise, or with an unusual idea, or an interesting fact, or a question. Anything will do, as long as it nudges his curiosity and tugs at his sleeve.
 - The lead must do some real work. It must provide hard details that tell the reader why the piece was written and why he ought to read it. But don't dwell on the reason. Coax the reader a little more; keep him inquisitive.
 - Continue to build and amplify the paragraph that preceded it. Give more thought to adding solid detail and less to entertaining the reader.
-- Take special care with the last sentence of each paragraph, try to give that sentence an extra twist of humor or surprise, like the periodic “snapper” in the routine of a stand-up comic.
+- Take special care with the last sentence of each paragraph, try to give that sentence an extra twist of humor or surprise, like the periodic "snapper" in the routine of a stand-up comic.
 - Another approach is to just tell a story. It's such a simple solution, so obvious and unsophisticated. However, it is the oldest and most compelling method of holding someone's attention.
 - Always look for ways to convey your information in narrative form.
 - Approach their subject in a manner that most naturally suits what they are writing about and who they are.
@@ -299,7 +299,7 @@ For some writing example of a good lead sentence:
 - "I've often wondered what goes into a hot dog. Now I know and I wish I didn't".
 
 A slower lead, luring the reader more with curiosity than with humor:
-- By any reasonable standard, nobody would want to look twice—or even once—at the piece of slippery elm bark from Clear Lake, Wisc., birthplace of pitcher Burleigh Grimes, that is on display at the National Baseball Museum and Hall of Fame in Cooperstown, N.Y. As the label explains, it is the kind of bark Grimes chewed during games “to increase saliva for throwing the spitball. When wet, the ball sailed to the plate in deceptive fashion.”
+- By any reasonable standard, nobody would want to look twice—or even once—at the piece of slippery elm bark from Clear Lake, Wisc., birthplace of pitcher Burleigh Grimes, that is on display at the National Baseball Museum and Hall of Fame in Cooperstown, N.Y. As the label explains, it is the kind of bark Grimes chewed during games "to increase saliva for throwing the spitball. When wet, the ball sailed to the plate in deceptive fashion."
 → Learning points from this lead:
 - Salvation often lies not in the writer's style but in some odd fact he or she was able to discover.
 - You should always collect more material than you will use but you don't go on gathering facts forever. At some point you must stop researching and start writing.
@@ -310,7 +310,7 @@ A slower lead, luring the reader more with curiosity than with humor:
   - Read menus and catalogues and second- class mail.
   - Nose about in obscure crannies of the newspaper, like the Sunday real estate section → you can tell the temper of a society by what patio accessories it wants.
 
-Here’s the opening sentence of seven memorable nonfiction books:
+Here's the opening sentence of seven memorable nonfiction books:
 - "In the beginning God created heaven and earth". `—THE BIBLE`
 - "In the summer of the Roman year 699, now described as the year 55 before the birth of Christ, the Proconsul of Gaul, Gaius Julius Caesar, turned his gaze upon Britain". `—WINSTON S. CHURCHILL, A HISTORY OF THE ENGLISH-SPEAKING PEOPLES`
 - "Put this puzzle together and you will find milk, cheese and eggs, meat, fish, beans and cereals, greens, fruits and root vegetables—foods that contain our essential daily needs". `—IRMA S. ROMBAUER, JOY OF COOKING`
@@ -320,8 +320,8 @@ Here’s the opening sentence of seven memorable nonfiction books:
 - "You know more than you think you do". `—BENJAMIN SPOCK, BABY AND CHILD CARE`
 
 Bad leads per category e.g. `future archaeologist`:
-- “If a creature from Mars landed on our planet he would be amazed to see hordes of scantily clad earthlings lying on the sand barbecuing their skins”.
-- “One day not long ago a small button-nosed boy was walking with his dog, Terry, in a field outside Paramus, N.J., when he saw something that looked strangely like a balloon rising out of the ground”.
+- "If a creature from Mars landed on our planet he would be amazed to see hordes of scantily clad earthlings lying on the sand barbecuing their skins".
+- "One day not long ago a small button-nosed boy was walking with his dog, Terry, in a field outside Paramus, N.J., when he saw something that looked strangely like a balloon rising out of the ground".
 
 ### The Ending
 
@@ -340,7 +340,240 @@ Bad leads per category e.g. `future archaeologist`:
 
 ## Bits & Pieces
 
-TBD
+### VERBS.
+
+- Use active verbs unless there is no comfortable way to get around using a passive verb → The difference between an active verb style and a passive verb style: "Joe saw him" is strong. "He was seen by Joe" is weak → The first is short and precise; it leaves no doubt about who did what. The second is necessarily longer and it has an insipid quality.
+- Active verbs push hard; passive verbs tug fitfully.
+- Avoid the kind of verbs that need an appended preposition.
+- Be precise. Use precise verbs.
+
+### ADVERBS.
+
+- Most adverbs are unnecessary.
+- Don't choose a verb that has a specific meaning and then add an adverb that carries the same meaning. For example: 
+  - "the radio blared loudly" → "blare" connotes loudness already.
+  - "effortlessly easy"
+  - "slightly spartan"
+  - "totally flabbergasted"
+- Retire "decidedly" and all its slippery cousins.
+
+### ADJECTIVES.
+
+- Most adjectives are also unnecessary.
+- Don't choose a adjective that the concept is already in the noun. For example, adjectives denoting the color of an object whose color is well known:
+  - "yellow daffodils"
+  - "brownish dirt"
+- Use adjectives that would do a job that the noun alone wouldn't be doing. For example, if you're in a part of the country where the dirt is red, feel free to mention the "red dirt". 
+- Make your adjectives do work that needs to be done. For example:
+  - "a house was drab"
+  - "a girl was beautiful"
+
+### LITTLE QUALIFIERS.
+
+- Prune out the small words that qualify how you feel and how you think and what you saw such as "a bit", "a little", "sort of", "kind of", "rather", "quite", "very", "too", "pretty much", "in a sense", etc. → they dilute your style and your persuasiveness.
+- Don't be kind of bold. Be bold.
+
+Good writing is lean and confident. For example:
+- Do:
+  - Be confused. Be tired. Be depressed. Be annoyed.
+  - Happy. Expensive. Awesome. Spectacular. Methodical.
+- Don't: 
+  - A bit confused. Sort of tired. A little depressed. Somewhat annoyed.
+  - Too happy. Pretty expensive. Very awesome. Very spectacular. Very methodical.
+
+### PUNCTUATION.
+
+#### The Period
+
+- There's not much to be said about the period except that most writers don't reach it soon enough.
+- There is no minimum length for a sentence that's acceptable.
+- If you want to write long sentences, be a genius or at least make sure that the sentence is under control from beginning to end, in syntax and punctuation.
+
+#### The Exclamation Point
+
+- Don't use it unless you must to achieve a certain effect.
+- Construct your sentence so that the order of the words will put the emphasis where you want it.
+- Resist using an exclamation point to notify the reader that you are making a joke or being ironic.
+
+#### The Semicolon
+
+- In the 19th-century, it is associated with the carefully balanced sentences, the judicious weighing of "on the one hand" and "on the other hand".
+- Should be used sparingly by modern writers of nonfiction.
+- Use it with discretion as it is no longer popular and rely instead on the period and the dash.
+
+#### The Dash
+
+- The dash is used in two ways: 
+  - One is to amplify or justify in the second part of the sentence a thought you stated in the first part, for example: "We decided to keep going — it was only 100 miles more and we could get there in time for dinner."
+  - The other use involves two dashes, which set apart a parenthetical thought within a longer sentence, for example: "She told me to get in the car — she had been after me all summer to have a haircut — and we drove silently into town."
+
+#### The Colon
+
+- It has begun to look even more antique than the semicolon, and many of its functions have been taken over by the dash.
+- Bring your sentence to a brief halt before you plunge into like an itemized list, for example: "The brochure said the ship would stop at the
+following ports: Oran, Algiers, Naples, Brindisi, Piraeus, Istanbul and Beirut."
+
+### MOOD CHANGERS.
+
+- Alert the reader as soon as possible to any change in mood from the previous sentence → At least a dozen words will do this job for you: "but", "yet", "however", "nevertheless", "still", "instead", "thus", "therefore", "meanwhile", "now", "later", "today", "subsequently".
+- "But" is the strongest word at the start. "However" is a weaker word and needs careful placement → Don't start a sentence with "however", it hangs there like a wet dishrag. And don't end with "however"  as by that time, it has lost its howeverness.
+- "Yet" does almost the same job as "but", though its meaning is closer to "nevertheless" → They can replace a whole long phrase that summarizes what the reader has just been told, for example: "Yet he decided to go" vs "Despite the fact that all these dangers had been pointed out to him, he decided to go."
+- "Meanwhile", "now", "today" and "later" can save confusion for careless writers often change their time frame without remembering to tip the reader off. For example:
+  - "Now I know better."
+  - "Later I found out why."
+- Always ask yourself where you left your readers in the previous sentence and make sure they are oriented.
+
+### CONTRACTIONS.
+
+- Contractions like: "I'll" and "won't" and "can't" will help make your style warmer and truer to your personality. For example: "I'll be glad to see them if they don't get mad" vs "I will be glad to see them if they do not get mad." → Read that aloud and hear how stilted it sounds.
+- No concrete rule on contraction usage, just trust your ear and your instincts.
+- Just avoid one form — "I'd", "he'd", "we'd", etc. — because "I'd" can mean both "I had" and "I would".
+- Don't invent contractions like "could've" as they cheapen your style → Stick with the ones you can find in the dictionary.
+
+### THAT AND WHICH.
+
+#### That
+
+- Always use "that" unless it makes your meaning ambiguous. 
+- In most situations, "that" is what you would naturally say and therefore what you should write.
+
+#### Which
+- If your sentence needs a comma to achieve its precise meaning, it probably needs "which."
+- "Which" serves a particular identifying function.
+
+A great example:
+- (A) "Take the shoes that are in the closet" → This means: take the shoes that are in the closet, not the ones under the bed. 
+- (B) "Take the shoes, which are in the closet" → Only one pair of shoes is under discussion; the "which" usage tells you where they are. 
+→ Note that the comma is necessary in B, but not in A.
+
+### CONCEPT NOUNS.
+
+These sentences with concept nouns - "reaction," "cynicism," "response," "hostility." have no people in them and no working verbs — only "is" or "isn't". For example:
+- The common reaction is incredulous laughter.
+- Bemused cynicism isn't the only response to the old system.
+- The current campus hostility is a symptom of the change.
+
+→ Turn these cold sentences around by getting people doing things:
+- Most people just laugh with disbelief.
+- Some people respond to the old system by turning cynical; others say 
+- It's easy to notice the change—you can see how angry all the students are.
+
+### CREEPING NOUNISM.
+
+This is a new American disease that strings two or three nouns together where one noun or, better yet, one verb will do:
+- "We have money problem areas".
+- "We have precipitation activity or a thunderstorm probability situation".
+Or, as many as four or five concept nouns will attach themselves to each other:
+- "Communication facilitation skills development intervention".
+
+### OVERSTATEMENT.
+
+- Don't overstate like this:
+  - "The living room looked as if an atomic bomb had gone off there"
+  - "I felt as if ten 747 jets were flying through my brain"
+- Let the humor sneak up instead.
+
+### CREDIBILITY.
+
+- Don't inflate an incident to make it more outlandish than it actually was → If the reader catches you in just one bogus statement that you are trying to pass off as true, everything you write thereafter will be suspect.
+
+### DICTATION.
+
+Dictated sentences tend to be pompous, sloppy and redundant → Executives who are so busy should at least find time to edit what they have dictated, making sure that what they write is a true reflection of who they are.
+
+### WRITING IS NOT A CONTEST.
+
+Many writers are paralyzed by the thought that they are competing with everybody else who is trying to write and presumably doing it better:
+- Can often happen in a writing class.
+- Hobbles freelance writers, who see the work of other writers appearing in magazines while their own keeps returning in the mail.
+→ Forget the competition and go at your own pace. Your only contest is with yourself.
+
+### THE SUBCONSCIOUS MIND.
+
+Often you'll spend a whole day trying to fight your way out of some verbal thicket in which you seem to be tangled beyond salvation. Frequently a solution will occur to you the next morning when you plunge back in.
+→ Stay alert to the currents around you because much of what you see and hear will come back, having percolated for days or months or even years, just when your conscious mind, laboring to write, needs it.
+
+### THE QUICKEST FIX.
+
+- Often a difficult problem in a sentence can be solved by simply getting rid of it.
+- When you find yourself at such an impasse, look at the troublesome element and ask, "Do I need it at all?"
+
+### PARAGRAPHS.
+
+- Keep your paragraphs short → Short paragraphs put air around what you write and make it look inviting, whereas a long chunk of type can discourage a reader from even starting to read.
+- But don't go berserk. A succession of tiny paragraphs is as annoying as a paragraph that's too long.
+- Good nonfiction writers think in paragraph units, not in sentence units. Each paragraph has its own integrity of content and structure.
+
+### SEXISM.
+
+- Don't use constructions that suggest that only men can be settlers or farmers or cops or firefighters.
+- A thornier problem is raised by the feminists' annoyance with words that contain "man," such as "chairman" and "spokesman." Their point is that women can chair a committee as well as a man and are equally good at spoking → One solution is to find another term: "chair" for "chairman," "company representative" for "spokesman." Can also convert the noun into a verb: "Speaking for the company, Ms. Jones said ..."
+- Where a certain occupation has both a masculine and a feminine form, look for a generic substitute. For example: Actors and actresses can become performers.
+- There is still the bothersome pronoun - "He" and "him" and "his" are words that rankle → The solutions can be:
+  - Turn them into the plural: "All employees should decide what they think is best for them and their dependents." (good only in small doses)
+  - Use "or": "Every employee should decide what he or she thinks is best for him or her." (should be used sparingly)
+  - Eliminate "he" and its connotations of male ownership by using other pronouns or by altering some other component of the sentence:
+    - "We" is a handy replacement for "he" "Our" and "the" can often replace "his": "First we notice what's happening to our kids and we blame it on the neighborhood".
+    - One other pronoun is "you": "You'll often find ..."
+- Always look for ways to make yourself available to the people you're trying to reach.
+
+### REWRITING.
+
+- Rewriting is the essence of writing well as most writers don't initially say what they want to say, or say it as well as they could.
+- Clear writing is the result of a lot of tinkering.
+- Writing is an evolving process, not a finished product.
+- Most rewriting consists of reshaping and tightening and refining the raw material you wrote to make sure you've given the reader a narrative flow he can follow with no trouble from beginning to end.
+
+Some common things to check for when rewriting that the writer might fail to keep the reader notified of:
+- changes in time.
+- place and mood.
+- vary and animate the style.
+
+A good example of the rewriting process:
+1. Identifying issues and improvements:
+```
+There used to be a time when neighbors took care of one another, he remembered. [Put "he remembered" first to establish reflective tone.] It no longer seemed to happen that way, however. [The contrast supplied by "however" must come first. Start with "But." Also establish America locale.] He wondered if it was because everyone in the modern world was so busy. [All these sentences are the same length and have the same soporific rhythm; turn this one into a question?] It occurred to him that people today have so many things to do that they don't have time for old-fashioned friendship. [Sentence essentially repeats previous sentence; kill it or warm it up with specific detail.] Things didn't work that way in America in previous eras. [Reader is still in the present; reverse the sentence to tell him he's now in the past. "America" no longer needed if inserted earlier.] And he knew that the situation was very different in other countries, as he recalled from the years when he lived in villages in Spain and Italy. [Reader is still in America. Use a negative transition word to get him to Europe. Sentence is also too flabby. Break it into two sentences?] It almost seemed to him that as people got richer and built their houses farther apart they isolated themselves from the essentials of life. [Irony deferred too long. Plant irony early. Sharpen the paradox about richness.] And there was another thought that troubled him. [This is the real point of the paragraph; signal the reader that it's important. Avoid weak "there was" construction.] His friends had deserted him when he needed them most during his recent illness. [Reshape to end with "most"; the last word is the one that stays in the reader's ear and gives the sentence its punch. Hold sickness for next sentence; it's a separate thought.] It was almost as if they found him guilty of doing something shameful. [Introduce sickness here as the reason for the shame. Omit "guilty"; it's implicit.] He recalled reading somewhere about societies in primitive parts of the world in which sick people were shunned, though he had never heard of any such ritual in America. [Sentence starts slowly and stays sluggish and dull. Break it into shorter units. Snap off the ironic point.]
+```
+
+2. Perform the update:
+```
+He remembered that neighbors used to take care of one another. But that no longer seemed to happen in America. Was it because everyone was
+so busy? Were people really so preoccupied with their television sets and their cars and their fitness programs that they had no time for friendship? In previous eras that was never true. Nor was it how families lived in other parts of the world. Even in the poorest villages of Spain and Italy, he recalled, people would drop in with a loaf of bread. An ironic idea struck him: as people got richer they cut themselves off from the richness of life. But what really troubled him was an even more shocking fact. The time when his friends deserted him was the time when he needed them most. By getting sick he almost seemed to have done something shameful. He knew that other societies had a custom of "shunning" people who were very ill. But that ritual only existed in primitive cultures. Or did it?
+```
+
+→ The rewriting is mainly about: altering the sequence, tightening the flow, sharpening the point. You can read your article aloud from beginning to end, always remembering where you left the reader in the previous sentence.
+
+#### Tips
+- Learn to enjoy this tidying process.
+- Replace a humdrum word with one that has more precision or color.
+- Strengthen the transition between one sentence and another.
+- Rephrase a drab sentence to give it a more pleasing rhythm or a more graceful musical line.
+
+### WRITING ON A COMPUTER.
+
+- The computer is a technology's gift to rewriting and reorganizing that it puts your words right in front of your eyes for your instant consideration and reconsideration.
+- With a computer compared to a typewriter, these are crucial gains for a writer: time, output, energy, enjoyment and control.
+
+### TRUST YOUR MATERIAL.
+
+- There's nothing more interesting than the truth.
+- Don't annoy your readers by over-explaining—by telling them something they already know or can figure out. The reader plays a major role in the act of writing and must be given room to play it. 
+- Try not to use words like "surprisingly," "predictably" and "of course," which put a value on a fact before the reader encounters the fact.
+
+Many reporters had fallen into the habit of trying to make the news more palatable by writing in a feature style. Their leads consisted of a series of snippets that went something like this:
+- Whoosh!
+- It was incredible.
+- And now there was also little Scooter to worry about. 
+- Come to think of it, the dog was acting kind of suspicious.
+→ The assumption is that fact and color are two separate ingredients. But they're not, color is organic to the fact. Your job is to present the colorful fact.
+
+### GO WITH YOUR INTERESTS.
+
+- There's no subject you don't have permission to write about.
+- Follow your affections you will write well and will engage your readers regardless of the area of life.
+- Write about your hobbies: cooking, gardening, photography, knitting, antiques, jogging, sailing, scuba diving, tropical birds, tropical fish.
+- Write about your work: teaching, nursing, running a business, running a store.
+- Write about a field you enjoyed in college and always meant to get back to: history, biography, art, archaeology.
 
 # Forms
 
