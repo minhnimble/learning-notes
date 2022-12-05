@@ -579,11 +579,63 @@ Many reporters had fallen into the habit of trying to make the news more palatab
 
 ## Nonfiction as Literature
 
-TBD
+Practitioners of nonfiction who are trying to write well about the world we live in, or to teach students to write well about the world they live in, are caught in a time warp, where literature by definition still consists of forms that were certified as “literary” in the 19th century: novels and short stories and poems. But the great preponderance of what writers now write and sell, what book and magazine publishers publish and what readers demand is nonfiction.
+
+The roster of the new literature of nonfiction, in short, would include all the writers who come bearing information and who present it with vigor, clarity and humanity:
+- __King Leopold Ghost: A Story of Greed, Terror and Heroism in Colonial Africa__ - _Adam Hochschild_.
+- __Walter Lippmann and the American Century__ - _Ronald Steel_.
+- __Mencken: The American Iconoclast__ - _Marion Elizabeth Rodgers_.
+- __Lenin Tomb: The Last Days of the Soviet Empire__ - _David Remnick_.
+- __Melville__ - _Andrew Delbanco_.
+- __De Kooning: An American Master__ - _Mark Stevens and Annalyn Swan_.
+
+Journalism is writing that first appears in any periodic journal, whatever its constituency.
+
+Ultimately every writer must follow the path that feels most comfortable. For most people learning to write, that path is nonfiction. It enables them to write about what they know or can observe or can find out.
+→ Motivation is at the heart of writing.
 
 ## Writing About People: The Interview
 
-TBD
+- Get people talking. 
+- Learn to ask questions that will elicit answers about what is most interesting or vivid in their lives and conduct an interview.
+- Take heart and you'll find the solution if you look for the human element.
+
+How should you start? 
+- First, decide what person you want to interview. If you are a college student, don't interview your roommate → must push yourself out into the real world - your town or your city or your county - and pretend that you're writing for a real publication.
+- Decide which publication you are hypothetically writing for.
+- Choose as your subject someone whose job is so important, or so interesting, or so unusual that the average reader would want to read about that person → someone who touches some corner of the reader's life.
+- Get better at interviewing skills → Much of the skill is mechanical. The rest is instinct — knowing how to make the other person relax, when to push, when to listen, when to stop. This can all be learned with experience. Some tips for improving interview skills:
+  - “Be prepared” is apt a motto for the nonfiction writer.
+  - Keep your notebook out of sight until you need it → Both of you need time to get to know each other. Take a while just to chat,
+gauging what sort of person you're dealing with, getting him or her to trust you.
+  - Go into an interview with doing whatever homework you can.
+  - Make a list of likely questions — it will save you the vast embarrassment of going dry in mid-interview - or you can only go by intuition. If they stray hopelessly off the subject, drag them back. If you like the new direction, follow along and forget the questions you intended to ask.
+  - You might be talking to people who have never been interviewed before, and they will warm to the process awkwardly, self-consciously, perhaps not giving you anything you can use → just come back another day, you will both even begin to enjoy it — proof that you aren't forcing your victims to do something they really don't want to do.
+  - Speaking of tools, is it all right (you ask) to use a tape recorder? → strictly, this is a process of asking questions and then pruning and splicing and editing the transcribed answers, and it takes a tremendous amount of time and labor.
+  - Be a writer. It is preferred to write things down. Taking notes, however, has one big problem: the person you're interviewing often starts talking faster than you can write → tell him to stop. Just say, “Hold it a minute, please,” and write until you catch up as nobody wants to be misquoted.
+  - With practice you will write faster and develop some form of shorthand. You'll find yourself devising abbreviations for often-used words and also omitting the small connective syntax. 
+  - As soon as the interview is over, fill in all the missing words you can remember. Complete the uncompleted sentences. Most of them will still be lingering just within the bounds of recall.
+- When you get home, type out your notes — probably an almost illegible scrawl — so that you can read and review them easily.
+- Single out the sentences that are most important or colorful.
+- What about your obligation to the person you interviewed? To what extent can you cut or juggle his words? → keep in mind two standards - __brevity__ and __fair play__:
+  - _Fair play_: Present the interviewee position accurately → Don't change any words or let the cutting of a sentence distort the proper context of what remains.
+  - _Brevity_: The reader deserves the tightest package → If you find on page 5 of your notes a comment that perfectly amplifies a point on page 2 — a point made earlier in the interview — you will do everyone a favor if you link the two thoughts, letting the second sentence follow and illustrate the first. This may violate the truth of how the interview actually progressed, but you will be true to the intent of what was said.
+  - If the speaker's conversation is ragged - his sentences trail off, his thoughts are disorderly, his language is so tangled that it would embarrass him — the writer has no choice but to clean up the English and provide the missing links.
+  - Don't become the prisoner of the speaker's quotes and don't let anything go out into the world that you don't understand → you can call and tell him you want to check a few of the things he said. Get him to rephrase his points until you understand them.
+- What is his claim to our time and attention? → try to achieve a balance between what the subject is saying in his words and what you are writing in your words.
+- When you use a quotation, start the sentence with it. Don't lead up to it with a vapid phrase saying what the man said.
+  - BAD: `Mr. Smith said that he liked to “go downtown once a week and have lunch with some of my old friends.”`
+  - GOOD: `“I usually like to go downtown once a week,” Mr. Smith said, “and have lunch with some of my old friends.”`
+- Be careful where you break the quotation. Do it as soon as you naturally can, so that the reader knows who is talking, but not where the break will destroy the rhythm or the meaning.
+- Don't strain to find synonyms for “He said”. Don't make your man assert, aver and expostulate just to avoid repeating “he said”.
+- If you crave variety, choose synonyms that catch the shifting nature of the conversation: 
+  - “He pointed out” 
+  - “He explained” 
+  - “He replied” 
+  - “He added”
+  → These all carry a particular meaning and should be used wisely.
+
+It's just not possible to write a competent interview without some juggling and eliding of quotes, just don't fabricate quotes or to surmise what someone might have said. The nonfiction writer's rare privilege is to have the whole wonderful world of real people to write about. When you get people talking, handle what they say as you would handle a valuable gift.
 
 ## Writing About Places: The Travel Article
 
