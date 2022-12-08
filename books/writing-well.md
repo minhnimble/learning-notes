@@ -579,7 +579,7 @@ Many reporters had fallen into the habit of trying to make the news more palatab
 
 ## Nonfiction as Literature
 
-Practitioners of nonfiction who are trying to write well about the world we live in, or to teach students to write well about the world they live in, are caught in a time warp, where literature by definition still consists of forms that were certified as “literary” in the 19th century: novels and short stories and poems. But the great preponderance of what writers now write and sell, what book and magazine publishers publish and what readers demand is nonfiction.
+Practitioners of nonfiction who are trying to write well about the world we live in, or to teach students to write well about the world they live in, are caught in a time warp, where literature by definition still consists of forms that were certified as "literary" in the 19th century: novels and short stories and poems. But the great preponderance of what writers now write and sell, what book and magazine publishers publish and what readers demand is nonfiction.
 
 The roster of the new literature of nonfiction, in short, would include all the writers who come bearing information and who present it with vigor, clarity and humanity:
 - __King Leopold Ghost: A Story of Greed, Terror and Heroism in Colonial Africa__ - _Adam Hochschild_.
@@ -605,14 +605,14 @@ How should you start?
 - Decide which publication you are hypothetically writing for.
 - Choose as your subject someone whose job is so important, or so interesting, or so unusual that the average reader would want to read about that person → someone who touches some corner of the reader's life.
 - Get better at interviewing skills → Much of the skill is mechanical. The rest is instinct — knowing how to make the other person relax, when to push, when to listen, when to stop. This can all be learned with experience. Some tips for improving interview skills:
-  - “Be prepared” is apt a motto for the nonfiction writer.
+  - "Be prepared" is apt a motto for the nonfiction writer.
   - Keep your notebook out of sight until you need it → Both of you need time to get to know each other. Take a while just to chat,
 gauging what sort of person you're dealing with, getting him or her to trust you.
   - Go into an interview with doing whatever homework you can.
   - Make a list of likely questions — it will save you the vast embarrassment of going dry in mid-interview - or you can only go by intuition. If they stray hopelessly off the subject, drag them back. If you like the new direction, follow along and forget the questions you intended to ask.
   - You might be talking to people who have never been interviewed before, and they will warm to the process awkwardly, self-consciously, perhaps not giving you anything you can use → just come back another day, you will both even begin to enjoy it — proof that you aren't forcing your victims to do something they really don't want to do.
   - Speaking of tools, is it all right (you ask) to use a tape recorder? → strictly, this is a process of asking questions and then pruning and splicing and editing the transcribed answers, and it takes a tremendous amount of time and labor.
-  - Be a writer. It is preferred to write things down. Taking notes, however, has one big problem: the person you're interviewing often starts talking faster than you can write → tell him to stop. Just say, “Hold it a minute, please,” and write until you catch up as nobody wants to be misquoted.
+  - Be a writer. It is preferred to write things down. Taking notes, however, has one big problem: the person you're interviewing often starts talking faster than you can write → tell him to stop. Just say, "Hold it a minute, please," and write until you catch up as nobody wants to be misquoted.
   - With practice you will write faster and develop some form of shorthand. You'll find yourself devising abbreviations for often-used words and also omitting the small connective syntax. 
   - As soon as the interview is over, fill in all the missing words you can remember. Complete the uncompleted sentences. Most of them will still be lingering just within the bounds of recall.
 - When you get home, type out your notes — probably an almost illegible scrawl — so that you can read and review them easily.
@@ -624,22 +624,65 @@ gauging what sort of person you're dealing with, getting him or her to trust you
   - Don't become the prisoner of the speaker's quotes and don't let anything go out into the world that you don't understand → you can call and tell him you want to check a few of the things he said. Get him to rephrase his points until you understand them.
 - What is his claim to our time and attention? → try to achieve a balance between what the subject is saying in his words and what you are writing in your words.
 - When you use a quotation, start the sentence with it. Don't lead up to it with a vapid phrase saying what the man said.
-  - BAD: `Mr. Smith said that he liked to “go downtown once a week and have lunch with some of my old friends.”`
-  - GOOD: `“I usually like to go downtown once a week,” Mr. Smith said, “and have lunch with some of my old friends.”`
+  - BAD: `Mr. Smith said that he liked to "go downtown once a week and have lunch with some of my old friends."`
+  - GOOD: `"I usually like to go downtown once a week," Mr. Smith said, "and have lunch with some of my old friends."`
 - Be careful where you break the quotation. Do it as soon as you naturally can, so that the reader knows who is talking, but not where the break will destroy the rhythm or the meaning.
-- Don't strain to find synonyms for “He said”. Don't make your man assert, aver and expostulate just to avoid repeating “he said”.
+- Don't strain to find synonyms for "He said". Don't make your man assert, aver and expostulate just to avoid repeating "he said".
 - If you crave variety, choose synonyms that catch the shifting nature of the conversation: 
-  - “He pointed out” 
-  - “He explained” 
-  - “He replied” 
-  - “He added”
+  - "He pointed out" 
+  - "He explained" 
+  - "He replied" 
+  - "He added"
   → These all carry a particular meaning and should be used wisely.
 
 It's just not possible to write a competent interview without some juggling and eliding of quotes, just don't fabricate quotes or to surmise what someone might have said. The nonfiction writer's rare privilege is to have the whole wonderful world of real people to write about. When you get people talking, handle what they say as you would handle a valuable gift.
 
 ## Writing About Places: The Travel Article
 
-TBD
+You'll need only a paragraph or two to sketch the setting of an event. But more often you'll need to evoke the mood of a whole neighborhood or town to give texture to the story you're telling.
+
+As a writer you must keep a tight rein on your subjective self and keep an objective eye on the reader → The mere agglomeration of detail is no free pass to the reader's interest. The detail must be significant.
+
+Nowhere else in nonfiction do writers use such syrupy words and groaning platitudes. Adjectives you would squirm to use in conversation — "wondrous", "dappled", "roseate", "fabled", and "scudding" — are common currency.
+
+There are 2 principles of advice:
+- Style:
+  - First, choose your words with unusual care. If a phrase comes to you easily, look at it with deep suspicion.
+  - Resist straining for the luminous lyrical phrase to describe the wondrous waterfall.
+- Substance:
+  - Be intensely selective and eliminate every such fact that is a known attribute → don't tell us that the sea had waves and the sand was white.
+  - Find details that are significant and make sure they do useful work.
+
+→ Your main task as a travel writer is to find the central idea of the place you're dealing with.
+
+The Mississippi River's most succinct example from Jonathan Raban: (and plenty more examples refer from the book)
+```
+Flying to Minneapolis from the West, you see it as a theological problem.
+
+The great flat farms of Minnesota are laid out in a ruled grid, as empty of surprises as a sheet of graph paper. Every gravelled path, every ditch has been projected along the latitude and longitude lines of the township-and- range-survey system. The farms are square, the fields are square, the houses are square; if you could pluck their roofs off from over people's heads, you'd see families sitting at square tables in the dead center of square rooms. Nature has been stripped, shaven, drilled, punished and repressed in this right-angled, right-thinking Lutheran country. It makes you ache for the sight of a rebellious curve or the irregular, dappled colour of a field where a careless farmer has allowed corn and soybeans to cohabit.
+
+But there are no careless farmers on this flight path. The landscape is open to your inspection—as to God's—as an enormous advertisement for the awful rectitude of the people. There are no funny goings-on down here, it says; we are plain upright folk, fit candidates for heaven.
+T
+hen the river enters the picture—a broad serpentine shadow that sprawls unconformably across the checkerboard. Deviously winding, riddled with black sloughs and green cigar-shaped islands, the Mississippi looks as if it had been put here to teach the god-fearing Midwest a lesson about stubborn and unregenerate nature. Like John Calvin's bad temper, it presents itself as the wild beast in the heart of the heartland.
+
+When people who live on the river attribute a gender to the Mississippi, they do so without whimsy, and nearly always they give it their own sex. "You better respect the river, or he'll do you in," growls the lockmaster. "She's mean—she's had a lot of people from round here," says the waitress at the lunch counter. When Eliot wrote that the river is within us (as the sea is all about us), he was nailing something true in an everyday way about the Mississippi. People do see its muddy turmoil as a bodying-forth of their own turbulent inner selves. When they boast to strangers about their river's wantonness, its appetite for trouble and destruction, its floods and drownings, there's a note in their voices that says, I have it in me to do that ... I know how it feels.
+```
+
+A travel piece doesn't mean you have to go to a distanced place from where you live. Go to your local mall, or bowling alley, or day-care center. But whatever place you write about, go there often enough to isolate the qualities that make it distinctive.
+
+When you write about a place, try to draw the best out of it. But if the process should work in reverse, let it draw the best out of you.
+
+ What brings a place alive is human activity: people doing the things that give a locale its character.
+
+ When investigating about a place, don't ask tourists: "What do you feel?"; but interview local men and women—park rangers, curators, librarians, merchants: "Why do you think two million people a year come to Mount Rushmore? Or three million to the Alamo? Or one million to Concord bridge? Or a quarter million to Hannibal? What kind of quest are all these people on?"
+
+Here are example things that custodians at the sites told:
+- __MOUNT RUSHMORE:__ "In the afternoon when the sunlight throws the shadows into that socket," one of the rangers, Fred Banks, said, "you feel that the eyes of those four men are looking right at you, no matter where you move. They're peering right into your mind, wondering what you're thinking, making you feel guilty: ‘Are you doing your part?'"
+
+Don't wax emotional or patriotic and beware of waxing, especially if you're writing about places that are sacred or meaningful. For example: 
+  - One fact at Pearl Harbor is that the battleship Arizona, sunk by the Japanese on December 7, 1941, continues to leak as much as a gallon of oil every day. When later interviewed superintendent Donald Magee he recalled that upon taking the job he reversed a bureaucratic fiat prohibiting children under 45 inches tall from visiting the Arizona Memorial. Their behavior had been decreed as could "negatively impact the experience" for other tourists. 
+  - "I don't think children are too young to appreciate what that ship represents," Magee told me. "They'll remember it if they see the leaking oil—if they see that the ship is still bleeding."
+
 
 ## Writing About Yourself: The Memoir
 
