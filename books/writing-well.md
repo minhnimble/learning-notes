@@ -680,13 +680,35 @@ Here are example things that custodians at the sites told:
 - __MOUNT RUSHMORE:__ "In the afternoon when the sunlight throws the shadows into that socket," one of the rangers, Fred Banks, said, "you feel that the eyes of those four men are looking right at you, no matter where you move. They're peering right into your mind, wondering what you're thinking, making you feel guilty: ‘Are you doing your part?'"
 
 Don't wax emotional or patriotic and beware of waxing, especially if you're writing about places that are sacred or meaningful. For example: 
-  - One fact at Pearl Harbor is that the battleship Arizona, sunk by the Japanese on December 7, 1941, continues to leak as much as a gallon of oil every day. When later interviewed superintendent Donald Magee he recalled that upon taking the job he reversed a bureaucratic fiat prohibiting children under 45 inches tall from visiting the Arizona Memorial. Their behavior had been decreed as could "negatively impact the experience" for other tourists. 
-  - "I don't think children are too young to appreciate what that ship represents," Magee told me. "They'll remember it if they see the leaking oil—if they see that the ship is still bleeding."
+- One fact at Pearl Harbor is that the battleship Arizona, sunk by the Japanese on December 7, 1941, continues to leak as much as a gallon of oil every day. When later interviewed superintendent Donald Magee he recalled that upon taking the job he reversed a bureaucratic fiat prohibiting children under 45 inches tall from visiting the Arizona Memorial. Their behavior had been decreed as could "negatively impact the experience" for other tourists. 
+- "I don't think children are too young to appreciate what that ship represents," Magee told me. "They'll remember it if they see the leaking oil—if they see that the ship is still bleeding."
 
 
 ## Writing About Yourself: The Memoir
 
-TBD
+If you're a writing teacher, make your students believe in the validity of their lives.
+
+ If you're a writer, give yourself permission to tell us who you are.
+
+ On the question of who you're writing for, don't be eager to please. If you consciously write for a teacher or for an editor, you'll end up not writing for anybody. If you write for yourself, you'll reach the people you want to write for.
+
+ Permission, however, is a two-edged instrument, and nobody should use it without posting a surgeon general's warning: `EXCESSIVE WRITING ABOUT YOURSELF CAN BE HAZARDOUS TO THE HEALTH OF THE WRITER AND THE READER`.
+
+ Rules and tips:
+ - Ego is healthy. Egotism, however, is a drag.
+ - Make sure every component in your memoir is doing useful work.
+ - Write about yourself, by all means, with confidence and with pleasure.
+
+Memoir's power is the narrowness of its focus. Unlike autobiography, which spans an entire life, memoir assumes the life and ignores most of it → The memoir writer takes us back to some corner of his or her past that was unusually intense — childhood, for instance — or that was framed by war or some other social upheaval. It is a window into a life, and is a deliberate construction.
+
+To write a good memoir you must:
+- become the editor of your own life.
+- impose on an untidy sprawl of half-remembered events a narrative shape and an organizing idea.
+- invent the truth in an artistic way. 
+
+- One secret of the art is detail. Any kind of detail will work — a sound or a smell or a song title — as long as it played a shaping role in the portion of your life you have chosen to distill.
+- The crucial ingredient in memoir is, of course, people. Sounds and smells and songs and sleeping porches will take you just so far. Finally you must summon back the men and women and children who notably crossed your life.
+- The most interesting character in a memoir, we hope, will turn out to be the person who wrote it.
 
 ## Science and Technology
 
