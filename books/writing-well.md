@@ -688,16 +688,16 @@ Don't wax emotional or patriotic and beware of waxing, especially if you're writ
 
 If you're a writing teacher, make your students believe in the validity of their lives.
 
- If you're a writer, give yourself permission to tell us who you are.
+If you're a writer, give yourself permission to tell us who you are.
 
- On the question of who you're writing for, don't be eager to please. If you consciously write for a teacher or for an editor, you'll end up not writing for anybody. If you write for yourself, you'll reach the people you want to write for.
+On the question of who you're writing for, don't be eager to please. If you consciously write for a teacher or for an editor, you'll end up not writing for anybody. If you write for yourself, you'll reach the people you want to write for.
 
- Permission, however, is a two-edged instrument, and nobody should use it without posting a surgeon general's warning: `EXCESSIVE WRITING ABOUT YOURSELF CAN BE HAZARDOUS TO THE HEALTH OF THE WRITER AND THE READER`.
+Permission, however, is a two-edged instrument, and nobody should use it without posting a surgeon general's warning: `EXCESSIVE WRITING ABOUT YOURSELF CAN BE HAZARDOUS TO THE HEALTH OF THE WRITER AND THE READER`.
 
- Rules and tips:
- - Ego is healthy. Egotism, however, is a drag.
- - Make sure every component in your memoir is doing useful work.
- - Write about yourself, by all means, with confidence and with pleasure.
+Rules and tips:
+- Ego is healthy. Egotism, however, is a drag.
+- Make sure every component in your memoir is doing useful work.
+- Write about yourself, by all means, with confidence and with pleasure.
 
 Memoir's power is the narrowness of its focus. Unlike autobiography, which spans an entire life, memoir assumes the life and ignores most of it → The memoir writer takes us back to some corner of his or her past that was unusually intense — childhood, for instance — or that was framed by war or some other social upheaval. It is a window into a life, and is a deliberate construction.
 
@@ -712,7 +712,29 @@ To write a good memoir you must:
 
 ## Science and Technology
 
-TBD
+Science, demystified, is just another nonfiction subject. Writing, demystified, is just another way for scientists to transmit what they know.
+
+Scientific and technical material needs to be written in sentences that form a linear sequence. This is no place for fanciful leaps or implied truths. Fact and deduction are the ruling family.
+
+Science writing is simply about describing how something works e.g. how a sewing machine does what it does, or how a pump operates, or why an apple falls down, or how the eye tells the brain what it sees. Any process will do, and “science” can be defined loosely to include technology, medicine and nature.
+
+Describing how a process works is valuable because:
+- It forces you to make sure you know how it works.
+- It forces you to take the reader through the same sequence of ideas and deductions that made the process clear to you.
+- It's the principle of leading readers who know nothing, step by step, to a grasp of subjects they didn't think they had an aptitude for or were afraid they were too dumb to understand.
+
+Tips:
+- Imagine science writing as an upside-down pyramid:
+  - Start at the bottom with the one fact a reader must know before he can learn any more. 
+  - The second sentence broadens what was stated first, making the pyramid wider.
+  - The third sentence broadens the second, so that you can gradually move beyond fact into significance and speculation — how a new discovery alters what was known, what new avenues of research it might open, where the research might be applied.
+- Take much of the mystery out of science writing by helping the reader to identify with the scientific work being done → looking for the human element, which can be yourself. Use your own experience to connect the reader to some mechanism that also touches his life.
+- Another way to help your readers understand unfamiliar facts is to relate them to sights they are familiar with. Reduce the abstract principle to an image they can visualize.
+- Always start with too much material. Then give your reader just enough.
+- Make science more accessible by write like a person and not like a scientist. 
+- The materials tend to spatter all over the inside of the vacuum chamber, which must be cleaned after every few dozen hours of operation.
+
+If a scientific subject of that complexity can be made that clear and robust, in good English, with only a few technical words, which are quickly explained (_kryton_) or can be quickly looked up (_fissile_), any subject can be made clear and robust.
 
 ## Business Writing: Writing in Your Job
 
