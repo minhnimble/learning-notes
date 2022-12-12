@@ -738,15 +738,65 @@ If a scientific subject of that complexity can be made that clear and robust, in
 
 ## Business Writing: Writing in Your Job
 
-TBD
+People work for an institution don't have to write like one. Institutions can be warmed up. Administrators can be turned into human beings. Information can be imparted clearly and without pomposity. You only have to remember that readers identify with people, not with abstractions like “profitability,” or with Latinate nouns like “utilization” and “implementation”.
+
+How to close the gap between your true self and your professional self:
+- Focus on the four articles of faith: clarity, simplicity, brevity and humanity.
+- Use active verbs and avoid “concept nouns”.
+- Do not to use the special vocabulary of the professional fields as a crutch; almost any subject can be made accessible in good English.
+
+For example that when we need to improve this phrase “Evaluative procedures for the objectives were also established based on acceptable criteria”:
+- “At the end of the year we will evaluate our progress”
+- “We will see how well we have succeeded”
+
+A simple style is the result of hard work and hard thinking A muddled style reflects a muddled thinker or a person too arrogant, or too dumb, or too lazy to organize his thoughts → what you write is often the only chance you'll get to present yourself to someone whose business or money or good will you need.
+
+How to make the writing more humane and warm up any institution:
+- Find the people behind the fine achievements being described → “Go to the engineer who conceived the new system”, “or to the designer who designed it, or to the technician who assembled it, and get them to tell you in their own words how the idea came to them, or how they put it together, or how it will be used by real people in the real world”.
+- Locate the missing “I.” Remember: “I” is the most interesting element in any story.
+
+Why engineers don't want to be made intelligible and they just speak in an arcane language studded with acronyms (“Sub-system support is available only with VSAG or TNA”):
+- If they speak too simply he would look like a jerk to his peers.
+- This is easier said than done in hierarchical corporations, where approval of written reports is required at a succession of higher levels → Do things the company way and don't risk your job trying to make the company human.
+- High executives were equally victimized by wanting to sound important.
+→ If you work for an institution, whatever your job, whatever your level, be yourself when you write. You will stand out as a real person among the robots, and your example might even persuade your manager to write his own stuff.
+
 
 ## Sports
 
-TBD
+What best sportswriters do:
+- Avoid the exhausted synonyms.
+- Strive for freshness elsewhere in their sentences.
+- Keep a honest, graceful and carry strong convictions in the writing style.
+- Avoid rearing on so many clichés that are assumed to be the required tools of the trade.
+- Avoid repeating the word that's easiest for the reader to visualize — batter, runner, golfer, boxer — if a synonym can be found.
+- Don't get carried away with numbers. Every sports addict lives with a head full of statistics, cross-filed for ready access, etc. but some statistics are more important than others → Mention only the important ones e.g. a pitcher wins his 20th game, if a golfer shoots a 61, if a runner runs the mile in 3:48, etc.
+- Remember that athletes are men and women who become part of our lives during the season, acting out our dreams or filling some other need for us, and we want that bond to be honored. Hold the hype and give us heroes who are believable.
+- Take a hard look at some vexing stories such as drug abuse and steroids, crowd violence, women's rights, minorities in management, television contracts, etc. as the financial seduction of school and college athletes → It's the story of our values and our priorities in the education of our children.
+- Remember that the sport's men and women you're writing about are doing something immensely difficult, and they have their pride. You, too, are doing a job that has its codes of honor. One of them is that you are not the story.
+- Focus on letting the readers know what it feels like to actually perform a sport: to be a marathon runner or a soccer goalie, a skier or a golfer or a gymnast.
+- The values to look for when you write about sport: people and places, time and transition.
 
-## Writing About the Arts: Critics and Columnists 194
+## Writing About the Arts: Critics and Columnists
 
-TBD
+Some of the writing about art such as acting, dancing, painting, writing poetry, playing an instrument, etc. is journalistic — the interview with the new symphony orchestra conductor, the tour of the new museum with its architect or its curator.
+
+Write about the arts from the inside — to appraise a new work, to evaluate a performance, to recognize what's good and what's bad - is also a critic.
+
+A distinction should therefore be made between a “critic” and a “reviewer”:
+- Reviewers write for a newspaper or a popular magazine, and what they cover is primarily an industry—the output of, for instance, the television industry, the motion-picture industry and, increasingly, the publishing industry in its flood of cookbooks, health books, how-to books, “as told to” books, “gift books” and other such items of merchandise. As a reviewer your job is more to report than to make an aesthetic judgment.
+- Critics should like — or, better still, love — the medium they are reviewing. If you think movies are dumb, don't write about them. The reader deserves a movie buff who will bring along a reservoir of knowledge, passion and prejudice. It's not necessary for the critic to like every film; criticism is only one person's opinion. But he should go to every movie wanting to like it. If he is more often disappointed than pleased, it's because the film has failed to live up to its best possibilities. 
+- Criticism is a serious intellectual act. It tries to evaluate serious works of art and to place them in the context of what has been done before in that medium or by that artist.
+
+Tips:
+- Don't give away too much of the plot. Tell readers just enough to let them decide whether it's the kind of story they tend to enjoy, but not so much that you'll kill their enjoyment → One sentence will often do the trick, for example “This is a picture about a whimsical Irish priest who enlists the help of three orphan boys dressed as leprechauns to haunt a village where a mean widow has hidden a crock of gold.”
+- Use specific detail. This avoids dealing in generalities, which, being generalities, mean nothing. For example of a generic critic sentence: “The play is always fascinating”.
+- In book reviewing, allow the author's words to do their own documentation.
+- Avoid the ecstatic adjectives that occupy such disproportionate space in every critic's quiver — words like “enthralling” and “luminous” → Good criticism needs a lean and vivid style to express what you observed and what you think.
+- Generate a provocative idea and throw it onto the page, where your readers can savor it.
+- Criticism at its best should be with stylish, allusive, disturbing. It disturbs us — as criticism often should — because it jogs a set of beliefs and forces us to reexamine them. What holds our attention is the metaphor of the keyhole, so exact and yet so mysterious.
+- Make an immediate effort to orient your readers to the special world they are about to enter. Even if they are broadly educated men and women they need to be told or reminded of certain facts. You can't just throw them in the water and expect them to swim easily. The water needs to be warmed up.
+- Express your opinion firmly. Don't cancel its strength with last-minute evasions and escapes.
 
 ## Humor
 
