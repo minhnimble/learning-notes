@@ -716,7 +716,7 @@ Science, demystified, is just another nonfiction subject. Writing, demystified, 
 
 Scientific and technical material needs to be written in sentences that form a linear sequence. This is no place for fanciful leaps or implied truths. Fact and deduction are the ruling family.
 
-Science writing is simply about describing how something works e.g. how a sewing machine does what it does, or how a pump operates, or why an apple falls down, or how the eye tells the brain what it sees. Any process will do, and “science” can be defined loosely to include technology, medicine and nature.
+Science writing is simply about describing how something works e.g. how a sewing machine does what it does, or how a pump operates, or why an apple falls down, or how the eye tells the brain what it sees. Any process will do, and "science" can be defined loosely to include technology, medicine and nature.
 
 Describing how a process works is valuable because:
 - It forces you to make sure you know how it works.
@@ -738,29 +738,28 @@ If a scientific subject of that complexity can be made that clear and robust, in
 
 ## Business Writing: Writing in Your Job
 
-People work for an institution don't have to write like one. Institutions can be warmed up. Administrators can be turned into human beings. Information can be imparted clearly and without pomposity. You only have to remember that readers identify with people, not with abstractions like “profitability,” or with Latinate nouns like “utilization” and “implementation”.
+People work for an institution don't have to write like one. Institutions can be warmed up. Administrators can be turned into human beings. Information can be imparted clearly and without pomposity. You only have to remember that readers identify with people, not with abstractions like "profitability," or with Latinate nouns like "utilization" and "implementation".
 
 How to close the gap between your true self and your professional self:
 - Focus on the four articles of faith: clarity, simplicity, brevity and humanity.
-- Use active verbs and avoid “concept nouns”.
+- Use active verbs and avoid "concept nouns".
 - Do not to use the special vocabulary of the professional fields as a crutch; almost any subject can be made accessible in good English.
 
-For example that when we need to improve this phrase “Evaluative procedures for the objectives were also established based on acceptable criteria”:
-- “At the end of the year we will evaluate our progress”
-- “We will see how well we have succeeded”
+For example that when we need to improve this phrase "Evaluative procedures for the objectives were also established based on acceptable criteria":
+- "At the end of the year we will evaluate our progress"
+- "We will see how well we have succeeded"
 
 A simple style is the result of hard work and hard thinking A muddled style reflects a muddled thinker or a person too arrogant, or too dumb, or too lazy to organize his thoughts → what you write is often the only chance you'll get to present yourself to someone whose business or money or good will you need.
 
 How to make the writing more humane and warm up any institution:
-- Find the people behind the fine achievements being described → “Go to the engineer who conceived the new system”, “or to the designer who designed it, or to the technician who assembled it, and get them to tell you in their own words how the idea came to them, or how they put it together, or how it will be used by real people in the real world”.
-- Locate the missing “I.” Remember: “I” is the most interesting element in any story.
+- Find the people behind the fine achievements being described → "Go to the engineer who conceived the new system", "or to the designer who designed it, or to the technician who assembled it, and get them to tell you in their own words how the idea came to them, or how they put it together, or how it will be used by real people in the real world".
+- Locate the missing "I." Remember: "I" is the most interesting element in any story.
 
-Why engineers don't want to be made intelligible and they just speak in an arcane language studded with acronyms (“Sub-system support is available only with VSAG or TNA”):
+Why engineers don't want to be made intelligible and they just speak in an arcane language studded with acronyms ("Sub-system support is available only with VSAG or TNA"):
 - If they speak too simply he would look like a jerk to his peers.
 - This is easier said than done in hierarchical corporations, where approval of written reports is required at a succession of higher levels → Do things the company way and don't risk your job trying to make the company human.
 - High executives were equally victimized by wanting to sound important.
 → If you work for an institution, whatever your job, whatever your level, be yourself when you write. You will stand out as a real person among the robots, and your example might even persuade your manager to write his own stuff.
-
 
 ## Sports
 
@@ -783,16 +782,16 @@ Some of the writing about art such as acting, dancing, painting, writing poetry,
 
 Write about the arts from the inside — to appraise a new work, to evaluate a performance, to recognize what's good and what's bad - is also a critic.
 
-A distinction should therefore be made between a “critic” and a “reviewer”:
-- Reviewers write for a newspaper or a popular magazine, and what they cover is primarily an industry—the output of, for instance, the television industry, the motion-picture industry and, increasingly, the publishing industry in its flood of cookbooks, health books, how-to books, “as told to” books, “gift books” and other such items of merchandise. As a reviewer your job is more to report than to make an aesthetic judgment.
+A distinction should therefore be made between a "critic" and a "reviewer":
+- Reviewers write for a newspaper or a popular magazine, and what they cover is primarily an industry—the output of, for instance, the television industry, the motion-picture industry and, increasingly, the publishing industry in its flood of cookbooks, health books, how-to books, "as told to" books, "gift books" and other such items of merchandise. As a reviewer your job is more to report than to make an aesthetic judgment.
 - Critics should like — or, better still, love — the medium they are reviewing. If you think movies are dumb, don't write about them. The reader deserves a movie buff who will bring along a reservoir of knowledge, passion and prejudice. It's not necessary for the critic to like every film; criticism is only one person's opinion. But he should go to every movie wanting to like it. If he is more often disappointed than pleased, it's because the film has failed to live up to its best possibilities. 
 - Criticism is a serious intellectual act. It tries to evaluate serious works of art and to place them in the context of what has been done before in that medium or by that artist.
 
 Tips:
-- Don't give away too much of the plot. Tell readers just enough to let them decide whether it's the kind of story they tend to enjoy, but not so much that you'll kill their enjoyment → One sentence will often do the trick, for example “This is a picture about a whimsical Irish priest who enlists the help of three orphan boys dressed as leprechauns to haunt a village where a mean widow has hidden a crock of gold.”
-- Use specific detail. This avoids dealing in generalities, which, being generalities, mean nothing. For example of a generic critic sentence: “The play is always fascinating”.
+- Don't give away too much of the plot. Tell readers just enough to let them decide whether it's the kind of story they tend to enjoy, but not so much that you'll kill their enjoyment → One sentence will often do the trick, for example "This is a picture about a whimsical Irish priest who enlists the help of three orphan boys dressed as leprechauns to haunt a village where a mean widow has hidden a crock of gold."
+- Use specific detail. This avoids dealing in generalities, which, being generalities, mean nothing. For example of a generic critic sentence: "The play is always fascinating".
 - In book reviewing, allow the author's words to do their own documentation.
-- Avoid the ecstatic adjectives that occupy such disproportionate space in every critic's quiver — words like “enthralling” and “luminous” → Good criticism needs a lean and vivid style to express what you observed and what you think.
+- Avoid the ecstatic adjectives that occupy such disproportionate space in every critic's quiver — words like "enthralling" and "luminous" → Good criticism needs a lean and vivid style to express what you observed and what you think.
 - Generate a provocative idea and throw it onto the page, where your readers can savor it.
 - Criticism at its best should be with stylish, allusive, disturbing. It disturbs us — as criticism often should — because it jogs a set of beliefs and forces us to reexamine them. What holds our attention is the metaphor of the keyhole, so exact and yet so mysterious.
 - Make an immediate effort to orient your readers to the special world they are about to enter. Even if they are broadly educated men and women they need to be told or reminded of certain facts. You can't just throw them in the water and expect them to swim easily. The water needs to be warmed up.
@@ -800,30 +799,275 @@ Tips:
 
 ## Humor
 
-TBD
+Humor is the secret weapon of the nonfiction writer because so few writers realize that humor is often their best tool — and sometimes their only tool — for making an __important point__ → If you're trying to write humor, almost everything you do is serious. Humor is urgent work. It's an attempt to say important things in a special way that regular writers aren't getting said in a regular way.
+
+The writer must find some comic device — satire, parody, irony, lampoon, nonsense — that he can use to disguise his serious point. For examples:
+1. First scenario:
+Dear Haircurl (the funny magazine):
+  I am 15 and am considered pretty in my group. I wear baby pink rollers, jumbo size. I have been going steady with a certain boy for 21⁄2 years and he has never seen me without my rollers. The other night I took them off and we had a terrible fight. "Your head looks small," he told me. He called me a dwarf and said I had misled him. How can I win him back? - HEARTSICK Speonk, N.Y.
+Dear Heartsick:
+  You have only yourself to blame for doing something so stupid. The latest "Haircurl" survey shows that 94% of American girls now wear rollers in their hair 21.6 hours a day and 359 days a year. You tried to be different and you lost your fella. Take our advice and get some super-jumbo rollers (they come in your favorite baby pink shade, too) and your head will look bigger than ever and twice as lovely. Don't ever take them off again.
+
+2. Second scenario:
+Dear Haircurl:
+  My boyfriend likes to run his fingers through my hair. The trouble is he keeps getting them pinched in my rollers. The other night a terribly embarrassing episode happened. We were at the movies and somehow my boyfriend got two of his fingers caught (it was right where the medium roller meets the clipcurl) and couldn't get them out. I felt very conspicuous leaving the theater with his hand still in my hair, and going home on the bus several people gave us "funny looks." Fortunately I was able to reach my stylist at home and he came right over with his tools and got poor Jerry loose. Jerry was very mad and said he's not going to date me again until I get some rollers that don't have this particular habit. I think he is being unfair, but he "means business." Can you help me? - FRANTIC Buffalo
+Dear Frantic Buffalo:
+  We're sorry to have to tell you that no rollers have yet been developed that do not occasionally catch the fingers of boys who tousle. The roller industry, however, is working very hard on the problem, as this complaint frequently comes up. Meanwhile why not ask Jerry to wear mittens? That way you'll be happy and he'll be safe.
+
+→ The method will work for subjects that are important, or for almost any subject, if you can find the right comic frame.
+
+Tips:
+- Control is vital to humor. 
+- Don't use comical names like _Throttlebottom_. 
+- Don't make the same kind of joke two or three times — readers will enjoy themselves more if you make it only once. 
+- Trust the sophistication of readers who do know what you're doing, and don't worry about the rest.
+- Operate on a deeper current than most people suspect.
+- Be willing to go against the grain, to say what the populace and the President may not want to hear.
+- Master the craft of writing good "straight" English.
+- Don't search for the outlandish and scorn what seems too ordinary → finding what's funny in what you know to be true.
+- Don't strain for laughs; humor is built on surprise, and you can surprise the reader only so often.
+- Dramatic dialogue is another form that can serve the humorist.
+- Influential humorist also used an unorthodox medium — doggerel — for his message.
+- Demolish whatever trite idea had been there before.
+- No law that says humor has to make a point. Pure nonsense is a joy forever.
+- Enjoyment, finally, is what all humorists must convey - the idea that they are having a terrific time, and this notion of cranked-up audacity.
+
+Benefits of humor:
+- Use for the topical.
+- Help us to look at far older problems of the heart, the home, the family, the job and all the other frustrations of just getting from morning to night.
+
+Humor is not a separate organism that can survive on its own frail metabolism. It's a special angle of vision granted to certain writers who already write good English. They aren't writing about life that's essentially ludicrous; they are writing about life that's essentially serious, but their eye falls on areas where serious hopes are mocked by some ironic turn of fate — "the strange incongruity" as Stephen Leacock put it.
+
+An example exercise: 
+- At first I told Yale students to write in one of the existing humor forms — satire, parody, lampoon, etc. — and not to use "I" or to write from their own experience. I assigned the same topic to the whole class, bringing in some absurdity I had noticed in the newspaper.
+- After about four weeks, fatigue set in. The students learned that they were capable of writing humor. But they also learned how tiring it is to sustain a weekly act of comic invention, writing in other voices.
+- I adopted the Chic Young principle — stick to what you know — and began to read from writers who use humor as a vein that runs quietly through their work.
+- Many of the students wrote about their families. We ran into problems, mainly of exaggeration, and gradually solved them, trying to achieve control, cutting the extra sentence that explains a funny point that is already implicit. A hard decision was to know how much exaggeration was allowable and how much was too much.
+- One student wrote a funny piece about what a terrible cook his grandmother was. When I praised it he said she was really a very good cook. I said I was sorry to hear it—somehow the piece now seemed less funny. He asked if that made a difference. I said it didn't make a difference in this piece, since I had enjoyed it without knowing it was untrue, but that I thought he would last longer if he started from the truth rather than from invention.
+- In short, our class began by striving first for humor and hoping to wing a few truths along the way. We ended by striving for truth and hoping to add humor along the way. Ultimately we realized that the two are intertwined.
 
 # Attitudes
 
 ## The Sound of Your Voice
 
-TBD
+Tips:
+- Don't alter your voice to fit your subject. 
+- Develop one voice that readers will recognize when they hear it on the page, a voice that's enjoyable not only in its musical line but in its avoidance of sounds that would cheapen its tone: breeziness and condescension and clichés.
+- Never hesitate to imitate another writer. Imitation is part of the creative process for anyone learning an art or a craft → Sometimes you will tap a vein of eloquence or racial memory that gives your writing a depth it could never attain on your own.
+- Reach for fresh imagery and avoid phrases that are trite. 
+- Go for words that are short and strong; words that sedate are words of three, four and five syllables, mostly of Latin origin, many of them ending in "ion" and embodying a vague concept.
+- After verbs, plain nouns are your strongest tools; they resonate with emotion.
+- Remember the uses of the past when you tell your story.
+- Go with what seems inevitable in your own heritage. Embrace it and it may lead you to eloquence.
+
+A kind of writing that sounds so relaxed that you think you hear the author talking to you has a common assumption is that the style is effortless. In fact the opposite is true: the effortless style is achieved by strenuous effort and constant refining.
+
+Finding a voice that your readers will enjoy is largely a matter of taste. Saying that isn't much help — taste is a quality so intangible that it can't even be defined. But we know it when we meet it. 
+
+For writers and other creative artists, knowing what __not__ to do is a major component of taste. Taste is an invisible current that runs through writing, and you should be aware of it.
+
+Taste:
+- chooses words that have surprise, strength and precision.  
+- knows that it's better to call people in authority what they are: officials, executives, chairmen, presidents, directors, managers
+Non-taste:
+- slips into the breezy vernacular of the alumni magazine's class notes.
+- reaches for the corny synonym, which has the further disadvantage of being imprecise.
+- uses "umpteenth", "zillions", and "period".
+
+Taste is a mixture of qualities that are beyond analyzing: an ear that can hear the difference between a sentence that limps and a sentence that lilts, an intuition that knows when a casual or a vernacular phrase dropped into a formal sentence will not only sound right but will seem to be the inevitable choice.
 
 ## Enjoyment, Fear and Confidence
 
-TBD
+Regarding enjoyment, wWriters have to jump-start themselves at the moment of performance, no less than actors and dancers and painters and musicians.
+
+Unfortunately, an equally strong negative current — fear — is at work. Fear of writing gets planted at an early age, usually at school, and it never entirely goes away. The blank piece of paper or the blank computer screen, waiting to be filled with our wonderful words, can freeze us into not writing any words at all, or writing words that are less than wonderful.
+
+Tips:
+- Write about subjects that interest you and that you care about.
+- Living is the trick. Writers who write interestingly tend to be men and women who keep themselves interested.
+- Write about subjects you think you would enjoy knowing about, your enjoyment will show in what you write. Learning is a tonic.
+- Remember that your best credential - sincerity - is yourself when you enter new territory and need a shot of confidence.
+- Remember that your assignment may not be as narrow as you think. Often it will turn out to touch some unexpected corner of your experience or your education, enabling you to broaden the story with strengths of your own. Every such reduction of the unfamiliar will reduce your fear.
+- Think broadly about your assignment → push the boundaries of your subject and see where it takes you. Bring some part of your own life to it; it's not your version of the story until you write it.
+- Prod the expert to clarify statements that are so obvious to him that he assumes they are obvious to everyone else. Trust your common sense to figure out what you need to know, and don't be afraid to ask a dumb question. If the expert thinks you're dumb, that's his problem.
+- "That's interesting." If you find yourself saying it, pay attention and follow your nose. Trust your curiosity to connect with the curiosity of your readers.
+- "Have I seen everything?" Often you'll get your best material after you put your pencil away, in the chitchat of leave-taking. The person being interviewed, off the hook after the hard work of making his or her life presentable to a stranger, thinks of a few important afterthoughts.
+
+I mention this to give confidence to all nonfiction writers: a point of craft. If you master the tools of the trade — the fundamentals of interviewing and of orderly construction — and if you bring to the assignment your general intelligence and your humanity, you can write about any subject. That's your ticket to an interesting life.
 
 ## The Tyranny of the Final Product
 
-TBD
+This fixation on the finished article causes writers a lot of trouble, deflecting them from all the earlier decisions that have to be made to determine its shape and voice and content.
+
+What nonfiction writers need to know:
+- How to situate what they write in a particular place.
+- How to get the people who live in that place to talk about what makes it—or once made it—special.
+- How to organize a long article: how to put the jigsaw puzzle together.
+
+The quest is one of the oldest themes in storytelling, an act of faith we never get tired of hearing about. The assignment to go on a quest for something deeper than the place itself: a meaning, an idea, some sliver of the past. Moral: any time you can tell a story in the form of a quest or a pilgrimage you'll be ahead of the game. Readers bearing their own associations will do some of your work for you.
+Intention is what we wish to accomplish with our writing. Call it the writer's soul. We can write to affirm and to celebrate, or we can write to debunk and to destroy. But nobody can make us write what we don't want to write. We get to keep intention. Nonfiction writers often forget that they are not required to acquiesce in tawdry work, to carry the trash for magazine editors who have an agenda of their own — to sell a commercial product.
+
+→ Writing is related to character. If your values are sound, your writing will be sound. It all begins with intention. Figure out what you want to do and how you want to do it, and work your way with humanity and integrity to the completed article. Then you'll have something to sell.
 
 ## A Writer s Decisions
 
-TBD
+This is about little decisions: the hundreds of choices that go into organizing a long article.
+
+The hardest decision about any article is how to begin it. 
+
+- The lead must grab the reader with a provocative idea and continue with each paragraph to hold him or her in a tight grip, gradually adding information → Get readers so interested that they will stick around for the whole trip with the lead. For example:
+```
+What struck me most powerfully when I got to Timbuktu was that the streets were of sand. I suddenly realized that sand is very different from dirt. Every town starts with dirt streets that eventually get paved as the inhabitants prosper and subdue their environment. But sand represents defeat. A city with streets of sand is a city at the edge.
+```
+
+- The first sentence of that paragraph grows out of the last sentence of the previous paragraph; the reader is given no chance to squirm away. After that the paragraph has one purpose: it acknowledges what the reader already knows—or half knows—about Timbuktu:
+```
+That, of course, is why I was there: Timbuktu is the ultimate destination for edge-seekers. Of the half-dozen places that have always lured travelers with the mere sound of their name—Bali and Tahiti, Samarkand and Fez, Mombasa and Macao—none can match Timbuktu for the remoteness it conveys. I was surprised by how many people, hearing of my trip, didn't think Timbuktu was a real place, or, if it was, couldn't think where in the world it might be. They knew it well as a word—the most vivid of all synonyms for the almost-unreachable, a God-given toy for songwriters stuck for an "oo" rhyme and a metaphor for how far a lovestruck boy would go to win the unwinnable girl. But as an actual place—surely Timbuktu was one of those "long-lost" African kingdoms like King Solomon's Mines that turned out not to exist when the Victorian explorers went looking for them.
+```
+
+- The following paragraph gets down to hard work—work that can't be put off any longer. Notice how much information is crammed into these three sentences:
+```
+The long-lost Timbuktu, however, got found, though the men who finally found it after terrible ordeals—the Scotsman Gordon Laing in 1826 and the Frenchman René Caillié in 1828—must have felt cruelly mocked for their efforts. The legendary city of 100,000 people described by the 16th-century traveler Leo Africanus—a center of learning with 20,000 students and 180 Koranic schools—was a desolate settlement of mud buildings, its glory and its population long gone, surviving only because of its unique location as the
+junction of important camel caravan routes across the Sahara. Much of what got traded in Africa, especially salt from the north and gold from the south, got traded in Timbuktu.
+```
+
+- Now, what do your readers want to know next? Here what they want to know is: why did I go to Timbuktu? What was the purpose of my trip? The following paragraph gets right to it— again, keeping the thread of the previous sentence taut. Besides explaining the genesis of the trip, that paragraph does one other job: it establishes the writer's personality and voice. The phrase "bright enough or dumb enough" calls up a familiar figure in travel literature: the tourist as a possible patsy or buffoon. Another throwaway phrase is the line about beating the crowd. I put it in just to amuse myself:
+```
+It was to watch the arrival of one of those caravans that I had come to Timbuktu. I was one of six men and women bright enough or dumb enough— we didn't yet know which—to sign up for a two-week tour we had seen announced in the Sunday New York Times, run by a small travel agency of French origins that specializes in West Africa. (Timbuktu is in Mali, the former French Sudan.) The agency's office is in New York, and I had gone there first thing Monday morning to beat the crowd; I asked the usual questions and got the usual answers—yellow fever shots, cholera shots, malaria pills, don't drink the water—and was given a brochure.
+```
+
+- Here is a typical example of how a writer can get other people to do helpful work for him. The brochure not only tells the reader what kind of trip has been promised; its language is an amusement in itself and a window into the grandiosity of the promoters:
+```
+It's your opportunity to participate in a once-in-a-lifetime extravaganza —the annual Azalai Salt Caravan to Timbuktu!" the brochure began. "Picture this: Hundreds of camels carrying huge slabs of precious salt (‘white gold' to the natives of land-locked West Africa) make their triumphant entry into Timbuktu, an ancient and mystical part desert/part city of some 7,000 inhabitants. The colorful nomads who drive the caravans have traveled 1,000 miles across the Sahara to celebrate the end of their trek with outdoor feasts and traditional tribal dances. Spend the night in a desert tent as guest of the tribal chief.
+```
+
+- Here's the last paragraph of the lead:
+```
+Well, that's my kind of trip, if not necessarily my kind of prose, and it also turned out to be my wife's kind of trip and four other people's kind of trip. In years we ranged from late middle age to Medicare. Five of us were from mid- Manhattan, one was a widow from Maryland, and all of us had made a lifelong habit of traveling to places on the edge. Names like Venice and Versailles didn't bob up in our accounts of earlier trips, or even Marrakech or Luxor or Chiang Mai. The talk was of Bhutan and Borneo, Tibet and Yemen and the Moluccas. Now—praise Allah!—we had made it to Timbuktu. Our camel caravan was about to come in.
+```
+
+No less important than decisions about structure are decisions about individual words. Banality is the enemy of good writing; the challenge is to not write like everybody else.
+- Initially I wrote something serviceable like "we were in our fifties and sixties" → If you look long enough you can usually find a proper name or a metaphor that will bring those dull but necessary facts to life - "from late middle age to Medicare".
+- Originally I wrote, "Names like London and Paris didn't turn up in our accounts of earlier trips." Not much fun there → Everybody goes to Venice - "Venice and Versailles".
+- Next I needed a fresher verb than "turn up" → Finally I thought of "bob" — a three-letter word, ludicrously simple. Yet it was the perfect word: it paints a picture of an object periodically rising to the surface of the water. 
+- What slightly offbeat tourist sites would seem commonplace to six travelers who had signed up for Timbuktu? → The three that I finally chose — Luxor, Marrakech and Chiang Mai — were quite exotic in the 1950s. Today they're not; the age of jet travel has made them almost as popular as London and Paris.
+→ Altogether, the sentence took almost an hour. No writing decision is too small to be worth a large expenditure of time. Both you and the reader know it when your finicky labor is rewarded by a sentence coming out right.
+
+More carefully chosen words: "canons," "brazenly," "gaudy," "tendered." They're vivid and precise, but not long or fancy. Best of all, they are words that readers probably weren't expecting and that they therefore welcome. The sentence about the chieftain's tent, referring back to a phrase in the brochure, is another tiny joke.
+
+A crucial decision about a piece of writing is where to end it. Often the story will tell you where it wants to stop. The goal of our trip was to find a salt caravan I assumed that I would have to complete the ancient cycle of trade: to describe how we returned to Timbuktu and saw the salt being unloaded and bought and sold in the market.
+→ The nearer I got to writing that final section, the more I didn't want to write it. It loomed as drudgery, no fun for me or for the reader. The real climax of my story was not finding the salt caravan; it was finding the timeless hospitality of the people who live in the Sahara. Not many moments in my life have matched the one when a family of nomads with almost no possessions offered to share their dinner. Nor could any other moment distill more vividly what I had come to the desert to find and what all those Englishmen had written about—the nobility of living on the edge.
+
+As a postscript, there's one last decision I'd like to mention. It has to do with the nonfiction writer's need to make his or her own luck → As a nonfiction writer you must get on the plane. If a subject interests you, go after it, even if it's in the next county or the next state or the next country. It's not going to come looking for you.
+
+Tips:
+- Make a sensible plan for your journey. Every step should seem inevitable.
+- Never be afraid to break a long sentence into two short ones, or even three.
+- "What do your readers want to know next?" Ask yourself that question after every sentence. 
+- Make readers identify with you — with your hopes and apprehensions. Giving them some idea of who you are.
+- Be on the watch for funny or self-serving quotes and use them with gratitude.
+- Ask yourself one very helpful question: "What is the piece really about?" (Not just "What is the piece about?")
+- Self-discipline bordering on masochism is required.
+- Keep yourself amused and maintain a persona while writing.
+- Allow the content to speak for itself — just the facts - and trust your material.
+- Look for the door when your story tells you it's over, regardless of what subsequently happened.
+- Make sure that the unities were intact: that the writer - guide who started the lead was the same person who was ending it.
+- Decide what you want to do. Then decide to do it. Then do it.
 
 ## Writing Family History and Memoir
 
-TBD
+As every parent knows, our children are not as fascinated by our fascinating lives as we are. Only when they have children of their own — and feel the first twinges of their own advancing age — do they suddenly want to know more about their family heritage and all its accretions of anecdote and lore.
+
+This is all about: how to leave some kind of record of your life and of the family you were born into.
+
+The record can take many shapes:
+- A formal memoir: a careful act of literary construction.
+- An informal family history: written to tell your children and your grandchildren about the family they were born into.
+- An oral history: extracted by tape recorder from a parent or a grandparent too old or too sick to do any writing.
+- Or anything else: some hybrid mixture of history and reminiscence.
+
+The crucial transaction in memoir and personal history is the transaction between you and your remembered experiences and emotions.
+
+It's your story — you're the one who has done all the work. If your sister has a problem with your memoir she can write her own memoir, and it will be just as valid as yours; nobody has a monopoly on the shared past.
+
+Most people embarking on a memoir are paralyzed by the size of the task on how to organize the thing:
+- What to put in?
+- What to leave out? 
+- Where to start? 
+- Where to stop? 
+- How to shape the story? 
+- What can be done?
+
+Tips:
+- Don't try to be a "writer", be yourself → just wrote the way you talked and what your personality and humor is. (use your voice, not style)
+- "Should I write from the point of view of the child I once was, or of the adult I am now?" → The strongest memoirs are those that preserve the unity of a remembered time and place.
+- "What about the privacy of the people I write about? Should I leave out things that might offend or hurt my relatives? What will my sister think?" → Don't worry about that problem in advance. Your first job is to get your story down as you remember it—now. Don't look over your shoulder to see what relatives are perched there.
+- Say what you want to say, freely and honestly, and finish the job. Then take up the privacy issue. If you wrote your family history only for your family, there's no legal or ethical need to show it to anyone else.
+- If you have in mind a broader audience — a mailing to friends or a possible book — you may want to show your relatives the pages in which they are mentioned.
+- Don't use your memoir to air old grievances and to settle old scores; get rid of that anger somewhere else.
+- Make a series of reducing decisions. For example: in a family history, one big decision would be to write about only one branch of the family. Families are complex organisms, especially if you trace them back several generations. Decide to write about your mother's side of the family or your father's side, but not both. Return to the other one later and make it a separate project.
+- Remember that you are the protagonist in your memoir - the tour guide. 
+- Must find a narrative trajectory for the story you want to tell and never relinquish control → leave out of your memoir many people who don't need to be there like siblings.
+- Think small. Don't rummage around in your past — or your family's past — to find episodes that you think are "important" enough to be worthy of including in your memoir.
+- Look for small self-contained incidents that are still vivid in your memory. If you still remember them it's because they contain a universal truth that your readers will recognize from their own life.
+- Remember about universal ideas (for example the idea of a toy or a game) when you write your memoir and worry that your story isn't big enough to interest anyone else. The small stories that still stick in your memory have a resonance of their own. Trust them.
+- Your biggest stories will often have less to do with their subject than with their significance — not what you did in a certain situation, but how that situation affected you and shaped the person you became.
+
+Suggestion instructions: 
+- Day #1: Write about some event that's still vivid in your memory. It doesn't have to be long—three pages, five pages—but it should have a beginning and an end.
+- Day #2: do the same thing but day 1's episode doesn't have to be related to today's episode. Take whatever memory comes calling; your subconscious mind, having been put to work, will start delivering your past.
+- Keep this up for two months, or three months, or six months.
+- Then, one day, take all your entries out of their folder and spread them on the floor. Read them through and see what they tell you and what patterns emerge.
+- Then all you have to do is put the pieces together.
 
 ## Write as Well as You Can
 
-TBD
+Humor and optimism are lubricants in writing, as they are in life, and a writer lucky enough to have them in his baggage will start the day with an extra round of confidence.
+
+How to write a clear English sentence:
+- verbs have more vigor than nouns.
+- active verbs are better than passive verbs.
+- short words and sentences are easier to read than long ones.
+- concrete details are easier to process than vague abstractions. 
+
+Editors can also do considerable harm. In general the damage takes two forms: altering style and altering content.
+- Style:
+  I wrote: "They don't look like cities that get visited by many visiting artists" → I had used repetition because it's a device I like — it takes readers by surprise and refreshes them in mid-sentence. But the editor remembered the rule about substituting synonyms for words that are repeated, and he corrected my error. I feel strongly that one such erosion leads to another and that the writer must take a stand. I've even bought articles back from magazines that made changes I wouldn't accept → If you allow your distinctiveness to be edited out, you will lose one of your main virtues. You will also lose your virtue.
+
+  Frequently an editor will make a change to clarify a muddy sentence and will inadvertently lose an important point — a fact or a nuance that the writer included for reasons the editor didn't know about. In such cases the writer should ask to have his point back. The editor, if he agrees, should oblige.
+  But the editor should also insist on his right to fix whatever had been unclear. Clarity is what every editor owes the reader. An editor should never allow something to get into print that he doesn't understand. If he doesn't understand it, at least one other person won't, and that's one too many. 
+  → The writer and the editor proceed through the manuscript together, finding for every problem the solution that best serves the finished article.
+
+  Magazine editors, especially, have become cavalier about a whole series of procedures that should be automatic: 
+  - notifying the writer that the piece has arrived.
+  - reading it with reasonable speed
+  - telling the writer whether it's O.K.
+  - returning it immediately if it's not.
+  - working supportively with the writer if the piece needs changes.
+  - sending the writer galley proofs.
+  - seeing that the writer gets paid promptly.
+  → Writers are vulnerable enough without being put through the repeated indignities of calling to learn the status of their article and to beg for their money.
+
+- Content:
+  I often hear freelance writers say, "When I got the magazine I looked for my article and I didn't even recognize it. They had written a whole new lead and had me saying things that aren't what I believe." That's the cardinal sin—tampering with a writer's opinions. But editors will do what writers allow them to do, especially if time is short.
+
+Tips:
+- Always tried to write as well as your could by your own standards.
+- Never changed your style to fit the size or the presumed education of the audience you were writing for. 
+- Write as entertainingly as possible → give the reader an enjoyable surprise. Any number of devices will do the job: humor, anecdote, paradox, an unexpected quotation, a powerful fact, an outlandish detail, a circuitous approach, an elegant arrangement of words.
+- If you would like to write better than everybody else, you have to __want__ to write better than everybody else.
+- Take an obsessive pride in the smallest details of your craft.
+- Be willing to defend what you've written against the various middlemen — editors, agents and publishers — whose sights may be different from yours, whose standards not as high.
+- After you submit an article, you protect it fiercely.
+- Remember that the craft of nonfiction writing involves more than writing. It also means being reliable to produce the article on time. Editors will properly drop a writer they can't count on.
+- Think with gratitude of editors who sharpened your writing by changing its focus or emphasis, or questioning its tone, or detecting weaknesses of logic or structure, or suggesting a different lead, or letting you talk a problem through with them when you couldn't decide between several routes, or cutting various forms of excess.
+- Don't let editors use distance or their own disarray as an excuse for altering your work without your consent:
+  - "We were on deadline". 
+  - "we were already late". 
+  - "the person who usually deals with you was out sick". 
+  - "we had a big shake-up here last week". 
+  - "our new publisher has just come on board". 
+  - "it got put in the wrong pile". 
+  - "the editor's on vacation".
+- Take your talent as far as you can and guard it with your life. What you write is yours and nobody else's. Only you know how far that is; no editor knows.
+- Always think that there is at least one reader who had never seen you write, and you don't want to let him down.
