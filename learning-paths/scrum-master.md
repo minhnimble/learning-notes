@@ -186,7 +186,7 @@ These 7 principles describe what Agile is really all about:
 
 ### Agile is constant change
 
-Adaptation has many synonyms, of which ‘change’ is the most common → After a short time you and your team should reflect on what has happened, and how it affected the performance within the team. Building on the better understanding, the team should decide what they will do to enhance the good things, and remove the bad things – that is you should focus on changing the environment to be better.
+Adaptation has many synonyms, of which 'change' is the most common → After a short time you and your team should reflect on what has happened, and how it affected the performance within the team. Building on the better understanding, the team should decide what they will do to enhance the good things, and remove the bad things – that is you should focus on changing the environment to be better.
 
 Constant Continual Learning:
 
@@ -233,9 +233,9 @@ Examples of misunderstanding the values:
 
 Five ideas for encouraging the values to be transparent and considered in your Scrum Team:
 1. Put the values on a wall and have each team member write up how they are going to demonstrate the value in their working day.
-2. Add a ‘values moment’ to your retrospective. This gives everyone an opportunity to inspect and adapt on their values.
-3. Introduce a ‘values’ prize. Not a serious prize, but a fun prize that sometimes can be delivered to two people or the whole team when a value has been demonstrated and everyone is aware of it.
-4. The ‘whoops we dropped the value’ prize provides a way of demonstrating courage, but also highlighting when we missed a value. Of course, this prize could end up being a very negative thing so it should always be delivered in a fun way without negative implications.
+2. Add a 'values moment' to your retrospective. This gives everyone an opportunity to inspect and adapt on their values.
+3. Introduce a 'values' prize. Not a serious prize, but a fun prize that sometimes can be delivered to two people or the whole team when a value has been demonstrated and everyone is aware of it.
+4. The 'whoops we dropped the value' prize provides a way of demonstrating courage, but also highlighting when we missed a value. Of course, this prize could end up being a very negative thing so it should always be delivered in a fun way without negative implications.
 5. Getting external managers or stakeholders to demonstrate to the team a value and what it means to them.
 
 ### Intralinks Case Study: Scrum Reboot, This Time with the Values
@@ -279,9 +279,9 @@ maturity, and requires organizational backing at all levels.
 - _Courage_ - "The Sprint Report?" → the team lacked courage so they set up the Sprint Review for success. The Sprint
 Review turned into a Sprint Report: here's how much work we did; here's what our burndown looked like; this is how many defects we found and fixed. The team took credit for having worked hard whether or not that hard work generated business value. Stakeholders stopped attending after a while. Remaining participants were managers instead of stakeholders.
 - _Focus_ - "Daily Scrum for everybody?" → The team lacking focus on the Daily Scrum. It moved around, it skipped some days. Project and program managers showed up because it was a convenient way to check in on the team's progress. The Scrum Master started to drive the meeting and instead of a half-circle around the Sprint board inspecting the work, it became a half-circle around the Scrum Master with rapid fire status reporting. Team members were engaged for the 45-60 seconds they spoke then they tuned out. Instead of epitomizing focus, the Daily Scrum became a 15-minute distraction.
-- _Openness_ - "The Scrum Manager?" → the manager-turned-Scrum-Master took on the new role in good faith, but it resulted in a lack of openness in the team. These upper managers had not had the same exposure to Scrum and still expected the Scrum Masters to manage the work. Put differently, they held the Scrum Masters accountable when the work wasn’t happening the way it was expected to. So even if the Scrum Master was liked by the team and if behind closed doors the Scrum Master was reasonably good at being a servant-leader instead of a manager, the team closed up and put on a good face for the organization. They hid failures and therefore what should have been a self-organizing team lost the opportunity to improve.
-- _Respect_ - "The Product Steward?" → The Product Management was - as in many technology driven companies - very much a technical product management organization - responsibility for implementation, but very little business ownership. As a result, the Product Owners were given the title but remained in the service of the product as its steward rather than its owner. When the team came to the ‘Product Steward’ with an issue requiring a decision, he or she retreated into email, meetings, and conversations. More often than not the answer did not come back before the Sprint ended, if it
-came back at all. With the ‘Product Steward’ consistently unable to resolve issues in a timely manner, the team in
+- _Openness_ - "The Scrum Manager?" → the manager-turned-Scrum-Master took on the new role in good faith, but it resulted in a lack of openness in the team. These upper managers had not had the same exposure to Scrum and still expected the Scrum Masters to manage the work. Put differently, they held the Scrum Masters accountable when the work wasn't happening the way it was expected to. So even if the Scrum Master was liked by the team and if behind closed doors the Scrum Master was reasonably good at being a servant-leader instead of a manager, the team closed up and put on a good face for the organization. They hid failures and therefore what should have been a self-organizing team lost the opportunity to improve.
+- _Respect_ - "The Product Steward?" → The Product Management was - as in many technology driven companies - very much a technical product management organization - responsibility for implementation, but very little business ownership. As a result, the Product Owners were given the title but remained in the service of the product as its steward rather than its owner. When the team came to the 'Product Steward' with an issue requiring a decision, he or she retreated into email, meetings, and conversations. More often than not the answer did not come back before the Sprint ended, if it
+came back at all. With the 'Product Steward' consistently unable to resolve issues in a timely manner, the team in
 some cases just stopped bothering to ask. The team perceived the Product Owner not having the respect of the organization, the team similarly lost respect for the Product Owner.
 
 → The values part is hard. It's not obvious how to get people to behave according to a set of values. The more you push values on someone the more likely they are to reject them. A coach shouting at the team: “commit to inspection and adaptation”; “have the courage to review the Sprint with transparency!”; “use the Daily Scrum to focus on the work in
@@ -292,7 +292,7 @@ the Sprint, not your respective statuses!”; “be open about how hard it is to
 
 Focus on Scrum principles - the hypothesis was that successful adherence to the principles would lead to adoption of the values.
 
-The principles sit between the framework (a fairly ‘hard’ set of events, roles, and artifacts) and the values (‘softer’ behavioral attributes). For example, you can easily hold a Sprint Retrospective at the end of a Sprint in the
+The principles sit between the framework (a fairly 'hard' set of events, roles, and artifacts) and the values ('softer' behavioral attributes). For example, you can easily hold a Sprint Retrospective at the end of a Sprint in the
 appropriate time-box, but if the team does not take ownership of adaptation (as opposed to
 mere inspection) nothing will ever improve.
 
@@ -325,7 +325,7 @@ quantifiably measurable after it is released, and tracking against that metric i
 
 For Intralinks, The Scrum Reboot has had successes with some teams and struggles with others. Adoption at the management tier similarly has peaks and troughs. But compared to the first attempt, the renewed effort is resulting in the
 expected benefits where real change is occurring:
-- What once would have been one large project involving a complete re-implementation of the Intralinks Platform’s UI has gone from a monolithic release plan to a rolling program releasing updates almost monthly.
+- What once would have been one large project involving a complete re-implementation of the Intralinks Platform's UI has gone from a monolithic release plan to a rolling program releasing updates almost monthly.
 - Accumulation of technical debt previously deferred to hardening phases has been eliminated.
 - Sprint Planning has become the venue for the team and the team alone to take on and plan work to be completed in the Sprint.
 - Large “Scrum Team” run by a single “Scrum Manager” was recomposed into two smaller teams (with designers integrated into the team) resulting in lower running costs and greater velocity.
@@ -494,7 +494,7 @@ Scrum provides the minimal boundaries within which teams can self-organize to so
 - Position the Agile Coach as being higher in a traditional hierarchical structure: The Scrum Master as the junior, Agile Coach as the medior and the Enterprise Coach as the senior → easy to match with the organization's increasing hourly rates and expensive training programs.
 
 The above myth leads to:
-- Contradictions with the services these organizations provide: advising clients to think in ‘horizontal structures’ that promote the self-organizing capabilities of the teams, yet promote a ‘vertical structure’ because it works well from a commercial/marketing perspective.
+- Contradictions with the services these organizations provide: advising clients to think in 'horizontal structures' that promote the self-organizing capabilities of the teams, yet promote a 'vertical structure' because it works well from a commercial/marketing perspective.
 - Artificial boundaries between what Scrum Masters and Agile Coaches do → The Scrum Master is only “allowed” to act on team level, which makes Scrum-friendly culture is far more difficult and harder to adapt. Meanwhile, the Agile Coach is expected to “implement” the necessary organizational changes, but fails because of limited experiences “from the trenches” and not knowing how to deal with “outside in” change management.
 
 #### Busting the myth
@@ -505,12 +505,12 @@ It is actually remarkably easy, and requires only a simple reading of the [Scrum
 #### The 8 Stances of a Scrum Master
 
 The various responsibilities of the Scrum Master is captured in eight stances:
-- An __Impediment Remover__ that helps resolve issues that are blocking the team'’'s progress, taking into account the self-organizing capabilities of the Development Team;
+- An __Impediment Remover__ that helps resolve issues that are blocking the team'''s progress, taking into account the self-organizing capabilities of the Development Team;
 - A __Facilitator__ that sets the stage and provides clear boundaries in which the team can collaborate. This includes facilitation of the Scrum events to ensure they'll achieve the desired outcome and - most importantly - that the empirical process is optimized;
 - A __Coach__ that helps individuals and groups to continuously improve in how they deliver valuable outcomes as a team or as an organization;
 - A __Teacher__ that ensures that Scrum and relevant techniques are well-understood and enacted;
 - A __Servant Leader__ that creates environments where teams can work effectively with stakeholders to create valuable outcomes;
-- A __Manager__ that is responsible for managing (true) impediments, eliminating waste, managing the process, managing the team’s health, managing the boundaries of self-organization, and managing the culture;
+- A __Manager__ that is responsible for managing (true) impediments, eliminating waste, managing the process, managing the team's health, managing the boundaries of self-organization, and managing the culture;
 - A __Change Agent__ that helps to enable a culture in which Scrum Teams can flourish - on every level of the organization;
 - A __Mentor__ that transfers agile knowledge and experience to the team.
 
@@ -528,7 +528,7 @@ _“The Scrum Master enables change from the inside out.”_
 → The Scrum Masters help:
 - Teams uncover the impediments that are holding them back and the other ways by which the organization can deliver (even) more value.
 - HR departments find practices that are better aligned with Scrum. 
-- Sale departments move from ‘fixed-price/fixed-scope’-contracts to contracts that are more Agile-friendly.
+- Sale departments move from 'fixed-price/fixed-scope'-contracts to contracts that are more Agile-friendly.
 - Increase collaboration between Scrum Teams and stakeholders.
 
 _“The chances of successful Scrum adoption will increase drastically when you consider your Scrum Master as the true “inside out” change facilitators!”_
@@ -549,7 +549,7 @@ Not at all, as Scrum Masters use an “inside out” approach, Agile Coaches use
 _“The reality is that most Agile Coaches are junior Scrum Masters.”_
 → The advice for organizations is:
   - Focus on enabling Scrum Masters to facilitate change from “the inside out”. Support the Scrum Masters in creating great teams that build awesome products. Help them build the experience and the toolkit to do this, together.
-  - Get rid of ‘Seagull Coaches’ that fly in, make a lot of noise, crap all over the place and fly on to a next customer, leaving a big mess behind;
+  - Get rid of 'Seagull Coaches' that fly in, make a lot of noise, crap all over the place and fly on to a next customer, leaving a big mess behind;
   - If you really want to hire an Agile Coach in addition to the Scrum Masters already present within the organization, make sure that they have real, proven experience in affecting change “outside-in”. Make sure they focus their efforts on helping the teams and the Scrum Masters drive change themselves. 
   - Don't create the artificial distinction between “change on the management level” (by Agile Coaches) and “change on the team level” (by Scrum Masters);
 
@@ -787,7 +787,7 @@ _Then conduct a Sprint Retrospective_
   - Things which didn't go so well
   - Ideas for improvement
   - Shout-outs for team members who did something exceptional
-- Establishing a timeline can help jog attendees’ memories about significant events during the Sprint.
+- Establishing a timeline can help jog attendees' memories about significant events during the Sprint.
 
 ### The Daily Scrum is NOT a Status Meeting
 
@@ -855,9 +855,35 @@ To be more professional and have continuous improvements (Football example) → 
 
 TBD
 
-### Myth: The Sprint Backlog can’t change during the Sprint
+### Myth: The Sprint Backlog can't change during the Sprint
 
-TBD
+"Changes are not allowed during the Sprint; no work can be added or removed". Why is this a myth?
+
+#### Busting the Myth
+
+"Although the Sprint Goal is fixed during the Sprint, the Sprint Backlog is not" → Even if that future is a single Sprint, it is entirely possible that new insights or impediments emerge as the Development Team works through the Sprint Backlog. For example:
+- A team might learn that a technology they picked does not perform as expected. 
+- A key feature needed to reach the Sprint Goal was missed during the Sprint Planning. 
+→ As issues emerge, changes to the Sprint Backlog may be warranted in order to reach the Sprint Goal. In short; a Sprint Backlog is flexible, as long as changes do not distract from the focus on the Sprint Goal.
+
+#### About Commitments and Forecasts
+
+In the context of the Sprint Backlog, the word “commitment” was replaced by “forecast”. It describes the Sprint Backlog as a forecast by the Development Team about the functionality that will be part of the next Increment and the work needed to deliver that functionality into a “Done” Increment. This underscores that insights and unexpected issues are likely to emerge during development - even within a single Sprint.
+
+However, commitment is still relevant for the Development Team; they commit themselves to:
+- Fulfill the Sprint Goal.
+- Delivering working, high-quality and usable software that meets the expectations of the customers and users.
+- Working only on the Product Backlog items with the highest value.
+- Focus on continuous improvement, learning, and technical excellence.
+- Continuously inspect and adapt, by which empiricism is supported.
+- Collaborate with all the business people involved.
+- The values and elements that build up the Scrum framework.
+→ The goal should be to reach the desired outcome (the Sprint Goal) with the least amount of output (Sprint Backlog).
+
+Embrace the emerging nature of the Sprint Backlog:
+- Encourage the Development Team to change, modify and improve the Sprint Backlog during the Sprint.
+- If new work is required, the Development Team adds it to the Sprint Backlog.
+- It's up to the Development Team to apply the changes and inform the Product Owner if this is considered necessary.
 
 ## Sprint Goal
 
