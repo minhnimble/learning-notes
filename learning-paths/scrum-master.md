@@ -889,7 +889,70 @@ Embrace the emerging nature of the Sprint Backlog:
 
 ### Myth: Having A Sprint Goal Is Optional In Scrum
 
-TBD
+#### Busting The Myth
+
+"The Sprint Goal can be any other coherence that causes the Development Team to work together rather than on separate initiatives” — Scrum Guide.
+
+Three important purposes of Sprint Goals:
+
+1. They give __guidance__ during the Sprint on the objective that the Scrum Team wants to achieve in the Sprint, as well as why that is important.
+2. They help the Development Team __focus__ on what (kind of) work is important, and what is not.
+3. They promote __collaboration__ by giving DTs one clear purpose to work on, instead of separate initiatives.
+
+→ Having a Sprint Goal is one of the rules of Scrum, as is having a shared understanding of “Done”. Neither are 'artifacts' according to the framework, but both are incredibly valuable to navigate complexity and all the potential confusion that entails.
+
+#### What happens without Sprint Goals…
+
+- A wide variety of items will be pulled from the Product Backlog during Sprint Planning.
+- The Sprint Backlog is likely what Development Teams implicitly (or explicitly) commit to instead.
+- With the pressured feeling to complete a Sprint Backlog full of unrelated items, there is no obvious incentive to collaborate.
+- With everyone in the team working mostly on their own items, the Daily Scrum takes the form of a status update where members announce what they've been working on and what they plan to work on. You will hear more “I” than “We”.
+- Members will complete 'all their work' at different moments during the Sprint.
+- It is hard to know who to invite for the Sprint Review. Although some stakeholders may show up to inspect individual items implemented for them, they also have to sit through all the other items being discussed.
+- The Development Team doesn't have guidance on how to decide where to invest time and what to let go (for now).
+- It is hard to know when a Sprint is successful. There are hardly ever any opportunities to celebrate.
+- Each Sprint implicitly has the same purpose: complete all the work. This makes all Sprints the same, and can make people (rightfully) complain that they are artificial.
+
+→ Sprint Goals are intended to:
+  - Help organizations break free from the output-driven approach.
+  - Focus on efficiency and getting as much work done as possible.
+  - Focus on valuable outcomes and an experimental mindset. 
+
+#### Intermission: Examples of Sprint Goals
+
+- Sprint 1: “This Sprint exists to set up our deployment infrastructure to deploy a secure, working login page”.
+
+- Sprint 2: “This Sprint exists to use-test the interface for entering hours”
+
+- Sprint 3: “This Sprint exists to allow flex agency employees to validate the hours submitted this week.”
+
+#### Reasons for not having Sprint Goals
+
+- Product Owners don't have the mandate to decide what goes on the Product Backlog and in what order.
+- Product Owners don't have a vision or strategy for the product.
+- Scrum Teams struggle with the formulation of objectives and Sprint Goals when their Product Backlogs span thousands of items.
+- Scrum Teams may be too large, making stakeholders and the Product Owner scramble for enough work to keep everyone busy.
+- Scrum Teams may work on different products or projects at the same time, making it hard to identify one singular goal for a Sprint.
+- Sprints may be too short or too long, making it hard to define concrete, tangible Sprint Goal.
+- Scrum Teams may be organized as 'component teams', working only on certain layers or components of the application (e.g. database, a specific web service or the UI).
+- Some teams do work that is not suited to the time-boxed and purpose-driven nature of Sprints. For example, Support Teams that are responsible for many different products or services probably won't benefit from using Sprints as 'value-creation timeboxes'.
+
+#### Tips
+
+- Help Product Owners plan ahead by identifying potential objectives for upcoming Sprints.
+- You can use the Liberating Structure [Nine Whys](https://medium.com/the-liberators/use-nine-whys-to-discover-the-purpose-of-your-team-e2a3125c2b36) during Sprint Planning to help Scrum Teams determine the purpose of the Sprint.
+- Ask powerful questions to help Product Owners dig deeper into the “Why” of their decisions, like: 
+  - “If the entire Product Backlog was lost, what would be the first things you would bring back at this moment in time? Why?”
+  - “What do you hope this objective makes possible for stakeholders or in this organization?”
+  - “What opportunity would be lost if don't do this item this Sprint?”
+- The Sprint Review offers potential objectives for the next Sprint(s) when you make good use of this event to gather feedback from stakeholders and to debrief together.
+- Use a template to craft Sprint Goals, for example:
+  - “This Sprint exists in order to…” 
+  - “This Sprint, we promise to…“
+- Make your Sprint Goal transparent by hanging it in the room or putting it above the Sprint Backlog. A nice template for crafting Sprint Goal can be referred [here](https://www.romanpichler.com/blog/sprint-goal-template/).
+- Begin each Scrum Event by stating the Sprint Goal.
+- Don't worry if you can't relate all the items on a Sprint Backlog directly to the Sprint Goal.
+- Find Sprint Goals that offer guidance during the Sprint and promote collaboration in your team.
 
 ### Scrum from the Trenches - the Sprint Goal
 
