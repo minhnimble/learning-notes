@@ -104,9 +104,10 @@ Questions to consider
 * What steps has the company taken to ensure that team members continue to learn and grow? 
 * What new things have team members learned recently? 
 
-3. _Openness_. A growing organization isn't going to figure out the most effective product idea, engineering design, or organizational process on its first attempt. If it can continuously learn and adapt from past mistakes, however, then it stands a much better chance of success. That's more likely to happen if employees challenge each others' decisions and incorporate feedback into the future iterations. Look for a culture of curiosity, where everyone is encouraged to ask questions, coupled with a culture of openness, where feed- back and information is shared proactively. Reflecting on failed projects, understanding what caused production outages, and reviewing the returns on different product investments all help the right lessons get internalized. 
+3. _Openness_. A growing organization isn't going to figure out the most effective product idea, engineering design, or organizational process on its first attempt. If it can continuously learn and adapt from past mistakes, however, then it stands a much better chance of success. That's more likely to happen if employees challenge each others' decisions and incorporate feedback into future iterations. Look for a culture of curiosity, where everyone is encouraged to ask questions, coupled with a culture of openness, where feedback and information are shared proactively. Reflecting on failed projects, understanding what caused production outages, and reviewing the returns on different product investments all help the right lessons get internalized. 
 
-Questions to consider 
+Questions to consider:
+
 * Do employees know what priorities different teams are working on? 
 * Do teams meet to reflect on whether product changes and feature launches were worth the effort? Do they conduct post-mortems after outages? 
 * How is knowledge documented and shared across the company? 
@@ -162,7 +163,7 @@ What should you do with that 20% time?
 ## Always Be Learning
 
 Adopting a growth mindset, not limited to the workplace. Embracing a growth mindset in which you're motivated to learn about the things that excite you. 
- 
+
 10 starting points to help inspire a habit of learning outside of the workplace: 
 * Learn new programming languages and frameworks. ✅
 * Invest in skills that are in high demand. ✅
@@ -707,7 +708,7 @@ Activities where automation can help include:
 
 One technique to make batch processes (a sequence of actions without human intervention) easier to maintain and more resilient to failure is to make them idempotent. An idempotent process produces the same results regardless of whether it's run once or multiple times.
 
-Structuring a batch process so that it's at least retry-able or re-entrant can still help. A retry-able or reentrant process is able to complete successfully after a previous interrupted call.
+Structuring a batch process so that it's at least retry-able or re-entrant can still help. A retry-able or reentrant process is completed successfully after a previous interrupted call.
 
 ## Hone Your Ability to Respond and Recover Quickly
 

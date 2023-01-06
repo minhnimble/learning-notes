@@ -24,7 +24,7 @@ Twelve principles that we should follow:
 #### The Independent Signatories
 
 while there is value in the items on the right, we value the items on the left more:
-   
+
 - __Individuals and interactions__ over processes and tools.
 - __Working software__ over comprehensive documentation.
 - __Customer collaboration__ over contract negotiation.
@@ -956,7 +956,54 @@ Three important purposes of Sprint Goals:
 
 ### Scrum from the Trenches - the Sprint Goal
 
-TBD
+![Screenshot 2023-01-06 at 18 00 06](https://user-images.githubusercontent.com/70877098/211002167-30b5a592-5b33-4e76-9876-579199ed04be.png)
+
+#### Challenges with the Sprint Goal
+
+- **Challenge #1: There is no Sprint Goal**
+
+  Tips to help improve this:
+
+   - Ask around and have a constructive conversation with the Scrum Team about why there is no Sprint Goal.
+   - Talk to the Product Owner (or if you are one, ask yourself this question): `what is it that we want to achieve at the end of this Sprint?`
+   - Be patient. Change takes time. Don't be hesitant to experiment. People are more eager to try something out and verify the outcome (experiment) than they are open to enforced changes from the outside.
+
+- **Challenge #2: The work is the Sprint Goal**
+  
+  Tips:
+  
+   - Product Owners should share their vision and what goals need to be achieved next. They should talk about it, share it, get feedback on it.
+   - Product Owners take the lead in Sprint Planning. And they should at first, but then they have to let the Developers self-manage how to achieve the Sprint Goal.
+
+- **Challenge #3: There is no room for anything else**
+
+  Potential problems:
+
+   - The solution thought of turns out to be a lot harder to implement;
+   - Production failures need fixing;
+   - Danny (the guy everyone relies on) is ill (again!);
+   - The Product Owner promised a particular stakeholder that he can get this last minute fix in the Sprint anyway.
+  
+  Tips:
+  
+   - Product Owners should share their vision and what goals need to be achieved next. They should talk about it, share it, get feedback on it.
+   - Product Owners take the lead in Sprint Planning. And they should at first, but then they have to let the Developers self-manage how to achieve the Sprint Goal.
+
+- **Challenge #4: There is no focus on the Sprint Goal**
+  
+  Tips:
+  
+   - Be transparent. Make sure the Sprint Goal is visible somewhere for everyone to see.
+   - Talk about it. During Daily Scrum, make sure the Sprint Goal is the (only) topic of conversation.
+   - Make sure Product Backlog Items on your Sprint relevant for the Sprint goal are on top and worked on first.
+
+- **Challenge #5: The goal is not a goal**
+  
+  Tips:
+  
+   - Formulating the Sprint Goal as really technical or on the -how- axes may be caused by underlying aspects of the organizational culture.
+   - Check if the accountabilities within the Scrum Team are not clear or not practiced.
+
 
 ### Six Reasons Why You Need to Pay More Attention to the Sprint Goal
 
