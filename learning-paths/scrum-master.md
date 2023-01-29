@@ -1007,11 +1007,59 @@ Three important purposes of Sprint Goals:
 
 ### Six Reasons Why You Need to Pay More Attention to the Sprint Goal
 
-TBD
+- _Gives the Development Team some flexibility_ → If a team knows their Sprint Goal, they can regroup and achieve the Goal, even with less functionality than planned. For example for the goal - `Implement the functionality for user registration`, then at the end of the Sprint, the team realizes that they have no time for implementing __the Restore Password feature__. However, the goal can be achieved because the end users can __sign up__ and __create their profiles__.
+
+- _Gives sense to the tasks and motivates the Team_ → People tend to be more enthusiastic and enjoy their work when they understand what it's for.
+
+- _Unites the Development Team_ → Team members need to work together as one instead of pursuing separate initiatives.
+
+- _Helps in managing risks_ → During the Sprint, the Development Team may implement prototypes in order to lower the risk of a worse decision.
+
+- _Helps with focus and making decisions_ → Let's imagine that during the Daily Scrum on the third day of Sprint, a developer says he found out how to fix a bug that the team couldn't reproduce over the last few weeks. However, the team reminds him that the bug has a lower priority than the tasks at hand. Moreover, it is not related to the current Sprint Goal, so it will be fixed during the next Sprint if the Product Owner puts it on top of the Product Backlog.
+
+- _Helps manage stakeholders' expectations_ → Stakeholders don't need to know all the details of the plan that the Scrum Team is working on during the Sprint. Often, the Sprint Goal is enough to satisfy their curiosity.
 
 ### Getting to Done: Creating Good Sprint Goals
 
-TBD
+Here are 4 common problems with Sprint Goals and a few tips for improving them:
+
+1. The Sprint Goal is too big:
+  - _We are working on multiple unrelated projects or initiatives_ → When ordering Sprint Backlog in Sprint planning, consider both cohesion of the work and the top priority (singular) initiative.
+  - _We try to encompass every Product Backlog Item (PBI)_ → This is the equivalent of not having a Sprint Goal at all. Take the time to do it properly.
+  - _We think the team may not work as hard if the challenge isn't big enough_ → Trust team members to figure out if there can be more functionalities/improvements to be done.
+
+2. The Sprint Goal is vague: 
+  - During Sprint Planning, ask "how will we know if we have achieved the Sprint Goal?"
+
+  - Make the Sprint Goal measurable.
+
+  - Use a consensus technique to everyone's understanding and commitment to the Sprint Goal. This is also a way to help encourage team ownership.
+
+    Some examples from `Unclear Sprint Goal` → `Clearer Sprint Goal` can be:
+	
+	  - `Enhance shopping cart functionality` → `Streamline the purchasing process to enable an increase in conversion rates`.
+    - `Improve performance` → `Increase page load time by X%`.
+    - `On-board new market segment` → `Enable new market segment to purchase Service Y`.
+
+3. The team doesn't pay attention to the Sprint Goal during the Sprint:
+  - Make it visible by:
+    - Writing the Sprint Goal on or near the Scrum Board.
+    - Making it large.
+    - Using a color or border that stands out.
+  
+  - Talk about progress towards the Sprint Goal in the Daily Scrum (can help improve team collaboration):
+    - Make it part of the Daily Scrum.
+    - Ask the team at the end of the Daily Scrum how they feel about the likelihood of achieving the Sprint Goal.
+  
+  - Make the Sprint Goal a team measure and keep it visible in the team space:
+    - Keep this information visible helps the team think about it.
+    - Historical data and trends can be used for discussion in the Sprint Retrospective.
+    - A word of caution: Achieving a Sprint Goal is pass/ fail, there is no such thing as 85% achieved.
+
+4. The Sprint Goal doesn't feel meaningful:
+  - Make it business or user focused when possible → What will a user be able to do when we implement this feature?
+  - Make it focused on testing business assumptions and getting feedback → We do not know what users actually need or are willing to do (because even users don't know). Thus, a Product Owner needs early feedback to test assumptions regarding value to users.
+  - Make it focused on reducing risk → Proving out a __technology__ or __design__ is an important part of reducing risk. The earlier we change direction, the cheaper the cost of the change.
 
 ### An Introductory Video Series to Scrum: Sprint Backlog and Sprint Goal
 
