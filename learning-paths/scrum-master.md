@@ -853,7 +853,11 @@ To be more professional and have continuous improvements (Football example) → 
 
 ### The Importance of Product Backlog Transparency
 
-TBD
+Product Backlog: make transparent all the work and express the values that we put into our product to all members.
+
+Top items: highest priority work (highest in value to Stakeholders), set by the PM. PM needs to talk to all members to figure out the right orders.
+
+Recommendation: Show the product backlog in sprint reviews as part of the inspection to figure out what is the best thing to do in the next sprint.
 
 ### Myth: The Sprint Backlog can't change during the Sprint
 
@@ -1063,13 +1067,65 @@ Here are 4 common problems with Sprint Goals and a few tips for improving them:
 
 ### An Introductory Video Series to Scrum: Sprint Backlog and Sprint Goal
 
-TBD
+Sprint Backlog: 
+
+- Definition: A forecast created by DT in order to meet the sprinkles or sprint goal (this is done by the PM or TL in Nimble :thinking_face:)
+- Commitment: is the single Sprint Goal collaboratively defined in the sprint planning event.
+- More things can be learned by the DT throughout the sprint, daily scrums, optional refinement, and feedback → adaption are necessary.
+- Anyone who is working with the DT needs to know that planning can change and the DT will be transparent about the changes.
+- The DT and PM may influence each other to change the product backlog and sprint backlog respectively → The DT doesn't have to change anything.
+
+Sprint Goal:
+
+- Focus: is the coherence the DT has committed to and worked to achieve as there can be different ways to achieve.
+- Can be measured to have been met or not met.
+- The DT needs to self-manage or reallocate during the sprint if the spring goal is in danger of not being met.
+- Not everything in the sprint backlog contributes towards a sprint goal. (small pieces of work that just need to be completed)
+- Sprint goal won't change even if the DT learns something that the work turns out to be different than expected i.e. emerged critical work (support queries, major incidents).
+- When the sprint goal is obsolete, the PM will make the decision to cancel → The scrum team immediately move into sprint planning and restart the sprint with a new goal.
 
 ## Done
 
 ### Getting Started with a Definition of Done (DoD)
 
-TBD
+Definition of Done:
+- Provides a shared understanding of work completed in the Increment. 
+- Product Backlog items must meet Definition of Done to be released or presented at Sprint Review. 
+- Items that don't meet Definition of Done return to Product Backlog for future consideration.
+
+![naked-Agility-Scrum-Framework-Definition-of-Done-920x720](https://user-images.githubusercontent.com/70877098/216801660-cbbe6dbb-cafe-4c1b-bdc8-6e6ce92a2da8.jpg)
+
+The DT needs to:
+- Decide what **Done** means within the organizational context and the product domain. 
+- Sit down and create a list of things that must be true for every Increment of software that they deliver.
+
+#### What is a Definition of Done (DoD)
+
+Here are some characteristics of a Definition of Done:
+- A short, measurable checklist.
+- Mirrors shippable. → While you might not have shipped your product, you should have that choice. 
+- No further work.
+
+Tips: Get the Scrum Team (the PO, the DT, and any relevant Stakeholders) into a facilitated DoD Workshop.
+
+#### My first Definition of Done (DoD)
+
+Examples of things to put on your definition of done:
+- Increment Passes SonarCube checks with no Critical errors → Work on improving it over time.
+- Increment's Code Coverage stays the same or gets higher → Looking at a specific measure, like 90%, of code coverage.
+- Increment meets agreed engineering standards → Decide rules for naming methods, tests, variables, and everything in between. (Compass)
+- Acceptance Criteria for Increment pass → Recommended - automating them with [ATDD practices](https://nkdagility.com/blog/you-are-doing-it-wrong-if-you-are-not-using-test-first/).
+- Acceptance Tests for Increment are Automated → Make sure that you automate all of your tests
+- Security Checks Pass on Increment → Use an automated tool.
+- Increment meets agreed UX standards → Can make use of Wiki.
+- Increment meets agreed Architectural Guidelines → Can make use of Wiki.
+
+#### Growing your Definition of Done (DoD)
+
+Tips:
+- Reflect on your __Definition of Done__ on a regular cadence and should always check whether your DoD fits your needs.
+- If a significant issue results in you not having working software, then you need to stop and fix it. (Such an event is called a __Scrumble__).
+- If a non-significant issue exists, keep working and add what you need to your Product Backlog.
 
 ### Walking Through a Definition of Done
 
