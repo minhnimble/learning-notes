@@ -1129,11 +1129,73 @@ Tips:
 
 ### Walking Through a Definition of Done
 
-TBD
+`“No book of mine is complete without a dog” - Peter Temple`
+
+The tyranny of work which is nearly done, but not really done, can put a team in servitude to technical debt. Team members are obliged to repay the “deficit for release” at compounding rates of interest, as it becomes harder and harder with each Sprint to bring that delinquent, half-finished work into a usable and releasable state. 
+
+__DoD tips__ (applies to an increment)
+
+1. Environments are prepared and checked for release:
+  - No unintegrated work in progress has been left in any development or staging environment.
+  - The continuous integration framework is verified and working, including regression tests and automated code reviews.
+  - All of the test data used to validate the features in the release has itself been validated.
+
+2. Handover to support is complete:
+  - All design models and specifications, including user stories and tests, must be accepted by support personnel.
+  - Support personnel must also be satisfied that they are in competent control of the supporting environment.
+
+3. Review ready:
+  - Sprint metrics ought to be available, including burn-down or burn-up charts.
+  - User stories which have not been completed ought to be re-estimated and returned to the Product Backlog.
+
+4. Code Complete:
+  - All “To Do” annotations must have been resolved.
+  - The source code has been commented to the satisfaction of the Development Team.
+  - Source code should have been refactored to make it understandable, maintainable and better able to support future change.
+  - Unit test cases must have been designed for all of the features in development and allow requirements to be traced to the code implementation 
+  - Code coverage should be known, and should meet or exceed the standard required.
+  - Unit test cases should have been executed and the increment proven to work as expected.
+  - Peer reviews ought to be done. (Note: If pair programming is used, a separate peer review session might not be required).
+  - Source code is checked into the configuration management system with appropriate, peer-reviewed comments added.
+  - Source code should have been merged with the main branch and the automatic deployment into elevated environments should be verified.
+
+5. Test Complete:
+  - Functional testing should be done. 
+  - A test report should have been generated.
+  - All outstanding defects (or incidents such as build issues) should be elicited and resolved, or accepted by the team as not being contra-indicative to release.
+  - Regression testing has been completed.
+  - The functionality provided in previous iterations has been shown to still work.
+  - Performance, security, and user acceptance testing should have been done.
+  - The product should be shown to work on all required platforms.
+
+__Deficits for a Release__
+
+"Done" criteria which are needed to effect a release, but which cannot yet be observed, constitute a deficit → they should be enumerated here (e.g. by moving them out of the Definition of Done).
+
+`"Better a little which is well done than a great deal imperfectly" - Plato`
+
+- Different teams, individuals, and consumers of the work (end-customers, business managers, etc.) in team have different ideas to what work completeness (coding UI, logic, etc.) means → DoD is the standard terms for everyone to refer to. Dod takes a incremental release of the project as close as possible to be potentially releasable, defined by the PM decisions and organizational standards (our Compass, or the client's constraints). 
+- Every time there is disparity in Done → create rework and wasted efforts.
 
 ### Introductory Video Series to Scrum: Increment and Definition of Done
 
-TBD
+__Increment__ points:
+- are accumulative i.e. they are built on top of one another.
+- is something done that is inspectable to determine whether the scrum team have moved further towards the product goal.
+- presented at the sprint review as an artifact designed to elicit feedback and gather evidence for PO to make next focus decision.
+- must be usable.
+- can be deliver at any point of the sprint, not just sprint review (sprint review is not a roadblock preventing value delivered to stack holders)
+- DoD is a formal description of the increment and therefore the product by Scrum team, and must follow the organization standards if any.
+- include multiple product backlog items, formed a larger increment.
+- can be referred to as a common language of inspection.
+- product backlog items don't meet the DoD are return to the product backlog for later ordering and sizing.
+- always pay attentions to the users' needs at all times.
+- DoD is not fixed and evolved over time → as we gather more evidence about what is needed by our users.
+
+__Summary__:
+- Never say: "Let's release the project and take a risk" → less stable and harder to fix the product overtime.
+- Treat DoD meaningfully and respectfully alongside your increments during sprint review.
+- Show the outcome that development team delivered rather than simply the output (code implementation).
 
 ## Scaling Scrum
 
