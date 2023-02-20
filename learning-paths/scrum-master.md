@@ -1069,7 +1069,7 @@ Here are 4 common problems with Sprint Goals and a few tips for improving them:
 
 Sprint Backlog: 
 
-- Definition: A forecast created by DT in order to meet the sprinkles or sprint goal (this is done by the PM or TL in Nimble :thinking_face:)
+- Definition: A forecast created by DT in order to meet the sprinkles or sprint goal (this is done by the PM or TL in Nimble 🤔)
 - Commitment: is the single Sprint Goal collaboratively defined in the sprint planning event.
 - More things can be learned by the DT throughout the sprint, daily scrums, optional refinement, and feedback → adaption are necessary.
 - Anyone who is working with the DT needs to know that planning can change and the DT will be transparent about the changes.
@@ -1201,7 +1201,81 @@ __Summary__:
 
 ### The Nexus Guide
 
-TBD
+Nexus is a framework for developing and sustaining scaled product delivery initiatives. Scaled Scrum is still Scrum.
+
+The Nexus Guide - 2021 (PDF English version): ![NexusGuide_2021](/resources/NexusGuide_2021.pdf)
+
+The Nexus Guide (online English version): https://www.scrum.org/resources/online-nexus-guide
+
+#### Takeaways:
+
+__Nexus Definition__
+
+A Nexus:
+- Is a group of approximately three to nine Scrum Teams that work together to deliver a single product.
+- Has a single Product Owner who manages a single Product Backlog from which the Scrum Teams work.
+
+A Nexus framework:
+- defines the accountabilities, events, and artifacts that bind and weave together the work of the Scrum Teams in a Nexus.
+- builds upon Scrum's foundation.
+
+__Nexus Theory__
+
+The goal of Nexus:
+- Scale the value that a group of Scrum Teams, working on a single product, is able to deliver.
+- Reduce the complexity that those teams encounter as they collaborate to deliver an integrated, valuable, useful product Increment at least once every Sprint.
+- Reduce cross-team dependencies, preserving team self-management and transparency, and ensuring accountability often caused by:
+  - Product structure: The degree to which different concerns are independently separated in the product.
+  - Communication structure: delays in communication and feedback reduce the flow of work.
+- Provide opportunities to change the process, product structure, and communication structure to reduce or remove these dependencies. 
+
+Note: Scaling the value that is delivered does not always require adding more people. Scaling-down, reducing the number of people who work on something, can be an important practice in delivering more value.
+
+__The Nexus Framework__
+
+![The Nexus Framework](https://user-images.githubusercontent.com/70877098/220085941-e4d68f5e-9c07-4a67-b23a-ee3521a74ea9.png)
+
+Nexus extends Scrum in the following ways:
+
+- Accountabilities: The Nexus Integration Team ensures that the Nexus delivers a valuable, useful Integrated Increment at least once every Sprint. The Nexus Integration Team consists of the Product Owner, a Scrum Master, and Nexus Integration Team Members.
+
+- Events: Events are appended to, placed around, or replace regular Scrum events to augment them. As modified, they serve both the overall effort of all Scrum Teams in the Nexus, and each individual team. A Nexus Sprint Goal is the objective for the Sprint.
+
+- Artifacts: All Scrum Teams use the same, single Product Backlog. As the Product Backlog items are refined and made ready, indicators of which team will most likely do the work inside a Sprint are made transparent. A Nexus Sprint Backlog exists to assist with transparency during the Sprint. The Integrated Increment represents the current sum of all integrated work completed by a Nexus.
+
+__Accountabilities in Nexus__
+
+In Nexus, an additional accountability is introduced, the Nexus Integration Team.
+
+__Nexus Integration Team__
+
+- Is accountable for ensuring that a done Integrated Increment (the combined work completed by a Nexus) is produced at least once a Sprint.
+- Common activities the Nexus Integration Team: coaching, consulting, and highlighting awareness of dependencies and cross-team issues.
+- The Nexus Integration Team consists of:                                          
+  - The Product Owner: A Nexus works off a single Product Backlog. The Product Owner is accountable for maximizing the value of the product and the work performed and integrated by the Scrum Teams in a Nexus and for effective Product Backlog management.
+  - A Scrum Master: The Scrum Master in the Nexus Integration Team is accountable for ensuring the Nexus framework is understood and enacted as described in the Nexus Guide. This Scrum Master may also be a SM in one or more of the Scrum Teams in the Nexus.        
+  - One or more Nexus Integration Team Members: The Nexus Integration Team often consists of Scrum Team members who help the Scrum Teams to adopt tools and practices that contribute to the Scrum Teams’ ability to deliver a valuable and useful Integrated Increment that frequently meets the Definition of Done.
+
+__Nexus Events__
+
+Nexus events consist of:
+
+- _The Sprint_ - A Sprint in Nexus is the same as in Scrum.
+- _Cross-Team Refinement_ - of the Product Backlog at scale serves a dual purpose:
+  - helps the Scrum Teams forecast which team will deliver which Product Backlog items.
+  - identifies dependencies across those teams.
+- _Nexus Sprint Planning_ - results are:
+  - a Nexus Sprint Goal that aligns with the Product Goal and describes the purpose that will be achieved by the Nexus during the Sprint.
+  - a Sprint Goal for each Scrum Team that aligns with the Nexus Sprint Goal.
+  - a single Nexus Sprint Backlog that represents the work of the Nexus toward the Nexus Sprint Goal and makes cross-team dependencies transparent.
+  - A Sprint Backlog for each Scrum Team, which makes transparent the work they will do in support of the Nexus Sprint Goal.
+- _Nexus Daily Scrum_ - identify any integration issues and inspect progress toward the Nexus Sprint Goal. Cross-team communication can occur throughout the day for more detailed discussions about adapting or re-planning the rest of the Sprint's work.
+- _Nexus Sprint Review_ - is held at the end of the Sprint to provide feedback on the done Integrated Increment that the Nexus has built over the Sprint and determine future adaptations. A Nexus Sprint Review replaces individual Scrum Team Sprint Reviews.
+- _Nexus Sprint Retrospective_ - plan ways to increase quality and effectiveness across the whole Nexus, and concludes the Sprint.
+- _Nexus Artifacts and Commitments_ - Artifacts represent work or value, and each artifact contains a commitment:
+  - Artifact: Product Backlog <-> Commitment: Product Goal - describes the future state of the product and serves as a long-term goal of the Nexus.
+  - Artifact: Nexus Sprint Backlog <-> Commitment: Nexus Sprint Goal - is a single objective for the Nexus and is the sum of all the work and Sprint Goals of the Scrum Teams within the Nexus.
+  - Artifact: Integrated Increment <-> Commitment: Definition of Done - defines the state of the integrated work when it meets the quality and measures required for the product and is done only when integrated, valuable, and usable.
 
 ### Nexus Framework Poster
 
