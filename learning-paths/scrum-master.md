@@ -1207,7 +1207,7 @@ The Nexus Guide - 2021 (PDF English version): ![NexusGuide_2021](/resources/Nexu
 
 The Nexus Guide (online English version): https://www.scrum.org/resources/online-nexus-guide
 
-#### Takeaways:
+#### Takeaways
 
 __Nexus Definition__
 
@@ -1232,8 +1232,6 @@ The goal of Nexus:
 Note: Scaling the value that is delivered does not always require adding more people. Scaling-down, reducing the number of people who work on something, can be an important practice in delivering more value.
 
 __The Nexus Framework__
-
-![The Nexus Framework](https://user-images.githubusercontent.com/70877098/220085941-e4d68f5e-9c07-4a67-b23a-ee3521a74ea9.png)
 
 Nexus extends Scrum in the following ways:
 
@@ -1279,15 +1277,110 @@ Nexus events consist of:
 
 ### Nexus Framework Poster
 
-TBD
+![The Nexus Framework](https://user-images.githubusercontent.com/70877098/220085941-e4d68f5e-9c07-4a67-b23a-ee3521a74ea9.png)
 
 ### An Introduction to the Nexus Framework
 
-TBD
+The Nexus Framework Introduction - 2016 (PDF English version): ![Nexus_Framework_Introduction_June_2016](/resources/Nexus_Framework_Introduction_June_2016.pdf)
+
+#### Takeaways
+
+Definition: The Nexus framework is a foundation to plan, launch, scale and manage large product and software development initiatives.
+
+The Nexus framework was created by Ken Schwaber, co-creator of the Scrum framework.
+
+When multiple Scrum Teams are working on one product as it allows the teams to unify as one larger unit, a Nexus. It protects and strengthens the teams by creating connections between them and by maintaining bottom-up intelligence.
+
+It is extremely useful for those struggling with a scaled initiative as the framework focuses rigorously on two core scaling matters: __cross-team dependencies__ and __integration issues__.
+
+The Nexus Integration Team (NIT) works off the Product Backlog and takes ownership of any integration issues. Integration includes resolving any technical and non-technical cross-team concerns.
+
+A Nexus works within the boundaries of a __Sprint__ (30 days or less).
+
+To start a Nexus, organizations should first:
+- Identify the teams in their Nexus.
+- Form an initial Nexus Integration Team.
+- Have a single Product Backlog.
+- Have a definition of “Done”.
+- Identify a Sprint cadence.
+
+For larger initiatives you can form the Nexus+™ (using 10+ teams).
+
+Avoid having dependencies across Nexuses by take advantage of the technologies or architectural patterns existing today.
 
 ### Cross-Team Refinement in Nexus
 
-TBD
+Cross-Team Refinement in Nexus (PDF English version): ![Cross-Team_Refinement_in_Nexus](/resources/Cross-Team_Refinement_in_Nexus.pdf)
+
+#### Takeaway
+
+__Cross-Team Refinement__
+
+Representatives from each team attend and should be selected and attend the workshop based on the work being refined.
+
+In a Nexus, there are many Scrum Teams pulling work from a single Product Backlog; therefore, new Refinement questions need to be answered:
+- Which teams pull what work?
+- How can we best sequence the work, across Sprints and teams to balance early delivery of value against risk and complexity?
+
+_Which teams pull what work?_
+
+- Decompose and sequence Product Backlog Items: 
+  - The Product Owner should explain the PBIs to be refined.
+  - Expect initial conversations to focus on the liquidity of skills. (e.g. which teams have the skills necessary
+to undertake what work.) 
+
+Figure 1:
+
+![Figure 1](https://user-images.githubusercontent.com/70877098/220251285-0d959c2a-9a3f-4299-b2f3-93defbb21b78.png)
+
+_How can we best sequence the work, across Sprints and teams to balance early delivery of value against risk and complexity?_
+
+- Visualize and Manage Dependencies - Categories for dependencies may include:
+  - Build Sequence – An item cannot be completed until its parent is complete (can include technology, domain, software...).
+  - People / Skills – Only certain people / teams can complete an item.
+  - External – The parent item is being delivered outside the Nexus.
+
+Figure 2:
+
+![Figure 2](https://user-images.githubusercontent.com/70877098/220251287-c13c5326-1da6-4455-b61d-81b99b8b130b.png)
+
+Tips:
+- At a minimum, consider identifying external dependencies with a color, and add additional color codes to denote common causes of dependencies in your organization e.g. Operations, Legal, DBA Team etc.
+- Dependencies should be represented in the form of arrows (dependency arrows), because the direction of the arrows indicates parent to child relationships and their direction informs delivery risk. (e.g. Item number 8 depends on Item number 4.)
+  - A dependency arrow that is horizontal represents a dependency within a single team across time.
+  - A dependency arrow that is diagonal represents a dependency that is across teams and across time.
+  - A dependency arrow that is across teams within a single Sprint is vertical.
+- External Dependencies typically do not have an ID.
+  - Downward facing diagonal dependency arrow is external across time.
+  - Downward facing vertical dependency arrow is external and represents another in Sprint dependency.
+- Once dependencies have been visualize:
+  - Teams might move toward a model - a single team owns a feature from start to finish → Good for minimizing cross-team dependencies, bad as the model might cause delayed delivery.
+  - Moving work between teams so that there are less cross-team dependencies.
+  - Moving people between teams so that there are less cross-team dependencies.
+  - Reshaping the work to eliminate dependencies.
+  - Using different risk-based strategies, e.g., entirely remove an ‘in-Sprint’ cross-team dependency, front load all the risk as early as possible and take many cross-team in-Sprint dependencies in earlier Sprint.
+
+__Continuous Cross-Team Refinement__
+
+Cross-Team Refinement should be scheduled regularly for teams to discuss new items as well as for time to adjust the board as needed with any new information, e.g., using the Cross-Team Refinement board as a focal point (Figure 2), we can see that if Item 2 is not finished in the current Sprint, then it will move into the next Sprint. This slip will create an
+additional in-Sprint dependency between items 2 and 6 (Figure 3). We can see that there is already an
+in-Sprint dependency in the next Sprint between items 5 and 6.
+
+Figure 3:
+
+![Figure 3](https://user-images.githubusercontent.com/70877098/220275991-426a4958-5d96-40b1-9444-6d298e55c361.png)
+
+Cross-Team Refinement does not replace individual Scrum Team Product Backlog refinement.
+
+__Tracking Dependencies Over Time__
+
+- Use the number and type of dependencies as an improvement measure.
+- Limit the number of dependencies they will accept, by limiting the number of arrows allowed e.g., we only have 10 dependency arrows to use when building the Cross-Team Refinement board. Once that limit is met, we cannot pull any more items with dependencies into the next 3 Sprints.
+
+__Cross-Team Refinement and Nexus Sprint Planning__
+
+- Take Cross-Team Refinement information into Nexus Sprint Planning for the teams to plan for the current Sprint and its dependencies.
+- Use it as a focal point for daily cross-team synchronization about risk and progress during the Nexus Daily Scrum.
 
 ### Visualizing the Nexus Sprint Backlog
 
