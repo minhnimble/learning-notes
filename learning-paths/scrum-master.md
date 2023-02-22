@@ -1384,11 +1384,48 @@ __Cross-Team Refinement and Nexus Sprint Planning__
 
 ### Visualizing the Nexus Sprint Backlog
 
-TBD
+Effective Nexus Sprint Planning occurs in 2 steps:
+1. Each team in the Nexus selects their work for the Sprint. This is a collaborative activity with representation from each Scrum Team.
+2. Each team performs their normal Sprint Planning process. This occurs per Scrum Team and can happen in parallel.
+
+Representatives from each team can come together with the Product Owner to validate that the Sprint information is valid. If so, then the Nexus Sprint Backlog can be created using that information.
+
+All work that has dependencies should be visualized on the Nexus Sprint Backlog as shown in the below Figure 1:
+
+![Figure 1](https://user-images.githubusercontent.com/70877098/220603265-db440d18-b75c-4eab-abf6-c54ae47c6f28.png)
+
+It shows in-Sprint dependencies between the teams during the Sprint:
+- Product Backlog Item (PBI) 1, being delivered by Team B, depends on PBI 4, being delivered by Team A.
+- Product Backlog Item (PBI) 3, being delivered by Team C, depends on PBI 8, being delivered by Team B.
+
+It may be possible for work to begin on a dependent item before it becomes blocked by a dependency. For instance, in Figure 1, PBI 4 is “In Progress,” and PBI 1 is dependent on it being completed, as represented by an annotation dependency sticker. When Team A finishes Item 4, they should place it into “Done” and remove the annotation dependency sticker (e.g. the black stickie number 1). This is a rigger to remove Item 1 from the “Blocked” column. Team A can let Team B know that Item 1 is ready
+for them to continue working on.
+
+→ During the Nexus Daily Scrum, the Nexus Sprint Backlog board is normally a focal point. If a Nexus does not have in-Sprint dependencies, as an alternative, teams may choose to represent the Nexus Sprint Backlog through the current Sprint column within the Cross-Team Refinement Board.
 
 ### 3 Ideas to Improve a Scaled Sprint Review
 
-TBD
+[5 Characteristics of a Great Sprint Review](http://www.barryovereem.com/the-sprint-review-with-invisibly-present-stakeholders/):
+- Stakeholders are difficult to recognize → they blend themselves between the Scrum Teams making it one big collaborating group of people.
+- Every Developer Participates.
+- Feedback. Feedback. Feedback → Everyone could actually use the product and share experiences and lessons learned.
+- A Tailor-Made Sprint Review → A great Scrum Team continuously searches for the ideal format to gather feedback, e.g., sometimes using different market stalls for every team, sometimes a central demonstration & discussion, etc.
+- Beer & Bitterballen → the follow-up Retrospective processes the Sprint Review and discuss possible improvements combined with beer & bitterballen.
+
+Some pitfalls start to appear, for example:
+- The Sprint Review becomes a Demo.
+- Stakeholder abundance → this is not only time consuming, but it also doesn't add any value for the Scrum Team, who wants detailed feedback on their previous Sprint.
+- Developers are not participating anymore.
+
+⇒ Ideas for Experiments:
+
+1. Organize a monthly demo besides the bi-weekly Sprint Review.
+2. Organize "small circle" and " large circle" 2-part Sprint Reviews:
+  - Each team uses the first part of Sprint Review (say 40 minutes for a 2 week sprint worth of stories) to get detailed feedback from their own “small circle” of mandated users/accepters (a small group of 4-6 people) with whom the team and Product Owner works with closely for both Backlog and user story level refinement and acceptance. 
+  - Then the teams proceed to the joint demo- the “ large circle” where each team presents a summary of the increment and its value (thus not the details per story) to the other teams and management/wider stakeholders.
+3. Continuous-flow acceptance decoupled from Sprint Reviews:
+  - Make stories smaller, more vertical, etc, and consequently, they are getting good at getting valuable stories to "done"  every few days.
+  - Embraced Getting Things Done and face-to-face collaboration to achieve this.
 
 ### How Net Health Used Team Self-Selection to Reorganize Their Scaling Initiative
 
