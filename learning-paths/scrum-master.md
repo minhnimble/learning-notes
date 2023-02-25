@@ -1429,11 +1429,53 @@ Some pitfalls start to appear, for example:
 
 ### How Net Health Used Team Self-Selection to Reorganize Their Scaling Initiative
 
-TBD
+Why Net Health Implemented Scrum and Nexus:
+
+![Screenshot 2023-02-22 at 23 43 50](https://user-images.githubusercontent.com/70877098/220697144-95d4a11e-9012-4342-a3a1-aced8bec3d5b.png)
+
+3 Knobs to adjust and optimize outcomes of product development → `Team optimization` is the best choice:
+
+<img width="802" alt="Screenshot 2023-02-25 at 10 13 53" src="https://user-images.githubusercontent.com/70877098/221333273-e45a6358-661b-44fa-904a-d715335be2f2.png">
+
+Stakeholder Identified Constraints:
+
+<img width="1355" alt="Screenshot 2023-02-25 at 10 24 09" src="https://user-images.githubusercontent.com/70877098/221333719-22f358dc-f6de-4cb1-8a9c-dcea9eab6faf.png">
+
+Nexus Member Card:
+
+<img width="323" alt="Screenshot 2023-02-25 at 10 31 11" src="https://user-images.githubusercontent.com/70877098/221334011-63fb22a5-dcea-49bc-a949-ed4d90a1ad36.png">
+
+Key takeaways/tips:
+- Prefer each individual to choose their Scrum Team instead of organizing teams around the work → Nexus supports this.
+- Can add Business Analyst (BA) on Scrum Teams.
+- Team formation: use Nexus Member Card per person (Name, Title, Team Constraint, Scrum Master status) → add the card a team board → check constraints (what needed to happen in a Nexus) → vote of confidence (Green, Yellow, Red).
+- Encourage team members to grow and become Scrum Masters.
+- Define team names, timeline of team formation, NIT presentation, and Q&A time.
+- Team didn't want to be reorganized, felt conflicted from "top-down" organization and constraints.
+- BAs could choose which Scrum Teams to join.
+- People welcomed to switch teams to learn new things from different people.
+- Focus on the benefit of Nexus when forming teams.
+- Build trust between teams and their leaderships.
+- Encourage teams to form different teams whenever the need is visible.
+- Focus on simplicity (easy solutions) when dealing with scaled Scrums (Nexus).
 
 ### The Nexus Framework for Scaling Scrum Book
 
-TBD
+2021 Nexus Guide-related changes:
+- Development Teams is replaced with Scrum Teams. Any subsequent references to Development Team(s), or Development Team Members should also be replaced with Scrum Team(s) and Scrum Team Members.
+- The artifact Product Goal is added.
+- The heading Roles is changed to Accountabilities.
+- The event Refinement is changed to Cross-Team Refinement.
+- Development Team members on the Nexus Integration Team are now  Nexus Integration Team Members.
+- The Nexus Event Refinement is now Cross-Team Refinement.
+- The Nexus Sprint Planning no longer prescribes how to plan. Instead, it says that the result of Nexus Sprint Planning is:
+  - a Nexus Sprint Goal that aligns with the Product Goal and describes the purpose that will be achieved by the Nexus during the Sprint. 
+  - a Sprint Goal for each Scrum Team that aligns with the Nexus Sprint Goal
+  - a single Nexus Sprint Backlog that represents the work of the Nexus toward the Nexus Sprint Goal and makes cross-team dependencies transparent. 
+  - A Sprint Backlog for each Scrum Team, which makes transparent the work they will do in support of the Nexus Sprint Goal. 
+- Nexus no longer prescribes how to run the Nexus Sprint Retrospective, nor does it prescribe which questions to ask to facilitate discussions.The practices mentioned here are now considered optional practices.
+- Scrum now prefers the term self-managing over the term self-organizing. The same is true in Nexus.
+- Nexus no longer prescribes specific practices for the Nexus Sprint Retrospective. The practices described here should be regarded as optional, complementary practices.
 
 # Developing People and Teams
 
@@ -1441,15 +1483,84 @@ TBD
 
 ### Facilitation - Lead people and teams toward agreed-upon objectives
 
-TBD
+#### What is Facilitation?
+
+- Lead people toward agreed-upon objectives in a manner that encourages participation, ownership and creativity by all involved.
+- Good facilitation enables transparency and collaboration, creates synergy and leads to achieving a collective objective. 
+- Help people to understand and achieve their shared goals and objectives while remaining neutral and impartial.
+- Enable a purposeful and participative environment in which people feel safe to engage, learn and collaborate. 
+
+#### Facilitation Principles
+
+- __Participatory__ - Core to effective facilitation is full participation and engagement, which enables shared responsibility in a team.
+- __Healthy__ -  a healthy space where people feel safe to raise differences and even conflicting perspectives while respectfully learning from each other.
+- __Transparency__ - only exists when there is shared understanding.
+- __Process__ - progress toward the desired objective of the interaction in a way that is collaborative, inclusive and leverages diverse perspectives.
+- __Purposeful__ - have a clear objective that everyone is aligned with and works toward.
+
+#### Skills and Traits of a Facilitator
+
+- __Active Listening__ - focus on what is said and what is not said → lead by example, and inspire participants to both fully expressing themselves and engaging in active listening when others are speaking.  
+
+- __Encouraging Curiosity__ - encourage curiosity and different viewpoints → ask often open-ended questions to stimulate reflection and discussion.
+
+- __Problem Solving__ - apply group problem-solving techniques → define a problem, reframe it clearly and encourage the group to consider a range of solutions to the problem. 
+
+- __Resolving Conflict__ - Recognize that conflict among group members is natural, and does not need to be suppressed when expressed respectfully and constructively.
+
+- __Using a Participative Style__ - Encourage all participants to actively engage and contribute in activities and discussions → creating a safe and comfortable atmosphere for group members share their thoughts and ideas. 
+
+- __Encouraging Openness__ - Encourages the group to be open to other people’s ideas, suggestions and perspectives. 
+
+- __Empathizing and Showing Compassion__ - Be understanding, aware and respectful of the feelings, perspectives or actions of others.  
+
+- __Demonstrating Leadership__ - Lead a group of people to reach their collective goals and objectives. 
+
+- __Building Consensus__ - Be skilled in helping groups to achieve general agreement.
+
+- __Managing Time Effectively__ - Keep things on course while allowing flexibility → focus on achieving the outcome within a timeframe instead of a strict agenda. Overly restrictive time management can stifle good, purposeful conversations and reflection.
+
+- __Setting Objectives__ - Communicate the purpose of a meeting in a clear and concise manner → set a strong overarching objective (often done in collaboration with the team) instead of focusing on a strict agenda. 
+
+- __Communicating Adequately__ - Communicates effectively with clear and concise language.
+
+- __Being Organized__ - don't start or end with the act of facilitating a group of people → prepare and follow-up on decisions that were made.
+
+#### Why is Facilitation Beneficial for Scrum Teams?
+
+- Help a Scrum Team thrive as a self-managing team.
+- When someone on the team acts as an objective facilitator and knows how to frame problems to understand how Product Backlog Items, it may be valuable for customers.
+- Good lightweight facilitation can help the Scrum Teams get back on track when Scrum events don't go as planned e.g., if the Scrum Master observes that the team continually uses the Daily Scrum as a status update instead of an inspection of progress toward the Sprint Goal, then the Scrum Master could help team members to focus by reminding them of the purpose of the event.
+- When the Scrum Team and stakeholders inspect progress toward the Product Goal, taking on a facilitator stance is also valuable for a Product Owner, e.g., the Product Owner and Developers can learn and hear different opinions from the stakeholders.
 
 ### Agile Coach Toolkit #4: Effective Facilitation
 
-TBD
+Tips for effective facilitation:
+1. Ensure that everyone participating understand its purpose → set the context at the beginning and may have to reiterate once in a while when you see that the discussions are digressing from the context.
+2. Working agreement at the beginning will help e.g., mobile/electronics usage, punctuality, participant expectations, etc. Listing the Scrum values, especially when dealing with conflict may help the discussion.
+3. If the event/meeting is not interactive → spend some time to find the Root Cause.
+4. Create a safe environment for people to speak by ensuring the focus on task at hand rather than pointing fingers. Immediately interject if there are any personal attacks.
+5. Use Timeboxing to ensure that discussions are productive.
+6. Balance the discussions so that introverts feel included in the discussions.
+7. Read the mood in the room to take breaks at regular intervals to keep the energy level high for productive discussion.
+8. Be neutral in your stance and do not take sides (beware of your implicit bias during heated discussions).
 
 ### Agile Coach Toolkit #6: Building Consensus
 
-TBD
+Benefits of building consensus:
+- Better decision-making as discussions would help uncover flaws/situations which may not be thought of.
+- Assist in better implementation of solution since it is a team cooperated decision.
+- Maintains team's working relationship healthy by making everyone feel included.
+
+Steps for Building Consensus:
+- Have everyone understand the meaning of giving consent by encouraging them to think about what's best for the entire team rather than individuals.
+- Clearly articulate what needs to be decided → explain why the issue is being raised.
+- Before pitching for lengthy discussion, do a quick poll to check if there is consensus → If majority of the team agrees to a solution, listen to the concerns of dissenters + adapt the popular solution to get their points addressed and gain a win-win solution.
+- If there is a disagreement amongst team members, allow everyone to voice their concerns during the discussion so their ideas can be included → Can list them out to ensure these get addressed.
+- List Scrum Values and ask people the follow them throughout the discussion.
+- Leverage Timeboxing to ensure that you curtail lengthy discussions.
+- For final decision, do another poll to see if majority of the team agrees → Dissenter (if any), can serve as critical evaluator of the implementation of team decision → help spot issues before rest of the team can see it.
+- Ensure that the team decision is finalized at the end of the meeting.
 
 ### A Powerful Technique to Improve Your Scrum Events
 
