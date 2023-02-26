@@ -1564,25 +1564,240 @@ Steps for Building Consensus:
 
 ### A Powerful Technique to Improve Your Scrum Events
 
-TBD
+Liberating Structures are 33 [microstructures](http://www.liberatingstructures.com/ls/) that allow you to unleash and involve everyone in a group – from extroverted to introverted and from leaders to followers.
+
+[1-2-4-All](http://www.liberatingstructures.com/1-1-2-4-all/) is one of the most applied facilitation techniques from the Liberating Structure collection. Within 12 minutes you can engage everyone simultaneously in generating questions, ideas, and suggestions regardless the group size.
+
+#### Silent Self-Reflection 
+
+Captured in the 1-minute of silent self-reflection. During this minute participants are invited to reflect on a shared challenge framed as a question, for example:
+- What opportunities do you see for making progress on this challenge?
+- How would you handle this situation?
+- What ideas or actions do you recommend?
+
+→ It gives you the opportunity to make up YOUR mind. What do YOU think? How would YOU deal with this situation?
+
+Tips:
+- should be done as a group, simultaneously.
+- take sufficient time to explain the purpose and importance of the first part of 1-2-4-All → people might consider the silence a bit awkward.
+
+#### Uses in Scrum and workshops
+
+Applications:
+- As part of a Scrum training to help define learning goals:
+  - Use the 1 minute of self-reflection to think of personal learning goals. 
+  - Share your learning goals within pairs and afterwards a foursome. 
+  - After 10 minutes the fully refined goals are discussed with the group as a whole.
+- During the Daily Scrum:
+  - Share what they've done yesterday to help the Development Team meet the Sprint Goal.
+  - What they'll do today and if they see any impediments that prevents achieving the Sprint Goal. 
+  - Simply answer the question “what would be the best result we could achieve today?”.
+- During a company-wide Retrospective with participants that used to be excessively influenced by their leader.
+- As part of the Sprint Review:
+  - Gather feedback on the Increment.
+  - Adapt the Product Backlog. 
+  - Inspect likely completion dates.
+  - Analyze marketplace changes and potential use of the product.
+- During the Sprint Retrospective:
+  - Inspect how the Sprint went with regards to people and relationships
+  - Figure out how to make the next Sprint more enjoyable 
+  - Adapt the definition of “Done” to increase product quality.
+- As an opening exercise of a large seminar (e.g., 250+ ppl): 
+  - Reflect on the question “how is the Scrum Master a management position?”. 
+  - After having everyone discussed the results in pairs and foursome, we discussed the main takeaways as a group.
+- To gather feedback (questions, comments, and ideas) after a presentation → Don't ask the usual “any questions”, use 1-2-4-All to get more rich feedback.
+- To redesign a boring weekly meeting with management.
+- To address a problem or an innovation opportunity.
+
+#### Steps to use this Liberating Structure
+
+1. Start with 1 minute of silent self-reflection by individuals on a shared challenge, framed as a question;
+2. Take 2 minutes to generate ideas in pairs, building on ideas from self-reflection;
+3. Create groups of four and use 4 minutes to share and develop ideas that you've discussed within your pair. Notice similarities and differences.
+4. Take 5 minutes to share insights, ideas and takeaways by asking “What is one idea that stood out in your conversation?”. Each group shares one important idea. 
+5. Repeat cycle as needed.
+
+#### Stringing together with other Liberating Structures
+
+A key characteristic of Liberating Structures is they can be combined to create programs for entire workshops or trainings, for example:
+- Start with [Impromptu Networking](http://www.liberatingstructures.com/2-impromptu-networking/) to introduce a theme. Then, facilitate a more in-depth reflection with 1-2-4-All.
+- Use 1-2-4-All to discuss the questions in the final part of [Appreciative Interviews](http://www.liberatingstructures.com/5-appreciative-interviews-ai/).
+- Use the highest scoring ideas gather with [25/10 Crowd Sourcing](http://www.liberatingstructures.com/12-2510-crowd-sourcing/) as input for 1-2-4-All or [Open Space Technology](http://www.liberatingstructures.com/25-open-space-technology/) to translate actionable ideas into action plans;
+
+#### Tips
+
+- Facilitate the silent self-reflection firmly before the paired conversations.
+- Invite everyone to write down their ideas during the quiet self-reflection.
+- Use Tingsha bells to announce transitions.
+- Stick to precise timing, do another round if needed.
+- In large groups, during “All”, limit the number of shared ideas to 3 or 4.
+- Invite to share unique insights per group.
+- Make ideas visual with your imagination.
+- Maintain the rule of one conversation at a time in the whole group.
+- Try this variation: go from groups of 4 to groups of 8 with consensus in mind.
 
 ## Leadership Styles
 
 ### Leading High Performing Teams
 
-TBD
+Some clear patterns of High Performing Teams:
+1. __Goal__: We had a clear objective – to provide the most awesome casual dining experience in a friendly, fun environment.
+2. __Leadership__: if never done this before, then lead by example. Worked hard and expected others to also do the same. Perform self-managing.
+3. __Culture__: Create a culture of extreme teamwork by always having each other's backs. When introducing new staff, focus on the team culture and only introduce one or two new people at a time → create trust and courage as a core group value.
+4. __Continual improvement__: Call a retrospective every day's night. Talk through the how the day had gone, what worked, what hadn't and what could be better.
+5. __Transparency__: The entire operations could be viewed by the public the entire time. Nothing was hidden.
+6. __Rapid experimentation__: Constantly try new “specials” ideas, and gain valuable customer feedback during the process.
+7. __Trust & Fun__: Had a lot of trust and fun together as group.
+
+#### Ways of Working
+
+“Good management” was based on planning, hierarchy and control:
+- The top layers of the organisation would come up with the right strategy → coming up with the best strategy.
+- Then the troops would execute → execution excellence, namely conformance to plan (i.e. control).
+
+#### Autonomous Teams
+
+Autonomous teams are self-managing that requires two critical ingredients:
+- An absence of traditional management.
+- A light set of constraints. Constraints help balance autonomy with accountability. Constraints might be an iteration, a Sprint Review, a social contract or a facilitated meeting.
+
+Tips:
+- Choose how much space to leave by actively stepping out, in order to allow others space to step in.
+- Move their focus away from telling others how to do the work, to the following three areas:
+  - __Clarity__ – what do you seek? What difference does it make and to who? Why is this important? What does success look like?
+  - __Competence__ – does the team/individual have the competence to deal with this situation (or at least the growth mind-set to learn what is required). Does the structure support them in their level of competence? What help might they need?
+  - __Control__ – delegate control to the people doing the work, once the platform of Clarity and Competence is in place.
+- The important part is recruiting the core group that share the same visions and enthusiasms.
+- Don't hire managers that teammates can't learn from.
+- Best managers are great individual contributors who don't want to be managers at all, but decide to be one because on one else is able to do the job as good as them.
+- Allow risks in promoting existing members that have potential to become managers.
+
+#### Leadership and Culture
+
+The most critical factors for a high performing culture is leadership and situation-appropriate leadership is the right answer.
+
+To help organizations discover what this means:
+- Use the [Cynefin framework](https://www.youtube.com/watch?v=5mqNcs8mp74) to first establish context.
+- Work through what it feels like to work in each of the domains, what is different about each, and which approaches might work best for each domain.
+- Then, work through what sort of culture and leadership style would be required to support this way of working in each domain.
+- Review how we all currently think and lead compared to this.
 
 ### The 28 Characteristics of a Great Scrum Master
 
-TBD
+The Scrum Master acts as:
+- __Servant Leader__: Focus on the needs of the team members and those they serve (the customer), with the goal of achieving results in line with the organization's values, principles, and business objectives.
+- __Facilitator__: Set the stage and provide clear boundaries in which the team can collaborate.
+- __Coach__ coach the individual with a focus on mindset, behaviour, the team in continuous improvement and the organization in truly collaborating with the Scrum team.
+- __Conflict navigator__: Address unproductive attitudes and dysfunctional behaviors.
+- __Manager__: Are responsible for managing impediments/wastes, the team process, the team's health, the boundaries of self-organization, and the culture.
+- __Mentor__: Transfers agile knowledge and experience to the team.
+- __Teacher__: Ensure Scrum is understood and enacted.
+
+A Great Scrum Master:
+- __Involves the team with setting up to the Scrum processes__.
+ - __Understands team development__ → Understand Tuckman's different stages of team development: forming, storming, norming, performing and adjourning.
+- __Understands principles are more important than practices__.
+- __Recognizes and acts on team conflict__ → Read the book 'The 5 Dysfunctions of a Team' by Patrick Lencioni for tips in managing team conflicts.
+- __Dares to be disruptive__.
+- __Is aware of the smell of the place__ → Know the movie ‘The Smell of the Place’ by Prof. Sumantra Ghoshal and apply the related workshop.
+- __Is both dispensable and wanted__ → The role is not a daily coach and teacher, but a periodical mentor and advisor.
+- __Let his team fail (occasionally)__ → The lessons learned after a mistake would be more valuable than some good advice beforehand.
+- __Encourages ownership__.
+- __Has read...__ → Read all the stuff produced by e.g. Geoff Watts, Lyssa Adkins, Tobias Mayer, Henrik Kniberg, Growing Agile and Gunther Verheyen. Basically knows whom to follow in his area of study.
+- __Has studied...__ → Study the Trello board that Growing Agile has published. Also, the Shu-Ha-Ri levels offer a very useful structure.
+- __Is RE-TRAINED__ → Recognizes himself in the acronym made up by Geoff Watts, RE-TRAINED:
+  - _Resourceful_, is creative in removing impediments.
+  - _Enabling_, is passionate about helping others.
+  - _Tactful_, is diplomacy personified.
+  - _Respected_, has a reputation for integrity.
+  - _Alternative_, is prepared to promote a counter-culture.
+  - _Inspiring_, generates enthusiasm and energy in others.
+  - _Nurturing_, enjoys helping teams and individuals develop and grow.
+  - _Empathic_, is sensitive to those around them.
+  - _Disruptive_, breaks the status quo, help create a new way of working.
+- __Has faith in self-organization__ → "Bring it to the team" is the daily motto. e.g., they make their own decisions about their work, estimate their own work, etc.
+- __Values rhythm__ → Understand the value of a steady sprint rhythm and does everything to create and maintain it.
+- __Knows the power of silence__ → Be aware of the three levels of listening and knows how to use them. Carefully listen to what is said, but also to what isn't said.
+- __Observes__ → their daily activities.
+- __Share experiences__ → This might be within the organization, but seminars and conferences are also a great way to share.
+- __Has a backpack full of different retrospective formats__ → Ensure the retrospective will be a fun and useful event for the team.
+- __Can coach professionally__ → Know about books like Coaching Agile Teams and Co-Active Coaching. Knows how to guide without prescribing and close the gap between thinking about doing and actually doing.
+- __Has influence at organizational level__ → Know how to motivate and influence at tactically different levels within an organization.
+- __Prevent impediments__ → 'read' situations and hereby act on them proactively.
+- __Isn't noticed__ → Don't disturb the team unnecessary and supports the team in getting into the desired 'flow'. But when the team needs him, he's always directly available.
+- __Forms a great duo with the Product Owner__.
+- __Allows leadership to thrive__ → Focus on the motto "leadership isn't just a title, it's an attitude".
+- __Is familiar with gamification__ → Use the concepts of game thinking and game mechanics to engage users in solving problems and increase users' contribution.
+- __Understands there's more than just Scrum__ → There is also competent with XP, Kanban and Lean. Knows the strengths, weaknesses, opportunities and risks of every method/framework/principle and how & when to use them.
+- __Leads by example__ → At difficult times, shows team members how to find the solution and don't panic. Have some resemblance of Gandalf.
+- __Is a born facilitator__ → Create Scrum events to be a joy to attend, is well prepared, useful and fun, and has a clear outcome and purpose.
 
 ### What is Servant Leadership
 
-TBD
+#### 1. Commitment to put yourself last
+
+- Servant leadership is a commitment to humility. 
+- Is not about your success but it is about the success of those you are serving. 
+- The people whom you are serving should be the center of the attention, not you.
+- The growth of a Scrum Master should not be seen by the rank in the organisation chart but by the impact of her service. 
+- Focus to serve others and stay away from corporate politics, stay neutral and unbiased.
+
+#### 2. Focus on the greatness of others
+
+- “reward & punishment” model is no longer relevant. 
+- Should help an under-performant and lift them up to be greater. 
+- Is always at service to make others great instead of punishing, blaming or judging them.
+- Is proactive to get to the heart of the problem.
+
+#### 3. Respect other people’s needs to be fully human
+
+- Do not differentiate a person inside and outside a workplace.
+- Care about the well-being of her people at the workplace and is personally interested in her people as a human being.
+- Be compassionate and curious genuinely.
+- Is okay for your people to come to their boss with their difficult problems without any fear of judgment or punishment at the workplace.
+
+#### 4. Courage to speak the truth
+
+- Tell the truth even though it will make others uncomfortable or even resistant.
+- Is unbiased and does not have any favorites, otherwise, it will lower the quality of the service brought to the whole organization.
+- Is genuine, she has no hidden motives and no personal interest in the message.
+
+#### 5. Openness about own vulnerability
+
+- Has the humility to admit not having all of the answers to all of the problems and is open about imperfections → others can feel safe to be open about theirs too and gain their trust.
+- Create the impression that "it is human to be imperfect and it is not wrong to be human at work".
 
 ### 5 Agile Leadership Tips for Creating Mature Scrum Teams
 
-TBD
+#### 1. Focus on the people
+
+As a leader you should have focus on helping the roles Scrum grow.
+
+Practical Tip: Ask your Product Owners & Scrum Masters what you can do to help them grow in their role.
+
+#### 2.Dare to let go
+
+Letting go of responsibilities and a possible re-definition of the traditional role. Should be open to delegate responsibilities and create a plan on how to do so.
+
+Practical Tip: Ask your Scrum Team what incentives could lead to a higher focus on customer value.
+
+#### 3. Lead by example
+
+Create a safe environment where these values can flourish and where you continuously set the right example. Should play an active part in an Agile transformation (monitoring, guiding and regular evaluations).
+
+Practical Tip: Ask your Scrum teams and fellow-leaders how do they perceive the 5 Scrum values in your organisation.
+
+#### 4. Avoid shortcuts
+
+A nice example is Spotify's engineering culture. I encountered a number of organisations who copied Spotify's mechanisms. They replace the role of the Scrum Master by that of an Agile Coach, right from the start. This often results in dysfunctional implementations of Scrum where teams never get the chance to mature.
+
+Practical Tip: If you want fast adoption and growth, hire external expertise and create a setting where people can fail and learn fast.
+
+#### 5. Growing in the same pace causes less tension
+
+Create an environment where different roles can work together so they can mature in the same pace. Support the entire Scrum team, so they are not limited by organisational limitations.
+
+Practical Tip: Ask your Scrum team what organisational limitations keeps them from making decisions as a whole.
 
 ## Coaching and Mentoring
 
