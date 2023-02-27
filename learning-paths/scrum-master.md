@@ -1857,15 +1857,79 @@ Change to coaching mindset steps:
 
 ### Psychological Models In Scrum
 
-TBD
+#### The Dreyfus Model of skill acquisition
+
+- Beginner - concentrate on rules of the new skill (e.g., driving a car).
+- Advanced beginner - start forming habits and perceiving environments (e.g., don't need to think about the basics - gearbox and find renaissance) → a teacher is important as the brain isn't big enough to comprehend all the rules at the same time, which is normal.
+- Practitioner - Has a lot of habits so things are done naturally. Can predict what might happen on the usual route. For advanced situations that, there might be a little problem.
+- Advanced - be interactive and creative with the environment, predict situations never seen before, which means can bend the rules (e.g., drivers know where to avoid the police or when to drive under the speed limits without any reason).
+- Expert - has superpowers and know how to break the rules to create new ones since the know all the consequences.
+
+→ Kroger dimming effect: when you are in between advanced beginner and practitioner, you are in a red zone because you start feeling like an expert (start bending and break rules) but you are not yet. (e.g., your driving starts hitting trees, or modifying scrums, etc.)
+
+→ Learn by gaining experiences through mistakes are a good process, but watch out if the failures are too deep that could lead to quitting. Teachers are needed for beginning levels.
+
+#### French & Raven's five forms of power
+
+A very potent model which is used in court injustice in engaging people.
+Power can only be given, not take power (e.g., worst-case: having a gun point to your head, you can fight against it if you accept the consequence of being shot).
+1. Coercive power: if you don't do smt for me, I will punish you (all animals have it). 
+2. Rewarding power: if you do smt for me, I will do smt for you. Is instinctive (get reward and avoid punishment at any cost) → get compliance.
+3. Given power: need social structures e.g., a king or some kind of formal leaders in the society. (seen in animals and humans)
+4. Expert power: you know something and you can do something, I respect you. (seen only in human - doctors and some ace animals - elephants or dolphins). Some people refer to this as charisma. 
+5. Referent power: it is pure and natural leadership, exhibit by the people in a group that are the closest to be a leader. Those are someone that others follow. This power is relative to expert power → create engagement.
+6. Informational power: (might be manifestation of 1 & 2) only present with informational societies that can manipulate information.
+
+→ In stressful situations, it is much easier to use 1 and 2, and much harder to exercise the bottom 3. Scrum Master need to have the bottom 3 powers, but it can be difficult when there is rewarding power in place.
+
+#### Chris Avery's responsibility process
+
+- Irresponsibility: is denial - smt happened but you deny it happened.
+- Lay blame: admit smt happen, and lay blame on another person.
+- Justification: admit smt happen, don't blame another person, but blaming everything else.
+- Shame: admit smt happen and we have smt with that, but not fixing yet. Self shaming which is usually visible. 
+- Obligation: admit smt happen and we have smt with that, so we have to fix it.
+- Responsibility: admit smt happen and we have smt with that, so we want to fix it (we are not the dead end).
+
+→ As Scrum Masters, you can't make people obey, but you can share this model with the team and ask them what level they are on? do you want to be more responsible?
+
+- When you are in toxic relationships, you can be on different levels. 
+- You can also be on different levels in different aspects of life.
+- When you have different expert powers in different fields, you can also be on different responsibility levels.
 
 ### Do You Know any Coaching Patterns?
 
-TBD
+Some Coaching patterns:
+- The Socratic Method: Ask a lot of questions and try to stimulate critical thinking → help lead to an answer that works far better than anything I would have come up with.  
+- The dictatorial pattern: Literally dictate a solution → for cases that just questioning doesn't work.
+- The mirroring pattern: Let your trainee get the ideas with visible examples from you.
+- Swarming pattern: Tell your trainee's surrounding people about the issues and solutions → you might lost influence and power.
+- The voice from afar pattern: Share with your trainee a more impressive and expensive trainer to follow → it's a win-win situation as your trainee has a direct helper, I can work on other stuffs, and the charging rates is higher.
+
+Takeaway:
+- Don't try to influence people just from a gut feel. Learn the patterns and how they can be applied.
+- Some great references for coaching patterns are:
+  - “Fearless change” by Linda Rising and Mary Lunn Manns.
+  - “Agile Coaching” by Rachel Davies and Liz Sedley.
+  - “Coaching Agile Teams” by Lyssa Adkins.
+- Some great references for psychology of influence are:
+  - “Drive” by Daniel Pink.
+  - “Switch” by Heath and Heath.
+  - “Influence” by Robert Cialdini.
 
 ### Agile Coach Toolkit #5: Active Listening
 
-TBD
+There are 3 levels of listening:
+1. Internal listening – listen more to your own inner voice rather than focusing on what is being said → may be making opinions or be judgmental.
+2. Focused listening – maintain a laser sharp focus on what is said by the person → you are listening intently to every word and “listening” to every nuance in the conversation.
+3. Global listening – Are able to uncover the underlying meaning of the spoken words and are conscious of the emotions of the person → This enables you to connect with the person.
+
+→ For effective coaching, you need to be at Level 2 and then have the ability to listen at Level 3.
+
+Tips for active listening:
+- Get rid of distractions e.g., mobile phone, laptops, other electronics, noisy places, etc.
+- Before the conversation, become self-aware by taking a moment to assess your mood and clear your thoughts.
+- Maintain an open posture – unfold your arms, unclench your fists and keep good eye contact.
 
 # Managing Products with Agility
 
@@ -1873,7 +1937,41 @@ TBD
 
 ### Myth: Story Points are Required in Scrum
 
-TBD
+Several methods exist to estimate Story Points, including [Planning Poker](https://en.wikipedia.org/wiki/Planning_poker) and [Magic Estimation](https://www.scrum.nl/blog/magic-estimation/).
+
+#### The Purpose of Estimation in Scrum
+
+- In plan-based approaches, estimates are used to arrive at budgets and to determine delivery dates.
+- Estimations give DTs a rough sense of the amount of work they can pull into a Sprint.
+- In complex environments, what will happen in the (near) future is largely unknown → use the empirical process of Scrum to capitalize on change rather than control against it.
+
+4 important insights regarding estimates:
+- Accurate estimates are impossible.
+- An estimate can't be a guarantee.
+- The time we spend on estimation is a form of waste.
+- The estimates are the result of a necessary conversation within the DT to arrive at a shared understanding.
+
+Disadvantages of time-based estimates (hours, days):
+- Time-based estimates uphold the illusion of accuracy and predictability.
+- Illusion of accuracy often drives teams into ‘analysis paralysis’, where all details need to be discussed in-depth in order to arrive at a detailed estimate.
+
+→ Story Points are a lightweight approach to get a rough idea of how much work can be completed in a Sprint.
+
+#### Why Estimate At All?
+
+Some alternatives to estimating individual items:
+- Use the number of items per Sprint as a guide to select a doable amount of work for a Sprint.
+- Use size buckets as a guide, where the Development Team classifies items in terms of size (e.g. large, medium, small). 
+- Simply use the gut feeling of the DT to determine if enough work was selected for the Sprint.
+
+→ Estimating is often helpful, estimates are often not.
+
+Tips:
+- Whatever you do in terms of estimation, make sure to do it with the entire DT.
+- Create time buckets with increasing intervals (e.g. 1 hour, 2–3 hours, 3–5 hours, 5–8 hours) for teams that like time-based approaches.
+- Explore different techniques and determine what works best for the DT, and requires as little effort and time as possible.
+- Figure out what problem the customer wants to solve and determine how you'll know when it is solved.
+- With software development “I don't know” is a valid answer to questions like “how much will it cost” or “how long will it take”.
 
 ### Tips for Agile Product Roadmaps and Product Roadmap Examples
 
