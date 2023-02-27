@@ -1803,11 +1803,57 @@ Practical Tip: Ask your Scrum team what organisational limitations keeps them fr
 
 ### How to Build Trust to Enable Agility
 
-TBD
+#### What is Trust
+
+__Trust__ is a willingness to be vulnerable. When trusting, it is essentially making something important to one person vulnerable to the actions of someone else.
+
+Things can be made vulnerable e.g., position, reputation, ideas, work or creation, opportunity, or feelings.
+
+#### Anatomy of Trust
+
+Elements required to build trust - `BRAVING`:
+- __Boundaries__ - establish clear boundaries, stick to my boundaries, and respect each other's boundaries e.g., Scrum Teams don't accept additional work during the Sprint that would endanger the planned goal, don't check email on the weekend, don't take on any new projects or activities when removing something equivalent, etc.
+- __Reliability__ - do what you say you will do over and over and over again. Consistency matters.
+  - Establish clear expectations → sets a clear expectation of quality and completeness in their definition of “Done.”
+  - Don't overcommit → Learn to say “no” or “not now.”. Never say “yes” to new opportunities/requests immediately and take some time to consider if it is something you really want to do in the greater context of your life.
+- __Accountability__ - hold you to account for doing the things you said you would do. When you screw up, own it by apologizing and making amends.
+- __Vault__ - what you share with me, I will hold in confidence, and I expect you to do the same with me and with others e.g., a team member may come to me about issues with another team member.  Ultimately, coach this team member on addressing the issues with that person directly. If you put yourself in the other person’s shoes, how would you feel if a team member was complaining about you to someone else?
+- __Integrity__ - choosing courage over comfort, what is right over what is simply fun, fast, or easy e.g., POs say no to stakeholders who want something that is not in alignment with the product vision or is of low value, Scrum Teams don't show partially done software in the Sprint Review, etc.
+- __Non-Judgment__ - others can be struggling and ask for help, and you will not judge them.
+- __Generosity__ - assume the most generous things about others words, actions, and intentions. It means we are willing to forgive, offer an opportunity to make amends, and hold space for the inevitable learning and growth that is part of being human and being part of a team.
+
+__Bonus__: check out [Brene Brown's talk on the Anatomy of Trust](https://brenebrown.com/videos/anatomy-trust-video/).
 
 ### Coaching Secret: Stop being so helpful
 
-TBD
+Often when we act on this desire to help, we take one (or all) of these three actions:
+- Quickly move towards action.
+- Offer advice.
+- Take on more responsibilities.
+
+Limitations:
+- Moving towards action too quickly limits learning.
+- Offering advice limits creativity and ownership.
+- Owning the actions creates overwhelm for us and limits growth for others.
+
+→ We may actually hurt more than we help. If our goal is to best serve the person's or the team's highest needs, [a coaching approach](https://www.agilesocks.com/power-of-coaching/) would probably be best.
+
+Benefits of coaching:
+- Helps people discover what is important to them and what they want. It helps people tap into a greater purpose.
+- Helps people discover their own solutions. People will be much more committed to a strategy they choose.
+- Encourages and explores creativity.
+- Helps people learn from their own experiences. It helps deepen the learning of successes, losses, and failures.
+- Challenges people to be open to possibilities, break through limiting beliefs, and take intentional action.
+- Creates a safe and courageous space for growth and experimentation.
+
+Change to coaching mindset steps:
+1. Take 3 minutes and reflect on this question: In the past week, what things have I done that perhaps someone else could have owned?
+2. Take 3 minutes and do the following:
+  - Look at your calendar for the upcoming week. Identify any meetings (individual or team) where you want to intentionally practice the coaching tips in this post.
+  - Set a reminder, make a note, or do whatever will help you remember this intention at the time of the meeting.
+3. During the next week, track your progress in an electronic device or notebook:
+  - Keep track of the number of times you catch yourself wanting to give advice and are able to instead help others deepen their learning or come up with creative solutions.
+  - Keep track of the number of times you catch yourself wanting to take on a new action item to help someone else and instead allow them (or even challenge them) to own it.
 
 ### Psychological Models In Scrum
 
