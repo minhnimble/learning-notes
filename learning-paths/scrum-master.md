@@ -1975,7 +1975,28 @@ Tips:
 
 ### Tips for Agile Product Roadmaps and Product Roadmap Examples
 
-TBD
+Product roadmap:
+- is a high-level, strategic plan, that describes the development of the product over the next period of time.
+- support the products' purpose and vision and helps the PO to keep their stakeholders aligned.
+- makes it easier to coordinate the development of different products and foster transparency to manage customer expectations.
+
+Too much features can create a lack of focus on the vision and goals.
+
+#### Goal Oriented product roadmap (GO product roadmap)
+
+- Facilitates a lot of focus on the goals than the actual work to be done (the features).
+- Enables value steering (steering on outcome) instead of steering on work packages (steering on output).
+- Supports in thinking about the most valuable features that enable the achievement of your goals.
+
+![Screenshot 2023-03-01 at 18 16 39](https://user-images.githubusercontent.com/70877098/222125171-276e0de5-752d-4da8-b0eb-668c39b2da6c.png)
+
+#### Now-Next-Later product roadmap
+
+![Screenshot 2023-03-01 at 18 16 45](https://user-images.githubusercontent.com/70877098/222125181-97541a52-f198-4efe-a04a-3fe7a997849e.png)
+
+#### Story map
+
+![Screenshot 2023-03-01 at 18 16 52](https://user-images.githubusercontent.com/70877098/222125191-596fef41-0aba-4c75-b0d6-8bbda7db95dd.png)
 
 ### Release Planning and Predictable Delivery
 
