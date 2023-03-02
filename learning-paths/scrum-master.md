@@ -1992,11 +1992,35 @@ Too much features can create a lack of focus on the vision and goals.
 
 #### Now-Next-Later product roadmap
 
+- Is a visualization that easy to understand for everyone.
+- Focused more on the features, rather than the goals/objectives you would like to achieve as a Product Owner.
+- Doesn't offer much room for including KPI's, releases or dates which offers you the opportunity to interact with your stakeholders, instead of them reading the data from your roadmap.
+
 ![Screenshot 2023-03-01 at 18 16 45](https://user-images.githubusercontent.com/70877098/222125181-97541a52-f198-4efe-a04a-3fe7a997849e.png)
 
 #### Story map
 
+- Suitable for using in the beginning of new projects or products. 
+- Create a nice overview of all the features you and your stakeholders can think of and all the user activities that need to be covered by the system.
+- Provide a nice starting point to facilitate creative ideas for your product.
+- Helps you with brainstorming about the product from a users' perspective.
+- Creates the illusion that all the features for the product will be developed. 
+
 ![Screenshot 2023-03-01 at 18 16 52](https://user-images.githubusercontent.com/70877098/222125191-596fef41-0aba-4c75-b0d6-8bbda7db95dd.png)
+
+#### 11 Summarized Tips
+
+1. Start with your product vision (tip: use [Roman's Product Vision board](http://www.romanpichler.com/tools/vision-board/)).
+2. Describe and validate your [product strategy](http://www.romanpichler.com/blog/elements-definition-product-strategy/).
+3. Focus on goals and benefits, by creating a [goal oriented product roadmap](http://www.romanpichler.com/blog/goal-oriented-agile-product-roadmap/).
+4. Tell a coherent story about the likely growth of your product and don't oversell it.
+5. Keep it simple! Resist the temptation to add too much details to your roadmap.
+6. Actively collaborate with stakeholders to ensure buy-in.
+7. Have the courage to say no, to prevent an overload of features in your roadmap.
+8. Think twice about adding timelines, dates or deadlines to your roadmap.
+9. Make sure your roadmap is measurable, by adding measurable goals and KPI's.
+10. Create a rough estimate for each feature (#people + required skills) to determine the viability of a feature.
+11. Review and adapt your product roadmap on a regular basis.
 
 ### Release Planning and Predictable Delivery
 
