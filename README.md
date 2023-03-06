@@ -14,6 +14,15 @@ This repository is for containing the notes on the books that I read and the cod
 
 * [Toyota Wallet - Android](studied-projects/toyota-wallet-android.md) project.
 
+### Learning Paths
+
+* [Scrum Master](learning-paths/scrum-master) learning path:
+  - [Understanding and Applying Scrum](learning-paths/scrum-master/%231-understanding-and-applying-scrum.md)
+  - [Developing People and Teams](learning-paths/scrum-master/%232-developing-people-and-teams.md)
+  - [Managing Products with Agility](learning-paths/scrum-master/%233-managing-products-with-agility.md)
+  - [Developing and Delivering Products Professionally](learning-paths/scrum-master/%234-developing-and-delivering-products-professionally.md)
+  - [Evolving the Agile Organization](learning-paths/scrum-master/%235-evolving-the-agile-organization.md)
+
 ## Contributing
 
 This is my personal learning space. If you have any suggestions for improvement please feel free to open a pull request.
