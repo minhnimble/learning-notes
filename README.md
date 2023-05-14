@@ -23,6 +23,11 @@ This repository is for containing the notes on the books that I read and the cod
   - [Developing and Delivering Products Professionally](learning-paths/scrum-master/%234-developing-and-delivering-products-professionally.md)
   - [Evolving the Agile Organization](learning-paths/scrum-master/%235-evolving-the-agile-organization.md)
 
+### Courses
+
+* [Feedback and Mentoring](courses/feedback-and-mentoring) course:
+  - [Mentoring (GitLab)](courses/feedback-and-mentoring/mentoring.md)
+
 ## Contributing
 
 This is my personal learning space. If you have any suggestions for improvement please feel free to open a pull request.
