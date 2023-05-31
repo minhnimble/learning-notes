@@ -1,52 +1,81 @@
 # Introduction
 
-## The manager's role in delivering employee feedback
+## Become a great coach and leader
 
 TBD
 
-# 1. Understand the Need for Feedback
+# 1. Overview of Workplace Coaching
 
-## The feedback process
+## Busting myths and finding time
 
-TBD
-
-## Types of feedback
+### Myths
 
 TBD
 
-## Characteristics of effective feedback
+## Established a coaching relationship
 
 TBD
 
-## Feedback: Role play
+## Cornerstones of coaching
 
 TBD
 
-# 2. Delivering Feedback
-
-## Observing employee behavior
+## Three types of coaching conversations
 
 TBD
 
-## Preparing to deliver feedback effectively
+# 2. Building your coaching skills
+
+## Asking powerful questions
 
 TBD
 
-## Handling critical feedback
+## Becoming an active listener
 
 TBD
 
-## Managing negative feedback interaction
+## Challenging your employees for growth
 
 TBD
 
-## Understanding common challenges of delivering feedback
+## Taking the next steps and building momentum
+
+TBD
+
+## Managing accountability
+
+TBD
+
+## Giving future-focused feedback
+
+TBD
+
+# 3. Using Tools, Assessments, and Questionaires
+
+## Learning break
+
+TBD
+
+## The discovery questionnaire
+
+TBD
+
+## Team sourcing and influence interviews
+
+TBD
+
+# 4. Maintaining the Coaching Style
+
+## Design stretch opportunities
+
+TBD
+
+## Work through blind spots and resistance
 
 TBD
 
 # Conclusion
 
-## Next steps
+## Next steps, strategies, and resources
 
 TBD
-

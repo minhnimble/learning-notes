@@ -1,6 +1,6 @@
 # Introduction
 
-## Become a great coach and leader
+## The manager's role in delivering employee feedback
 
 Key aspect of managing is - helping people grow by providing feedback.
 
@@ -11,11 +11,9 @@ Facts:
 
 → As the leader, you need to step in and provide feedback when needed, to keep people moving forward.
 
-# 1. Overview of Workplace Coaching
+# 1. Understand the Need for Feedback
 
-## Busting myths and finding time
-
-### Myths
+## The feedback process
 
 __Some of the people really don't love the idea of giving feedback__
 
@@ -33,73 +31,73 @@ __Actions__
 - Finally, have to follow up to close the loop → can't assume they heard you, agreed, and have begun implementing your thoughts. Instead, go find out. 
   - Follow-up is for staying connected after you've delivered to make sure things are moving along as expected. 
 
-→  This is a process that's easy, practical, and gets results. So, stay connected, plan, deliver, and follow up for providing helpful feedback. 
+→ This is a process that's easy, practical, and gets results. So, stay connected, plan, deliver, and follow up for providing helpful feedback.
 
-## Established a coaching relationship
+## Types of feedback
 
-TBD
+There are three main types of feedback:
+- Standards-based feedback: that's information that lets someone know whether they did or did not meet some standard. It's about the outcome. For example, if you work at a call center, your boss might let you know if you're not completing enough calls. The downside is that standards-based feedback isn't always as helpful as it could be. Telling someone they didn't make their call quota for the week doesn't provide them with anything actionable that might help them improve their performance.
+- Informational feedback: this type addresses the skills and behaviors underlying the outcome in question, and also provides actions for improvement. For example, you might say to one of your employees, "Hey, your presentation today was odd. Next time, let's focus on how we're going to address this with the customer next week, okay?".
+- Emotional feedback: Acknowledges the person's emotional state but not specific conduct. You asserted your authority, kept it positive, called out the issue about strong emotions. For example "I felt like you were trying to pack in too much information".  
 
-## Cornerstones of coaching
+→ Try to be thoughtful about the type of feedback that's needed (e.g., standards-based, informational, or emotional). Some combination of these will get your employee back on track. 
 
-TBD
+## Characteristics of effective feedback
 
-## Three types of coaching conversations
+- First, I want you to remember that all useful feedback is specific, not general. For example, don't say, I think you can run meetings more efficiently; when you really mean, don't let others seize your agenda. Specificity helps them hear you and makes your words actionable. 
+- Next, strive to make all feedback descriptive and helpful, not evaluative and punitive. For instance, instead of saying, that meeting was poorly run, wasn't it? You could say, well, that ran long, and we still aren't done. Next time, think about using an agenda and intervening when people get us sidetracked, okay? If you're descriptive and helpful, you've moved past simple evaluation, towards good coaching. 
+- Great feedback is also personally owned. That means you acknowledge that you are the source of the feedback, not someone else who isn't present. Never offer feedback and then suggest, that's how the team feels, or that's how the committee feels. No, use I statements and own it. I noticed that, I feel that you must, and so on. Own your words, or they might not respect you or the message. 
+- Also, make sure to address issues, not people. Instead of saying, the last time you did this, you left out the variance analysis. You could say, next time, be sure to include the variance analysis, okay? If you want them to hear you, don't talk about them, talk about issues that matter. 
+- Next, remember to give people the right amount of feedback at the right time. The right amount will vary for each person, so be thoughtful about how much they can typically handle. 
+- For timing, the best answer is as soon as possible. If they are really busy or stressed out, and it can wait, wait. But generally, the sooner, the better. 
+- Another great tip is to make your feedback a dialogue instead of just you talking. For example, try leading with a question, like, so, how do you feel the meeting went today? This allows them to open up, which helps you refine your feedback. And don't forget, in a dialogue, your comments are checked, meaning, if needed, you ask if they understood the main points discussed. 
+- Finally, don't forget that effective feedback is followed up, not forgotten. Just because you shared words doesn't mean their performance will improve. Follow up at least once or twice to check in and ensure your message sticks.
 
-TBD
+## Feedback: Role play
 
-# 2. Building your coaching skills
+For an example of a feedback delivery - imagine your employee has delivered a key presentation to an important internal audience. You felt they performed adequately, but with plenty of room to improve:
+"Max, solid job today with the presentation. You nailed the main points. There was only one moment during Q&A that I noticed. If you don't know the answer to a question, don't try to answer it. Just tell the person, it's a good question, you're not sure about the answer, and that you'll follow up after the meeting. Believe it or not, admitting you don't know something in that situation, actually makes them believe in what you're saying even more. Does that all make sense."
 
-## Asking powerful questions
+→ Typically, your employee will listen effectively and respond productively. But sometimes, they don't, even though you were clear and measured, they might be defensive: 
+"Are you kidding me? Yes, I remember, but I didn't think it caused a problem. I've been working crazy hours for them. I knew the answer, I was just struggling to get it out. I'm a great presenter, and that was just one tiny issue. Well, my point is just that - I've been working crazy hours for them. Are you serious?"
 
-TBD
+Tips for handling this case:
+- Pause to let them think for a moment, then continue. 
+- Begin by validating the point they've made. 
+- Then restate or clarify your point and offer some encouragement.
+For example:
+"Max, I know how much time you've put in. I also know how clients perceive things. It was clear to me that how you handled the issue caused concern. This was further obvious when the vice president pulled me aside to chat. I like your work, but I need you to take a breath and listen to my feedback because I'm trying to help you. Do we understand each other?"
 
-## Becoming an active listener
+At this point, your employee is very likely to relax and listen. If however, they continue to escalate, do the following:
+- Raise a hand politely, and stop them. 
+- The goal is always a dialogue, but when needed, you have to assert yourself to ensure control. 
+- Your feedback should be clear, owned, helpful and so on.
+- You'll not only keep control, but also your message is delivered and understood. 
 
-TBD
+# 2. Delivering Feedback
 
-## Challenging your employees for growth
-
-TBD
-
-## Taking the next steps and building momentum
-
-TBD
-
-## Managing accountability
-
-TBD
-
-## Giving future-focused feedback
-
-TBD
-
-# 3. Using Tools, Assessments, and Questionaires
-
-## Learning break
-
-TBD
-
-## The discovery questionnaire
-
-TBD
-
-## Team sourcing and influence interviews
+## Observing employee behavior
 
 TBD
 
-# 4. Maintaining the Coaching Style
-
-## Design stretch opportunities
+## Preparing to deliver feedback effectively
 
 TBD
 
-## Work through blind spots and resistance
+## Handling critical feedback
+
+TBD
+
+## Managing negative feedback interaction
+
+TBD
+
+## Understanding common challenges of delivering feedback
 
 TBD
 
 # Conclusion
 
-## Next steps, strategies, and resources
+## Next steps
 
 TBD
-
