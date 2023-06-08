@@ -78,7 +78,34 @@ At this point, your employee is very likely to relax and listen. If however, the
 
 ## Observing employee behavior
 
-TBD
+The art of observing for leaders - based on your understanding of your employees. 
+
+Source:
+- supplied by others, but 
+- mostly, it comes from your direct observations while interacting with your team. 
+
+Things to observe:
+- personality and attitudes. 
+- interpersonal skills. 
+- technical and business skills, and character. 
+
+Putting all of this into three simple categories:
+1. Positive examples: 
+  - Development: Fixing a customer problem, improving a work process.
+  - Personal: Showing kindness or gratitude, displaying lots of helping behaviors.
+  → Are value-added and worthy of a little praise.
+2. Negative examples: 
+  - Development: Flawed work products, or even work that is acceptable but not as good as you feel it could be, take note. 
+  - Personal: Unproductive interpersonal exchanges or personality problems, pay special attention.
+  → Address these examples, beginning with good feedback, is important.
+3. Good behaviors that we want to see, but are not seeing:
+  - Development: Needs certain qualities to advance, they need to know.
+  - Personal: Employee who never shows gratitude towards others that they aren't mean but showing gratitude is a blind spot, take note for later feedback.
+  → There is no right answer: plan when to spend time observing and interacting, or a naturally-occurring situation driven by the work you're all doing.
+
+Takeaway:
+- Give your memory a boost by taking notes regularly.
+- Use thoughtful observation to keep you connected with the team through interactions, and makes performance evaluations easier.
 
 ## Preparing to deliver feedback effectively
 
