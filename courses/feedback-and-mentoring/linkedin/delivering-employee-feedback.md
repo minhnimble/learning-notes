@@ -109,15 +109,83 @@ Takeaway:
 
 ## Preparing to deliver feedback effectively
 
-TBD
+To be most effective in delivering feedback:
+- Spend just a little time preparing to deliver feedback.
+- Aims for crystal clear communication.
+- Find a few minutes alone in a quiet space, and start by simply stating the behavior. 
+- Write the feedback down. 
+- Ask this question: `What is the action or characteristic that prompted you to want to give the person feedback?`
+- Be clear, be brief, and be very specific, no generalizations and no innuendo.
+- State your reaction: `Why is it potentially unproductive and worthy of discussion?`
+- Be specific about your observation, even if the answer can be offensive (e.g., creating low quality work products, the client is upset, etc.)
+- Think about consequences → let people: 
+  - know what might happen should the situation not improve → accountability.
+  - understand the potential repercussions of their behavior (e.g., a changed role, a note in their personnel file, or some form of mandatory training).
+  - have clarity about what might happen. 
+- Choose the right time and place to deliver the feedback.
+- Approach when people are not too busy and in private to show respect.
+- Maximize what people actually hear and how much you actually help. 
+
+Reasons for not planning before sharing feedback:
+- Assume knowing exactly what to say.
+- Fell too stressed to plan out the thoughts   
+- Feel like right now is the very best time to give feedback.
 
 ## Handling critical feedback
 
-TBD
+Takeaway:
+- When seeing a questionable behavior over time, or work products that don't meet expectations, talking about and challenging it is essential.
+- Focusing on the typical elements of effective feedback:
+  - Being very specific.
+  - Owning what you say.
+  - Addressing issues, not people
+  - Having a dialogue as opposed to dictating.
+  - Giving the right amount of feedback at the right time and place.
+  - Following up to ensure the feedback sticks.
+- For more difficult conversations, address just one issue. 
+- Focus on delivering one unique, clear, and honest message that your employee will be able to hear and digest.
+- The more you learn to effectively deal with critical feedback, the more your teams get used to it → high performing teams.
+
+ Mentioning multiple issues (especially critical ones) disadvantages:
+ - Takes more time.
+ - Confuse the person.
+ - Might leave them feeling overwhelmed.
+
+A wrong technique for giving difficult feedback: 
+- The positive sandwich (or the hamburger) method: Ease the pain by sandwiching the negative feedback between two bits of positive feedback, e.g., tell something good that you like, then discuss the difficult the feedback, and then end by sharing one more bit of affirming feedback. Here are some disadvantages:
+  - The critical point you really want to make becomes lost and fuzzy (creating unintentional ambiguity).
+  - The average employees can see right through it and label these feedback as insincere and lacking in integrity.
+  - Lead to hurting your reputation and your rapport with the team. 
 
 ## Managing negative feedback interaction
 
-TBD
+Tips for successfully managing a feedback interaction:
+
+### Dos:
+
+- Remember what the feedback process looks like before you engage, e.g., choosing a time and place to meet, telling them you wish to share some feedback when meet.
+- State the behavior, the unproductive impact you observed, and some thoughts about the potential consequences should the behavior not change.
+- Resist interruptions that if they interrupt, politely hold up your hand, tell them you will hear them out, but first you need to finish.
+- Then, listen for a minute or two and focus on the basics of effective listening, e.g., face the person, look them in the eyes, be relaxed and focused only on them.
+- Really try to understand what they're saying.
+- Offer a very concise summary to show you're listening and understand when they're done.
+- For mildly elevated emotions: Take a deep breath, remain calm, make a mental note and move on.
+- For strong negative emotions: Pause, sit quietly for a moment and say nothing (a few seconds) → creating spaces will usually help realize what they've done, and calms them down.
+- For a second strong outburst: Tell them you did not intend to upset them and redirect them back to the issue and then continue.
+- If it persists the third time: Clearly state that their reaction is not appropriate and ask for it to stop. Acknowledge their frustration, but be clear that the outburst will now end.
+- If they don't calm down: Ask them to return to work and try a conversation later, or speak to human resources about your options.
+
+### Donts:
+
+- Don't interrupt unless they say something a little outrageous.
+- Don't prematurely judging them and forming a response while they're still talking.
+- Never respond to strong emotions with strong emotions.
+- Don't react for mildly elevated emotions.
+
+Reasons sometimes people won't like the feedback you're giving:
+- Someone might suggest you don't understand the issue.
+- They might blame others.
+- They might make exaggerated excuses about their circumstances or their resources.
 
 ## Understanding common challenges of delivering feedback
 
