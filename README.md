@@ -22,6 +22,9 @@ This repository is for containing the notes on the books that I read and the cod
   - [Managing Products with Agility](learning-paths/scrum-master/%233-managing-products-with-agility.md)
   - [Developing and Delivering Products Professionally](learning-paths/scrum-master/%234-developing-and-delivering-products-professionally.md)
   - [Evolving the Agile Organization](learning-paths/scrum-master/%235-evolving-the-agile-organization.md)
+* [Flutter](learning-paths/flutter) training path:
+  - [Dart Basics](learning-paths/flutter/dart-basics.md)
+  - [Dart Language Tour](learning-paths/flutter/dart-language-tour.md)
 
 ## Contributing
 
