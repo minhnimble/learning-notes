@@ -26,6 +26,7 @@ This repository is for containing the notes on the books that I read and the cod
   - [Dart Basics](learning-paths/flutter/dart-basics.md)
   - [Dart Language Tour](learning-paths/flutter/dart-language-tour.md)
   - [Flutter Version Management (FVM)](learning-paths/flutter/flutter-version-management.md)
+  - [Getting Started with Flutter](learning-paths/flutter/getting-started-with-flutter.md)
 
 ## Contributing
 
