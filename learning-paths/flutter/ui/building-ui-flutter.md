@@ -189,7 +189,7 @@ The [Pavlova image](https://pixabay.com/en/photos/pavlova) runs best horizontall
   - Less configurable than `Column`, but easier to use and supports scrolling.
 - [Stack](https://docs.flutter.dev/ui/layout#stack): Overlaps a widget on top of another. => [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/material/bottom_navigation_demo.dart)
   - The first widget in the list of children is the base widget; subsequent children are overlaid on top of that base widget
-  - A `Stack`’s content can’t scroll.
+  - A `Stack`'s content can't scroll.
   - can clip children that exceed the render box.
 
 ## Material
@@ -198,7 +198,7 @@ The [Pavlova image](https://pixabay.com/en/photos/pavlova) runs best horizontall
   - Used for presenting related nuggets of information.
   - Accepts a single child, but that child can be a Row, Column, or other widget that holds a list of children.
   - Displayed with rounded corners and a drop shadow.
-  - A Card’s content can’t scroll.
+  - A Card's content can't scroll.
 - [ListTile](https://docs.flutter.dev/ui/layout#listtile): Organizes up to 3 lines of text, and optional leading and trailing icons, into a row. => [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/material/list_demo.dart)
   - A specialized row that contains up to 3 lines of text and optional icons.
   - Less configurable than Row, but easier to use.

@@ -26,7 +26,7 @@ flutter:
 
 # Handling gestures
 
-The [GestureDetector](https://api.flutter.dev/flutter/widgets/GestureDetector-class.html) widget doesn’t have a visual representation but instead detects gestures made by the user. When the user taps the Container, the `GestureDetector` calls its `onTap()` callback, in this case printing a message to the console. You can use `GestureDetector` to detect a variety of input gestures, including taps, drags, and scales.
+The [GestureDetector](https://api.flutter.dev/flutter/widgets/GestureDetector-class.html) widget doesn't have a visual representation but instead detects gestures made by the user. When the user taps the Container, the `GestureDetector` calls its `onTap()` callback, in this case printing a message to the console. You can use `GestureDetector` to detect a variety of input gestures, including taps, drags, and scales.
 
 ```dart
 import 'package:flutter/material.dart';
