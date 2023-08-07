@@ -31,6 +31,7 @@ This repository is for containing the notes on the books that I read and the cod
     - [Building UI in Flutter](learning-paths/flutter/ui/building-ui-flutter.md)
     - [Understanding Widgets](learning-paths/flutter/ui/understanding-widgets.md)
     - [Building the First Layout](learning-paths/flutter/ui/building-layout.md)
+    - [Understanding Constraint](learning-paths/flutter/ui/understanding-constraint.md)
 
 ## Contributing
 
