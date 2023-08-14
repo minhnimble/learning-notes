@@ -33,6 +33,17 @@ This repository is for containing the notes on the books that I read and the cod
     - [Building the First Layout](learning-paths/flutter/ui/building-layout.md)
     - [Understanding Constraint](learning-paths/flutter/ui/understanding-constraint.md)
     - [Adding Interactivity](learning-paths/flutter/ui/adding-interactivity.md)
+    - [Adding Assets](learning-paths/flutter/ui/adding-assets.md)
+    - [Navigation and Routing](learning-paths/flutter/ui/navigation-and-routing.md)
+    - [Navigation Cookbook](learning-paths/flutter/ui/navigation-cookbook):
+      - [Animate a Widget across screens](learning-paths/flutter/ui/navigation-cookbook/animate-widget-across-screens.md)
+      - [Navigate to a new screen and back](learning-paths/flutter/ui/navigation-cookbook/navigate-to-new-screen-and-back.md)
+      - [Navigate with named routes](learning-paths/flutter/ui/navigation-cookbook/navigate-with-named-routes.md)
+      - [Pass arguments with a named route](learning-paths/flutter/ui/navigation-cookbook/pass-arguments-to-named-route.md)
+      - [Return data from a screen](learning-paths/flutter/ui/navigation-cookbook/return-data-frome-screen.md)
+      - [Send data to a new screen](learning-paths/flutter/ui/navigation-cookbook/send-data-to-new-screen.md)
+      - [Setup app links for Android](learning-paths/flutter/ui/navigation-cookbook/setup-app-links-android.md)
+      - [Setup universal links for iOS](learning-paths/flutter/ui/navigation-cookbook/setup-universal-links-ios.md)
 
 ## Contributing
 

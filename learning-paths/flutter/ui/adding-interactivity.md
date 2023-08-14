@@ -6,7 +6,7 @@ A _stateful_ widget is dynamic, i.e., a widget can change when a user interacts 
 
 # Steps creating a stateful widget
 
-## Step 1: Decide which object manages the widget’s state
+## Step 1: Decide which object manages the widget's state
 
 How state is managed: https://docs.flutter.dev/ui/interactivity#managing-state.
 
@@ -33,7 +33,7 @@ class _FavoriteWidgetState extends State<FavoriteWidget> {
 
 ## Step 4: Plug the stateful widget into the widget tree
 
-Add your custom stateful widget to the widget tree in the app’s build() method.
+Add your custom stateful widget to the widget tree in the app's build() method.
 
 Example codes:
 - [lib/main.dart](https://github.com/flutter/website/tree/main/examples/layout/lakes/interactive/lib/main.dart)
