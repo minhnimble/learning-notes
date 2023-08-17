@@ -44,6 +44,9 @@ This repository is for containing the notes on the books that I read and the cod
       - [Send data to a new screen](learning-paths/flutter/ui/navigation-cookbook/send-data-to-new-screen.md)
       - [Setup app links for Android](learning-paths/flutter/ui/navigation-cookbook/setup-app-links-android.md)
       - [Setup universal links for iOS](learning-paths/flutter/ui/navigation-cookbook/setup-universal-links-ios.md)
+    - [State Management](learning-paths/flutter/ui/state-management):
+      - [Manage states with Providers (Basic)](learning-paths/flutter/ui/state-management/managing-states-with-providers.md)
+      - [Manage states with Riverpod (Recommended)](learning-paths/flutter/ui/state-management/managing-states-with-riverpod.md)
 
 ## Contributing
 
