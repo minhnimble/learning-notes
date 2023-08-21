@@ -47,6 +47,30 @@ This repository is for containing the notes on the books that I read and the cod
     - [State Management](learning-paths/flutter/ui/state-management):
       - [Manage states with Providers (Basic)](learning-paths/flutter/ui/state-management/managing-states-with-providers.md)
       - [Manage states with Riverpod (Recommended)](learning-paths/flutter/ui/state-management/managing-states-with-riverpod.md)
+  - [Networking](learning-paths/flutter/networking):
+    - [Dio - a Retrofit-liked library](learning-paths/flutter/networking/dio-library)
+  - [Design Patterns](learning-paths/flutter/design-patterns):
+    - [Structural](learning-paths/flutter/design-patterns/structural):
+      - [Façade](learning-paths/flutter/design-patterns/structural/facade.md)
+      - [Flyweight](learning-paths/flutter/design-patterns/structural/flyweight.md)
+      - [Adapter](learning-paths/flutter/design-patterns/structural/adapter.md)
+      - [Composite](learning-paths/flutter/design-patterns/structural/composite.md)
+      - [Decorator](learning-paths/flutter/design-patterns/structural/decorator.md)
+    - [Creational](learning-paths/flutter/design-patterns/creational):
+      - [Factory Method](learning-paths/flutter/design-patterns/creational/factory-method.md)
+      - [Singleton](learning-paths/flutter/design-patterns/creational/singleton.md)
+      - [Builder](learning-paths/flutter/design-patterns/creational/builder.md)
+      - [Prototype](learning-paths/flutter/design-patterns/creational/prototype.md)
+  - [Testing](learning-paths/flutter/testing):
+    - [Code Lab](learning-paths/flutter/testing/code-lab-example.md)
+    - [Unit Testing Introduction](learning-paths/flutter/testing/unit-test-introduction.md)
+    - [Mock Dependencies with Mockito](learning-paths/flutter/testing/mock-dependencies-mockito.md)
+    - [Integration Testing (Widget)](learning-paths/flutter/testing/integration-testing.md)
+  - Additional Resources (Some content can be overlapping):
+    - [Official Flutter Codelabs](https://docs.flutter.dev/codelabs)
+    - [Flutter Apprentice (Book)](https://www.raywenderlich.com/books/flutter-apprentice/v2.0/chapters/vi-introduction) by Ray Wenderlich
+    - [Official Flutter documentation](https://docs.flutter.dev/)
+    - [Flutter Cookbook](https://docs.flutter.dev/cookbook)
 
 ## Contributing
 
