@@ -189,12 +189,24 @@ Reasons sometimes people won't like the feedback you're giving:
 
 ## Understanding common challenges of delivering feedback
 
- 1. Deals with the leadership team. 
-   - Is leadership asking for a better feedback culture and embracing it themselves? 
-   - Are they modeling the way? 
+1. Deals with the leadership team. 
+  - Is leadership asking for a better feedback culture and embracing it themselves? 
+  - Are they modeling the way? 
 
+How to deal feedback-related challenge that your team hears the message but does not believe leadership is genuinely embracing the behavior:
+- Don't expect the team to embrace feedback.
+- Realize that you have control over your team, but not over the larger system.
+- Bring the team together and tell them you're aware of the disconnect that sometimes happens between what leaders say and do.
+- Tell them that this is not an excuse for the team to ignore what they need to do. 
+- Let them know you believe in feedback, you expect to receive it from them, and you expect to see it as a norm within the group. 
 
-   If your team hears the message but does not believe leadership is genuinely embracing the behavior, don't expect the team to embrace feedback. In that situation, here's what I want you to do. Realize that you have control over your team, but not over the larger system. Bring the team together and tell them you're aware of the disconnect that sometimes happens between what leaders say and do. Also tell them that this is not an excuse for the team to ignore what they need to do. Let them know you believe in feedback. You expect to receive it from them and you expect to see it as a norm within the group. Another feedback-related challenge concerns how to deal with the past. When a change initiative is announced, that means there's a need for improvement. In these situations, leaders usually only talk about the future. What's better is to take a step back and own the past that led to the current situation. Then look to the future. This is a classic mistake. If you want to move forward, you have to confront the past because it's the very thing you're trying to move beyond. Leaders should openly talk about the mistakes of the past, why they existed, and why they're no longer acceptable. In fact, smart leaders will go further and take responsibility for the past, and maybe even share an example or two including them that demonstrates the need to move forward. That level of authenticity inspires confidence. One final feedback challenge we all face concerns confidentiality. There are many times you will want confidentiality, will ask for it, and you might not get it. People talk, which is why it often feels like there's no secrets at work. It does not, however, have to be that way, at least not in your group. It's all about trust, and one of the fastest ways for you to build trust is to actually keep things in confidence. That leads to strong trust, more genuine conversations, and yes, more effective feedback. A shift towards better feedback can happen if you know how to get started. Do your best to ensure that you and others in the leadership team are clearly modeling the way. Don't be afraid to discuss the past when this process begins, and get serious about confidentiality so that your team will believe in the process. When you do, feedback becomes more than a tool for delivering information. It becomes a real catalyst for improvement. 
+How to deal feedback-related challenge that concerns with the past: 
+- Take a step back and own the past that led to the current situation. Then look to the future → If you want to move forward, you have to confront the past because it's the very thing you're trying to move beyond. 
+- Openly talk about the mistakes of the past, why they existed, and why they're no longer acceptable. 
+- Go further and take responsibility for the past, and even share an example or two including them that demonstrates the need to move forward. 
+
+How to deal feedback-related challenge that concerns with confidentiality:
+- Build trust among team members by actually keeping things in confidence → leads to strong trust, more genuine conversations, and more effective feedback.
 
 # Conclusion
 
