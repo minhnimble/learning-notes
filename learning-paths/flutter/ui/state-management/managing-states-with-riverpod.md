@@ -11,9 +11,9 @@
 
 # Why Riverpod
 
-The main __drawback__ of the Provider package: Provider is an improvement over [InheritedWidget](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html), and thus it depends on the widget tree -> lead to the common `ProviderNotFoundException`.
+The main __drawback__ of the Provider package: Provider is an improvement over [InheritedWidget](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html), and thus it depends on the widget tree → lead to the common `ProviderNotFoundException`.
 
-Riverpod is __compile-safe__ since all providers are declared __globally__ and can be accessed anywhere -> can create providers to hold your application state and business logic outside the widget tree.
+Riverpod is __compile-safe__ since all providers are declared __globally__ and can be accessed anywhere → can create providers to hold your application state and business logic outside the widget tree.
 
 # Installation
 
@@ -78,7 +78,7 @@ class HelloWorldWidget extends ConsumerWidget {
 }
 ```
 
-=> If you create widgets that are small and reusable favours composition, leading to code that is concise, more performant, and easier to reason about, then you'll naturally use `ConsumerWidget` most of the time.
+→ If you create widgets that are small and reusable favours composition, leading to code that is concise, more performant, and easier to reason about, then you'll naturally use `ConsumerWidget` most of the time.
 
 2. Use a `Consumer`
 
@@ -99,7 +99,7 @@ lass HelloWorldWidget extends StatelessWidget {
 }
 ```
 
-=> If you have a big widget class with a complex layout, you can use `Consumer` to rebuild only the widgets that depend on the provider. 
+→ If you have a big widget class with a complex layout, you can use `Consumer` to rebuild only the widgets that depend on the provider. 
 
 3. Using `ConsumerStatefulWidget` & `ConsumerState`
 
@@ -138,25 +138,25 @@ It is an object that allows widgets to interact with providers and access any pr
 ## Provider types
 
 There are a total of 8 types:
-- __Provider__ -> is for accessing dependencies and objects that don't change, e.g., date formatter.
+- __Provider__ → is for accessing dependencies and objects that don't change, e.g., date formatter.
 
-- __StateProvider__ (legacy, use `Notifier` related objects instead) -> is for storing simple state objects that can change like enums, strings, booleans, and numbers, e.g., a counter value.
-- __StateNotifierProvider__ (legacy, use `FutureProvider` instead) ->  listen to and expose a `StateNotifier`. 
-=> `StateNotifierProvider` and `StateNotifier` are for managing state that may change in reaction to an event or user interaction, e.g., Clock time change event every second.
+- __StateProvider__ (legacy, use `Notifier` related objects instead) → is for storing simple state objects that can change like enums, strings, booleans, and numbers, e.g., a counter value.
+- __StateNotifierProvider__ (legacy, use `FutureProvider` instead) → listen to and expose a `StateNotifier`. 
+⇒ `StateNotifierProvider` and `StateNotifier` are for managing state that may change in reaction to an event or user interaction, e.g., Clock time change event every second.
 
-- __FutureProvider__ -> get the result from an API call that returns a `Future` and often used with the `autoDispose` modifier. Here are some usage:
+- __FutureProvider__ → get the result from an API call that returns a `Future` and often used with the `autoDispose` modifier. Here are some usage:
    1. perform and cache asynchronous operations (such as network requests)
    2. handle the error and loading states of asynchronous operations
    3. combine multiple asynchronous values into another value
    4. re-fetch and refresh data (useful for pull-to-refresh operations)
 
-- __StreamProvider__ -> watch a `Stream` of results from a realtime API and __reactively__ rebuild the UI.
+- __StreamProvider__ → watch a `Stream` of results from a realtime API and __reactively__ rebuild the UI.
 
-- ChangeNotifierProvider (legacy, use `StateNotifier` instead) -> is for storing some state and notify listeners when it changes. However, it makes easy to break two important rules: __immutable state__ and __unidirectional data flow__.
+- ChangeNotifierProvider (legacy, use `StateNotifier` instead) → is for storing some state and notify listeners when it changes. However, it makes easy to break two important rules: __immutable state__ and __unidirectional data flow__.
 
 - __NotifierProvider__ (new in Riverpod 2.0)
 - __AsyncNotifierProvider__ (new in Riverpod 2.0)
-=> Riverpod 2.0 introduced new [Notifier](https://pub.dev/documentation/riverpod/latest/riverpod/Notifier-class.html) and [AsyncNotifier](https://pub.dev/documentation/riverpod/latest/riverpod/AsyncNotifier-class.html) classes, along their corresponding providers. Ref: [How to use Notifier and AsyncNotifier with the new Flutter Riverpod Generator](https://codewithandrea.com/articles/flutter-riverpod-async-notifier/)
+→ Riverpod 2.0 introduced new [Notifier](https://pub.dev/documentation/riverpod/latest/riverpod/Notifier-class.html) and [AsyncNotifier](https://pub.dev/documentation/riverpod/latest/riverpod/AsyncNotifier-class.html) classes, along their corresponding providers. Ref: [How to use Notifier and AsyncNotifier with the new Flutter Riverpod Generator](https://codewithandrea.com/articles/flutter-riverpod-async-notifier/)
 
 ## ref.watch vs ref.read
 
@@ -330,7 +330,7 @@ final settingsRepositoryProvider = Provider<SettingsRepository>((ref) {
 });
 ```
 
-=> The `sharedPreferencesProvider` becomes an implicit dependency, and we can access it with a call to `ref.read()`.
+→ The `sharedPreferencesProvider` becomes an implicit dependency, and we can access it with a call to `ref.read()`.
 
 ## Scoping Providers
 
@@ -397,7 +397,7 @@ class BytesReceivedText extends ConsumerWidget {
 }
 ```
 
-Calling `ref.watch(connectionProvider)`, our widget will (incorrectly) rebuild when the bytesSent value changes => Use `select()` instead:
+Calling `ref.watch(connectionProvider)`, our widget will (incorrectly) rebuild when the bytesSent value changes → Use `select()` instead:
 
 ```dart
 class BytesReceivedText extends ConsumerWidget {

@@ -118,7 +118,7 @@ class TapboxB extends StatelessWidget {
 
 # A mix-and-match approach
 
-For some widgets, a mix-and-match approach makes the most sense => The stateful widget manages some of the state, and the parent widget manages other aspects of the state.
+For some widgets, a mix-and-match approach makes the most sense → The stateful widget manages some of the state, and the parent widget manages other aspects of the state.
 
 ```dart
 import 'package:flutter/material.dart';

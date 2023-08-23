@@ -43,7 +43,7 @@ Is one that has a minimum of zero and a maximum non-zero. It means the maximum i
 In certain situations, a box's constraint is infinite. It means that either the maximum width or the maximum height is set to `double.infinity`. For example:
 - [ListView](https://api.flutter.dev/flutter/widgets/ListView-class.html)  tries to expand to fit the space available in its cross-direction, i.e., it's a vertically-scrolling block and tries to be as wide as its parent. If you nest a vertically scrolling `ListView` inside a horizontally scrolling `ListView`, the inner list tries to be as wide as possible, which is infinitely wide, since the outer one is scrollable in that direction.
 
-=> A box that is as big as possible won't function usefully when given an unbounded constraint and, in debug mode, throws an __exception__.
+→ A box that is as big as possible won't function usefully when given an unbounded constraint and, in debug mode, throws an __exception__.
 
 # Flex
 

@@ -166,7 +166,7 @@ To minimize the visual confusion that can result from heavily nested layout code
 
 ## Images handling
 
-- When add images, update the `pubspec.yaml` file to access them -> see this example's [pubspec.yaml file](https://github.com/flutter/website/tree/main/examples/layout/row_column/pubspec.yaml) or [Adding assets and images](https://docs.flutter.dev/ui/assets/assets-and-images).
+- When add images, update the `pubspec.yaml` file to access them → see this example's [pubspec.yaml file](https://github.com/flutter/website/tree/main/examples/layout/row_column/pubspec.yaml) or [Adding assets and images](https://docs.flutter.dev/ui/assets/assets-and-images).
 - When referencing online images using `Image.network`, don't need to do anything.
 
 The [Pavlova image](https://pixabay.com/en/photos/pavlova) runs best horizontally on a wide device, such as a tablet. App source: [pavlova](https://github.com/flutter/website/tree/main/examples/layout/pavlova)
@@ -175,30 +175,30 @@ The [Pavlova image](https://pixabay.com/en/photos/pavlova) runs best horizontall
 
 ## Standard
 
-- [Container](https://docs.flutter.dev/ui/layout#container): Adds padding, margins, borders, background color, or other decorations to a widget. => [Demo](https://github.com/flutter/website/tree/main/examples/layout/container)
+- [Container](https://docs.flutter.dev/ui/layout#container): Adds padding, margins, borders, background color, or other decorations to a widget. → [Demo](https://github.com/flutter/website/tree/main/examples/layout/container)
   - Contains a single child widget, but that child can be a Row, Column, or even the root of a widget tree.
-- [GridView](https://docs.flutter.dev/ui/layout#gridview): Lays widgets out as a scrollable grid. => [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/material/grid_list_demo.dart)
+- [GridView](https://docs.flutter.dev/ui/layout#gridview): Lays widgets out as a scrollable grid. → [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/material/grid_list_demo.dart)
   - Detects when the column content exceeds the render box and automatically provides scrolling.
   - Build your own custom grid, or use one of the provided grids:
     - `GridView.count` allows you to specify the number of columns.
     - `GridView.extent` allows you to specify the maximum pixel width of a tile.
-- [ListView](https://docs.flutter.dev/ui/layout#listview): Lays widgets out as a scrollable list => [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/reference/colors_demo.dart)
+- [ListView](https://docs.flutter.dev/ui/layout#listview): Lays widgets out as a scrollable list → [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/reference/colors_demo.dart)
   - A specialized `Column` for organizing a list of boxes.
   - Can be laid out horizontally or vertically.
   - Detects when its content won't fit and provides scrolling.
   - Less configurable than `Column`, but easier to use and supports scrolling.
-- [Stack](https://docs.flutter.dev/ui/layout#stack): Overlaps a widget on top of another. => [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/material/bottom_navigation_demo.dart)
+- [Stack](https://docs.flutter.dev/ui/layout#stack): Overlaps a widget on top of another → [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/material/bottom_navigation_demo.dart)
   - The first widget in the list of children is the base widget; subsequent children are overlaid on top of that base widget
   - A `Stack`'s content can't scroll.
   - can clip children that exceed the render box.
 
 ## Material
 
-- [Card](https://docs.flutter.dev/ui/layout#card): Organizes related info into a box with rounded corners and a drop shadow. => [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/material/cards_demo.dart)
+- [Card](https://docs.flutter.dev/ui/layout#card): Organizes related info into a box with rounded corners and a drop shadow → [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/material/cards_demo.dart)
   - Used for presenting related nuggets of information.
   - Accepts a single child, but that child can be a Row, Column, or other widget that holds a list of children.
   - Displayed with rounded corners and a drop shadow.
   - A Card's content can't scroll.
-- [ListTile](https://docs.flutter.dev/ui/layout#listtile): Organizes up to 3 lines of text, and optional leading and trailing icons, into a row. => [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/material/list_demo.dart)
+- [ListTile](https://docs.flutter.dev/ui/layout#listtile): Organizes up to 3 lines of text, and optional leading and trailing icons, into a row → [Demo](https://github.com/flutter/gallery/tree/main/lib/demos/material/list_demo.dart)
   - A specialized row that contains up to 3 lines of text and optional icons.
   - Less configurable than Row, but easier to use.

@@ -26,7 +26,7 @@ This (sometimes called UI state or local state) is the state you can neatly cont
 - current progress of a complex animation
 - current selected tab in a `BottomNavigationBar`
 
-=> No need to use state management techniques (ScopedModel, Redux, etc.) on this kind of state. All you need is a `StatefulWidget`:
+→ No need to use state management techniques (ScopedModel, Redux, etc.) on this kind of state. All you need is a `StatefulWidget`:
 
 ```dart
 class MyHomepage extends StatefulWidget {
@@ -72,7 +72,7 @@ There is no clear-cut, universal rule to distinguish whether a particular variab
 
 ![Screenshot 2023-08-17 at 11 57 03](https://github.com/minhnimble/learning-notes/assets/70877098/da86104d-2c29-4e57-a38c-66efde586611)
 
-=> “The rule of thumb is: [Do whatever is less awkward](https://github.com/reduxjs/redux/issues/1287#issuecomment-175351978)”
+→ “The rule of thumb is: [Do whatever is less awkward](https://github.com/reduxjs/redux/issues/1287#issuecomment-175351978)”
 
 # Simple app state management (using Provider package)
 
@@ -107,7 +107,7 @@ void main() {
 }
 ```
 
-=> There is a builder that creates a new instance of `CartModel.ChangeNotifierProvider` and it is smart enough not to rebuild `CartModel` unless absolutely necessary. It also automatically calls `dispose()` on `CartModel` when the instance is no longer needed.
+→ There is a builder that creates a new instance of `CartModel.ChangeNotifierProvider` and it is smart enough not to rebuild `CartModel` unless absolutely necessary. It also automatically calls `dispose()` on `CartModel` when the instance is no longer needed.
 
 If you want to provide more than one class, you can use `MultiProvider`
 
@@ -143,7 +143,7 @@ return Consumer<CartModel>(
 );
 ```
 
-=> It is best practice to put your `Consumer` widgets as deep in the tree as possible. You don't want to rebuild large portions of the UI just because some detail somewhere changed.
+→ It is best practice to put your `Consumer` widgets as deep in the tree as possible. You don't want to rebuild large portions of the UI just because some detail somewhere changed.
 
 ## Provider.of
 

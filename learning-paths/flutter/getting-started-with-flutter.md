@@ -250,14 +250,27 @@ Widget _buildRow(int i) {
 }
 ```
 
-# Cleaning up the Code
-
-Create files named `member.dart` and `ghflutter.dart` in the lib folder. Move `Member` into `member.dart` and both `_GHFlutterState` and `GHFlutter` into `ghflutter.dart`.
-
 # Adding a Theme
 
-Find `// TODO: add theme here` and replace it with the following:
+In `main.dart`, add the `ThemeData` to `MaterialApp` widget:
 
 ```dart
-theme: ThemeData(primaryColor: Colors.green.shade800), 
+import 'package:flutter/material.dart';
+import 'ghflutter.dart';
+import 'strings.dart' as strings;
+
+void main() => runApp(const GHFlutterApp());
+
+class GHFlutterApp extends StatelessWidget {
+  const GHFlutterApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: strings.appTitle,
+      theme: ThemeData(primaryColor: Colors.green.shade800), 
+      home: const GHFlutter(),
+    );
+  }
+}
 ```

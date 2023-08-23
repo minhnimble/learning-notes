@@ -21,7 +21,7 @@ Dart has many similarities to other languages such as Java, C#, Swift and Kotlin
 ```dart
 void main() {
   
-  }
+}
 ```
 
 - Some core concepts:
@@ -39,7 +39,7 @@ void main() {
 Variables hold the data that your program will work on.
 
 ```dart
-var myAge = 35;  
+var myAge = 35;
 ```
 
 ### Comments
@@ -59,9 +59,9 @@ print(myAge); // This is also a single-line comment.
 
 ### Data Types
 
-Dart is __statically typed__, meaning that each variable in Dart has a type that must be known when you compile the code. (contrasts with languages like Python and JavaScript, which are __dynamically typed__ => variables can hold different kinds of data when running the program)
+Dart is __statically typed__, meaning that each variable in Dart has a type that must be known when you compile the code. (contrasts with languages like Python and JavaScript, which are __dynamically typed__ → variables can hold different kinds of data when running the program)
 
-If you don't explicitly specify a data type, Dart uses type inference to try to determine it. For example of enter a variable, `pi`, equal to 3.14 => Dart infers `pi` to be a `double`:
+If you don't explicitly specify a data type, Dart uses type inference to try to determine it. For example of enter a variable, `pi`, equal to 3.14 → Dart infers `pi` to be a `double`:
 
 ```dart
 var pi = 3.14;
@@ -104,7 +104,7 @@ numberOfKittens = 0.5;
 print(numberOfKittens); // 0.5
 ```
 
-=> No error assigning different types.
+→ No error assigning different types.
 
 ### Booleans
 
@@ -402,7 +402,7 @@ bool withinTolerance({required int value, int min = 0, int max = 10}) {
 }
 ```
 
-=> `value` is required, while `min` and `max` are optional with default values.
+→ `value` is required, while `min` and `max` are optional with default values.
 
 ## Anonymous Functions
 

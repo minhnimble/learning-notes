@@ -1,4 +1,4 @@
-In Flutter, screens and pages are called routes. The remainder of this recipe refers to routes. => a route is just a widget.
+In Flutter, screens and pages are called routes. The remainder of this recipe refers to routes → a route is just a widget.
 In Android, a route is equivalent to an Activity. 
 In iOS, a route is equivalent to a ViewController. 
 

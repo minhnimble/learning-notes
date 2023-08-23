@@ -31,7 +31,7 @@ The two main methods on an asset bundle allow you to load out of the bundle, giv
 
 Each app has a [rootBundle](https://api.flutter.dev/flutter/services/rootBundle.html) object for easy access to the main asset bundle from `package:flutter/services.dart`.
 
-It's recommended to obtain the `AssetBundle` for the current `BuildContext` using [DefaultAssetBundle](https://api.flutter.dev/flutter/widgets/DefaultAssetBundle-class.html), rather than the default asset bundle that was built with the app (e.g., Use `DefaultAssetBundle.of()` to indirectly load an asset, for example a JSON file, from the app's runtime `rootBundle`) => enables a parent widget to substitute a different `AssetBundle` at run time, which can be useful for localization or testing scenarios.
+It's recommended to obtain the `AssetBundle` for the current `BuildContext` using [DefaultAssetBundle](https://api.flutter.dev/flutter/widgets/DefaultAssetBundle-class.html), rather than the default asset bundle that was built with the app (e.g., Use `DefaultAssetBundle.of()` to indirectly load an asset, for example a JSON file, from the app's runtime `rootBundle`) → enables a parent widget to substitute a different `AssetBundle` at run time, which can be useful for localization or testing scenarios.
 
 Outside of a `Widget` context, or when a handle to an `AssetBundle` is not available, you can use rootBundle to directly load such assets. For example:
 

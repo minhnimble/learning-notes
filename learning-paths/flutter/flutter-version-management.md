@@ -33,4 +33,4 @@ To ignore the Flutter SDK root directory within Android Studio, add the followin
 </component>
 ```
 
-If that doesn't work, go to `Android Studio -> Preferences -> Editor -> File Types -> Ignored Files and Folders` and add `flutter_sdk`. Ref: https://fvm.app/docs/getting_started/configuration/
+If that doesn't work, go to `Android Studio → Preferences → Editor → File Types → Ignored Files and Folders` and add `flutter_sdk`. Ref: https://fvm.app/docs/getting_started/configuration/
