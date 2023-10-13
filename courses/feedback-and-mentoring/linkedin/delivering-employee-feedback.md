@@ -212,4 +212,17 @@ How to deal feedback-related challenge that concerns with confidentiality:
 
 ## Next steps
 
-TBD
+- The first step is to get feedback on yourself.
+  - Talk to your boss, your coach or your mentor. 
+  - Use open ended questions, don't ask them how good you are in terms of giving feedback. Instead, try a few pointed questions like:
+    - What's the one thing I can do differently to improve the feedback I give people? 
+    - Do you think I give too much or too little feedback? 
+    - Interpersonally, how would you describe my style? 
+  - Gather the team and tell them you'd like to take a step forward with the use of feedback. 
+  - Admit, maybe even joke about whatever feedback related shortcomings in the past. 
+  - Tell them you want to honestly embrace the feedback idea. 
+  - Have a discussion about new behavioral norms surrounding feedback.
+  - Don't wait to deliver feedback if you don't have to and speak face to face whenever possible. 
+  - Candor is more important than civility in workplaces.
+  - As a team, come up with a good handful, then capture them, distribute them to everyone and start using them. 
+  - Early tensions will soon become comfortable and normal if you'll speak up quickly and respectfully when people not adhering to the norms.
