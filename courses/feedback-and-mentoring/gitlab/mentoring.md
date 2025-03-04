@@ -75,7 +75,7 @@ Be prepared to invest time in their own employee development.
 2. __Communications Preferences__ - Identify methods and frequency of Communication
 
 3. __Questions__ - Prepared list of questions for your mentor to break the ice
-    
+
 4. __SMART Goals__ - Prepared list of SMART Goals
 
 
