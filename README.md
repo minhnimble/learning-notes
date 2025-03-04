@@ -72,6 +72,16 @@ This repository is for containing the notes on the books that I read and the cod
     - [Official Flutter documentation](https://docs.flutter.dev/)
     - [Flutter Cookbook](https://docs.flutter.dev/cookbook)
 
+### Courses
+
+* [Feedback and Mentoring](courses/feedback-and-mentoring) course:
+  - GitLab:
+    - [Mentoring](courses/feedback-and-mentoring/gitlab/mentoring.md)
+  - LinkedIn:
+    - [Delivering Employee Feedback](courses/feedback-and-mentoring/linkedin/delivering-employee-feedback.md)
+    - Grow your impact as a mentor:
+      - [Coaching and Developing employees](courses/feedback-and-mentoring/linkedin/grow-your-impact-as-a-mentor/coaching-and-developing-employees.md)
+
 ## Contributing
 
 This is my personal learning space. If you have any suggestions for improvement please feel free to open a pull request.
