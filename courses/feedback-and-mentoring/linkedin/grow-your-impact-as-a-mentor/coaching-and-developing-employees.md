@@ -14,7 +14,7 @@ Leaders' command and control style, and need for speed, is actually responsible 
 
 ### Myths 1 - Coaching is hand-holding
 
-Coaching is not doing the work yourself, or telling people what to do step by step. It's guiding, questioning, prompting, and encouraging forward movement. It's inspiring people to take ownership of their work and their careers. 
+Coaching is not doing the work yourself, or telling people what to do step by step. It's guiding, questioning, prompting, and encouraging forward movement. It's inspiring people to take ownership of their work and their careers.
 
 ### Myths 2 - There is no time for coaching
 
@@ -61,7 +61,7 @@ The __three__ cornerstones of the coaching process for smarter work:
 
 ## Three types of coaching conversations
 
-Coaching conversations with people will be tied to accomplishing goals, both personal and organizational. 
+Coaching conversations with people will be tied to accomplishing goals, both personal and organizational.
 
 Those conversations will tend to follow a very distinct arc relative to those goals:
 - __Vision__: Focus on reviewing your people's accomplishments, to take stock of their strengths and repeating themes, what inspires them, what they want to learn, and how they see their career unfolding.
@@ -72,8 +72,8 @@ Those conversations will tend to follow a very distinct arc relative to those go
 - __Implementation__: Translate that self-awareness and visioning into setting goals and accountabilities (solutioning periods).
 - __Reflection__: create a pause in the action to anchor learning, growth, and results.
   - Assessing, acknowledging, and maybe even celebrating.
- 
- ___Power tip of the day___: Every time you feel yourself about to cut to the chase and give direction, wait __five__ seconds → The payoff for you is conserving your energy and time, and the payoff for your people is autonomy and mastery. 
+
+ ___Power tip of the day___: Every time you feel yourself about to cut to the chase and give direction, wait __five__ seconds → The payoff for you is conserving your energy and time, and the payoff for your people is autonomy and mastery.
 
 
 # 2. Building your coaching skills
@@ -82,58 +82,58 @@ Those conversations will tend to follow a very distinct arc relative to those go
 
 Powerful questions are provocative questions:
 - Are open ended.
-- Begin with who, what, when, where, why, and how? 
-- Invite your people to find clarity, self-awareness, options for action, and new perspectives. 
-- Act as little triggers to help your people come up with their own ideas and solutions. 
+- Begin with who, what, when, where, why, and how?
+- Invite your people to find clarity, self-awareness, options for action, and new perspectives.
+- Act as little triggers to help your people come up with their own ideas and solutions.
 
 - Not powerful questions (closed-ended, can be answered with a simple yes or no):
-  - "Do you like your new office?" 
+  - "Do you like your new office?"
   - "Are you enjoying your work with Mary?"
 
 - vs. powerful questions:
-  - "What do you think about your new office?" 
-  - "How are things working with Mary?" 
+  - "What do you think about your new office?"
+  - "How are things working with Mary?"
 
 - Samples questions for starting conversations:
-  - "What are your wins and challenges since we last spoke?" 
-  - "What would you like to focus on today?" Next, here are 
+  - "What are your wins and challenges since we last spoke?"
+  - "What would you like to focus on today?" Next, here are
 
-- A few questions to get at the substance of an issue or a challenge: 
-  - "What seems to be the main obstacle?" 
-  - "What's stopping you? What do you want?" The next 
+- A few questions to get at the substance of an issue or a challenge:
+  - "What seems to be the main obstacle?"
+  - "What's stopping you? What do you want?" The next
 
-- Set of questions are helpful for sourcing new perspectives: 
-  - "If the same thing came up again, what do you think you'd do?" 
-  - "If we could wipe the slate clean, what would you do? What are possible solutions?" 
+- Set of questions are helpful for sourcing new perspectives:
+  - "If the same thing came up again, what do you think you'd do?"
+  - "If we could wipe the slate clean, what would you do? What are possible solutions?"
 
-- A few questions for planning and action: 
+- A few questions for planning and action:
   - "How could you improve the situation?"
   - "What's your game plan? What are your next steps?"
-  - "By what date or time will you complete these steps?" 
+  - "By what date or time will you complete these steps?"
 
-A power tip to help you turn closed-ended questions into open-ended ones: 
-- When you feel you're about to give advice, or offer criticism, pause, then start your sentence with what or how, and improvise your way through the question → It'll relieve you of the burden of constant problem solving and increase your people's self sufficiency and confidence. 
+A power tip to help you turn closed-ended questions into open-ended ones:
+- When you feel you're about to give advice, or offer criticism, pause, then start your sentence with what or how, and improvise your way through the question → It'll relieve you of the burden of constant problem solving and increase your people's self sufficiency and confidence.
 
 ## Becoming an active listener
 
-In our everyday conversations, we're normally: 
-- Full of preconceived ideas about what people are saying and what we think people mean and where we think the conversation is headed. 
+In our everyday conversations, we're normally:
+- Full of preconceived ideas about what people are saying and what we think people mean and where we think the conversation is headed.
 - Listening for what we want to hear and filtering things through our opinions and biases
-- Waiting for a space to interject our perspective. 
+- Waiting for a space to interject our perspective.
 
-Coaching requires a whole different kind of listening: 
-- Instead of listening followed by direction giving, listen to find the next right question. 
-- You want your people to be able to source themselves for answers, not you. 
+Coaching requires a whole different kind of listening:
+- Instead of listening followed by direction giving, listen to find the next right question.
+- You want your people to be able to source themselves for answers, not you.
 
 __Five__ strategies to improve your listening:
 - Be present and focus on the other person → when you're sitting down face to face, your objective is to clear your mind, set aside your own to-do list, and make yourself present and available.
-- Minimize distraction by closing your door and turning off ringers and alerts. 
-- Give cues that you're listening → Can be done verbally by saying things like, "Aha, mhm" and "Yes," and through body language by nodding and smiling occasionally. 
-- Mirror what you hear → Try to understand what's really being said. Saying things like, "What I'm hearing is," or, "It sounds like you're saying" to get clarity. 
-- Turn directive statements into powerful open-ended questions → When you feel you're about to give advice, direction, or offer criticism, pause, then start your sentence with what or how, and improvise your way through the question. 
+- Minimize distraction by closing your door and turning off ringers and alerts.
+- Give cues that you're listening → Can be done verbally by saying things like, "Aha, mhm" and "Yes," and through body language by nodding and smiling occasionally.
+- Mirror what you hear → Try to understand what's really being said. Saying things like, "What I'm hearing is," or, "It sounds like you're saying" to get clarity.
+- Turn directive statements into powerful open-ended questions → When you feel you're about to give advice, direction, or offer criticism, pause, then start your sentence with what or how, and improvise your way through the question.
 
-⇒ You're not gathering information so you can offer a solution, but find an open-ended question that helps your people find the best solution. Here is a power tip: 
-- Listening and question asking go hand in hand. When you find yourself cutting to the chase and problem solving for your employee, say to yourself, "WAIT" and that stands for, why am I talking? That way, you can redirect yourself, ask an open-ended question, and turn things back over to your people. 
+⇒ You're not gathering information so you can offer a solution, but find an open-ended question that helps your people find the best solution. Here is a power tip:
+- Listening and question asking go hand in hand. When you find yourself cutting to the chase and problem solving for your employee, say to yourself, "WAIT" and that stands for, why am I talking? That way, you can redirect yourself, ask an open-ended question, and turn things back over to your people.
 
 ## Challenging your employees for growth
 
@@ -142,71 +142,71 @@ __Five__ strategies to improve your listening:
 
 Three key aspects to challenges:
 - Have to take people to or past their current comfort zone.
-- Have to include some brainstorming to find an authentic, relevant challenge. 
-- Have to be accepted for it to be a true challenge. 
+- Have to include some brainstorming to find an authentic, relevant challenge.
+- Have to be accepted for it to be a true challenge.
 
 Examples:
 _Employee:_ I just got my life organized and now you're asking me to take on more.
-_Q:_ Sounds like you're in between, why me, and, what can I let go of? What's the choice here? 
-_Q:_ These workflow changes you have been making could be used to improve our numbers immensely. So what do you think you can delegate more, you know, so you can teach what you've learned and get things implemented? 
-⇒ So challenging your employees can be challenging, but if you keep bringing their personal goals front and center and hold them to their highest aspirations, people will find their way. 
+_Q:_ Sounds like you're in between, why me, and, what can I let go of? What's the choice here?
+_Q:_ These workflow changes you have been making could be used to improve our numbers immensely. So what do you think you can delegate more, you know, so you can teach what you've learned and get things implemented?
+⇒ So challenging your employees can be challenging, but if you keep bringing their personal goals front and center and hold them to their highest aspirations, people will find their way.
 
 ## Taking the next steps and building momentum
 
-If your employee is a little foggy about a solution, and not sure what action to take → Brainstorming can help them uncover multiple solutions, and possibilities for action. 
+If your employee is a little foggy about a solution, and not sure what action to take → Brainstorming can help them uncover multiple solutions, and possibilities for action.
 
-Before people can unlock their creativity, and brainstorm effectively, they have to be able to out gas about what's frustrating them or what their fears are about a project or a task → Do a little pre-brainstorming by asking three questions: 
-- "What are you frustrated about?" 
-- "What do you want?" 
-- "What are your aspirations?" 
+Before people can unlock their creativity, and brainstorm effectively, they have to be able to out gas about what's frustrating them or what their fears are about a project or a task → Do a little pre-brainstorming by asking three questions:
+- "What are you frustrated about?"
+- "What do you want?"
+- "What are your aspirations?"
 
 For example:
 - A frustration: "I can't get engineering, and marketing to collaborate."
 - The want: a collaboration that took into account everyone's needs.
 - The big picture vision or aspiration: To integrate engineering, and marketing to satisfy the needs of the clients, and increase retention and profits.
 
-Focus on two kinds of powerful questions you can use to help people get unstuck: 
+Focus on two kinds of powerful questions you can use to help people get unstuck:
 - __Generators__ questions: Unleash as many ideas as possible, and they sound like this:
   - "What have you tried already?"
   - "What part of the problem have you not explored?"
   - "What needs to be happening that isn't happening now?"
   - "What would it look like if everything was exactly as you envision?"
-  - "What's another option? And what else?" 
+  - "What's another option? And what else?"
 
 - __Deciders__ questions: Help people find right actions and they sound like so:
   - "What's the smallest or easiest step you could take right now?"
   - "What action could you take that would light a fire under this project?"
-  - "And what action would give you the biggest leap in learning?" 
-  - "What one action would trigger all the rest?" 
+  - "And what action would give you the biggest leap in learning?"
+  - "What one action would trigger all the rest?"
 
-Here is a power tip: 
-- Hold up your end of the bargain, and walk the talk to keep trust and commitment high → What your employees choose as a next ride action might involve gaining access to people or resources, or even training. Things you'll likely have a hand in orchestrating or at least approving → brainstorm with your people to discover possible solutions and actions, and remember, to let them take the lead. 
+Here is a power tip:
+- Hold up your end of the bargain, and walk the talk to keep trust and commitment high → What your employees choose as a next ride action might involve gaining access to people or resources, or even training. Things you'll likely have a hand in orchestrating or at least approving → brainstorm with your people to discover possible solutions and actions, and remember, to let them take the lead.
 
 ## Managing accountability
 
-Coaching would not be coaching without accountability. 
-Accountability involves three elements: 
-- What action is your employee agreeing to? 
-- When will they do it? 
-- How will you know they accomplish it? 
+Coaching would not be coaching without accountability.
+Accountability involves three elements:
+- What action is your employee agreeing to?
+- When will they do it?
+- How will you know they accomplish it?
 
 Learning opportunities:
 - In-between making an agreement
 - Taking action by a defined timeline.
 - Communicating the results of those actions.
 
-Small actions and agreements are simple or transactional: 
-- Like scheduling a meeting → Reporting back about the results. 
+Small actions and agreements are simple or transactional:
+- Like scheduling a meeting → Reporting back about the results.
 
 Long-tail agreements which involve more complex details:
-- Like organizing a workshop or a training → Guide your people to establish accountability milestones, and encourage them to define how and when they'll communicate their progress. 
+- Like organizing a workshop or a training → Guide your people to establish accountability milestones, and encourage them to define how and when they'll communicate their progress.
 
-Failure is a part of the process: Missed deadlines, botched actions, procrastination, forgetfulness → it's another opportunity for growth → this means support your employee, don't belittle their missteps. 
+Failure is a part of the process: Missed deadlines, botched actions, procrastination, forgetfulness → it's another opportunity for growth → this means support your employee, don't belittle their missteps.
 
 For example:
 _Employee:_ Everyone feels my new workflow system is going to break down like everything else we tried.
 _Q:_ Ask your team "Hey, what's your solution? If my solution won't work, what will?". What if the team comes up with a better plan than your original proposal?
-_Employee:_ Sounds good, I'm all for it. 
+_Employee:_ Sounds good, I'm all for it.
 _Q:_ What kind of accountability can we set up to call this down?
 _Employee:_ Well, we're meeting next week so I should expect a plan by the end of the month.
 
@@ -218,14 +218,14 @@ Small tips:
 
 ## Giving future-focused feedback
 
-Often performance feedback tends to focus on what went wrong and how things should have been done → it's focused on the past, like: 
-- "You should have given me a heads up," 
-- "If it were me, I would've done X, Y, and Z," 
-- "You really screwed things up and we're way behind deadline, and now it's on me to clean everything up." 
+Often performance feedback tends to focus on what went wrong and how things should have been done → it's focused on the past, like:
+- "You should have given me a heads up,"
+- "If it were me, I would've done X, Y, and Z,"
+- "You really screwed things up and we're way behind deadline, and now it's on me to clean everything up."
 
 Cons:
-- People experience constructive criticism as shaming, and when people feel shamed and judge → it not only slows momentum, it feeds disengagement . 
-- When we highlight how people went wrong → it builds defensiveness, because it puts the spotlight on mistakes and shortcomings. 
+- People experience constructive criticism as shaming, and when people feel shamed and judge → it not only slows momentum, it feeds disengagement .
+- When we highlight how people went wrong → it builds defensiveness, because it puts the spotlight on mistakes and shortcomings.
 
 Future-focused feedback side-steps this personal critique in favor of teasing out what's possible and what might be improved in the future:
 - Ask "What happened?" → Gives you an opportunity to gather information, while also allowing your employee to tell their story and vent a little.
@@ -241,28 +241,81 @@ Here is a power tip:
 
 ## Learning break
 
-TBD
+An early career experience that shaped their approach to coaching and negotiation. The experience is:
+While working as a new business coordinator at a PR firm in LA, they struggled with a long commute, leading to frustration. After six weeks, they approached their boss in tears, saying they wanted to quit. Instead of dismissing them, the boss prompted them to ask a question, leading them to request a later work schedule to avoid traffic. The boss agreed and then taught them a key negotiation lesson - always frame requests with a benefit for the other person.
+
+This experience taught the speaker three key lessons:
+— Turn complaints into requests.
+- Highlight mutual benefits.
+- Avoid emotional appeals.
 
 ## The discovery questionnaire
 
-TBD
+the Discovery Questionnaire is a self-assessment tool designed to enhance coaching by helping employees reflect on their work and life. The questionnaire covers four key areas:
+
+- Current Role – Questions about what employees love or want to change in their job, e.g., what do you love about your work and what do you wish you could change?
+- Achievements & Goals – Questions about short- and long-term aspirations, e.g., what do you want to accomplish this year? Or, where do you see yourself in the next five years?
+- Work Style – Questions on productivity, accountability, and habits, e.g., how well do you keep your promises to yourself and others? Or, how satisfied are you with your level of productivity?
+- Vision – Big-picture questions about leadership and global impact, e.g., if you were the CEO, where would you take this company? Or, if you could change the world, what problems would you solve?
+
+Can try to complete the questionnaire ourselves to understand the process and use it as an ongoing reference in their coaching relationships.
 
 ## Team sourcing and influence interviews
 
-TBD
+The Influence Interview is an exercise designed to help individuals gain insight into how they are perceived by family, friends, and colleagues. It requires courage but can lead to surprising and transformational discoveries.
+
+How It Works:
+- Identify People to Interview – Employees select individuals who know them well.
+- Send an Email with Two Sets of Questions:
+  - Strengths Questions: Identify key skills and contributions, e.g., What are my greatest strengths? What skills can I be counted on to bring to the table? And what strengths and skills have been most helpful to you?
+  - Reality Check Questions: Highlight struggles and areas for improvement, e.g., Where do you see me struggle? How do I get in my own way? What can I do right now to improve? And what would you do if you were me?
+- Power Tip: Employees should reassure interviewees that they will listen without rebutting or defending—just taking in the feedback.
+
+The exercise can challenge assumptions and provide valuable self-awareness, making it a powerful tool for personal and professional growth.
 
 # 4. Maintaining the Coaching Style
 
 ## Design stretch opportunities
 
-TBD
+Stretch opportunities are ways to help employees grow beyond their current roles, which emphasizes that people are more motivated by autonomy than money.
+
+Three Key Stretch Opportunities:
+1. Learning & Education – Encourage employees to pursue workshops, certifications, or formal degrees. Help them set learning goals, find resources, and protect their timelines.
+2. Mentoring – Facilitate relationships between employees and experienced mentors who can provide guidance and career insights.
+3. Sponsorship – Actively advocate for high performers by making introductions and opening doors to new opportunities.
+
+Bonus Stretch Opportunity:
+- Teaching Others – Reinforce learning by sharing coaching practices with colleagues, helping coaching culture spread while enhancing leadership visibility.
 
 ## Work through blind spots and resistance
 
-TBD
+Employee development coaching involves change, which often leads to resistance. Not everyone is coachable, so making coaching mandatory can backfire. Instead, start with willing participants and let the benefits spread naturally.
+
+Key Strategies for Handling Resistance:
+1. Assess Coachability – Use self-assessments to gauge readiness. One-word answers or “I don’t know” may indicate someone isn’t ready.
+2. Address Initial Objections – High achievers may see coaching as remedial, so frame it as growth-oriented. Underperformers need assurance that coaching taps into their strengths.
+3. Manage Participation Issues – If employees show up late, miss deadlines, or disengage, don’t take it personally. Instead:
+  - Stay curious and focus on the problem, not the person.
+  - Ask open-ended questions instead of criticizing.
+  - Allow venting but don’t commiserate or reinforce limiting beliefs.
+
+ealing with Disengagement:
+- Pay attention to body language ("geography"). Folded arms, lack of eye contact, and minimal responses signal resistance.
+- Mirror their posture and ask what it means—this can help uncover the real issue.
+
+With persistence and empathy, resistance can be overcome by reminding employees of their big-picture vision and keeping progress moving.
 
 # Conclusion
 
 ## Next steps, strategies, and resources
 
-TBD
+Coaching is about fostering growth, results, and opportunity, creating a high-performance culture rather than just managing poor performance.
+
+Implementing a Coaching Program:
+- Commit to Mastery – Coaching is a skill that requires practice. Consider formal training and certification to deepen expertise and gain credibility.
+- Track and Document – Keep records of coaching sessions, meeting notes, insights, and next steps to quantify progress.
+- Use Collaboration Tools – Cloud-based tools help track the iterative coaching process and keep employees aligned.
+- Share Results – Communicate coaching success with leadership, HR, and other teams to drive wider adoption.
+
+Final Takeaway:
+People want to be coached and supported. Keep practicing, learning, and refining your approach.
