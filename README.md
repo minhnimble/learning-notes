@@ -71,6 +71,8 @@ This repository is for containing the notes on the books that I read and the cod
     - [Flutter Apprentice (Book) by Ray Wenderlich](https://www.raywenderlich.com/books/flutter-apprentice/v2.0/chapters/vi-introduction)
     - [Official Flutter documentation](https://docs.flutter.dev/)
     - [Flutter Cookbook](https://docs.flutter.dev/cookbook)
+* [Python](learning-paths/python) learning path:
+  - [Web Development](learning-paths/python/web-development) learning plan in Mind Map form.
 
 ### Courses
 
