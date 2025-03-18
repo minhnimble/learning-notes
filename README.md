@@ -71,6 +71,28 @@ This repository is for containing the notes on the books that I read and the cod
     - [Flutter Apprentice (Book) by Ray Wenderlich](https://www.raywenderlich.com/books/flutter-apprentice/v2.0/chapters/vi-introduction)
     - [Official Flutter documentation](https://docs.flutter.dev/)
     - [Flutter Cookbook](https://docs.flutter.dev/cookbook)
+* [Ruby](learning-paths/ruby) training path:
+  - [Ruby](learning-paths/ruby/ruby/):
+    - [Eloquent Ruby](learning-paths/ruby/ruby/eloquent-ruby.md)
+    - [Learn To Program](learning-paths/ruby/ruby/learn-to-program.md)
+    - [Ruby For Beginner](learning-paths/ruby/ruby/ruby-for-beginner.md)
+    - [Ruby in 20 Minutes](learning-paths/ruby/ruby/ruby-in-20-mins.md)
+    - [Ruby Modules: Include vs. Prepend vs. Extend](learning-paths/ruby/ruby/ruby-modules-include-vs-prepend-extend.md)
+    - [Ruby Programing](learning-paths/ruby/ruby/ruby-programming.md)
+    - [The `yield` keyword in Ruby](learning-paths/ruby/ruby/the-yield-keword-in-ruby.md)
+  - [Rails](learning-paths/ruby/rails/):
+    - [Agile Web Development with Rails 6](learning-paths/ruby/rails/agile-web-development-with-rails-6.md)
+    - [Official Guides](learning-paths/ruby/rails/official-guides.md)
+    - [Ruby on Rails Tutorials: Rails 6 (7th edition)](learning-paths/ruby/rails/ruby-on-rails-tutorial-rails-6-7th-edition.md)
+    - [Ruby on Rails](learning-paths/ruby/rails/ruby-on-rails.md)
+  - [Rails Advanced](learning-paths/ruby/rails-advanced/):
+    - [Advanced ActiveRecord Querying](learning-paths/ruby/rails-advanced/advanced-activerecord-querying.md)
+    - [The Rails 7 Ways](learning-paths/ruby/rails-advanced/the-rails-7-way.md)
+  - [Testing](learning-paths/ruby/testing/):
+    - [Rails 5 Test Prescriptions](learning-paths/ruby/testing/rails-5-test-prescriptions.md)
+    - [Test Driven Rails](learning-paths/ruby/testing/test-driven-rails.md)
+    - [Testing Rails](learning-paths/ruby/testing/testing-rails.md)
+    - [Testing Ruby Applications with RSpec](learning-paths/ruby/testing/testing-ruby-applications-with-rspec.md)
 
 ### Courses
 
