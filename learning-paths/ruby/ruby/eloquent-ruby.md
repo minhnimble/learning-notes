@@ -383,7 +383,7 @@ book = Book.find('all') # Using a string
 
 ## Not Quite a String
 
-- In Ruby, strings can also be used as symbols or flags to represent specific commands or states (e.g., :all to mean "all records"). 
+- In Ruby, strings can also be used as symbols or flags to represent specific commands or states (e.g., :all to mean "all records").
 - Symbols are primarily for identification and comparison rather than modification. Symbols like :all are more readable and meaningful than numeric or hex codes.
 
 ## Optimized to Stand for Something
