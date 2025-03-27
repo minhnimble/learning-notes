@@ -74,11 +74,11 @@ This repository is for containing the notes on the books that I read and the cod
 * [Ruby](learning-paths/ruby) training path:
   - [Ruby](learning-paths/ruby/ruby/):
     - [Eloquent Ruby](learning-paths/ruby/ruby/eloquent-ruby.md)
-    - [Learn To Program](learning-paths/ruby/ruby/learn-to-program.md)
+    - [Learn To Program](learning-paths/ruby/ruby/learn-to-program)
     - [Ruby For Beginner](learning-paths/ruby/ruby/ruby-for-beginner.md)
     - [Ruby in 20 Minutes](learning-paths/ruby/ruby/ruby-in-20-mins.md)
     - [Ruby Modules: Include vs. Prepend vs. Extend](learning-paths/ruby/ruby/ruby-modules-include-vs-prepend-extend.md)
-    - [Ruby Programing](learning-paths/ruby/ruby/ruby-programming.md)
+    - [Ruby Programing](learning-paths/ruby/ruby/ruby-programming)
     - [The `yield` keyword in Ruby](learning-paths/ruby/ruby/the-yield-keword-in-ruby.md)
   - [Rails](learning-paths/ruby/rails/):
     - [Agile Web Development with Rails 6](learning-paths/ruby/rails/agile-web-development-with-rails-6.md)
