@@ -477,3 +477,14 @@ class RomanceNovel < Document
   # Inherits from Document
 end
 ```
+
+## Objects All the Way Down
+
+- **Consistency in Object-Oriented Philosophy**: Ruby treats everything consistently as an object.
+- **Method Calls on Objects**: `-3.abs` works because `-3` is an object and `abs` is a method on that object.
+- **Everything is an Object**: Strings, symbols, regular expressions, and even `true` and `false` are objects with their own methods.
+- **Classes are Objects**: `true.class.class` returns `Class`, showing that even classes are objects.
+- **Nil is an Object**: `nil` is an instance of `NilClass` and can respond to methods like `nil?`.
+- **If You Can Reference It, It’s an Object**: Anything that can be assigned to a variable is treated as an object in Ruby.
+
+## The Importance of Being an Object
