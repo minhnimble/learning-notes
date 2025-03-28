@@ -75,7 +75,7 @@ This repository is for containing the notes on the books that I read and the cod
   - [Ruby](learning-paths/ruby/ruby/):
     - [Eloquent Ruby](learning-paths/ruby/ruby/eloquent-ruby.md)
     - [Learn To Program](learning-paths/ruby/ruby/learn-to-program)
-    - [Ruby For Beginner](learning-paths/ruby/ruby/ruby-for-beginner.md)
+    - [Ruby For Beginner](learning-paths/ruby/ruby/ruby-for-beginner)
     - [Ruby in 20 Minutes](learning-paths/ruby/ruby/ruby-in-20-mins.md)
     - [Ruby Modules: Include vs. Prepend vs. Extend](learning-paths/ruby/ruby/ruby-modules-include-vs-prepend-extend.md)
     - [Ruby Programing](learning-paths/ruby/ruby/ruby-programming)
