@@ -72,11 +72,11 @@ module Logging
       true
     end
   end
-  
+
   def self.included(base)
     base.extend(ClassMethods)
   end
-  
+
   def log(level, message)
     # ...
   end
@@ -99,7 +99,7 @@ end
 
 class Service
   prepend ServiceDebugger
-  
+
   # perform some real work
   def run(args)
     args.each do |arg|
