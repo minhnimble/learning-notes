@@ -157,7 +157,7 @@ author = case title
 - **Misuse of arrays and hashes** – Arrays allow duplicates and require searching for uniqueness, while hashes are meant for key-value pairs.
 
 - **Use a `Set`** – For fast lookup and uniqueness, use Ruby’s `Set` class instead of arrays or hashes.
-    - **Example:** `word_set = Set.new(words)` ensures no duplicates and quick membership checks. 
+    - **Example:** `word_set = Set.new(words)` ensures no duplicates and quick membership checks.
 
 ## Coming Up with a String
 
@@ -487,4 +487,14 @@ end
 - **Nil is an Object**: `nil` is an instance of `NilClass` and can respond to methods like `nil?`.
 - **If You Can Reference It, It’s an Object**: Anything that can be assigned to a variable is treated as an object in Ruby.
 
-## The Importance of Being an Object
+> [!NOTE] Stop Reading, Start Practicing!
+> Reading is useful, but true learning happens through practice. Instead of just absorbing information, take action:
+>
+> - ✅ Solve an exercise related to the topic
+> - ✅ Build a small project
+> - ✅ Experiment and debug real code
+>
+> **Remember:** *"Knowing is not enough; we must apply. Willing is not enough; we must do."* — Goethe
+>
+> **Pause here and start coding!** 🚀
+
