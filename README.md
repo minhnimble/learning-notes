@@ -82,7 +82,7 @@ This repository is for containing the notes on the books that I read and the cod
     - [The `yield` keyword in Ruby](learning-paths/ruby/ruby/the-yield-keword-in-ruby.md)
   - [Rails](learning-paths/ruby/rails/):
     - [Agile Web Development with Rails 6](learning-paths/ruby/rails/agile-web-development-with-rails-6.md)
-    - [Official Guides](learning-paths/ruby/rails/official-guides.md)
+    - [Official Guides](learning-paths/ruby/rails/official-guides)
     - [Ruby on Rails Tutorials: Rails 6 (7th edition)](learning-paths/ruby/rails/ruby-on-rails-tutorial-rails-6-7th-edition.md)
     - [Ruby on Rails](learning-paths/ruby/rails/ruby-on-rails.md)
   - [Rails Advanced](learning-paths/ruby/rails-advanced/):

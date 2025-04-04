@@ -10,7 +10,7 @@
 
 # Instructions
 
-## Setup 
+## Setup
 
 1. Add the Dio package to your `pubspec.yaml` file:
 

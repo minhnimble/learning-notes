@@ -23,7 +23,7 @@ Open Android Studio -> Open Project -> Choose the path where the repository is c
 
 **Choose Build/Run from the GUI or use the command line:**
 
-`$ ./gradlew assembleStagingDebug` 
+`$ ./gradlew assembleStagingDebug`
 
 ```
 ⚠️ A small note: This command is not working properly on version `4.0.1`. As a result, we will need to upgrade the Android Gradle Plugin in this project (toyota-wallet-android) to the latest version, potentially `7.0.3`.
@@ -44,7 +44,7 @@ This project's modules organization is actually the reassembly of the layers of 
 
 ![MVVM Clean architecture](https://user-images.githubusercontent.com/70877098/147942090-21da70d1-787f-4c8b-b41b-46224decfc2a.jpeg)
 
-With this architecture, the project can certainly take the benefits from itself such as: 
+With this architecture, the project can certainly take the benefits from itself such as:
 - Easily testable.
 - Better decoupled.
 - Easy to navigate the package structure.
@@ -57,7 +57,7 @@ As we all may know, each module will have an associated build.gradle file, tests
 
 This module is basically the `Presentation` layer of the project that contains all the Views including Activities + Fragments and their corresponding ViewModels.
 
-It is noticable that this project is following the Single Activity Design and to take full advantage of the [Navigation component](https://developer.android.com/guide/navigation/navigation-migrate), which is an official-standard solution from Google, that is used for navigating between screens declared in a multi-module project setup. There are 2 major Activities in the project: `OnboardingActivity` and `MainActivity`. 
+It is noticable that this project is following the Single Activity Design and to take full advantage of the [Navigation component](https://developer.android.com/guide/navigation/navigation-migrate), which is an official-standard solution from Google, that is used for navigating between screens declared in a multi-module project setup. There are 2 major Activities in the project: `OnboardingActivity` and `MainActivity`.
 
 ### Activities
 
@@ -107,7 +107,7 @@ Exploring further, the Dependency Injections applicable area in this project is 
 
 ### Extensions
 
-This module has plenty of extensions files that are organized into each class extension per file. The type of extensions are quite abundant, ranging from basic UI Android components like: `ActivityExt`, `ContextExt`, `ViewExt`, etc. to core and reactive components like: `LocalDateTimeExt`, `NumberExt`, `RxViewExt`, `ObservableExt` etc. 
+This module has plenty of extensions files that are organized into each class extension per file. The type of extensions are quite abundant, ranging from basic UI Android components like: `ActivityExt`, `ContextExt`, `ViewExt`, etc. to core and reactive components like: `LocalDateTimeExt`, `NumberExt`, `RxViewExt`, `ObservableExt` etc.
 
 Unfortunately, the file naming of these extension doesn't seem to be consistent as sometime the postfix is `Ext` but sometime it is also written fully out to `Extension`:
 
@@ -119,7 +119,7 @@ Apart from that, some extension files are named incorrectly comparing to the act
 
 ### Managers & Services
 
-The services and managers from this module actually do not relate to the data layer where they will connect with the application's backend endpoints but instead they are the additional services classes that act as the interface for working with some 3rd-party libraries that are being used in the application or just simple helper services such as: 
+The services and managers from this module actually do not relate to the data layer where they will connect with the application's backend endpoints but instead they are the additional services classes that act as the interface for working with some 3rd-party libraries that are being used in the application or just simple helper services such as:
 - **BarcodeService**: generates a QR code using `BarcodeEncoder` from [ZXing Android Embedded](https://github.com/journeyapps/zxing-android-embedded).
 - **BiometricService**: setups and shows a biometric prompt on screen when requested with the native [Android Biometric library](https://developer.android.com/jetpack/androidx/releases/biometric).
 - **FCMManager**: retrieves the token string associated with the firebase account after logging in for sending notifications via [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging).
@@ -211,7 +211,7 @@ The second one is a `ReflectionHelpers` class that are used mainly in testings f
 
 ## Data Module
 
-This module has all the services which the Domain layer can use and exposes the APIs to outside classes. By organizing it into the module, it can be shared and reused between projects as well, enhancing reusability when we need to connect to the same backend in different projects. 
+This module has all the services which the Domain layer can use and exposes the APIs to outside classes. By organizing it into the module, it can be shared and reused between projects as well, enhancing reusability when we need to connect to the same backend in different projects.
 
 At the same time, this Data module contains many supporting classes for those services such as a custom DateTime adapter for supporting JSON parsing, authenticator and interceptor for handling additional header params or token refreshing on each request, providers for generating necessary classes for Retrofit and OkHttp clients to work with via DI, request/response and error objects for each request, etc.
 
@@ -223,7 +223,7 @@ Addtionally, we have some other supporting classes like some reactive extensions
 
 ## Domain Module
 
-This module basically acts as the Domain layer which is responsible for encapsulating complex business logic, or simple business logic that is reused by multiple ViewModels from the Presentation layer. This layer is optional because not all apps will have these requirements. 
+This module basically acts as the Domain layer which is responsible for encapsulating complex business logic, or simple business logic that is reused by multiple ViewModels from the Presentation layer. This layer is optional because not all apps will have these requirements.
 
 For this particular project, it is currently being structured as a separated module and thus it is considered as a needed layer since it can definitely help handle complexity + support reusability and testing. On top of that, each use case should only have responsibility over a single functionality, and they should not contain mutable data. It is suggested to handle mutable data in the UI or Data layers instead.
 

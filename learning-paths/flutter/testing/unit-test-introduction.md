@@ -67,7 +67,7 @@ Run tests:
     - Click the Start Debugging option
     - Alternatively, use the appropriate keyboard shortcut for your platform.
 
-2. Terminal 
+2. Terminal
 
 ```bash
 $ flutter test test/counter_test.dart
