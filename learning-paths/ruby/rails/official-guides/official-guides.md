@@ -8,6 +8,78 @@
   - **DRY (Don't Repeat Yourself)**: Avoids redundancy for better maintainability.
   - **Convention Over Configuration**: Uses sensible defaults to reduce setup effort.
 
+# Create a New Rails app
+
+## Directory Structure in a Rails App:
+
+- **app/** – Main app code: models, views, controllers, helpers, mailers, jobs, assets.
+- **bin/** – Scripts for running and managing the app.
+- **config/** – Application configuration (routes, database, etc.).
+- **config.ru** – Rack configuration for launching the app.
+- **db/** – Database schema and migrations.
+- **Dockerfile / .dockerignore** – Docker-related configuration.
+- **Gemfile / Gemfile.lock** – Gem dependencies managed by Bundler.
+- **lib/** – Custom modules and libraries.
+- **log/** – Application logs.
+- **public/** – Static files exposed by the server.
+- **Rakefile** – Defines command-line tasks; custom tasks go in lib/tasks/.
+- **README.md** – App documentation and setup instructions.
+- **script/** – General purpose and one-off scripts.
+- **storage/** – Active Storage files and SQLite databases.
+- **test/** – Tests, fixtures, and test utilities.
+- **tmp/** – Temporary files.
+- **vendor/** – Third-party code and vendored gems.
+- **.git/**, **.gitignore**, **.gitattributes**, **.github/** – Git and GitHub config.
+- **.kamal/** – Kamal deployment and secrets.
+- **.rubocop.yml** – RuboCop linting rules.
+- **.ruby-version** – Specifies default Ruby version.
+
+## MVC Basics (Model-View-Controller):
+
+- **Model** – Manages application data (e.g., database tables).
+- **View** – Renders output like HTML, JSON, etc.
+- **Controller** – Handles user input and application logic.
+
+![Rails_MVC_Architecture_Dark](https://github.com/user-attachments/assets/f4f00b65-91a4-4b20-97c2-51fc366ee374)
+
+## Sample Rails project creation
+
+- Creating a new Rails App called `store`:
+
+```bash
+$ rails new store
+```
+
+- Start up a web server called Puma that will serve static files and your Rails application:
+
+```bash
+$ bin/rails server
+```
+
+- Example of adding a database table to the Rails application to add products to the simple e-commerce store:
+
+```bash
+bin/rails generate model Product name:string
+```
+
+- Run the migration:
+
+```bash
+$ bin/rails db:migrate
+```
+
+- If you make a mistake, you can run the following to undo the last migration: `bin/rails db:rollback `.
+
+Refer to the sample project's [source code](learning-paths/ruby/rails/official-guides/store) for the full implementations.
+
+# Rails Console
+
+The console is a helpful, interactive tool for testing our code in our Rails application.
+
+```bash
+$ bin/rails console
+```
+
 # Active Record Basics
 
 ## Overview
