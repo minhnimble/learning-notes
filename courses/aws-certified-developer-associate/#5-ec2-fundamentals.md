@@ -1,398 +1,731 @@
 # EC2 Fundamentals
 
+---
+
 ## AWS Budget Setup
 
-### 1. Importance of Monitoring Expenses
-- Setting a budget prevents overspending and helps in managing unforeseen costs.
+### TL;DR
+
+- Set a budget **before** launching resources so unexpected spend triggers an email instead of a surprise bill.
+- **AWS Budgets** offers templates such as **Zero spend budget** (alerts as soon as spend exceeds Free Tier limits) and **Monthly cost budget** (alerts at thresholds such as 85% and 100%).
+- Billing pages are hidden from IAM users by default. The **root user** must enable **IAM user and role access to Billing information** first.
+- Free Tier usage is tracked separately in the **Billing and Cost Management** console.
+
+### 1. Why Monitor Expenses
+
+- Prevents overspending and surfaces forgotten resources (running instances, volumes, load balancers).
+- Cost data lags real usage by several hours, so alerts are a safety net, not real-time control.
 
 ### 2. Accessing the Billing Console
-- Navigate to the AWS Billing and Cost Management console to manage budgets effectively.
-- Ensure IAM users have access to billing information, switching to the root account if needed.
 
-### 3. Viewing Costs
-- Check month-to-date costs, forecasted costs, and last month's expenses.
-- Example: Break down costs using services like Elastic Compute Cloud (EC2).
+- Open **Billing and Cost Management**.
+- If an IAM user can't see billing data, sign in as the **root user** and activate IAM access to billing information (Account settings).
 
-### 4. Monitoring the AWS Free Tier
-- Keep an eye on usage within the AWS Free Tier to avoid unexpected charges.
+### 3. What the Console Shows
 
-### 5. Setting Up Budgets
-- Create budgets (e.g., zero spend budget) with email alerts at specific thresholds:
-  - Email notification when actual spending reaches set percentages (e.g., 85%, 100%).
+| View | What it tells you |
+|---|---|
+| Month-to-date cost | Spend so far this month |
+| Forecasted cost | Projected end-of-month spend |
+| Last month's cost | Baseline for comparison |
+| Cost by service | Breakdown, for example how much is EC2 (Elastic Compute Cloud) |
+| **Free Tier** page | Usage against Free Tier limits per service |
 
-### 6. Using AWS Tools for Cost Management
-- Utilize the provided budget tools to identify and manage issues related to spending.
-- Emphasizes the necessity of mastering these skills when using AWS.
+### 4. Creating a Budget
 
-### 7. Conclusion
-- The lecture stresses the importance of monitoring both budgets and resources to maintain control over AWS spending.
+1. Billing and Cost Management, **Budgets**, **Create budget**.
+2. Pick a template (for example **Zero spend budget**) or a custom cost budget.
+3. Add **email recipients** and alert thresholds (for example **85%** and **100%** of actual spend).
+
+| Budget template | Alerts when |
+|---|---|
+| **Zero spend budget** | Spend exceeds Free Tier limits (effectively above $0.01) |
+| **Monthly cost budget** | Actual or forecasted spend crosses a threshold you set |
+| **Daily Savings Plans coverage** | Coverage drops below a target |
+
+- Monitoring cost, usage, RI, and Savings Plans budgets is **free**. Budgets that trigger **actions** include a free allowance of **62 action-enabled budget-days** per month (for example 2 budgets for 31 days), then **$0.10** per action-enabled budget-day.
+
+### 5. Free Tier (2026)
+
+| Account created | Free Tier model |
+|---|---|
+| **Before 2025-07-15** | Legacy: **12 months** of service-specific allowances, for example **750 hours/month** of a `t2.micro` (or `t3.micro` where `t2.micro` isn't offered) and **30 GB** of EBS |
+| **On or after 2025-07-15** | Credits: **$100** at signup plus up to **$100** more from onboarding activities, usable for **6 months** or until the credits run out |
+
+- The lecture describes the legacy 750-hour/30 GB offer. Check your account's Free Tier page to see which model applies.
+- The 750 hours cover **one** `t2.micro` running 24/7 (about 730 hours in a month), or several instances sharing the total.
+
+### 6. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Get notified when spend exceeds a threshold" | **AWS Budgets** alert |
+| "Alert as soon as anything leaves the Free Tier" | **Zero spend budget** |
+| "IAM user can't see the Billing console" | Root user enables **IAM access to Billing information** |
+| "Break down cost by service or tag" | **Cost Explorer** |
+
+---
 
 ## Amazon EC2 Basics
 
-### Key Concepts
+### TL;DR
 
-1. **What is EC2?**
-   - Amazon EC2 (Elastic Compute Cloud) is an essential AWS service providing resizable compute capacity in the cloud, allowing users to run virtual machines (instances).
+- **EC2 (Elastic Compute Cloud)** rents resizable virtual machines (**instances**) by the second, with a choice of OS, CPU, RAM, storage, and networking.
+- EC2 is a bundle of related pieces: **instances**, **EBS volumes**, **security groups**, **Elastic Load Balancers**, and **Auto Scaling Groups**.
+- **User data** is a bootstrap script that runs **once, at first launch, as root**. Use it to install software and configure the instance.
+- **Security groups** are stateful, allow-only firewalls attached to instances.
 
-2. **Components of EC2:**
-   - **Instances:** Virtual machines that you can launch in the cloud.
-   - **EBS Volumes:** Elastic Block Store offers persistent storage that can be linked to instances.
-   - **Elastic Load Balancer (ELB):** Distributes incoming traffic across multiple instances.
-   - **Auto Scaling Groups (ASG):** Automatically adjusts the number of instances according to demand.
+### 1. What Is EC2?
 
-3. **Instance Configuration:**
-   - Users can select various operating systems (Linux, Windows, macOS) and instance types based on CPU, RAM, and storage requirements. Instance types range from general-purpose to compute-optimized and memory-optimized.
+- Infrastructure as a Service (IaaS): virtual machines in the cloud, no physical hardware to buy.
+- Related services in the same "compute" family:
 
-4. **Networking:**
-   - Supports public IP addresses and security settings via Security Groups, acting as firewalls to control inbound and outbound traffic.
+| Component | Role |
+|---|---|
+| **Instances** | Virtual machines |
+| **EBS volumes** | Persistent block storage attached to instances (see #6) |
+| **Elastic Load Balancer (ELB)** | Spreads traffic across instances (see #7) |
+| **Auto Scaling Group (ASG)** | Adds or removes instances based on demand (see #7) |
+| **Security groups** | Instance-level firewall |
 
-5. **User Data Script:**
-   - Allows for automatic execution of user-defined commands at the first launch. For example, a script to install a web server and create an HTML file can be specified upon setup:
-   ```bash
-   # Sample user data
-   #!/bin/bash
-   yum update -y
-   yum install httpd -y
-   echo "<h1>Hello, World!</h1>" > /var/www/html/index.html
-   service httpd start
-   ```
+### 2. Instance Configuration Choices
 
-6. **Monitoring and Debugging:**
-   - Lambda functions can log events and monitor requests. This is crucial for understanding how the Application Load Balancer (ALB) passes data to Lambda functions and troubleshooting any issues.
+- **OS**: Linux, Windows, or macOS.
+- **Compute**: CPU (vCPU count), RAM, network performance.
+- **Storage**: network-attached (**EBS**, **EFS**) or hardware-attached (**instance store**).
+- **Firewall**: security groups.
+- **Bootstrap**: **EC2 user data**.
 
-7. **Free Tier Offerings:**
-   - New users can access **750 hours** of a t2.micro instance and **30GB** of EBS storage free for the first year.
+### 3. User Data
 
-### Practical Application
-- Hands-on experience with launching an EC2 instance and utilizing user data scripts is emphasized. Learners are encouraged to use provided scripts for easy automation.
+| Property | Detail |
+|---|---|
+| When it runs | **Once**, at the instance's **first boot** (not on every reboot by default) |
+| Runs as | **root**, so no `sudo` needed |
+| Purpose | Install updates and software, download files, start services |
+| Size limit | **16 KB** |
+| Cost of a long script | Delays the instance becoming ready |
+
+Sample user data (installs a web server and a test page):
+
+```bash
+#!/bin/bash
+yum update -y
+yum install httpd -y
+echo "<h1>Hello World</h1>" > /var/www/html/index.html
+service httpd start
+```
+
+- The script matches **Amazon Linux 2**. On **Amazon Linux 2023** use `dnf` (`yum` still works through a symlink) and `systemctl start httpd`.
+- The instance is **not** automatically ready when it shows *running*: user data can still be executing.
+
+### 4. Networking Basics
+
+- Instances get a **private IPv4** address (stable) and, in a public subnet, a **public IPv4** address (changes on stop/start).
+- **Security groups** control inbound and outbound traffic (detailed later in this section).
+
+### 5. Free Tier Reference
+
+- See "AWS Budget Setup, section 5" for the current Free Tier rules.
+
+### 6. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Run a script only at first boot" | **EC2 user data** |
+| "User data runs as which user?" | **root** |
+| "Bootstrap script needs to run on every boot" | Cloud-init config (`scripts-user` per boot), not default user data |
+| "Change an instance's CPU/RAM" | Stop, change **instance type**, start (vertical scaling) |
+
+---
 
 ## EC2 Instance Launch Hands On
 
-### 1. Introduction to EC2 Instances
-- Introduces launching an EC2 instance running Amazon Linux.
-- Discusses the critical parameters for instance setup, emphasizing the importance of configurations.
+### TL;DR
 
-### 2. Step-by-Step Launch Process
-- Access the EC2 console, select “Instances,” and click “Launch Instances.”
-- Name the instance (e.g., "My First Instance") and add necessary tags. 
-- Choose the Amazon Linux 2 AMI as the operating system.
+- Launched an **Amazon Linux** instance from the EC2 console with a name, tags, an AMI, a key pair, a security group, and user data.
+- User data installed **httpd** and served a "Hello World" page.
+- Practiced **start, stop, and terminate**, and noticed the **public IP changes** after stop/start.
 
-### 3. User Data Feature
-- User data can be passed during the first launch to automate tasks. For instance, a script can be used to update packages, install the HTTPD web server, and create an HTML file.
-- This script installs the HTTPD web server and creates a simple HTML page displaying "Hello World."
+> **Note (2026):** the lecture uses **Amazon Linux 2**, which reached **end of support on 2026-06-30**. Use **Amazon Linux 2023** for new work.
 
-   ```bash
-   # Sample User Data Script
-   #!/bin/bash
-   yum update -y
-   yum install httpd -y
-   echo "<h1>Hello World</h1>" > /var/www/html/index.html
-   service httpd start
-   ```
+### 1. Launch Parameters
 
-### 4. Post-Launch Management
-- Learn how to start, stop, and terminate the EC2 instance effectively.
-- Understand the significance of monitoring alarms; for example, an EC2 instance may be terminated if an alarm is triggered.
+| Parameter | Value used | Notes |
+|---|---|---|
+| Name and tags | "My First Instance" | Tags help with cost allocation and filtering |
+| AMI | Amazon Linux 2 | Use **AL2023** for new work |
+| Instance type | `t2.micro` | Free-Tier-eligible where available. Use `t3.micro` where `t2.micro` isn't offered. |
+| Key pair | Created for SSH | Downloaded once as a `.pem` file |
+| Security group | New group allowing SSH/HTTP | See the security group sections |
+| User data | httpd install script | See "Amazon EC2 Basics, section 3" |
 
-### 5. Cloud Computing Flexibility
-- Highlights the ease of creating and managing instances in the cloud, which eliminates the need for physical hardware.
+### 2. Instance Lifecycle
 
-### 6. IP Address Management
-- Understanding public and private IP addresses is crucial; note that the public IP may change when the instance is stopped and started.
+| State | Billing | Notes |
+|---|---|---|
+| `pending` | No | Starting up |
+| `running` | **Yes** | Per-second billing for Linux/Windows (60-second minimum) |
+| `stopping` / `stopped` | Compute **no**, EBS **yes** | Public IPv4 released and reassigned on next start |
+| `shutting-down` / `terminated` | No | Terminated instances can't be restarted |
 
-### 7. Free Tier Offerings
-- New users receive **750 hours** of t2.micro instance usage and **30GB** of EBS storage for free during the first year.
-- If a t2.micro is unavailable in your region, a t3.micro will be used instead.
+- A **CloudWatch alarm** can be attached to stop, terminate, reboot, or recover an instance automatically.
+- The **private IP stays** across stop/start. The **public IPv4 changes**. Use an **Elastic IP** for a stable public address.
+
+### 3. Hands-On Checklist
+
+- [x] EC2 console, **Instances**, **Launch instances**
+- [x] Name the instance and add tags
+- [x] Choose the Amazon Linux AMI (AL2023 for new work) and a `t2.micro`/`t3.micro`
+- [x] Create or select a **key pair**
+- [x] Configure the **security group**
+- [x] Paste the **user data** script under advanced details
+- [x] Launch, wait for `running`, then open the public IPv4 in a browser and see "Hello World"
+- [x] Practice **stop**, **start**, and observe the public IPv4 change
+- [x] **Clean up**: terminate the instance
+
+### 4. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Public IP changed after restart" | Normal. Use an **Elastic IP** for a fixed address |
+| "Stopped instance still costs money" | Its **EBS volumes** (and any Elastic IP) keep billing |
+| "Automatically recover a failed instance" | **CloudWatch alarm** with a recover/reboot/terminate action |
+
+---
 
 ## EC2 Instance Types Basics
 
-### 1. Types of EC2 Instances and Their Use Cases
-- **General Purpose**: Balanced resources for various workloads. 
-  - **Use Cases**: Web servers, small databases, and development environments. Example: T2 Micro for low-traffic web applications.
+### TL;DR
 
-- **Compute Optimized**: Designed for compute-intensive tasks.
-  - **Use Cases**: Media transcoding, high-performance web servers, batch processing, and dedicated gaming servers. Example: C5 instances are suitable for complex computations in scientific simulations.
+- Instance types are grouped into **families** by workload: general purpose, compute optimized, memory optimized, storage optimized, accelerated computing, and HPC optimized.
+- Names follow `family + generation + attributes . size`, for example **`m5.2xlarge`** = general purpose, generation 5, **8 vCPU / 32 GiB**.
+- Attribute letters describe the processor and features, for example `g` = **Graviton (Arm)**, `a` = **AMD**, `d` = **local NVMe instance store**, `n` = **network optimized**.
+- Details and prices: [AWS EC2 Instance Types](https://aws.amazon.com/ec2/instance-types/) and [ec2instances.info](https://ec2instances.info).
 
-- **Memory Optimized**: High memory throughput for big data applications.
-  - **Use Cases**: In-memory databases (like Amazon ElastiCache), real-time big data analytics, and high-performance databases. Example: R5 instances support large-scale database workloads with ample RAM for complex queries.
+### 1. Instance Families
 
-- **Storage Optimized**: High disk throughput for I/O-intensive applications.
-  - **Use Cases**: NoSQL databases, data warehousing, and Elasticsearch workloads. Example: I3 instances provide high-speed storage capabilities for data-intensive applications.
+| Family | Prefix (examples) | Optimized for | Typical use cases |
+|---|---|---|---|
+| **General Purpose** | `t`, `m` | Balanced CPU, memory, network | Web servers, small databases, dev/test. Example: `t2.micro` for low-traffic sites |
+| **Compute Optimized** | `c` | CPU-bound work | Media transcoding, batch processing, high-performance web servers, gaming servers, scientific modeling |
+| **Memory Optimized** | `r`, `x`, `z` | Large in-memory datasets | In-memory databases and caches, real-time big data analytics, large relational databases |
+| **Storage Optimized** | `i`, `d`, `h` | High local disk throughput and IOPS | NoSQL databases, data warehousing, Elasticsearch |
+| **Accelerated Computing** | `p`, `g`, `trn`, `inf` | GPUs or custom accelerators | Machine learning training/inference, graphics rendering |
+| **HPC Optimized** | `hpc` | Tightly coupled, low-latency compute | Scientific simulation, financial modeling, parallel processing |
 
-- **Accelerated Computing**: Instances that leverage hardware accelerators for specific applications.
-  - **Use Cases**: Machine learning inference, graphics rendering, and data analysis. Example: P3 instances are excellent for deep learning tasks due to GPU acceleration.
-
-- **HPC Optimized**: Tailored for High-Performance Computing applications.
-  - **Use Cases**: Scientific simulation, financial modeling, and any workload requiring rapid computation across multiple nodes. Example: HPC instances suitable for parallel processing tasks that require low-latency networking.
-
+- The lecture's examples (`T2`, `C5`, `R5`, `I3`, `P3`) are older generations. Current generations are **8th gen** (for example `M8g`, `C8g`, `R8g` on **Graviton4**, `M8a` on AMD EPYC, `M8id` on Intel Xeon 6 with local NVMe). Newer generations generally give better price-performance.
 
 ### 2. Naming Convention
-- The instance name follows a specific convention: `m5.2xlarge`. 
-  - **m**: Indicates the instance class, which is general-purpose in this case.
-  - **5**: Represents the generation of the instance, implying improvements in hardware over time. For instance, m5 is the latest iteration with better performance than m4.
-  - **2xlarge**: Denotes the size within the instance class. The "2xlarge" size means it has more resources compared to sizes like "small" or "large," offering 8 vCPUs and 32 GB of memory.
 
-### 3. Comparison and Cost Considerations
-- Understanding on-demand vs. reserved pricing is crucial, along with examples like m4.large in US-East-1. Spot and reserved instances can provide cost savings.
+```
+m 5 g d . 2xlarge
+│ │ │ │   └── size
+│ │ └─┴────── attributes (g = Graviton, d = local NVMe)
+│ └────────── generation
+└──────────── family
+```
 
-### 4. Resources for Further Exploration
-- Comprehensive details about EC2 instance types can be found on:
-  - [AWS EC2 Instance Types](https://aws.amazon.com/ec2/instance-types/)
-  - [ec2instances.info](https://ec2instances.info) for a comparison of costs and specifications.
+| Part | Meaning |
+|---|---|
+| **m** | Instance family (general purpose) |
+| **5** | Generation. Newer generations are typically faster and cheaper per unit of work |
+| **2xlarge** | Size within the family. `m5.2xlarge` has **8 vCPUs and 32 GiB** of memory |
+
+| Attribute letter | Meaning |
+|---|---|
+| `g` | AWS **Graviton** (Arm) processor |
+| `a` | **AMD** processor |
+| `i` | **Intel** processor |
+| `d` | **Local NVMe** instance store |
+| `n` | Enhanced **networking** |
+| `e` | Extra storage or memory |
+
+- Within a family, each size step up typically doubles vCPU and memory (`large`, `xlarge`, `2xlarge`, `4xlarge`, and so on).
+- **Burstable** `t` instances earn **CPU credits** at idle and spend them under load. Cheap for spiky, low-average-CPU workloads.
+
+### 3. Cost Considerations
+
+- Price depends on type, Region, OS, and **purchasing option** (see the last section).
+- Example from the lecture: an `m4.large` in `us-east-1` was about **$0.10/hour On-Demand**, with Spot up to ~61% cheaper. `m4` is an old generation, so treat the numbers as an illustration.
+
+### 4. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Video encoding, batch processing, CPU-bound" | **Compute optimized** (`c`) |
+| "In-memory database or cache, large datasets in RAM" | **Memory optimized** (`r`, `x`) |
+| "High IOPS local disk, NoSQL, data warehouse" | **Storage optimized** (`i`, `d`) |
+| "Machine learning training/inference, GPUs" | **Accelerated computing** (`p`, `g`) |
+| "Balanced default, dev/test, small web app" | **General purpose** (`t`, `m`) |
+| "`m5.2xlarge` means?" | General purpose, generation 5, size 2xlarge (8 vCPU, 32 GiB) |
+
+---
 
 ## Security Groups and Classic Ports
 
-## Summary of Security Groups and Classic Ports Lecture
+### TL;DR
 
-### 1. Functionality of Security Groups
-- Security groups serve as virtual firewalls for EC2 instances, controlling both inbound and outbound traffic.
+- A **security group (SG)** is a **virtual, stateful firewall** attached to an instance's network interface. It only has **allow** rules.
+- **Default behavior:** all **inbound is blocked**, all **outbound is allowed**.
+- Rules are made of **type/protocol**, **port range**, and **source** (an IP range, another security group, or a prefix list).
+- SGs are scoped to a **Region and VPC**. One SG can attach to many instances, and one instance can have many SGs.
+- Classic ports to know: **22** SSH, **21** FTP, **80** HTTP, **443** HTTPS, **3389** RDP.
 
-### 2. Structure of Security Group Rules
-- Each security group rule consists of:
-  - **Traffic Type**: TCP/UDP
-  - **Port Number**: Designated for application access
-  - **Source IP Address**: Defines where the traffic can come from
-- Default behavior blocks all inbound traffic and allows all outbound traffic.
+### 1. What a Security Group Does
 
-### 3. Multiple Instances and Regions
-- Security groups can be linked to multiple EC2 instances, and an instance can belong to several security groups.
-- They are region/VPC specific, necessitating recreation when switching regions or creating new VPCs.
+- Controls **inbound** and **outbound** traffic for the instance.
+- Lives **outside** the instance. Blocked traffic never reaches the OS, and changes apply **immediately** with no restart.
+- **Stateful:** if an inbound request is allowed, the response is allowed back automatically (and vice versa).
+- **Allow-only:** there are no deny rules. Anything not explicitly allowed is blocked.
+- All rules are evaluated together (no rule order or priority).
 
-### 4. Common Ports
-- **Port 22**: SSH (Linux instances)
-- **Port 21**: FTP
-- **Port 80**: HTTP
-- **Port 443**: HTTPS
-- **Port 3389**: RDP (Windows instances)
+### 2. Rule Structure
+
+| Field | Example | Notes |
+|---|---|---|
+| Type / Protocol | SSH, HTTP, TCP, UDP | Protocol and port are usually implied by the type |
+| Port range | `22`, `80`, `443` | A single port or a range |
+| Source (inbound) / Destination (outbound) | `203.0.113.5/32`, `0.0.0.0/0`, `sg-0abc...` | CIDR, another **security group**, or a **prefix list** |
+
+- `/32` means a single IP address. `0.0.0.0/0` means **anywhere** (all IPv4). `::/0` means anywhere on IPv6.
+
+| Default | Inbound | Outbound |
+|---|---|---|
+| **New security group** | Nothing allowed | **All traffic allowed** |
+
+### 3. Attachment and Scope
+
+| Question | Answer |
+|---|---|
+| One SG on many instances? | **Yes** |
+| Many SGs on one instance? | **Yes** (rules are combined, a union of allows) |
+| Scope | Locked to a **Region and VPC**. Create a new SG when switching Region or VPC |
+| Where is a SG attached? | To the instance's **network interface (ENI)** |
+
+### 4. Classic Ports
+
+| Port | Protocol | Used for |
+|---|---|---|
+| **22** | SSH | Secure login to **Linux** instances (also SFTP) |
+| **21** | FTP | Uploading files to a file share |
+| **80** | HTTP | Unsecured web sites |
+| **443** | HTTPS | Secured web sites |
+| **3389** | RDP | Remote Desktop into **Windows** instances |
+| **3306** | MySQL | Database example used in the lecture |
 
 ### 5. Advanced Features
-- **Referencing Security Groups**: You can create a security group to allow traffic between instances without specifying IP addresses. For instance, if you have a web server and a database server, you can create a security group that allows inbound traffic on port 3306 (MySQL) from the web server's security group, ensuring only web servers can communicate with your database.
-  
-- **Multiple Security Groups**: You can attach multiple security groups to a single EC2 instance. For example, an EC2 instance could have one security group that allows HTTP traffic and another that allows SSH traffic. This modular approach simplifies management, as you can configure different rules for different situations.
-  
-- **Temporary Security Credentials (Roles)**: Though roles are not directly security groups, they provide temporary access to AWS resources. You can attach a role that allows an EC2 instance to pull images from an S3 bucket, which enhances security by not embedding long-term access keys in your application.
 
+| Feature | Detail |
+|---|---|
+| **Referencing another SG** | Use a SG as the **source**: "allow anything that has SG-X attached". Doesn't depend on IPs, so it survives scaling and IP changes. Example: a database SG allows **3306 from the web-server SG only**. |
+| **Multiple SGs per instance** | Modular rules, for example one SG for HTTP and another for SSH |
+| **Cross-instance trust** | Instances sharing an SG reference can talk without knowing each other's IPs |
+
+```
+Users --80/443--> [Web SG: inbound 80/443 from 0.0.0.0/0]
+                          |
+                          v
+      [DB SG: inbound 3306, SOURCE = Web SG]
+```
+
+- **IAM roles are not security groups.** Roles give an instance temporary credentials for AWS API calls (see the IAM roles section). SGs control network traffic.
 
 ### 6. Good to Know
-- Security groups must be configured correctly to allow access to other services, such as RDS databases or Elastic Cache clusters.
-- Ensure you verify AWS Regional Services availability for specific services you plan to use, as not all services are available in every region. This can help avoid confusion and ensure you have the correct permissions set up.
+
+- Grant access from services like **RDS** or **ElastiCache** by referencing SGs (for example allow the app's SG on the database port).
+- Check **Regional services availability** before planning, since not every service exists in every Region.
+- For subnet-level filtering with **allow and deny** rules, use **Network ACLs** (covered in the VPC section).
+
+### 7. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Connection times out" | **Security group** (or other firewall) blocking |
+| "Connection refused" | SG passed, but **nothing is listening** on that port |
+| "Only web servers may reach the database" | DB SG inbound rule with **source = web SG** |
+| "Allow SSH from my IP only" | Port **22**, source **my IP `/32`** |
+| "Block a specific IP address" | SGs can't deny. Use a **Network ACL** |
+| "Default outbound behavior of a new SG" | **All allowed** |
+| "Windows remote access port" | **3389** (RDP) |
+
+---
 
 ## Security Groups Hands On
 
-### 1. Overview of Security Groups
-- Security groups function as virtual firewalls for EC2 instances, managing inbound and outbound traffic.
+### TL;DR
 
-### 2. Identification of Security Groups
-- Each security group is assigned a unique ID and can be accessed from the AWS Management Console.
+- Found the security group by its **ID** in the EC2 console and edited its **inbound** and **outbound** rules.
+- Confirmed that a **missing inbound rule causes a timeout**, and that opening the port fixes it.
+- Reviewed that **outbound is open by default**, and that it can be restricted (for example to only 443).
+- Attached **multiple security groups** to one instance.
 
-### 3. Inbound Rules
-- The importance of configuring inbound rules is highlighted, such as allowing SSH access on port 22 and HTTP traffic on port 80. For example:
-  - If you want to allow your web application hosted on an EC2 instance to communicate with users, you must ensure that port 80 (HTTP) is open in the inbound rules. If this rule is missing, users will experience connection timeouts when trying to access the application.
+### 1. Where to Find Security Groups
 
-### 4. Timeout and Troubleshooting
-- Timeouts often occur due to improper security group settings. For example:
-  - If a user tries to SSH into an instance but port 22 is not open, the connection attempt will time out, indicating a potential security group misconfiguration.
+- EC2 console, **Network and Security**, **Security Groups**. Each group has a unique **ID** (`sg-...`).
+- An instance's **Security** tab shows the groups attached to it.
 
-### 5. Adding Inbound Rules
-- The lecture demonstrates how to add inbound rules to a security group:
-  - If a database is running on port 3306 (MySQL), you can add an inbound rule allowing traffic on that port from a specific IP range to ensure secure access for your application.
+### 2. Inbound Rules
 
-### 6. Outbound Rules
-- The default setting for outbound traffic allows all connections, meaning instances can connect freely to the internet. However:
-  - If you want to restrict outbound access, you could modify rules to only allow certain ports, such as:
-    - Allowing outbound HTTPS traffic on port 443 while blocking all other outbound connections, useful in environments where data exfiltration is a concern.
+| Goal | Rule |
+|---|---|
+| Users reach the web app | **HTTP 80** from `0.0.0.0/0` |
+| Admin logs in over SSH | **SSH 22** from your IP |
+| App connects to a MySQL database | **TCP 3306** from the app's IP range or SG |
 
-### 7. Multiple Security Groups
-- An EC2 instance can have multiple security groups applied. For instance:
-  - You might assign one security group that allows traffic on port 80 for web servers and another for port 443 for secure HTTPS traffic, giving you granular control over traffic flows.
+- If the HTTP rule is missing, users see a **timeout** in the browser. Adding the rule fixes it without a restart.
+- If port 22 isn't open, an SSH attempt **times out**, which points to a SG misconfiguration.
+
+### 3. Outbound Rules
+
+- Default: **all outbound allowed**, so instances can reach the internet freely.
+- To limit egress (for example to reduce data exfiltration risk), replace the default with specific rules such as **HTTPS 443** only.
+
+### 4. Multiple Security Groups
+
+- An instance can carry several SGs. Rules are **unioned**.
+- Example: one SG for web ports (80/443) and another for admin access (22), each managed separately.
+
+### 5. Hands-On Checklist
+
+- [x] Locate the instance's security group and its ID
+- [x] Review the **inbound** rules (SSH 22, HTTP 80)
+- [x] Remove the HTTP rule and observe the browser **timeout**
+- [x] Add the rule back and confirm the page loads
+- [x] Review the default **outbound** rule (all traffic)
+- [x] Attach a second security group to the instance and confirm rules combine
+
+### 6. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Web page times out after launch" | Inbound **HTTP/HTTPS rule missing** on the SG |
+| "Instance can't reach the internet" | Check **outbound** rules (and the route table) |
+| "SG change needs an instance restart" | **No.** Changes apply immediately |
+| "Two SGs on one instance conflict" | They don't conflict. Rules are a **union** of allows |
+
+---
 
 ## Connecting to Linux Servers via SSH
 
-### 1. Overview of SSH
-- The lecture highlights how to connect to Linux servers in the Cloud using SSH (Secure Shell).
+### TL;DR
 
-### 2. SSH Methods by Operating System
-- **Mac and Linux**: Users can access SSH directly through the command line.
-- **Windows**: 
-  - For Windows 10 and later, native SSH support is available.
-  - For earlier versions, tools like PuTTY can be used for the SSH connection.
+- Four ways to reach a Linux instance: **SSH from a terminal** (Mac/Linux/Windows 10+), **PuTTY** (older Windows), **EC2 Instance Connect** (browser), and **Session Manager** (no open port).
+- SSH needs **port 22 open** in the SG and a **key pair**. EC2 Instance Connect also needs port 22 but skips key handling.
+- Default username on **Amazon Linux** is **`ec2-user`**.
 
-### 3. EC2 Instance Connect
-- EC2 Instance Connect is introduced as a simpler alternative for SSH, working across all operating systems without the need for command line knowledge.
-- This method allows for browser-based SSH sessions, automatically managing temporary SSH keys.
-- When accessing the EC2 instance via this method, it automatically uses "ec2-user" as the default username for Amazon Linux 2 instances.
+### 1. Options by Operating System
 
-### 4. Common Issues with SSH
-- Typical challenges include misconfigurations of security group rules or command errors.
-- A troubleshooting guide is provided for assistance, and re-watching the SSH lecture may help if issues arise.
+| Client | Method |
+|---|---|
+| **Mac / Linux** | `ssh` in the terminal |
+| **Windows 10 and later** | Built-in OpenSSH (`ssh` in PowerShell/CMD) |
+| **Older Windows** | **PuTTY** (convert the `.pem` to `.ppk` with PuTTYgen) |
+| **Any OS, browser only** | **EC2 Instance Connect** |
+| **Any OS, no inbound port** | **AWS Systems Manager Session Manager** |
 
-### 5. Conclusion
-- Different methods exist for connecting to servers via SSH, and users should choose based on their comfort level.
-- It's important to remember that SSH is a fundamental tool when working with AWS.
+- The Windows-specific lectures were skipped in these notes.
 
+### 2. EC2 Instance Connect
 
-## Using SSH to Connect to an EC2 Instance in Linux/Mac (ignored Window courses )
+- Browser-based SSH from the EC2 console, on **every OS**, with no command-line setup.
+- AWS pushes a **temporary key** to the instance, so there's no key file to manage.
+- Uses `ec2-user` as the default user on Amazon Linux.
+- **EC2 Instance Connect Endpoint** lets you connect to instances that have **no public IPv4 address**.
 
-### 1. Importance of SSH
-- SSH (Secure Shell) is essential for managing remote servers in Amazon Cloud services.
+### 3. Common Issues
 
-### 2. Prerequisites
-- Ensure your EC2 instance has a public IP address.
-- The security group must allow traffic through Port 22 (default for SSH).
+- Usually a **security group rule** or a **command typo**.
+- The next sections cover the exact SSH command and a troubleshooting list.
 
-### 3. Preparing the PEM File
-- Remove any spaces from the PEM file name (e.g., `EC2Tutorial.pem`) and place it in a desired directory.
+### 4. Exam-Style Recall
 
-### 4. Retrieving the Public IPv4 Address
-- Access the EC2 instance overview page to obtain the public IPv4 address for connection.
+| If the question says... | Think... |
+|---|---|
+| "SSH without managing key files" | **EC2 Instance Connect** |
+| "SSH to an instance with no public IP" | **EC2 Instance Connect Endpoint** (or Session Manager) |
+| "Remote access with no inbound port open" | **Session Manager** |
+| "Default user on Amazon Linux" | **`ec2-user`** |
 
-### 5. Initiating the SSH Connection
-- Use the command format:
+---
 
-  ```
-  ssh ec2-user@<public-ip>
-  ```
+## Using SSH to Connect to an EC2 Instance on Linux/Mac
 
-where `ec2-user` is the default user for Amazon Linux 2 AMI instances.
-- If there is an authentication failure, make sure you're using the correct PEM file.
+### TL;DR
 
-### 6. Navigating to the Directory
-- Use commands like `ls` and `cd` to change to the directory containing your PEM file.
-- Connect using:
+- Prerequisites: a **public IPv4**, **port 22 open**, and the downloaded **`.pem` key**.
+- Command: `ssh -i <key>.pem ec2-user@<public-ip>`.
+- If SSH complains that the key is too open: `chmod 0400 <key>.pem`.
+- Confirm with `whoami` and `ping google.com`, then `exit`.
 
-  ```
-  ssh -i EC2_Tutorial.pem ec2-user@<public-ip>
-  ```
+### 1. Prerequisites
 
-### 7. Handling Permission Errors
-- If facing permission errors, adjust file permissions with:
+- The instance has a **public IPv4 address**.
+- The SG allows **inbound TCP 22** from your IP.
+- The **`.pem` file** from key pair creation (no spaces in the file name, for example `EC2Tutorial.pem`).
 
+### 2. Steps
 
-  ```
-  chmod 0400 EC2Tutorial.pem
-  ```
+1. Copy the **Public IPv4 address** from the instance's overview page.
+2. Change into the directory that holds the `.pem` file (`cd`, `ls`).
+3. Fix permissions if needed:
 
-### 8. Testing the Connection
-- Verify the connection by executing commands like `whoami` and `ping google.com`.
+   ```bash
+   chmod 0400 EC2Tutorial.pem
+   ```
 
-### 9. Exiting the SSH Session
-- End the session properly, keeping in mind the public IP may change upon stopping and restarting the instance.
+4. Connect:
+
+   ```bash
+   ssh -i EC2Tutorial.pem ec2-user@<public-ip>
+   ```
+
+5. Verify with `whoami` (prints `ec2-user`) and `ping google.com`.
+6. Leave the session with `exit` (or Ctrl+D).
+
+- Running `ssh ec2-user@<public-ip>` **without `-i`** fails with an authentication error, because no key is offered.
+- On stop/start the **public IP changes**, so update the command.
+
+### 3. Permission Errors
+
+| Error | Cause | Fix |
+|---|---|---|
+| `Permissions 0644 for 'key.pem' are too open` / "UNPROTECTED PRIVATE KEY FILE" | Key file readable by others | `chmod 0400 key.pem` |
+| `Permission denied (publickey)` | Wrong key or wrong username | Use the key pair assigned to the instance and the right user |
+
+### 4. Hands-On Checklist
+
+- [x] Get the instance's public IPv4
+- [x] Place the `.pem` file in a directory without spaces in its name
+- [x] `chmod 0400` the key
+- [x] `ssh -i <key>.pem ec2-user@<public-ip>`
+- [x] Run `whoami` and `ping google.com`
+- [x] `exit` the session
+
+---
 
 ## SSH Troubleshooting
 
-### Connection Timeout
-- Usually caused by a **security group or firewall issue**.
-- Check that your EC2 security group allows SSH and is attached to the instance.
+### TL;DR
 
-### Timeout Still Happens
-- If the security group is correct, a **corporate or personal firewall** may be blocking SSH.
-- Use **EC2 Instance Connect**.
+- **Timeout** = network block (security group or firewall). **Connection refused** = host reached, SSH not running. **Permission denied** = wrong key or user.
+- If nothing works, fall back to **EC2 Instance Connect** on an **Amazon Linux** instance.
+- "Worked yesterday, not today" usually means the **public IP changed** after a stop/start.
 
-### SSH Not Working on Windows
-- If you see `ssh command not found`, use **PuTTY**.
-- If PuTTY does not work, use **EC2 Instance Connect**.
+### 1. Symptom Table
 
-### Connection Refused
-- The instance is reachable, but SSH is not running.
-- Restart the instance.
-- If it still fails, recreate the instance using **Amazon Linux 2**.
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| **Connection timeout** | Security group or firewall blocks port 22 | Ensure the SG allows SSH (port 22) from your IP and is attached to the instance |
+| **Timeout persists** with a correct SG | A corporate or personal **firewall** blocks outbound SSH | Use **EC2 Instance Connect** |
+| `ssh: command not found` (Windows) | No OpenSSH client | Use **PuTTY**, or **EC2 Instance Connect** if PuTTY fails |
+| **Connection refused** | Instance is reachable, but the SSH service isn't running | Restart the instance. If it persists, recreate it from an **Amazon Linux** AMI |
+| **Permission denied** | Wrong key, wrong username | Check the assigned key pair. For Amazon Linux use `ssh ec2-user@<public-ip>` |
+| Worked yesterday, not today | **Public IPv4 changed** after stop/start | Update the SSH command or PuTTY config with the new IP (or use an Elastic IP) |
+| Nothing works | Multiple issues | **EC2 Instance Connect** on an Amazon Linux instance |
 
-### Permission Denied
-- Usually caused by:
-  - Wrong SSH key
-  - Wrong username
-- Check the assigned key pair.
-- For Amazon Linux 2, use:
+### 2. Exam-Style Recall
 
-```bash
-ssh ec2-user@<public-ip>
-```
+| If the question says... | Think... |
+|---|---|
+| "SSH times out" | **Security group** (or firewall) issue |
+| "SSH connection refused" | **SSH daemon** not running or wrong port |
+| "Permission denied (publickey)" | Wrong **key pair** or **username** |
+| "SSH worked before a stop/start, now times out" | New **public IP**. Use an **Elastic IP** |
 
-### Nothing Works
-- Use **EC2 Instance Connect**.
-- Make sure the instance uses **Amazon Linux 2**.
-
-### Worked Yesterday, Not Today
-- Stopping and starting an EC2 instance can change its public IP.
-- Update your SSH command or PuTTY config with the new public IP.
+---
 
 ## Using EC2 Instance Connect to Connect to EC2 Instances
 
-### Browser-Based SSH Connection
-   - Connect to EC2 instances directly through web browsers for ease of access.
+### TL;DR
 
-### Instance Selection and Connection
-   - Select an instance and click on 'connect' to access EC2 Instance Connect features.
+- Connect from the console: select the instance, **Connect**, **EC2 Instance Connect**, **Connect**.
+- No key file to manage, since a **temporary key** is used for the session.
+- The **SG must still allow port 22**, and the default user is **`ec2-user`** on Amazon Linux.
 
-### Default Username
-   - The default username is typically 'EC2 user', which can be customized if necessary.
+### 1. How It Works
 
-### No SSH Key Management
-   - Eliminates the need to manage SSH keys by using a temporary key uploaded at connection time.
+1. In the console, choose the instance and click **Connect**.
+2. On the EC2 Instance Connect tab, keep the default username (`ec2-user`) or change it.
+3. AWS pushes a **one-time public key** to the instance, and a browser terminal opens.
 
-### Executing Commands
-   - Users can run commands like `whoami` and `ping google.com` once connected.
+| Aspect | Detail |
+|---|---|
+| Key management | None. The key is temporary |
+| Network requirement | Inbound **TCP 22** from the EC2 Instance Connect service range (or use an **Instance Connect Endpoint** for private instances) |
+| Agent | Preinstalled on Amazon Linux 2023 and Amazon Linux 2, and on recent Ubuntu |
+| Permissions | IAM policy allowing `ec2-instance-connect:SendSSHPublicKey` |
 
-### Security Group Configuration
-   - Important to configure security groups to allow inbound SSH traffic on port 22 for connectivity.
+### 2. Hands-On Checklist
 
-### Efficiency and Convenience
-   - EC2 Instance Connect streamlines access and reduces the burden of SSH key management.
+- [x] Select the instance, click **Connect**, choose **EC2 Instance Connect**
+- [x] Keep the default user `ec2-user`
+- [x] Run `whoami` and `ping google.com`
+- [x] If the connection fails, confirm the SG allows **port 22**
+
+### 3. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Browser-based SSH, no key pair handling" | **EC2 Instance Connect** |
+| "Instance Connect fails to connect" | SG missing **inbound 22** |
+| "No public IP, still need SSH" | **EC2 Instance Connect Endpoint** or **Session Manager** |
+
+---
 
 ## IAM Roles for EC2 Instances Demo
 
-### Connecting to EC2 Instances
-   - Demonstrates how to connect to an EC2 Instance using EC2 Instance Connect via a web browser.
+### TL;DR
 
-### Introduction to Basic Commands
-   - Basic Linux commands are introduced once connected, showcasing terminal functionality in the cloud (e.g., `whoami`, `ping google.com`).
+- **Never** run `aws configure` with personal access keys on an EC2 instance. Anyone with access to the instance can steal them.
+- Attach an **IAM role** instead. The instance receives **temporary, auto-rotated credentials** from the **instance metadata service**.
+- Demo: role `demoRoleForEC2` with **IAM read-only** access lets the instance run `aws iam list-users` with no stored keys.
 
-### Security Risks of Personal Credentials
-   - AWS credentials should never be entered directly into the EC2 Instance due to security risks. Instead, using IAM roles helps mitigate this.
+### 1. Why Not Store Credentials on the Instance
 
-### Utilizing IAM Roles
-   - IAM roles are recommended for securing access without exposing sensitive information. For example, an IAM role can be created for EC2 that allows read-only access to IAM resources.
+- Long-lived keys on a server can leak through the file system, logs, or an AMI/snapshot copy.
+- Roles remove the need to store secrets, and permissions can be changed centrally.
 
-### Attaching IAM Roles
-   - A step-by-step guide on how to attach an IAM role (e.g., a demo role with read-only access to IAM) to the EC2 Instance is provided.
-   - Example: The role “demoRoleForEC2” is created with IAM read-only access, allowing the EC2 instance to interact securely with the IAM service.
+### 2. How Roles Work
 
-### Executing AWS Commands without Personal Credentials
-   - Once the IAM role is attached, users can run AWS commands without needing personal credentials, demonstrating the advantage of IAM roles. For instance, the EC2 instance can list IAM users through the AWS CLI without hard-coded credentials.
+| Piece | Detail |
+|---|---|
+| **IAM role** | Set of permissions plus a **trust policy** allowing EC2 to assume it |
+| **Instance profile** | The container that attaches a role to an instance (the console creates it automatically) |
+| **Credentials** | Temporary, delivered via the **instance metadata service (IMDS)**, rotated automatically |
+| **CLI / SDK** | Picks up the role credentials automatically through the default credential chain |
 
-### Best Practices Reminder
-   - Emphasizes that IAM roles should be the only method for providing credentials to EC2 Instances to ensure security and compliance with best practices (e.g., enabling multi-factor authentication and using temporary credentials).
+- **IMDSv2** (session-token based) is the default and required on Amazon Linux 2023. IMDSv1 is discouraged.
+
+### 3. Demo Steps
+
+1. Connect with EC2 Instance Connect.
+2. Run `aws iam list-users` and see it fail: **no credentials**.
+3. Create an IAM role for the **EC2** service with **IAM read-only** access (`demoRoleForEC2`).
+4. On the instance: **Actions, Security, Modify IAM role**, then attach `demoRoleForEC2`.
+5. Run `aws iam list-users` again and see the users listed.
+
+- A role attached to a **running** instance takes effect within a short time. No restart is needed.
+- The role can be swapped or detached later.
+
+### 4. Hands-On Checklist
+
+- [x] Connect to the instance (EC2 Instance Connect)
+- [x] Confirm `aws iam list-users` fails without credentials
+- [x] Create role `demoRoleForEC2` (trusted entity: **EC2**, policy: **IAM read-only**)
+- [x] Attach the role to the instance
+- [x] Re-run `aws iam list-users` and confirm it works
+- [x] **Clean up**: detach or delete the role and terminate the instance
+
+### 5. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "EC2 app needs to call S3/DynamoDB securely" | **IAM role** on the instance |
+| "Where do the role's credentials come from?" | **Instance metadata service** (temporary, auto-rotated) |
+| "Access keys stored on the instance" | Wrong answer. Use a **role** |
+| "What attaches a role to an EC2 instance?" | An **instance profile** |
+| "Which metadata version is more secure?" | **IMDSv2** (session-oriented, token required) |
+
+---
 
 ## Purchasing Options for EC2 Instances
 
-### On-Demand Instances
-- **Description:** Ideal for short-term workloads; billed by the second for Linux and Windows.
-- **Cost:** No upfront payments, but the highest pricing option.
-  
-### Reserved Instances
-- **Description:** Best for long-term workloads; significant discounts (up to 72%) available.
-- **Types:** 
-  - Standard: One or three-year commitment.
-  - Convertible: Flexibility to change instance types.
-  
-### Savings Plans
-- **Description:** Offers discounts for a commitment to a specific dollar amount of usage.
-- **Flexibility:** Can apply across various instance types and sizes within a family or region.
+### TL;DR
 
-### Spot Instances
-- **Description:** Cost-effective; can save up to 90% compared to on-demand pricing.
-- **Considerations:** Interruptible and can be terminated if the spot price exceeds the maximum set by the user.
+- **On-Demand**: pay per second, no commitment, highest price. Best for short, unpredictable workloads.
+- **Reserved Instances (RI)**: 1 or 3 year commitment, up to **72%** off. **Convertible RIs** allow changing instance attributes for a smaller discount.
+- **Savings Plans**: commit to **$/hour** for 1 or 3 years. **EC2 Instance Savings Plans** (up to **72%**) are tied to a family and Region, and **Compute Savings Plans** (up to **66%**) apply across families, Regions, and even Fargate and Lambda.
+- **Spot Instances**: up to **90%** off, but AWS can **reclaim them with a 2-minute warning**. Best for fault-tolerant, flexible, stateless work.
+- **Dedicated Hosts**: a **whole physical server** you control, for compliance and **BYOL** licensing. **Dedicated Instances**: dedicated hardware, but no host visibility.
+- **Capacity Reservations**: reserve capacity in a specific AZ for any duration. Billed at On-Demand rates whether used or not.
 
-### Dedicated Hosts and Instances
-- **Dedicated Hosts:** Provide exclusive use of an entire physical server; necessary for compliance needs.
-- **Dedicated Instances:** Run on hardware reserved for the user, but may share the physical server.
+### 1. Comparison
 
-### Capacity Reservations
-- **Description:** Allows users to reserve on-demand instances in a specific availability zone.
-- **Cost:** Billed at on-demand rates, regardless of usage.
+| Option | Commitment | Discount vs On-Demand | Best for | Catch |
+|---|---|---|---|---|
+| **On-Demand** | None | 0% (baseline) | Short-term, spiky, first-time workloads | Highest price. Per-second billing (60 s minimum) for Linux/Windows |
+| **Reserved (Standard)** | 1 or 3 years | Up to **72%** | Steady, predictable workloads | Locked to attributes (family, Region/AZ, OS, tenancy). Sellable on the **RI Marketplace** |
+| **Reserved (Convertible)** | 1 or 3 years | Lower (up to ~66%) | Steady workloads that may change type | Can exchange for other convertible RIs. Not sellable on the Marketplace |
+| **EC2 Instance Savings Plan** | 1 or 3 years, $/hour | Up to **72%** | Steady use of one family in one Region | Size, OS, and tenancy are flexible within the family and Region |
+| **Compute Savings Plan** | 1 or 3 years, $/hour | Up to **66%** | Steady spend across changing families, Regions, Fargate, Lambda | Smaller discount for more flexibility |
+| **Spot** | None | Up to **90%** | Batch, big data, CI/CD, web with flexible fleets | **Interruptible** with a 2-minute notice |
+| **Dedicated Host** | On-Demand or 1/3-year | Reservation up to ~70% | Compliance, per-socket/core software licenses | Most expensive. You manage placement |
+| **Dedicated Instance** | None | None | Hardware isolation without host-level control | Billed per instance plus a per-Region fee. May share the host with your other instances |
+| **Capacity Reservation** | None (cancel any time) | None (add RI/Savings Plan for a discount) | Guaranteed capacity in a specific AZ | Billed at On-Demand rate **even if unused** |
 
-### Pricing Comparison Example
-- **Instance Example:** An m4.large instance might cost:
-  - On-Demand: $0.10/hour
-  - Spot: Up to 61% off from on-demand pricing.
-  - Reserved Instances and Savings Plans provide similar discounts for longer commitments.
+### 2. Reserved Instances
+
+| Detail | Value |
+|---|---|
+| Term | **1 or 3 years** (3 years gives the bigger discount) |
+| Payment | All Upfront, Partial Upfront, or No Upfront (more upfront means a bigger discount) |
+| Scope | **Regional** (flexible AZ, no capacity reservation) or **Zonal** (reserves capacity in one AZ) |
+| Standard vs Convertible | Standard: biggest discount, fixed attributes. Convertible: can change instance family, OS, and tenancy |
+| Selling | Unused **Standard** RIs can be sold on the **Reserved Instance Marketplace** |
+
+### 3. Savings Plans
+
+- Commit to a **dollar amount per hour** of usage. Usage above the commitment bills at On-Demand rates.
+- **Compute Savings Plans** are the most flexible: any instance family, size, Region, OS, and tenancy, plus **Fargate** and **Lambda**.
+- **EC2 Instance Savings Plans** give the deepest discount but lock the **family and Region** (size, OS, and tenancy stay flexible).
+- The lecture summary says Savings Plans apply "within a family or region". That describes the EC2 Instance plan. The Compute plan is wider.
+
+### 4. Spot Instances
+
+- Pay the current **Spot price**, which changes gradually with supply and demand. There is **no bidding** to win capacity, though you can set a maximum price you're willing to pay (the default max is the On-Demand price).
+- When capacity is needed elsewhere (or the price exceeds your max), AWS sends a **2-minute interruption notice**, then **stops, hibernates, or terminates** the instance based on the request.
+- Good fit: batch jobs, data analysis, image processing, CI workers, stateless web tiers behind an ASG. **Bad fit:** critical jobs, databases, anything that can't tolerate interruption.
+- **Spot Fleet / EC2 Fleet** choose the cheapest pools across instance types and AZs to hit a target capacity.
+- **Spot Blocks** (fixed 1-6 hour duration) are no longer available to new customers.
+
+| Request type | Behavior |
+|---|---|
+| **One-time** | Launches once. When interrupted, it's not re-requested |
+| **Persistent** | Re-requests capacity after an interruption |
+
+- **Exam classic:** to stop a **persistent** Spot request from relaunching, **cancel the Spot request first, then terminate the instance**. Terminating the instance alone makes the request launch a new one.
+- Cancelling a Spot request does **not** terminate its running instances.
+
+### 5. Dedicated Hosts vs Dedicated Instances
+
+| Aspect | Dedicated Host | Dedicated Instance |
+|---|---|---|
+| What you get | A **physical server** fully for you | Instances on hardware dedicated to your **account** |
+| Visibility | Sockets, physical cores, **host ID** | None |
+| Placement control | **Yes** (which instances go on the host) | No |
+| Licensing | **BYOL** with per-socket/core/VM licenses | Not licensing-friendly |
+| Billing | Per **host** (On-Demand or Reservation) | Per **instance** (plus a per-Region fee) |
+| Use case | **Compliance**, strict licensing | Isolation from other customers |
+
+### 6. Capacity Reservations
+
+- Reserve On-Demand capacity in a **specific AZ** for any duration, with no long-term commitment.
+- You pay the On-Demand rate **whether or not the capacity is used**.
+- Combine with **Regional RIs** or **Savings Plans** to get a discount on the reserved capacity.
+- Use case: short-term events or must-have capacity for a critical launch.
+
+### 7. Pricing Example (lecture illustration)
+
+| Option | `m4.large` in `us-east-1` |
+|---|---|
+| On-Demand | ~$0.10 per hour |
+| Spot | Up to ~61% cheaper (varies over time) |
+| RI / Savings Plan | Discounts of a similar order for a 1-3 year commitment |
+
+### 8. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Short, unpredictable workload, no commitment" | **On-Demand** |
+| "Steady-state database running for years" | **Reserved Instance** or **Savings Plan** |
+| "Commit to spend but change instance families/Regions" | **Compute Savings Plan** |
+| "Change the instance type mid-term" | **Convertible RI** (or a Savings Plan) |
+| "Sell unused reservations" | **Standard RI** on the **RI Marketplace** |
+| "Cheapest, can tolerate interruptions (batch, big data)" | **Spot Instances** |
+| "Spot interruption warning time" | **2 minutes** |
+| "Stop a persistent Spot request from relaunching" | **Cancel the request**, then terminate the instance |
+| "Strict compliance or BYOL server-bound licenses" | **Dedicated Host** |
+| "Hardware not shared with other AWS accounts, no host control" | **Dedicated Instance** |
+| "Guarantee capacity in one AZ, pay On-Demand rates" | **Capacity Reservation** |
+| "Discount applies to Fargate and Lambda too" | **Compute Savings Plan** |

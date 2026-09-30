@@ -1,343 +1,541 @@
 # EC2 Instance Storage
 
+---
+
 ## Elastic Block Store (EBS) Overview
 
-### 1. Overview of EBS Volumes
-- **Elastic Block Store (EBS)**: A network-based storage solution for EC2 instances that provides persistency, allowing users to retain data even after instance termination. EBS functions as a virtual hard drive for EC2.
+### TL;DR
 
-### 2. Attachment Limitations
-- An EBS volume can attach to only one EC2 instance at a time and is bound to a specific **Availability Zone (AZ)** (e.g., a volume in us-east-1a cannot attach to an instance in us-east-1b).
+- **EBS** is **network-attached block storage** for EC2. It behaves like a virtual hard drive that survives independently of the instance's lifecycle (subject to the "delete on termination" setting).
+- An EBS volume is **bound to a single Availability Zone (AZ)** and can only attach to instances in that same AZ.
+- Capacity, **IOPS**, and throughput are **provisioned in advance** and billed accordingly, not pay-as-you-go like S3.
+- There are **6 current-generation volume types** across 3 families (General Purpose SSD, Provisioned IOPS SSD, HDD), plus a legacy **Magnetic/Standard** type.
+- **Snapshots** are the mechanism to back up a volume and move data across AZs or Regions (detailed in the next section).
 
-### 3. Functionality
-- EBS volumes can be detached from one instance and attached to another quickly, similar to swapping USB drives, which assists in scenarios such as failovers.
+### 1. What Is EBS?
 
-### 4. Provisioning Capacity
-- Users must provision capacity in advance by defining size (in GB) and **IOPS (Input/Output Operations Per Second)**, which determines the volume's performance characteristics. Billing is based on the provisioned capacity.
+- **Elastic Block Store (EBS)**: network-based block storage for EC2 instances. It provides **persistence**, so data survives instance stop/start (and termination, unless configured otherwise).
+- It's the AWS equivalent of an external hard drive you can plug into a virtual machine.
 
-### 5. Snapshots
-- Snapshots are point-in-time backups of EBS volumes that allow data recovery and movement between different Availability Zones.
+### 2. Attachment Rules
 
-### 6. Multiple Volumes
-- Multiple EBS volumes can be attached to a single EC2 instance. This flexibility allows users to enhance storage capabilities as needed.
+| Rule | Detail |
+|---|---|
+| AZ-bound | A volume in `us-east-1a` can only attach to an instance in `us-east-1a` |
+| One instance at a time | The default. Exception: **Multi-Attach** on io1/io2 (see section 9) |
+| Re-attachable | Detach from one instance, attach to another, similar to swapping a USB drive — used for failover |
+| Multiple volumes per instance | One EC2 instance can have several EBS volumes attached |
 
-### 7. Delete on Termination Attribute
-- The root volume usually deletes when the instance is terminated, while additional volumes typically remain. Users can configure this setting according to their needs.
+```
+AZ us-east-1a                    AZ us-east-1b
+┌─────────────┐                  ┌─────────────┐
+│  EC2 (a)     │◄──►[EBS vol]     │  EC2 (b)     │
+└─────────────┘                  └─────────────┘
+        ✗ [EBS vol] cannot attach directly across AZs
+```
 
-### 8. Volume Types
-- EBS volumes come in six different types:
-  - **gp2/gp3**: General-purpose SSDs balancing price and performance, suitable for diverse workloads.
-  - **io1/io2**: High-performance SSDs for mission-critical applications that require low latency and high throughput.
-  - **st1**: Low-cost HDDs optimized for frequently accessed, throughput-intensive workloads.
-  - **sc1**: Lowest-cost HDDs designed for less frequently accessed data.
+### 3. Provisioning and Billing
+
+- Capacity is defined **in advance**: size (GB), and for some types, **IOPS** and throughput.
+- Billing is based on what's **provisioned**, not what's actually used.
+
+### 4. Delete on Termination
+
+| Volume | Default behavior |
+|---|---|
+| Root volume | **Deleted** on instance termination (default), but this attribute can be turned off |
+| Additional (non-root) volumes | **Kept** by default |
+
+- Useful pattern: turn off "delete on termination" for the root volume when you want to preserve data or forensically inspect it after termination.
+
+### 5. Volume Types at a Glance
+
+| Category | Types | Best for |
+|---|---|---|
+| **General Purpose SSD** | gp2, gp3 | Most workloads: boot volumes, dev/test, low-latency apps |
+| **Provisioned IOPS SSD** | io1, io2 (Block Express) | Mission-critical, latency-sensitive databases needing sustained high IOPS |
+| **HDD** | st1, sc1 | Large, sequential, throughput-heavy workloads. **Cannot** be boot volumes |
+| **Previous generation** | Magnetic (Standard) | Legacy workloads with very low, infrequent access |
+
+Full spec table is in section 8.
+
+### 6. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Volume must move to another AZ" | Take a **snapshot**, then create a new volume from it in the target AZ |
+| "Attach the same volume to instance A, then to instance B" | Detach from A, attach to B (or use **Multi-Attach** if io1/io2 and same AZ) |
+| "Data should be gone when the instance terminates" | Leave **delete on termination** enabled (default for root volume) |
+| "Preserve the root volume after termination" | Disable **delete on termination** on the root volume |
+| "Volume in `us-east-1a`, instance in `us-east-1b`" | **Not attachable directly.** Snapshot and recreate in `us-east-1b` |
+
+---
 
 ## Elastic Block Store (EBS) Demo
 
-### 1. Accessing EBS Volumes
-- The lecture highlights how to access EBS volumes via the AWS console, noting the visibility of volumes depending on the account used.
+### TL;DR
 
-### 2. Creating New EBS Volumes
-- Steps to create a new EBS volume are discussed, including specification of size and type (e.g., GP2) within the same Availability Zone (AZ) as the EC2 instance.
+- Created a new EBS volume in the **same AZ** as an existing EC2 instance, then attached it to that instance.
+- Confirmed that volume visibility and the ability to attach depend on being in the **same AZ** as the instance.
+- Toggled the **delete on termination** setting to control whether the volume survives instance termination.
 
-### 3. Importance of Availability Zones
-- EBS volumes must be associated with a specific AZ, affecting their usability with EC2 instances.
+### Hands-On Checklist
 
-### 4. Attaching EBS Volumes
-- Demonstrates how to attach an EBS volume to an EC2 instance, showcasing the process of updating storage configurations.
+- [x] Open EC2, **Volumes**, create a new volume (size + type, e.g. gp2)
+- [x] Confirm the volume is created in the **same AZ** as the target EC2 instance
+- [x] Attach the volume to the running instance
+- [x] Inspect the instance's **Storage** tab to confirm the new volume is attached
+- [x] Review/toggle the **delete on termination** attribute on the attached volume
 
-### 5. Delete on Termination Attribute
-- Discusses the 'delete on termination' setting, which determines whether an EBS volume is automatically deleted when the associated EC2 instance is terminated.
+---
 
 ## EBS Snapshots
 
-### 1. Definition of EBS Snapshots
-- EBS Snapshots serve as point-in-time backups of EBS volumes, which can be created without detaching the volume from an EC2 instance, although detaching is recommended for consistency.
+### TL;DR
 
-### 2. Cross-AZ and Cross-Region Functionality
-- Snapshots can be copied between different Availability Zones (AZs) and across Regions, facilitating disaster recovery and backup.
+- A **snapshot** is a point-in-time backup of an EBS volume. It can be taken while the volume is attached, though **detaching first gives the most consistent result**.
+- Snapshots can be **copied across AZs and across Regions** — this is how EBS data crosses AZ/Region boundaries.
+- **EBS Snapshot Archive**: up to ~75% cheaper storage tier, with a **24–72 hour** restore time. Snapshots must stay archived for a **minimum of 90 days** (early deletion is billed for the remaining days).
+- **Recycle Bin**: deleted snapshots (including archived ones) can be retained for **1 day to 1 year** before permanent deletion, based on a retention rule. A snapshot recovered from the Recycle Bin's archive tier must still be restored from archive before use.
+- **Fast Snapshot Restore (FSR)**: pre-warms a snapshot so **new volumes created from it have full performance immediately**, instead of the default "lazy-load first touch" latency penalty. Costs extra per snapshot, per AZ, per hour.
 
-### 3. Key Features of EBS Snapshots
-- **EBS Snapshot Archive**: Snapshots can be archived for cost savings (up to 75% cheaper) but may take 24 to 72 hours for restoration.
-- **Recycle Bin for Deleted Snapshots**: Rather than permanent deletion, snapshots moved to a Recycle Bin can be recovered within a retention period of one day to one year.
-- **Fast Snapshot Restore**: This feature enables quick initialization of snapshots, reducing latency for first access but comes at a higher cost.
+### 1. What Are EBS Snapshots?
+
+- Point-in-time backups of a volume's data, stored in S3 behind the scenes (not directly browsable).
+- Can be created without detaching the volume, but detaching removes any risk of in-flight writes being missed.
+
+### 2. Cross-AZ and Cross-Region
+
+- A snapshot is **not** bound to a single AZ. Copy it to a new AZ, then create a volume from the copy there.
+- Copy across Regions for **disaster recovery** or to launch resources closer to users elsewhere.
+
+### 3. Snapshot Archive Tier
+
+| Aspect | Detail |
+|---|---|
+| Cost savings | Up to ~**75% cheaper** than the standard snapshot tier |
+| Restore time | **24–72 hours**, depending on snapshot size |
+| Minimum archive duration | **90 days**. Deleting/restoring earlier bills for the remaining days |
+| Use case | Long-term compliance/archival copies that are rarely, if ever, restored |
+
+### 4. Recycle Bin for Snapshots
+
+| Aspect | Detail |
+|---|---|
+| Purpose | Protects against **accidental deletion** of EBS snapshots (and volumes, AMIs) |
+| Retention rule | Configurable, **1 day to 1 year** |
+| Applies to archived snapshots | **Yes** — an archived snapshot that's deleted still lands in the Recycle Bin per the retention rule |
+| To reuse a bin-recovered archived snapshot | Recover it from the bin, **then** restore it from the archive tier to standard |
+
+### 5. Fast Snapshot Restore (FSR)
+
+- Without FSR, the first read to each block of a volume created from a snapshot is slower (lazy loading from S3).
+- FSR **pre-warms** the snapshot in a specific AZ so new volumes are at full performance from the first I/O.
+- Trade-off: **higher cost**, billed per snapshot, per AZ enabled, per hour.
+
+### 6. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Back up an EBS volume" | **Snapshot** |
+| "Move data to another AZ/Region" | Copy the **snapshot**, then create a volume from it |
+| "Reduce snapshot storage cost, restore time isn't critical" | **EBS Snapshot Archive** |
+| "Accidentally deleted a snapshot" | **Recycle Bin** (if a retention rule was configured) |
+| "New volume from a snapshot needs full performance immediately" | **Fast Snapshot Restore** |
+| "Most consistent snapshot possible" | **Detach** the volume first, then snapshot |
+
+---
 
 ## EBS Snapshots Demo
 
-### 1. Creating a Snapshot
-- Overview of creating a snapshot from a two-gigabyte GP2 EBS Volume.
-- Guidance on adding descriptions and initiating the snapshot process.
+### TL;DR
 
-### 2. Importance for Backup and Recovery
-- Snapshots are crucial for data backup and disaster recovery.
-- They can be copied to different AWS regions for enhanced safety.
+- Created a snapshot from a small (2 GB) gp2 volume, with a description.
+- Recreated a **new volume from the snapshot**, choosing encryption and the target AZ.
+- Explored the **Recycle Bin** and the **Archive** storage tier for that snapshot.
 
-### 3. Recreating a Volume from a Snapshot
-- Instructions on how to recreate a volume from a snapshot, including options for encryption and selecting the target Availability Zone.
+### Hands-On Checklist
 
-### 4. Managing EBS Volumes Across AZs
-- Snapshots assist in managing EBS volumes effectively across multiple Availability Zones.
+- [x] Select a small gp2 volume, create a **snapshot** with a description
+- [x] Wait for the snapshot to complete
+- [x] Create a **new volume from the snapshot**, choosing encryption and the target AZ
+- [x] Review the **Recycle Bin** settings for deleted-snapshot recovery
+- [x] Review the **Archive** tier option and its longer restore time
 
-### 5. Recycle Bin for Deleted Snapshots
-- Introduction of the Recycle Bin to prevent permanent deletion of EBS Snapshots.
-- Deleted snapshots can be recovered within a retention period of one day to one year.
-
-### 6. Storage Tiers for Snapshots
-- Discussion on different storage tiers for snapshots with cost implications.
-- Archived snapshots take longer to restore, estimated between 24 to 72 hours.
-
-### 7. Fast Snapshot Restore
-- Fast Snapshot Restore feature allows for quick initialization of snapshots to minimize latency on first use.
-- Useful for large snapshots but incurs additional costs.
+---
 
 ## Amazon Machine Images (AMIs)
 
-### 1. Definition of AMIs
-- An AMI is a customizable image that specifies the software configurations, operating system, and monitoring tools for EC2 instances.
+### TL;DR
 
-### 2. Benefits of Custom AMIs
-- Custom AMIs allow for faster boot and configuration times as all necessary software can be pre-packaged within the image.
+- An **AMI** is a template that bundles an OS, software, and configuration for launching EC2 instances. It's how you get a pre-configured instance up **faster** than running setup scripts every time.
+- AMIs are **Region-scoped**: an AMI built in `us-east-1` can only launch instances directly in `us-east-1`. To use it elsewhere, **copy the AMI** to the target Region first.
+- Three sources: **AWS-provided public AMIs**, your own **custom AMIs**, and **AWS Marketplace AMIs** (paid, vendor-maintained).
+- Building a custom AMI from a running instance also creates the underlying **EBS snapshot(s)**.
 
-### 3. Types of AMIs
-- **Public AMIs**: Provided by AWS, like the Amazon Linux 2 AMI.
-- **Custom AMIs**: Users can create and maintain their own AMIs for specific needs.
-- **Marketplace AMIs**: Pre-configured AMIs available for purchase from AWS Marketplace.
+### 1. What Is an AMI?
 
-### 4. Creating an AMI
-- Involves launching and customizing an EC2 instance, stopping the instance for data integrity, and building the AMI, which simultaneously creates EBS snapshots.
+- Specifies OS, installed software, and configuration for launching one or many EC2 instances with the same baseline.
+- Using a custom AMI skips repeating setup steps (e.g. user data scripts) on every launch, which speeds up boot time and standardizes environments.
 
-### 5. Practical Example
-- The lecture includes a step-by-step demonstration of launching an EC2 instance, customizing it, creating a custom AMI, and launching another instance from that AMI in a different region.
+### 2. AMI Sources
 
-### 6. Importance of AMIs
-- AMIs simplify the process of deploying consistent environments and can be copied across regions, leveraging the AWS global infrastructure. 
-- An AMI is regional, meaning an AMI that exists in N. Virginia / us-east-1 can only be used directly to launch EC2 instances in us-east-1. If you want to launch an EC2 instance from that AMI in another AWS Region, you must first copy the AMI to the target Region, then launch the instance from the copied AMI there.
+| Type | Description |
+|---|---|
+| **Public AMIs** | Provided and maintained by AWS (e.g. Amazon Linux 2023) or other publishers |
+| **Custom AMIs** | Built and maintained by you, from your own instances |
+| **Marketplace AMIs** | Pre-configured, often paid, AMIs from third-party vendors on AWS Marketplace |
+
+### 3. Creating a Custom AMI
+
+1. Launch and configure an EC2 instance (install software, apply config).
+2. **Stop the instance** first for the most consistent, data-integrity-safe AMI (not strictly required, but recommended — same trade-off as EBS snapshots).
+3. Create the AMI. This **also creates the underlying EBS snapshot(s)** for the instance's volumes.
+4. Launch new instances directly from that AMI — they boot with everything already installed.
+
+### 4. AMIs Are Regional
+
+- An AMI in `us-east-1` (N. Virginia) can launch instances **only in `us-east-1`**.
+- To launch in another Region, **copy the AMI** to that Region first, then launch from the copy.
+- This is the same cross-Region pattern as EBS snapshots (because an AMI is backed by snapshots).
+
+### 5. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Speed up repeated instance launches with the same setup" | **Custom AMI** |
+| "Launch the same AMI in another Region" | **Copy the AMI** to that Region first |
+| "AMI creation also does what to storage?" | Creates the underlying **EBS snapshot(s)** |
+| "Most consistent custom AMI" | **Stop** the instance before creating it |
+| "Paid, vendor-maintained image" | **AWS Marketplace AMI** |
+
+---
 
 ## AMI Hands On
 
-### 1. Launching an EC2 Instance
-- The session begins with the instructor launching an EC2 instance using **Amazon Linux 2** and **t2.micro** instance type.
-- Key steps include selecting a key pair and configuring network settings with an existing security group.
+### TL;DR
 
-### 2. User Data for Initialization
-- User data is edited to install the **Apache web server (HTTPD)** automatically. 
-  - **Example**: The user data script includes commands to install HTTPD without creating an index file upon startup.
-- The instructor emphasizes the importance of patience as the user data script may take time to execute.
+- Launched an EC2 instance (**Amazon Linux 2**, `t2.micro`) with user data that installs **Apache (httpd)** automatically.
+- Verified the web server via the instance's public IP, then created a **custom AMI** from the running instance.
+- Launched a **new instance from that AMI** — Apache was already installed, with no user data needed this time.
 
-### 3. Verification of Installation
-- After the script completion, the instructor verifies the successful installation of HTTPD by accessing a test page at the server's public IP address.
+> **Note (2026):** Amazon Linux 2 reached **end of support on 2026-06-30**. For new work, use **Amazon Linux 2023** instead — this lecture's AL2 choice predates that cutoff.
 
-### 4. Creating an AMI
-- The lecture demonstrates creating an AMI from the running instance. 
-  - **Example**: The instructor gives the AMI a specific name and monitors its status until it is ready for use, showcasing the simplicity of AMI creation.
+### Hands-On Checklist
 
-### 5. Launching Instances from AMI
-- After the AMI is created, the instructor details how to launch new instances from this AMI. 
-  - **Example**: This process excludes the need to reinstall HTTPD, speeding up deployment significantly.
+- [x] Launch an EC2 instance: Amazon Linux 2 (use **AL2023** for new work), `t2.micro`, existing security group, with a key pair
+- [x] Add user data to install **HTTPD** (Apache) automatically at first boot
+- [x] Verify the web server responds at the instance's public IP
+- [x] Create an **AMI** from the running instance, with a descriptive name
+- [x] Wait for the AMI to become **available**
+- [x] Launch a **new instance from the AMI** — no user data needed, Apache is already installed
+- [x] **Clean up**: terminate both instances when done
 
-### 6. Benefits of Using AMIs
-- Discussion includes benefits such as faster boot-up times and the ability to package instances with pre-installed software which streamlines deployment processes.
-
-### 7. Termination of Instances
-- The session concludes with instructions on terminating the instances created during the demonstration, wrapping up the hands-on experience.
+---
 
 ## EC2 Instance Store
 
-### Definition
-- The Instance Store is a high-performance storage solution directly attached to physical servers that host EC2 Instances.
+### TL;DR
 
-### Ephemeral Nature
-- Data stored in the Instance Store is temporary. If the EC2 instance is stopped or terminated, all data in the Instance Store is lost, making this storage unsuitable for long-term data retention.
+- **Instance Store** is NVMe/SSD (or HDD) storage **physically attached to the host hardware**, not network-attached like EBS.
+- It's **ephemeral**: data survives a **reboot**, but is **lost on stop, terminate, hibernate, or underlying hardware failure**.
+- It delivers **much higher IOPS and lower latency** than EBS, because there's no network hop.
+- Included **free** in the instance's hourly cost — no separate billing line.
+- Best for data that's disposable or reproducible: **caches, buffers, scratch space, and replicated data in distributed systems**.
 
-### Ideal Use Cases
-- The Instance Store is best for temporary data requirements, such as:
-  - Caches
-  - Buffers
-  - Scratch data
+### 1. What Is Instance Store?
 
-### Alternatives for Long-Term Storage
-- For data that requires persistence and reliability, options like **EBS (Elastic Block Store)** are recommended.
+- High-performance block storage physically attached to the same host running the EC2 instance.
+- Common on instance families with a `d` suffix (e.g. `m5d`, `r5d`, `c5d`), and dedicated storage families like **I3, I3en, I4i, D3, D3en**.
 
-### Risks and Data Management
-- Highlighted risks include potential data loss due to hardware failure. It’s essential to back up and replicate data when utilizing Instance Stores.
+### 2. Ephemeral Nature
 
-### Performance Comparison
-- The lecture compares IOPS (Input/Output Operations Per Second) of high-performance EC2 Instance types with Instance Stores versus EBS volumes, illustrating the superior performance of the Instance Store for certain workloads.
+| Event | Data survives? |
+|---|---|
+| Reboot (OS or via console) | **Yes** |
+| Stop / Stop-Hibernate | **No** |
+| Terminate | **No** |
+| Underlying hardware failure | **No** |
 
-## Amazon Elastic Block Store (EBS) Volumes
+### 3. Ideal Use Cases
 
-### General-Purpose SSDs
-- **gp2 and gp3 Volumes**: 
-  - Balances price and performance.
-  - gp3 offers a baseline of 3,000 IOPS and 125 MB/s throughput, with a scalable maximum of 80,000 IOPS and 2,000 MB/s.
-  - gp2 volumes link size and IOPS, allowing a maximum of 16,000 IOPS based on volume size.
+- **Caches and buffers** for an application tier.
+- **Scratch data** for temporary processing (e.g. sorting, ETL staging).
+- **Replicated data in distributed systems** (e.g. a distributed database or cache cluster) — if one node's instance store is lost, the data is still available from the other replicas.
 
-### High-Performance SSDs
-- **io1 and io2 Block Express Volumes**:
-  - Designed for mission-critical applications needing low latency and high throughput.
-  - io1 supports up to 64,000 IOPS for Nitro EC2 instances, while io2 Block Express can achieve up to 256,000 IOPS, with up to 1,000 IOPS per gigabyte.
+### 4. Performance Comparison
 
-### Low-Cost HDD Options
-- **st1 and sc1 Volumes**:
-  - **st1**: Optimized for throughput-intensive workloads with a maximum throughput of 500 MB/s and 500 IOPS, ideal for big data and log processing.
-  - **sc1**: Suitable for infrequently accessed data, offering the lowest cost with a maximum throughput of 250 MB/s and 250 IOPS.
+- Instance Store typically delivers **significantly higher IOPS and lower latency** than EBS, because it skips the network path entirely.
+- Example from the high-end I-family: RAID 0 across multiple local NVMe drives can push **millions of IOPS** and **double-digit GB/s** of sequential throughput — far beyond what a single EBS volume provides.
+- This is also why the earlier "310,000 IOPS" exam scenario (section 8) allows Instance Store as an alternative to EBS RAID 0, **if** the ephemeral trade-off is acceptable.
 
-### Takeaway
-- The EBS volume types for EC2 instances are:
-  - General Purpose SSD: gp2, gp3
-  - Provisioned IOPS SSD: io1, io2
-  - Throughput Optimized HDD: st1
-  - Cold HDD: sc1
-  - Magnetic / Standard: previous-generation EBS volume type
-General Purpose SSD and Provisioned IOPS SSD are expected to be used as boot volumes, in other words:
-- p2 / gp3 — commonly used boot volumes
-- io1 / io2 — can also be used as boot volumes when high IOPS is needed
-- and Magnetic / Standard can be used.
-- st1 and sc1 CANNOT be used as boot volumes.
-- Mount EBS volumes in RAID 0 means: Combine multiple EBS volumes into one striped volume to increase IOPS and throughput.
-- For an 8 TB gp2 EBS volume, the thing that is NOT a way to increase performance is to increase the volume size, because gp2 performance scales with size, but only up to a maximum of 16,000 IOPS. An 8 TB gp2 volume already reaches the maximum gp2 IOPS limit, so making it larger will not increase IOPS further.
-- For 310,000 IOPS, the best recommendation is: Use multiple EBS volumes in a RAID 0 configuration, because a single EBS volume cannot provide 310,000 IOPS by itself in the common AWS exam context. For example: io1 / io2 Provisioned IOPS SSD volumes can provide high IOPS, but a single volume has an IOPS limit. To reach 310,000 IOPS, you need to stripe multiple EBS volumes together using RAID 0. RAID 0 combines the performance of multiple volumes, giving you higher aggregate IOPS. So the answer is: Create a RAID 0 array with multiple EBS volumes to increase IOPS.
-  - Can use EC2 Instance Store because it provides extremely high IOPS and low latency (hardware on server), but its main downside is that the data is ephemeral and can be lost when the instance stops, terminates, or the hardware fails.
+### 5. Risks and Data Management
 
-## Multi-Attach Feature of Amazon Elastic Block Store (EBS) Volumes
+- Main risk: **permanent data loss** on stop/terminate/hibernate or a hardware fault.
+- Mitigate by **backing up or replicating** anything that must survive — to EBS, S3, or across multiple instances.
 
-### Overview
-- The Multi-Attach feature allows a single EBS volume to be attached to multiple EC2 instances within the same availability zone.
-- This feature is available only for io1 and io2 EBS volume types.
+### 6. Exam-Style Recall
 
-### Key Points
-1. **Concurrent Access**:
-   - Each EC2 instance attached to the EBS volume has full read and write permissions, allowing multiple instances to read from and write to the volume simultaneously.
+| If the question says... | Think... |
+|---|---|
+| "Highest possible IOPS, lowest latency, data can be lost" | **Instance Store** |
+| "Temporary cache or scratch space" | **Instance Store** |
+| "Data must survive instance stop/terminate" | **EBS** (or S3/EFS), not Instance Store |
+| "Distributed DB with its own replication, one node's disk fails" | **Instance Store** is fine — other replicas still have the data |
+| "No extra charge for the storage" | **Instance Store** (bundled into instance price) |
 
-2. **Use Cases**:
-   - Ideal for applications requiring higher availability, such as clustered applications (e.g., Teradata) that need to manage concurrent write operations.
+---
 
-3. **Limitations**:
-   - The maximum number of EC2 instances that can attach to the same EBS volume is 16. This is critical information for exams.
-   - Multi-Attach is limited to instances within the same availability zone, meaning you cannot attach an EBS volume across different availability zones.
+## Amazon Elastic Block Store (EBS) Volumes — Types in Depth
 
-4. **File System Requirements**:
-   - To utilize the Multi-Attach feature, a cluster-aware file system must be used, which differs from standard file systems like XFS or EXT4.
+### TL;DR
+
+- **6 current-generation types**: **gp2, gp3** (General Purpose SSD), **io1, io2** (Provisioned IOPS SSD), **st1, sc1** (HDD) — plus the legacy **Magnetic (Standard)** type.
+- **gp3** decouples IOPS/throughput from size, with a baseline of **3,000 IOPS / 125 MiB/s free**, scalable up to **80,000 IOPS / 2,000 MiB/s** (AWS raised this ceiling in September 2025 — this course's slides may still show the older 16,000 IOPS / 1,000 MB/s limit).
+- **io2 Block Express** is the top tier for IOPS: up to **256,000 IOPS**, **4,000 MB/s**, sub-millisecond latency, and **99.999% durability**.
+- **st1/sc1 cannot be boot volumes.** Everything else can.
+- To exceed a single volume's IOPS ceiling, **stripe multiple volumes in RAID 0**.
+
+### 1. Volume Type Specifications (2026)
+
+| Type | Category | Max IOPS | Max throughput | Max size | Boot volume? | Notes |
+|---|---|---|---|---|---|---|
+| **gp2** | General Purpose SSD | 16,000 (3 IOPS/GB baseline, burst to 3,000 for volumes < 1 TiB) | 250 MiB/s | 16 TiB | Yes | Previous generation; IOPS scale with size |
+| **gp3** | General Purpose SSD | 80,000 (3,000 baseline, free) | 2,000 MiB/s (125 MiB/s baseline, free) | 64 TiB | Yes | IOPS/throughput **independent of size**; current default |
+| **io1** | Provisioned IOPS SSD | 64,000 (Nitro instances) | 1,000 MiB/s | 16 TiB | Yes | Up to 50 IOPS/GB |
+| **io2 (Block Express)** | Provisioned IOPS SSD | 256,000 | 4,000 MiB/s | 64 TiB | Yes | Up to 1,000 IOPS/GB; **99.999% durability**; sub-ms latency |
+| **st1** | Throughput Optimized HDD | 500 | 500 MiB/s (baseline 40 MiB/s per TiB, burst 250 MiB/s per TiB) | 16 TiB | **No** | Big data, log processing, data warehouses |
+| **sc1** | Cold HDD | 250 | 250 MiB/s | 16 TiB | **No** | Lowest cost, infrequent access |
+| **Magnetic (Standard)** | Previous generation | ~40–200 | ~40–90 MiB/s | 1 TiB | Yes | Legacy; avoid for new workloads |
+
+### 2. Boot Volume Eligibility
+
+| Type | Can be a boot volume? |
+|---|---|
+| gp2 / gp3 | Yes — common default |
+| io1 / io2 | Yes — when high IOPS is needed from boot |
+| Magnetic (Standard) | Yes — legacy only |
+| st1 / sc1 | **No** |
+
+### 3. Increasing Performance Beyond a Single Volume
+
+- **RAID 0**: stripe multiple EBS volumes into one logical volume to combine their IOPS and throughput. No redundancy — losing one volume loses the whole array.
+- **gp2 exam gotcha**: an **8 TiB gp2 volume already sits at the 16,000 IOPS ceiling**. Making it *larger* doesn't raise IOPS further — gp2 performance scales with size only up to that cap.
+- **310,000 IOPS exam scenario**: no single EBS volume can deliver that alone. The answer is **RAID 0 across multiple io1/io2 volumes** (or accept the ephemeral trade-off and use **Instance Store**, see previous section).
+
+### 4. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Cost-effective SSD for most workloads, decoupled IOPS/throughput" | **gp3** |
+| "Mission-critical DB, sub-ms latency, extreme IOPS" | **io2 Block Express** |
+| "Big data / log processing, sequential throughput" | **st1** |
+| "Rarely accessed data, lowest cost HDD" | **sc1** |
+| "Volume can't be used as a boot volume" | **st1 or sc1** |
+| "Increase IOPS beyond one volume's max" | **RAID 0** across multiple volumes |
+| "8 TiB gp2, want more IOPS by resizing" | Won't work — **already at the 16,000 IOPS cap** |
+| "Need 300,000+ IOPS" | **RAID 0 of io1/io2** volumes (or accept ephemeral data and use **Instance Store**) |
+
+---
+
+## Multi-Attach Feature of Amazon EBS Volumes
+
+### TL;DR
+
+- **Multi-Attach** lets a single **io1 or io2** volume attach to **up to 16 Nitro-based EC2 instances**, all in the **same AZ**.
+- Every attached instance gets **full read/write** access — the application layer must coordinate concurrent writes with a **cluster-aware file system**, since EBS itself doesn't do that.
+- Cannot span AZs, cannot be used as a **root/boot volume**, and requires **Nitro** instances.
+
+### 1. Overview
+
+- Supported **only** on io1 and io2 volumes.
+- All attached instances must be **within the same AZ** as the volume.
+
+### 2. Key Points
+
+| Aspect | Detail |
+|---|---|
+| Max instances | **16**, all built on the **Nitro System** |
+| Concurrent access | Every attached instance has **full read and write** access simultaneously |
+| OS support | **Linux**: io1 and io2. **Windows**: io2 only |
+| Regional availability | io1 Multi-Attach: limited Regions (e.g. us-east-1, us-west-2, ap-northeast-2). io2 Multi-Attach: **all Regions that support io2** |
+| Root/boot volume | **Not allowed** |
+| Data consistency | **io2** supports **I/O fencing** for consistency; **io1** does not |
+| File system requirement | A **cluster-aware file system** is required — standard file systems like XFS/EXT4 aren't safe for concurrent multi-writer access |
+
+### 3. Use Cases
+
+- Clustered applications that manage their own concurrent-write coordination (e.g. Teradata-style clustered databases).
+- Raising availability for a shared storage layer without going through a network file system like EFS.
+
+### 4. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "One EBS volume, multiple EC2 instances, same AZ, concurrent read/write" | **EBS Multi-Attach** (io1/io2 only) |
+| "Multi-Attach across AZs" | **Not possible** — same AZ only |
+| "Multi-Attach as the root volume" | **Not allowed** |
+| "Prevent write conflicts across attached instances" | Requires a **cluster-aware file system**; EBS doesn't arbitrate this |
+| "Which volume type gives I/O fencing on Multi-Attach?" | **io2** |
+| "Need shared file access across AZs" | Not Multi-Attach — use **EFS** instead |
+
+---
 
 ## Amazon Elastic File System (EFS)
 
-### Overview
-- Amazon EFS is a managed network file system (NFS) that supports multiple EC2 instances connecting simultaneously across different availability zones.
+### TL;DR
 
-### Key Features
-- **High Availability and Scalability**: Offers a scalable file storage solution without the need for pre-provisioning.
-- **Pay-per-Use Pricing**: Costs are incurred only for the storage used, with EFS being approximately three times the cost of GP2 EBS volumes.
-- **Linux Compatibility**: Specifically designed for Linux-based AMIs.
+- **EFS** is a **managed, elastic NFS (v4.1) file system** that many EC2 instances can mount **concurrently, across multiple AZs**.
+- **Linux-only.** No pre-provisioning of capacity — it grows and shrinks automatically.
+- Three **throughput modes**: **Bursting** (free, scales with storage size), **Provisioned** (fixed, paid), **Elastic** (auto-scales with load, pay-per-use — best for unpredictable/spiky traffic).
+- Two **performance modes**: **General Purpose** (default, recommended for nearly everything) and legacy **Max I/O** (higher latency, not available with Elastic throughput or One Zone).
+- **Storage classes + lifecycle management** move infrequently accessed files to cheaper tiers automatically, for substantial cost savings.
+- Roughly **3x the per-GB cost of gp2 EBS** for the Standard storage class — the lifecycle/IA classes exist to bring that down.
 
-### Architecture
-- **Security Groups**: Essential for access control; must be configured correctly for EFS to function properly.
-- **Automatic Scaling**: Automatically scales to support thousands of concurrent NFS clients and can extend to petabyte levels.
+### 1. What Is EFS?
 
-### Performance Modes
-- **General-Purpose Mode**: Best for latency-sensitive applications.
-- **Max I/O Mode**: Suitable for high-throughput applications that can tolerate higher latency.
+- A network file system (NFS), not block storage — files are shared, not a single volume attached to one instance.
+- Scales to **thousands of concurrent NFS clients**, up to petabyte-scale, without any capacity planning.
 
-### Throughput Modes
-- **Bursting, Provisioned, and Elastic**: These modes optimize performance based on the workload needs.
+### 2. Performance Modes
 
-### Storage Classes and Lifecycle Management
-- **Automatic File Movement**: Enables migration of files between storage tiers (standard, EFS-IA, archive) for significant cost savings of up to 90%. 
+| Mode | Use case | Notes |
+|---|---|---|
+| **General Purpose** | Default, recommended for **almost all workloads** (web serving, CMS, general apps) | Scales to hundreds of thousands of IOPS; lower per-operation latency |
+| **Max I/O** | Legacy, for highly parallelized workloads tolerant of higher latency | **Not supported** with One Zone file systems or **Elastic** throughput; largely superseded by General Purpose's scaling improvements |
 
-### Availability and Durability
-- **Multi-AZ Setup**: Recommended for production workloads, with a one-zone option available for development purposes.
+### 3. Throughput Modes
+
+| Mode | Cost model | Best for |
+|---|---|---|
+| **Bursting** | Free (bundled into storage cost), throughput scales with **file system size**, uses burst credits for spikes | Dev/test, light or intermittent production traffic |
+| **Provisioned** | Fixed extra cost for a **guaranteed** throughput level | Predictable, sustained throughput needs (steady CI/CD, batch jobs) |
+| **Elastic** | Pay-per-use, **auto-scales up and down** with actual workload | Spiky or hard-to-forecast traffic — the closest to a "just works" default |
+
+### 4. Storage Classes and Lifecycle Management
+
+| Class | Description |
+|---|---|
+| **Standard** | Multi-AZ, highest cost per GB |
+| **Standard-IA** (Infrequent Access) | Multi-AZ, cheaper, for files not accessed often |
+| **One Zone** | Single-AZ, lower cost, no multi-AZ redundancy — good for dev/non-critical workloads |
+| **One Zone-IA** | Single-AZ + infrequent access, cheapest option |
+
+- **Lifecycle management** automatically moves files between Standard and IA tiers based on last-access time, without manual intervention.
+
+### 5. Availability and Durability
+
+| File system type | AZ footprint | Typical use |
+|---|---|---|
+| **Regional (Standard)** | Multiple AZs | Production, shared applications |
+| **One Zone** | Single AZ | Development, staging, cost-sensitive non-critical workloads |
+
+### 6. Security
+
+- Access is controlled by **security groups** attached to the EFS mount targets — they must allow **NFS (port 2049)** from the connecting instances.
+
+### 7. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Shared file storage across many EC2 instances, multiple AZs, Linux" | **EFS** |
+| "Unpredictable, spiky throughput needs" | **Elastic** throughput mode |
+| "Guaranteed throughput regardless of storage size" | **Provisioned** throughput mode |
+| "Lowest-cost dev/test file system" | **EFS One Zone** (or One Zone-IA) |
+| "Automatically tier cold files to save cost" | **EFS lifecycle management** to **IA** |
+| "Highly parallel workload needing Max I/O" | Possible, but check it's **not** paired with One Zone or Elastic throughput |
+| "Windows instances need shared file storage" | **Not EFS** (Linux-only) — consider **FSx for Windows File Server** |
+
+---
 
 ## Hands-On Demonstration of Amazon Elastic File System (EFS)
 
-### 1. Creating a File System
-- Begin by selecting a **VPC** where the file system will be connected, typically using the default VPC.
-- File system types:
-  - **Regional**: High availability across multiple availability zones; ideal for production (e.g., shared applications).
-  - **One-Zone**: Lower cost but limited to a single availability zone; suitable for development (e.g., staging environments).
+### TL;DR
 
-### 2. Backup and Lifecycle Management
-- Enable automatic backups to protect data.
-- **Lifecycle Management**: Automatically moves files between storage tiers, suitable for applications with varying access frequencies.
+- Created an EFS file system in the **default VPC**, choosing between **Regional** (multi-AZ, production) and **One-Zone** (cheaper, single-AZ, dev/staging).
+- Configured backups, **lifecycle management**, throughput mode, and **performance mode**.
+- Mounted the same EFS file system from **multiple EC2 instances across different AZs**, confirming concurrent, multi-AZ access.
 
-### 3. Performance Settings
-- Choose throughput modes:
-  - **Bursts**: Scales with storage use.
-  - **Provisioned**: Fixes throughput, suitable for steady workloads.
-  - **Elastic**: Automatically adjusts based on demand.
+### Hands-On Checklist
 
-### 4. Performance Modes
-- **General Purpose Mode**: 
-  - Default setting for latency-sensitive applications like web servers or content management systems.
-  
-- **Max I/O Mode**: 
-  - For workloads that require higher throughput, such as big data analytics, where higher latency can be tolerated.
+- [x] Create a file system, choosing the **VPC** (default VPC)
+- [x] Choose **Regional** (multi-AZ, production) or **One-Zone** (single-AZ, dev)
+- [x] Enable automatic **backups**
+- [x] Configure **lifecycle management** to move cold files to a cheaper tier
+- [x] Choose **throughput mode** (Bursting / Provisioned / Elastic)
+- [x] Choose **performance mode** (General Purpose / Max I/O)
+- [x] Configure network access and a **security group** allowing NFS
+- [x] Launch multiple EC2 instances and mount the **same EFS file system** on each
+- [x] Confirm concurrent access from instances in **different AZs**
+- [x] **Clean up**: terminate instances and delete the file system
 
-### 5. Network Access Settings
-- Configure network settings and create security groups for access control.
+### Key Use Cases Demonstrated
 
-### 6. Linking EC2 Instances
-- Create multiple EC2 instances (e.g., "Instance A") and link them with EFS, allowing concurrent access.
+- **Content management**: shared files for websites/applications.
+- **Web serving**: files accessed concurrently by multiple app servers.
+- **Data sharing**: multiple applications on different EC2 instances reading/writing the same data.
 
-### 7. Multi-AZ Access
-- Multiple EC2 instances across different availability zones can access the same EFS file system, demonstrating high availability.
+---
 
-### 8. Resource Cleanup
-- Instructions on terminating EC2 instances and deleting the EFS file system to manage AWS resources efficiently.
+## Comparison of Amazon EBS, EFS, and Instance Store
 
-### **Important Use Cases for EFS**
-- **Content Management**: Sharing files for websites or applications.
-- **Web Serving**: Hosting files that can be accessed concurrently by multiple users.
-- **Data Sharing**: Allowing multiple applications on different EC2 instances to access the same data.
+### TL;DR
 
-## Comparison of Amazon EBS and EFS
+- **EBS**: block storage, one AZ, one instance at a time (Multi-Attach aside) — the default for a single instance's disk.
+- **EFS**: managed NFS, multi-AZ, many instances concurrently — the default for shared file storage.
+- **Instance Store**: physically attached, ephemeral, highest raw performance — the default for disposable/high-speed local data.
 
-### 1. Amazon EBS (Elastic Block Store) Volumes
-- **Attachment**: 
-  - Can be attached to a single EC2 instance at a time (multi-attach for specific volume types).
-  - Restricted to a single Availability Zone (AZ).
-- **Access**: 
-  - Cannot be accessed by instances in different AZs.
-- **Performance**: 
-  - Performance varies by volume type (e.g., gp2 performance increases with size, gp3 and io1 allow independent IOPS scaling).
-- **Migration**: 
-  - Requires creating and restoring snapshots to migrate across AZs, potentially impacting performance during high traffic.
-- **Termination**: 
-  - Volumes typically terminate with the associated EC2 instance, but this can be changed.
+### 1. Side-by-Side
 
-### 2. Amazon EFS (Elastic File System)
-- **Type**: 
-  - A network file system shared across multiple EC2 instances in different AZs.
-- **Use Cases**: 
-  - Suitable for applications requiring shared access, e.g., web servers hosting websites like WordPress.
-- **Scalability**: 
-  - Offers high availability, supporting multiple mount targets.
-- **Cost**: 
-  - Higher pricing with options for cost-saving storage tiers.
+| Aspect | EBS | EFS | Instance Store |
+|---|---|---|---|
+| Storage type | Block | File (NFS) | Block (local) |
+| AZ scope | Single AZ | **Multi-AZ** | Single host |
+| Attachable to | 1 instance (16 with Multi-Attach, io1/io2) | **Many instances concurrently** | The one host it's physically on |
+| Persistence | Survives stop/terminate (config-dependent) | Survives, independent of any instance | **Lost** on stop/terminate/hibernate |
+| Performance | Good, network-attached | Good, scales with demand | **Highest** (no network hop) |
+| OS support | Linux + Windows | **Linux only** | Linux + Windows |
+| Typical cost | Baseline | ~3x gp2 for Standard class (IA/One Zone reduce this) | **Included** in instance price |
+| Best for | Single-instance boot/data volumes, databases | Shared file storage across a fleet | Caches, scratch space, replicated cluster data |
 
-### 3. Instance Store Volumes
-- **Type**: 
-  - Physically attached to EC2 instances.
-- **Limitation**: 
-  - Data is lost when the instance is terminated.
+### 2. Migration and Cross-AZ Notes
 
-### Conclusion
-- **EBS** is best for block-level storage needs with performance characteristics dependent on volume type, while **EFS** is ideal for scalable, shared file storage across multiple instances.
+- **EBS**: crossing AZs requires a **snapshot**, then creating a new volume from it — this can add latency/impact during high traffic.
+- **EFS**: natively spans AZs via **mount targets** in each AZ — no snapshot dance needed.
+- **Instance Store**: never crosses hosts — data must be replicated at the application layer if it needs to survive a host loss.
 
-## EBS & EFS Section Cleanup - Main Points
+### 3. Exam-Style Recall
 
-### 1. Deleting the File System
-- Demonstration of how to delete an entire file system by entering the file system ID into the action menu.
+| If the question says... | Think... |
+|---|---|
+| "One instance, persistent block storage" | **EBS** |
+| "Many instances, shared files, multi-AZ" | **EFS** |
+| "Fastest possible local storage, data is disposable" | **Instance Store** |
+| "Windows file share across instances" | Not EFS — **FSx for Windows File Server** |
+| "Move block data between AZs" | **EBS snapshot** and recreate |
+| "Database needing extreme IOPS with data persistence" | **EBS (io2 Block Express)**, not Instance Store |
 
-### 2. Terminating EC2 Instances
-- Emphasis on the need to terminate all running EC2 instances to achieve a clean slate.
+---
 
-### 3. Managing Volumes
-- Instructions to delete all available volumes by right-clicking and selecting the delete option.
+## EBS & EFS Section Cleanup
 
-### 4. Deleting Snapshots
-- Advice to remove any created snapshots to avoid unnecessary storage costs.
+### TL;DR
 
-### 5. Cleaning Up Security Groups
-- Guidance on deleting unnecessary security groups, while retaining the default group.
-- Note that security groups can only be deleted after all associated EC2 instances have been terminated.
+- Deleted the **EFS file system**, terminated all **EC2 instances**, deleted leftover **EBS volumes** and **snapshots**, and removed unused **security groups**.
+- Key gotcha: a security group **can't be deleted while an EC2 instance still references it** — terminate the instance(s) first and wait for the deletion to finish.
 
-### 6. Practical Examples
-- Examples of attempting to delete security groups, noting some deletions require patience as instances shut down.
-- **Example**: When trying to delete a security group that still has EC2 instances associated with it, the user will receive an error stating that the security group cannot be deleted until those instances are terminated.
+### Hands-On Checklist
+
+- [x] Delete the **EFS file system** (enter its file system ID in the action menu)
+- [x] **Terminate** all running EC2 instances used in the demos
+- [x] Delete any remaining **EBS volumes** (right-click, delete)
+- [x] Delete any created **EBS snapshots** to avoid storage charges
+- [x] Delete unused **security groups**, keeping the account's default group
+- [x] If a security group deletion fails: wait for its EC2 instance(s) to finish terminating, then retry
+
+### Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Security group deletion fails with a dependency error" | An **EC2 instance still references it** — terminate the instance first |
+| "Avoid ongoing charges after a lab" | Delete **snapshots**, **volumes**, **file systems**, and terminate **instances** |
