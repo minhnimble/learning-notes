@@ -581,7 +581,6 @@ SELECT * FROM my_table;
 - [x] Install **SQLElectron** and add a MySQL server using the endpoint, `admin`, the password, and `mydb`
 - [x] **Test** the connection, **Connect**, then run `CREATE TABLE`, `INSERT`, and `SELECT`
 - [x] Look at **Actions, Create read replica** (cancel), the **Monitoring** tab, and **snapshot and restore** options
-- [X] **Clean up:** **Modify** to disable deletion protection (apply immediately), **Delete** (no final snapshot), then remove the `demo-rds` SG
 
 ---
 
@@ -817,7 +816,7 @@ Clients --> [Reader endpoint] --> Replica 1 | Replica 2 | ... | Replica 15  (rea
 - Aurora has no free tier. A writer **and** a reader instance bill **per hour**, plus **storage, I/O, and backups**.
 - The wizard shows an **estimated monthly cost** at the bottom. Check it before clicking Create.
 - Aurora is **not** covered by the RDS Free Tier template.
-- **Delete everything right after the demo** (see section 8).
+- **Delete everything right after the demo.**
 
 ### 2. Wizard: Engine and Template
 
@@ -969,18 +968,7 @@ The lecture opened the policy form and cancelled it.
 - **Encryption** is decided **at creation**.
 - **Deleting:** remove the **instances first**, then the **cluster**. A cluster with no instances **still costs storage** until deleted.
 
-### 8. Cleanup (Cost Control)
-
-1. Select the **reader instance**, **Actions, Delete**, type `delete me`, and confirm.
-2. Select the **writer instance**, **Actions, Delete**, type `delete me`, and confirm.
-3. Once both are gone, select the **cluster** and delete it. In the demo the cluster's delete option wasn't available until the instances were removed.
-4. Uncheck **Create final snapshot** (for the demo) and uncheck **Retain automated backups**.
-5. Delete the leftover security group `demo-database-aurora` and any snapshots.
-
-- If delete stays greyed out or fails, check **deletion protection** (Modify, then turn it off).
-- Verify in the console that the **cluster, instances, and snapshots** are all gone.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1001,7 +989,7 @@ The lecture opened the policy form and cancelled it.
 | "Can't connect to Aurora from my laptop" | **Public access** and **security group** (DB port, your IP) |
 | "Delete an Aurora cluster" | Delete **instances first**, then the **cluster** |
 
-### 10. Hands-On Checklist
+### 9. Hands-On Checklist
 
 - [x] Check the **estimated monthly cost** and decide whether to follow along
 - [x] RDS console, **Create database**, **Standard create**, **Aurora (MySQL Compatible)**
@@ -1017,7 +1005,6 @@ The lecture opened the policy form and cancelled it.
 - [x] Review **Actions**: add reader, cross-region read replica, restore to point in time
 - [x] Open **Add replica auto scaling**: target **60%**, min **1**, max **15**, then **cancel**
 - [x] Open **Add AWS Region** and see why it isn't available (version and instance size)
-- [x] **Clean up:** delete the **reader**, then the **writer**, then the **cluster** (no final snapshot), then the SG
 
 ---
 
@@ -1671,16 +1658,7 @@ redis-cli -h <primary-endpoint> -p 6379 ping   # expect: PONG
 
 - The console resembles **RDS** because the service is similar. ElastiCache is for **Redis, Valkey, and Memcached**.
 
-### 5. Cleanup (Cost Control)
-
-1. Select the cluster, **Actions, Delete**.
-2. **Create a final backup?** Choose **No** (for the demo).
-3. **Type the cluster name** to confirm, then delete.
-4. Optionally delete the subnet group, parameter group, and security group.
-
-- Node-based clusters bill **per node-hour** until deleted. Delete the demo cluster right away.
-
-### 6. Key Facts to Remember
+### 5. Key Facts to Remember
 
 - ElastiCache engines: **Valkey, Redis OSS, Memcached**. Valkey is the recommended Redis replacement.
 - Two deployment modes: **Serverless** and **node-based**.
@@ -1695,7 +1673,7 @@ redis-cli -h <primary-endpoint> -p 6379 ping   # expect: PONG
 - Default ports: **Redis 6379**, **Memcached 11211**.
 - You must **write code** to use the cache. There is no "turn it on" mode.
 
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1715,7 +1693,7 @@ redis-cli -h <primary-endpoint> -p 6379 ping   # expect: PONG
 | "Connect to ElastiCache from outside the VPC" | **Not directly possible.** Use VPN, a bastion host, or an app inside the VPC. |
 | "Redis replacement, open source, recommended" | **Valkey** |
 
-### 8. Hands-On Checklist
+### 7. Hands-On Checklist
 
 - [x] ElastiCache console, **Create cache**, choose engine **Redis OSS** (or **Valkey**)
 - [x] Deployment option: **Node-based cluster**, creation method: **configure and create**
@@ -1727,7 +1705,6 @@ redis-cli -h <primary-endpoint> -p 6379 ping   # expect: PONG
 - [x] Review **access control** (Redis AUTH vs user group ACL), **security groups**, **backup**, **maintenance window**, **log delivery**, and **tags**
 - [x] Review the summary, then click **Create** and wait for **Available**
 - [x] Open the cluster and note the **primary endpoint** and **reader endpoint**, then check **nodes, metrics, logs, and network security**
-- [x] **Clean up:** **Actions, Delete**, no final backup, type `DemoCluster`
 
 ---
 

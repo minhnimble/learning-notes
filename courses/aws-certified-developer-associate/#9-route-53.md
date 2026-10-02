@@ -2156,5 +2156,806 @@ Private EC2 instance (private subnet)
 - [x] Create a **calculated health check** over the 3 checks, set to **healthy when all are healthy**, and confirm it shows **Unhealthy**
 - [x] Open **Create health check, State of a CloudWatch alarm** to see the options (no alarm to select)
 - [x] **Next lecture:** attach the health checks to Route 53 records
-- [x] **Clean up:** delete the health checks, **restore the HTTP rule** on the Singapore security group if you still need that instance, and delete the instances and ALB at the end of the section
+
+---
+
+## Routing Policy - Failover
+
+### TL;DR
+
+- **Failover routing** is **active-passive** disaster recovery at the DNS level. Route 53 returns the **primary** record while it is healthy, and the **secondary** record when the primary is unhealthy.
+- **Exactly one primary and one secondary** per record name.
+- The **primary must have a health check** (mandatory). The **secondary's health check is optional**.
+- Both records share the **same name and type**, and each has a **Failover record type** (Primary or Secondary) and a **Record ID**.
+- Failover and **failback** are automatic. When the primary's health check passes again, Route 53 returns the primary again.
+- Use a **low TTL** (the demo used **60 s**), because clients cache the old answer until the TTL expires.
+- Route 53 only changes the **DNS answer**. It never carries the traffic.
+
+### 1. What Is Failover Routing?
+
+- Route 53 sits in the middle, with two resources behind it:
+  - A **primary** (for example an EC2 instance).
+  - A **secondary** (disaster recovery), for example an EC2 instance in another region.
+- The primary record is associated with a **health check**.
+- If the health check becomes **unhealthy**, Route 53 **automatically fails over** and answers DNS queries with the secondary record.
+- The client simply gets whichever resource is **deemed healthy**.
+
+```
+                    healthy?
+Client --> [Route 53] --yes--> Primary record   (EC2, eu-central-1)
+                      --no---> Secondary record (EC2, us-east-1)
+```
+
+| State | Answer returned |
+|---|---|
+| **Primary healthy** | **Primary** |
+| **Primary unhealthy** (secondary healthy, or no health check on it) | **Secondary** |
+| **Primary recovers** | **Primary** again (**failback**) |
+
+### 2. Rules and Requirements
+
+| Rule | Detail |
+|---|---|
+| **Count** | **One primary and one secondary** only |
+| **Primary health check** | **Mandatory** |
+| **Secondary health check** | **Optional**. If attached and the secondary is unhealthy too, Route 53 can't usefully fail over. |
+| **Same name and type** | Both records use the same DNS name and the same record type (for example A) |
+| **Record ID** | A unique identifier per record in the set |
+| **TTL** | Set per record. Keep it **low** (for example 60 s). |
+| **Alias** | Supported. For Alias records, use **Evaluate target health** instead of a separate health check. |
+| **Health check types** | Endpoint, calculated, or CloudWatch alarm (the last works for private resources) |
+
+- **Both unhealthy:** Route 53 fails open and still returns an answer (the primary, per AWS docs) rather than nothing.
+- For more than two tiers or finer control, combine failover with other policies using **Traffic Flow** or **nested records** (for example weighted or latency records, each with a failover pair).
+
+### 3. Demo: Creating the Failover Records
+
+Uses the **health checks** from the previous lecture (`eu-central-1`, `us-east-1`, `ap-southeast-1`).
+
+#### 3.1 Primary record
+
+| Setting | Value |
+|---|---|
+| **Name** | `failover.<your-domain>` |
+| **Type** | **A** |
+| **Value** | `eu-central-1` instance IP (the instance closest to the lecturer) |
+| **TTL** | **60 s** |
+| **Routing policy** | **Failover** |
+| **Failover record type** | **Primary** |
+| **Health check** | `eu-central-1` (**required**) |
+| **Record ID** | `E` |
+
+#### 3.2 Secondary record
+
+Use **Add another record**, keeping the same name.
+
+| Setting | Value |
+|---|---|
+| **Name** | `failover.<your-domain>` |
+| **Type** | **A** |
+| **Value** | `us-east-1` instance IP |
+| **TTL** | **60 s** |
+| **Routing policy** | **Failover** |
+| **Failover record type** | **Secondary** |
+| **Health check** | `us-east-1` (**optional**, attached in the demo) |
+| **Record ID** | `US` |
+
+- Click **Create records**.
+- The primary is the one users normally get. The secondary exists only for when the primary fails.
+
+### 4. Demo: Triggering the Failover
+
+1. **Before:** both health checks are **Healthy**. Opening `failover.<your-domain>` returns "Hello from `eu-central-1c`", the primary.
+2. **Break the primary:** go to the `eu-central-1` instance's **security group** and **remove the HTTP (port 80) inbound rule**.
+   - The health checkers can no longer reach the instance.
+3. **Wait** for the health check to turn **Unhealthy** (it needs several failed checks).
+   - Open the health check's **Monitoring** tab. The status metric drops from **1 to 0**, and the **percentage of health checkers reporting healthy** drops to **0**.
+4. **Test:** refresh `failover.<your-domain>`. The answer is now **"Hello from `us-east-1`"**, the secondary. The failover worked with no manual DNS change.
+5. **Recover:** add the HTTP rule back to the security group. The health check passes again, and Route 53 **fails back** to the primary.
+
+**Timing to expect:**
+- **Detection time** is roughly interval × failure threshold (for example 30 s × 3).
+- **Cache time** is up to the record **TTL** (60 s here).
+- Total failover delay is detection plus TTL, so use a low TTL and a fast interval where downtime matters.
+
+### 5. Failover vs Other Policies
+
+| Policy | Idea | Health checks |
+|---|---|---|
+| **Failover** | **Active-passive**: primary, with a secondary only on failure | **Required on primary** |
+| **Weighted** | Split by percentage (all records active) | Optional |
+| **Latency** | Lowest-latency region (all active) | Optional |
+| **Multi-value answer** | Up to 8 healthy records | Optional (per record) |
+| **Simple** | No logic | **Not supported** |
+
+- **Active-active** setups use weighted, latency, or multi-value with health checks.
+- **Active-passive** is the failover policy. The secondary often sits idle (or is a static **S3 website** or a smaller site) until needed.
+
+### 6. Key Facts to Remember
+
+- Failover routing = **active-passive** DR using **health checks**.
+- **One primary + one secondary.**
+- **Primary needs a health check.** Secondary's is optional.
+- Records share the **same name and type**, each has a **Record ID**, and a Failover type of **Primary** or **Secondary**.
+- Unhealthy primary means Route 53 returns the **secondary**. Recovery means it returns the **primary** again.
+- Failover happens at the **DNS answer** level and is limited by the **TTL** cache.
+- Use **Evaluate target health** for Alias records.
+- Health checks for **private resources** use a **CloudWatch alarm**.
+- Route 53 **doesn't proxy traffic** during failover. Clients just get a different IP.
+
+### 7. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Active-passive failover with Route 53" | **Failover routing policy** |
+| "Send users to a DR site only when the primary fails" | **Failover routing** |
+| "Which record needs a health check in a failover pair?" | The **primary** (mandatory) |
+| "How many primary/secondary records?" | **One primary, one secondary** |
+| "Failover record types" | **Primary** and **Secondary** |
+| "Failover is slow even after the health check fails" | **TTL caching.** Lower the TTL. |
+| "Failover to a static S3 website when the app is down" | **Failover** with an **Alias** to the S3 website as secondary |
+| "Failover for a private resource" | **CloudWatch alarm health check** |
+| "Active-active across regions" | **Latency**, **weighted**, or **multi-value** (not failover) |
+| "Primary recovers" | Route 53 returns the **primary** again |
+| "Does Route 53 redirect the traffic itself?" | **No.** It only changes the DNS answer. |
+
+---
+
+## Routing Policy - Geolocation
+
+### TL;DR
+
+- **Geolocation routing** answers DNS queries based on **where the user is located**, not on measured latency.
+- You can target a **continent**, a **country**, or a **US state**. The **most specific match wins**.
+- Create a **default record** for users who match no location. Without one, unmatched users get **no answer**.
+- Use cases: **website localization** (language), **restricting content distribution** (licensing, legal), and **load balancing** by region.
+- Records share the **same name and type**, and each has a **Location** and a **Record ID**.
+- Supports **health checks** and **Alias** records.
+- **Geolocation is not latency.** Latency picks the fastest region, and geolocation follows rules about the user's location. A user may be sent to a farther region on purpose.
+- Route 53 still only returns a **DNS answer**. It carries no traffic.
+
+### 1. What Is Geolocation Routing?
+
+- Routing is based on **the user's location**, "very different from latency-based".
+- Location levels you can choose:
+
+| Level | Example |
+|---|---|
+| **Continent** | Asia, Europe, North America |
+| **Country** | Germany, France, United States |
+| **US state** | California, Texas |
+| **Default** | Everything that doesn't match another record |
+
+- **The most precise location is selected first.** A user in California matches a `California` record before a `United States` record, and a `United States` record before a `North America` record.
+- You can mix levels in one record set. The lecture mixes a continent (Asia) and a country (United States).
+
+### 2. Default Record
+
+- **Create a default record** in case **no location matches**.
+- It catches:
+  - Users from locations you didn't configure.
+  - Users whose location Route 53 **can't determine**.
+- **Without a default record**, those users get **no answer** (the query returns no record), and the site appears unreachable to them.
+- In the console the default is a geolocation record with Location = **Default**.
+
+### 3. Use Cases
+
+| Use case | Example |
+|---|---|
+| **Website localization** | German users to the German version, French users to the French version, everyone else to English |
+| **Restrict content distribution** | Serve content only in licensed countries, or send others to a "not available" page |
+| **Load balancing by region** | Send regions to the nearest or designated stack |
+| **Regional compliance and data residency** | Keep users of a region on endpoints in that region |
+
+**Lecture example (map of Europe):**
+
+```
+User in Germany  --> [Route 53 geolocation] --> German version of the app (IP A)
+User in France   --> [Route 53 geolocation] --> French version of the app (IP B)
+Anywhere else    --> [Route 53 geolocation] --> Default: English version (IP C)
+```
+
+### 4. Rules and Requirements
+
+| Rule | Detail |
+|---|---|
+| **Same name and type** | All records in the set share the same DNS name and type |
+| **Location** | One location per record (continent, country, state, or default) |
+| **Record ID** | A unique identifier per record |
+| **Health checks** | **Optional**, one per record |
+| **Alias** | Supported |
+| **Default record** | Strongly recommended |
+| **Overlap** | Allowed (for example a country plus its continent). The most specific wins. |
+
+**Health check behavior:** if the record that matches the user is unhealthy, Route 53 doesn't jump to a random record. It looks for the next-broader location that matches and is healthy (for example a country record fails, then the continent record, then the default). Check the Route 53 docs for exact behavior if this matters.
+
+### 5. How Route 53 Knows the User's Location
+
+- Route 53 maps the **IP address of the DNS query source** to a location, using a geolocation database.
+- That is usually the **DNS resolver's IP**, not the user's own IP.
+  - If the resolver supports **EDNS Client Subnet**, Route 53 can use part of the **client's** IP range instead.
+- The mapping is **not 100% accurate**. Don't use geolocation routing as a security control.
+- A VPN changes the apparent location, which is why the lecture could test it that way.
+
+### 6. Demo: Creating the Geolocation Records
+
+#### 6.1 The three records
+
+All use the **same name**: `geo.<your-domain>`, **type A**, **routing policy Geolocation**.
+
+| Record ID | Value (instance) | Location | Who gets it |
+|---|---|---|---|
+| (Asia record) | `ap-southeast-1` instance IP | **Asia** (continent) | Any user located in Asia |
+| `US` | `us-east-1` instance IP | **United States** (country) | Users in the US |
+| `Default EU` | `eu-central-1` instance IP | **Default** | Everyone else |
+
+- The lecturer notes you can pick a **whole continent** (Asia) or **just a country** (United States). It doesn't matter.
+- The lecture doesn't state the TTL. A low TTL is useful when testing.
+
+#### 6.2 Steps
+
+1. Hosted zone, **Create record**.
+2. **Name:** `geo`, **type:** A, **value:** the Singapore instance IP.
+3. **Routing policy:** **Geolocation**. **Location:** **Asia**. Add a **Record ID**. Health check optional.
+4. **Add another record**, same name, value = the N. Virginia IP, **Location:** **United States**, **Record ID:** `US`.
+5. **Add another record**, same name, value = the Frankfurt IP, **Location:** **Default**, **Record ID:** `Default EU`.
+6. **Create records.**
+
+### 7. Demo: Testing with a VPN
+
+| Test location | Expected | Result |
+|---|---|---|
+| **Europe** (lecturer's real location) | No match, so **default** | **Hello from `eu-central-1c`** |
+| **India** (VPN) | Matches **Asia** | First a **timeout**, then **Hello from `ap-southeast-1b`** after the fix below |
+| **United States** (VPN) | Matches **United States** | **Hello from `us-east-1a`** |
+| **Mexico** (VPN) | Not Asia, not the US, so **default** | **Hello from `eu-central-1c`** |
+
+**The timeout in India:**
+- DNS worked, but the page loaded forever, a **timeout**.
+- Timeout in AWS usually means a **security group** problem.
+- Cause: in the earlier health check and failover demos the **HTTP rule had been removed** from the Singapore instance's security group.
+- Fix: **re-add the HTTP (80) inbound rule**. The Asia answer then worked.
+
+**The Mexico test:**
+- Mexico is **next to the US but not in the US**. It is in **North America**, and no North America record exists.
+- It falls to the **default record**. This shows that a **country record matches only that country**.
+
+### 8. Geolocation vs Latency vs Geoproximity
+
+| | **Geolocation** | **Latency** | **Geoproximity** |
+|---|---|---|---|
+| **Decided by** | The user's **location** (continent, country, state) | **Measured network latency** to AWS regions | **Geographic distance**, with an adjustable **bias** |
+| **Goal** | Rules by location (language, licensing) | Fastest response | Shift traffic between regions by distance |
+| **Default needed** | **Yes** (recommended) | No | No |
+| **Needs Traffic Flow** | No | No | Yes (in the console) |
+| **Same user, same answer?** | **Yes**, always | Can change as latency changes | Depends on bias |
+
+- **Geolocation** = "who the user is and where". **Latency** = "how fast". **Geoproximity** = "how near, adjustable". Don't mix them up on the exam.
+
+### 9. Key Facts to Remember
+
+- Geolocation routes by **user location**: **continent, country, or US state**.
+- The **most specific location wins**.
+- Always add a **default record**. Without one, unmatched users get no answer.
+- Records share the **same name and type**, with a **Record ID** each.
+- **Health checks** and **Alias** are supported.
+- It is **not** about speed. For performance use **latency routing**.
+- Location comes from the **resolver IP** (or EDNS client subnet), and it isn't perfectly accurate.
+- Typical uses: **localization**, **content restriction**, and **regional load balancing**.
+- A **country record doesn't cover its neighbors**. Mexico is not in the US record.
+- A **timeout** on a working DNS answer points to a **security group** issue.
+
+### 10. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Route users based on their location" | **Geolocation** |
+| "Serve a different language version by country" | **Geolocation** |
+| "Restrict content to certain countries" | **Geolocation** |
+| "Users from unmatched locations get no answer" | The **default record** is missing |
+| "Which record catches users with no matching location?" | The **default** record |
+| "Most specific location wins" | **Geolocation** |
+| "Route to the fastest region regardless of location" | **Latency**, not geolocation |
+| "Shift traffic toward a region using a bias" | **Geoproximity** |
+| "Smallest geolocation unit in the US" | **State** |
+| "Can geolocation records use health checks?" | **Yes** |
+| "Can a geolocation record be an Alias?" | **Yes** |
+| "What decides a user's location in Route 53?" | The **IP of the DNS resolver** (or the client subnet if EDNS is used) |
+| "DNS resolves correctly but the page times out" | **Security group** or firewall on the target |
+
+---
+
+## Routing Policy - Geoproximity
+
+### TL;DR
+
+- **Geoproximity routing** routes users to resources based on the **geographic location of both the users and the resources**, with an adjustable **bias**.
+- The **bias** grows or shrinks a resource's **geographic area of influence**:
+  - **Positive bias** (expand) pulls **more traffic** to that resource.
+  - **Negative bias** (shrink) sends **less traffic** to it.
+- With **no bias** (0 everywhere), it behaves like "**nearest resource**".
+- **AWS resources:** you specify the **AWS region**. **Non-AWS resources** (for example an on-premises data center): you specify **latitude and longitude**.
+- **To use the bias you must use Route 53 Traffic Flow** (the advanced visual editor). Traffic Flow is where this policy is created in the console.
+- **Exam focus:** geoproximity is for **shifting traffic from one region to another by changing the bias**.
+- Route 53 still only returns a **DNS answer**. It carries no traffic.
+
+### 1. What Is Geoproximity Routing?
+
+- Routes traffic based on the **location of your users and your resources**.
+- Its special feature is the **bias**: a number that lets you **shift traffic** toward or away from a resource.
+- Think of each resource as having a **geographic region it "owns"**. The bias changes the **size** of that region.
+
+| Bias | Effect on the resource's area | Traffic |
+|---|---|---|
+| **Positive** (increase) | **Expands** | **More** users and traffic attracted |
+| **0** (default) | Normal, based on distance | Nearest users |
+| **Negative** (decrease) | **Shrinks** | **Fewer** users and traffic |
+
+- Bias range: **-99 to +99** (Route 53 docs).
+
+### 2. Resource Types and Location
+
+| Resource | What you specify |
+|---|---|
+| **AWS resource** (EC2, ELB, and so on) | The **AWS region** it is in. Route 53 **computes the location** automatically. |
+| **Non-AWS resource** (on-premises data center, other cloud) | **Latitude and longitude**, so Route 53 knows where it is |
+
+- Mixing both in one record set is allowed (for example AWS regions plus an on-premises site).
+- Records share the **same name and type**, and each has a **Record ID** and its own **bias**.
+
+### 3. Traffic Flow Requirement
+
+- To use geoproximity (and the **bias**), you need the **Route 53 Traffic Flow** feature.
+- Traffic Flow gives you a **visual editor** to build routing rules, as a **traffic policy**, and attach it to a **policy record** in a hosted zone.
+- Traffic policies can **nest** several routing types (for example geoproximity combined with failover or weighted).
+- Traffic Flow has **extra cost**: a monthly charge per **policy record**.
+- Note: Route 53 has also added geoproximity as a **plain record routing policy** (no Traffic Flow) in the console. The lecture's exam point is still "Traffic Flow is needed to use the bias". Check the current console.
+
+### 4. How the Bias Works (Lecture Diagrams)
+
+#### 4.1 Scenario A: no bias
+
+- Two resources: **`us-west-1`** and **`us-east-1`**.
+- Bias is **0** on both.
+- A **dividing line** splits the US roughly in the middle:
+  - Users **left** of the line go to **`us-west-1`**.
+  - Users **right** of the line go to **`us-east-1`**.
+- This looks like plain "**go to the closest region**".
+
+```
+ West of line               |              East of line
+ <--- us-west-1 area        |        us-east-1 area --->
+                       (dividing line in the middle)
+```
+
+#### 4.2 Scenario B: bias +50 on `us-east-1`
+
+- Same two resources.
+- Bias is **0** on `us-west-1` and **+50** on `us-east-1`.
+- The **dividing line moves west**, because `us-east-1`'s area has **expanded**:
+  - Users **left** of the new line go to **`us-west-1`**.
+  - Users **right** of the new line (now a **bigger area**) go to **`us-east-1`**.
+- Result: **more users and more traffic** go to `us-east-1`, including some who were closer to `us-west-1`.
+
+```
+ us-west-1 area (smaller) |        us-east-1 area (bigger, +50 bias)
+ <--- ---                 |   line moved west --- --->
+```
+
+#### 4.3 Using it in practice
+
+- Resources placed around the world.
+- You need to **shift more traffic to one region**.
+- **Increase the bias for that region**: its area grows and it **attracts more users**.
+- Or **decrease the bias** of an overloaded region to **push users away**.
+- Adjusting the bias is a **gradual, tunable shift**, unlike geolocation, which is a fixed rule.
+
+### 5. Use Cases
+
+| Use case | How |
+|---|---|
+| **Shift traffic between regions** | Raise the bias of the region that should take more load |
+| **Drain or reduce load on a region** | Lower the bias (or point it at a lower value) |
+| **New region ramp-up** | Start with a small or negative bias, then increase it |
+| **Hybrid cloud** | Mix AWS regions and an on-premises data center (by lat/long) |
+| **Capacity-aware routing** | Bigger regions get a larger bias |
+
+### 6. Geoproximity vs Geolocation vs Latency
+
+| | **Geoproximity** | **Geolocation** | **Latency** |
+|---|---|---|---|
+| **Decided by** | **Distance** between user and resource, plus a **bias** | The user's **location** (continent, country, state) | **Measured network latency** to AWS regions |
+| **Tunable** | **Yes**, with the bias | No (fixed rules) | No |
+| **Needs a default** | No | **Yes** (recommended) | No |
+| **Non-AWS endpoints** | **Yes** (lat/long) | Yes | Not directly (AWS regions only) |
+| **Requires Traffic Flow** | **Yes** (per the lecture) | No | No |
+| **Best for** | **Shifting traffic** between regions | Localization, content rules | Fastest response |
+
+- **Geoproximity** = "nearest, adjustable".
+- **Geolocation** = "by who and where, fixed".
+- **Latency** = "fastest".
+
+### 7. Key Facts to Remember
+
+- Geoproximity routes by the **geographic location of users and resources**.
+- The **bias** changes the size of a resource's geographic area: **increase to attract more, decrease to shed traffic**.
+- **Bias 0** = plain nearest-resource routing.
+- **AWS resources:** specify the **region**. **Non-AWS resources:** specify **latitude and longitude**.
+- Needs **Route 53 Traffic Flow** to use the bias (per the lecture).
+- The exam use case: **shift traffic from one region to another** by adjusting the bias.
+- Supports **health checks**: an unhealthy resource is skipped (Route 53 docs).
+- It's still **DNS-level** routing, limited by the **TTL cache**.
+
+### 8. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Route based on user and resource locations, with the ability to shift traffic" | **Geoproximity** |
+| "Shift traffic from one region to another" | **Geoproximity bias** |
+| "Send more traffic to a region" | **Increase the bias** |
+| "Send less traffic to a region" | **Decrease the bias** (negative) |
+| "Bias = 0 on all resources" | Nearest resource wins |
+| "Resources in an on-premises data center" | Specify **latitude and longitude** |
+| "Resources in AWS" | Specify the **AWS region** |
+| "Which feature do you need to use the bias?" | **Route 53 Traffic Flow** |
+| "Routing by country/continent rules" | **Geolocation**, not geoproximity |
+| "Routing to the lowest-latency region" | **Latency**, not geoproximity |
+| "Visual editor for complex routing policies" | **Traffic Flow** |
+
+---
+
+## Routing Policy - IP-based
+
+### TL;DR
+
+- **IP-based routing** answers DNS queries based on the **client's IP address**. You define **CIDR blocks** (IP ranges) and say which endpoint each range should get.
+- Setup has two parts: a **CIDR collection** (containing **locations**, each with one or more CIDR blocks) and **records** that reference those locations.
+- Use cases: **optimize performance** (you know where certain clients are) and **reduce network costs** (you know where the traffic comes from).
+- Typical example: you know a specific **ISP** uses a specific CIDR range, so you route that ISP's users to a specific endpoint.
+- Add a **default record** (location = default) for clients whose IP matches no CIDR block.
+- Supports **health checks** and **Alias** records.
+- Route 53 still only returns a **DNS answer**. It carries no traffic.
+
+### 1. What Is IP-Based Routing?
+
+- "Very intuitive": routing is decided by **who the client is, by IP address**.
+- You maintain a **list of CIDRs** (IP ranges of your clients) and map each range to a **location**, then each location to a **record value**.
+- It is useful when **you know your clients' IP ranges ahead of time**.
+
+| Use case | Why |
+|---|---|
+| **Optimize performance** | Send a known client network to the endpoint that performs best for it |
+| **Reduce network costs** | Send a known network to an endpoint that avoids expensive paths (for example the same region, or a peered or private route) |
+| **ISP-specific routing** | An ISP with a known CIDR block goes to a dedicated endpoint |
+| **Partner or office networks** | Known corporate ranges go to a specific stack |
+
+### 2. How It Is Configured
+
+1. **Create a CIDR collection** (Route 53 console, **IP-based routing**, **CIDR collections**).
+2. Inside it, create **locations**. Each location has a **name** and one or more **CIDR blocks**.
+3. Create **DNS records** with routing policy **IP-based**, and pick the **collection** and **location** for each record.
+4. Add a **default** record for everything else.
+
+```
+CIDR collection
+ ├── Location 1: 203.x.x.x/24 ...
+ └── Location 2: 200.x.x.x/24 ...
+
+Records for example.com:
+  Location 1  -->  1.2.3.4   (EC2 instance A)
+  Location 2  -->  5.6.7.8   (EC2 instance B)
+  Default     -->  (catch-all endpoint)
+```
+
+| Concept | Meaning |
+|---|---|
+| **CIDR collection** | A container for locations. Records point at a collection. |
+| **Location** | A named group of one or more CIDR blocks |
+| **CIDR block** | An IP range such as `203.0.113.0/24` |
+| **Default location** | Used when the client IP matches no location |
+
+- CIDR blocks can be **IPv4 or IPv6**.
+- Records in the set share the **same name and type**, and each has a **Record ID**.
+
+### 3. Lecture Example
+
+- Two locations with two CIDR blocks: one starting with **203**, the other with **200**.
+- Records for `example.com`:
+
+| Location | CIDR | Answer (public IP of an EC2 instance) |
+|---|---|---|
+| Location 1 | First block (203.x) | **1.2.3.4** |
+| Location 2 | Second block (200.x) | **5.6.7.8** |
+
+- **User A**, whose IP is in the location 1 block, gets a DNS answer of **1.2.3.4**.
+- **User B**, whose IP is in the location 2 block, gets **5.6.7.8**.
+
+### 4. Important Detail: Whose IP Is Matched?
+
+- Route 53 normally sees the **DNS resolver's IP**, not the end user's.
+- If the user's resolver is in a different network (for example a public resolver), the match is against the **resolver's** range.
+- With **EDNS Client Subnet**, Route 53 can use the **client's** subnet instead.
+- This works best when you control or know the **resolvers** the clients use (for example an ISP or corporate resolver).
+
+### 5. IP-Based vs Other Policies
+
+| Policy | Decided by | Typical use |
+|---|---|---|
+| **IP-based** | The **client's IP range (CIDR)** you define | Known networks and ISPs, performance, cost |
+| **Geolocation** | The user's **continent, country, or state** | Localization, content restrictions |
+| **Latency** | **Measured latency** to AWS regions | Fastest response |
+| **Geoproximity** | **Distance** plus **bias** | Shifting traffic between regions |
+| **Weighted** | **Percentages** | Splits and canaries |
+| **Failover** | **Health** | Active-passive DR |
+
+- **IP-based** is the only one where **you define the client ranges** yourself.
+
+### 6. Key Facts to Remember
+
+- **IP-based routing** = route by the **client IP**, using **CIDR blocks** you define.
+- Built from a **CIDR collection**, **locations**, and **records** that reference them.
+- Use cases: **performance** and **cost reduction** when you **know the client IP ranges**.
+- Include a **default** record for non-matching clients.
+- Supports **health checks** and **Alias**.
+- Records share the **same name and type**, with a **Record ID** each.
+- Matching uses the **resolver IP** (or the client subnet with EDNS).
+- It is **DNS-level**, so answers are cached for the **TTL**.
+
+### 7. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Route based on the client's IP address range" | **IP-based routing** |
+| "Route a specific ISP's customers to a specific endpoint" | **IP-based routing** |
+| "Define a list of CIDR blocks and map each to an endpoint" | **IP-based routing** (CIDR collection) |
+| "Optimize performance or reduce network cost for known client networks" | **IP-based routing** |
+| "Route by country or continent" | **Geolocation** |
+| "Route to the lowest-latency region" | **Latency** |
+| "Shift traffic by adjusting a bias" | **Geoproximity** |
+| "What catches clients that match no CIDR?" | The **default** record |
+
+---
+
+## Routing Policy - Multi Value
+
+### TL;DR
+
+- **Multi-value answer routing** returns **multiple values (up to 8)** in response to a DNS query, and the **client picks one**. It is **client-side load balancing**.
+- Each record can have a **health check**. **Only healthy records are returned.**
+- Records share the **same name and type**, and each has a **Record ID**. Each record holds **one value**.
+- It is **not a substitute for an ELB**. It improves availability by hiding unhealthy endpoints, but it doesn't balance by load, connections, or sessions.
+- **Difference from simple routing with multiple values:** simple can't use health checks, so it can return **unhealthy** values. Multi-value filters them out.
+- Demo: 3 records with 3 health checks. `dig` returned **3 IPs**. After one health check was made unhealthy (using **Invert health check status**), `dig` returned **2 IPs**.
+- Route 53 still only returns a **DNS answer**. It carries no traffic.
+
+### 1. What Is Multi-Value Answer Routing?
+
+- Used when you want to route traffic to **multiple resources** and have Route 53 **return multiple values**.
+- Each record can be associated with a **health check**.
+- Route 53 returns **only records whose health check is healthy**.
+- **Up to 8 healthy records** are returned per query. If you have more than 8, Route 53 returns a **random selection of 8**.
+- The **client** then chooses one of the returned values (typically at random).
+
+```
+Client --"multi.example.com?"--> [Route 53]
+Client <-- up to 8 HEALTHY IPs: 1.1.1.1, 2.2.2.2, 3.3.3.3 --
+Client picks one and connects
+```
+
+- Combined with health checks, the client can be fairly confident that **the returned records are healthy**, so its queries are "very safe".
+
+### 2. Not a Replacement for an ELB
+
+| | **Multi-value answer** | **ELB** |
+|---|---|---|
+| **Where balancing happens** | **Client side** (the client picks from the list) | **Server side** (the load balancer picks) |
+| **Awareness of load** | None | Yes (algorithms, connection counts) |
+| **Health checks** | Route 53 health checks, at DNS level | Target group health checks |
+| **Traffic path** | Client connects **directly** to the endpoint | Traffic goes **through** the load balancer |
+| **Cached answers** | Yes (**TTL**) | N/A |
+
+- It only gives **DNS-level availability and rough distribution**. A client that cached a now-dead IP keeps using it until the **TTL** expires.
+
+### 3. Multi-Value vs Simple (with Multiple Values)
+
+| | **Simple** (multiple values in one record) | **Multi-value answer** |
+|---|---|---|
+| **Records** | **One** record with several values | **Separate records**, one value each |
+| **Health checks** | **Not supported** | **Supported** (per record) |
+| **Unhealthy values returned?** | **Yes, possible** | **No**, filtered out |
+| **Max values returned** | All values in the record | **Up to 8** healthy records |
+| **Alias** | One alias target only | **No** alias (use A/AAAA with values) |
+| **Client chooses** | Yes | Yes |
+
+- This contrast is why multi-value is "a little more powerful".
+
+### 4. Rules and Requirements
+
+| Rule | Detail |
+|---|---|
+| **Same name and type** | All records share the same DNS name and type (for example A) |
+| **One value per record** | Each multi-value record has **one** value |
+| **Record ID** | A unique identifier per record |
+| **Health checks** | **Optional**, but they are the point. Without one, the record is always returned. |
+| **Limit** | **8** records returned per query |
+| **TTL** | Per record (the demo used **60 s**) |
+
+### 5. Demo: Creating the Multi-Value Records
+
+All records use the **same name**: `multi.<your-domain>`, **type A**, **routing policy Multivalue answer**, **TTL 60 s**.
+
+| Record ID | Value (instance) | Health check |
+|---|---|---|
+| `US` | `us-east-1` instance IP | `us-east-1` |
+| `Asia` | `ap-southeast-1` instance IP | `ap-southeast-1` |
+| `EU` | `eu-central-1` instance IP | `eu-central-1` |
+
+**Steps:**
+1. Hosted zone, **Create record**, name `multi`.
+2. Value = the `us-east-1` IP, routing policy **Multivalue answer**, health check `us-east-1`, Record ID `US`, TTL 60.
+3. **Add another record** (same name): `ap-southeast-1` IP, health check `ap-southeast-1`, Record ID `Asia`.
+4. **Add another record**: `eu-central-1` IP, health check `eu-central-1`, Record ID `EU`.
+5. **Create records.**
+
+### 6. Demo: Testing with `dig`
+
+1. Open **CloudShell** (reconnect if the session ended). Reinstall `bind-utils` if `dig` is missing.
+2. Run:
+
+```bash
+dig multi.<your-domain>
+```
+
+3. **Result: three answers**, one per IP, because all three health checks are **healthy**.
+
+#### 6.1 Making one health check unhealthy
+
+- Instead of blocking a security group again, the lecturer uses a **shortcut**:
+  1. Edit the `eu-central-1` health check.
+  2. Tick **Invert health check status**. A healthy endpoint is now reported **unhealthy**.
+  3. Wait for the status to update (the lecturer pauses the video).
+- Run `dig` again: **only two values** are returned (the Frankfurt IP is gone).
+- The multi-value answer **filtered out the unhealthy record**.
+
+#### 6.2 Revert
+
+- Edit the health check and **untick Invert health check status**.
+- The health check returns to healthy, and the third IP reappears after the next status change and TTL expiry.
+
+**Tip:** the record is only re-added once Route 53 sees the health check as healthy again, and resolvers may still serve the 2-IP answer until the **60 s TTL** expires.
+
+### 7. Multi-Value vs Other Policies
+
+| Policy | Idea | Health checks | Returns |
+|---|---|---|---|
+| **Multi-value answer** | Several healthy records, client picks | **Yes** | **Up to 8** values |
+| **Simple** | No logic | **No** | All values in the record |
+| **Weighted** | Percentage split | Yes | One record per query |
+| **Latency** | Lowest latency region | Yes | One record per query |
+| **Failover** | Active-passive | Yes (required on primary) | One record per query |
+| **Geolocation / Geoproximity / IP-based** | Location, distance, or client IP | Yes | One record per query |
+
+- Multi-value is the only policy that **returns several healthy values** at once for client-side choice.
+
+### 8. Key Facts to Remember
+
+- **Multi-value answer** = **up to 8 healthy records** returned, and the **client chooses**.
+- **Health checks** are what make it better than simple routing with multiple values.
+- **Not a replacement for an ELB.** It is client-side balancing.
+- Each record holds **one value**, with the **same name and type** and a **Record ID**.
+- **Unhealthy records are excluded** from answers.
+- **TTL caching** limits how fast clients see changes.
+- **Invert health check status** is a quick way to **simulate** an unhealthy endpoint in a demo.
+- This is the **last routing policy** covered in the section (alongside simple, weighted, latency, failover, geolocation, geoproximity, and IP-based).
+
+### 9. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Return multiple healthy IPs and let the client choose" | **Multi-value answer** |
+| "Maximum records returned in a multi-value answer" | **8** |
+| "Client-side load balancing with health checks" | **Multi-value answer** |
+| "Is multi-value a replacement for an ELB?" | **No** |
+| "Simple routing returned an unhealthy IP" | Use **multi-value answer** with health checks |
+| "Which policy returns several values but filters out unhealthy ones?" | **Multi-value answer** |
+| "Quickly simulate an unhealthy health check" | **Invert health check status** |
+| "Can a multi-value record be an Alias?" | **No** |
+| "Does Route 53 route the traffic?" | **No.** It only returns DNS answers. |
+
+---
+
+## 3rd Party Domains & Route 53
+
+### TL;DR
+
+- A **domain registrar** (where you **buy and own** a domain) and a **DNS service** (where the **DNS records** live) are **two different roles**. They can be different companies.
+- You can buy a domain from **any registrar** (GoDaddy, Namecheap, and others) and still use **Route 53 as your DNS service**.
+- To do it: create a **public hosted zone** in Route 53, copy its **4 name servers**, and enter them as the **custom name servers** at the third-party registrar.
+- Registrars usually bundle a DNS service, but you aren't forced to use it.
+- The reverse also works: register in Route 53 and point the domain to another DNS provider by changing the domain's name servers.
+- Exam wording: "domain bought elsewhere, DNS in Route 53" means **public hosted zone + update NS at the registrar**.
+
+### 1. Registrar vs DNS Service
+
+| | **Domain registrar** | **DNS service** |
+|---|---|---|
+| **What it does** | **Sells and registers** domain names (ownership, renewal) | **Hosts DNS records** and answers DNS queries (authoritative name servers) |
+| **You pay** | **Annual** registration fee | Usually a monthly or per-query fee (Route 53: $0.50 per hosted zone per month plus queries) |
+| **Examples** | **Amazon Route 53 Registrar**, GoDaddy, Namecheap, Google Domains (now Squarespace) | **Route 53**, Cloudflare DNS, the registrar's own DNS |
+| **Key setting** | The domain's **name server (NS) delegation** | The **records** in the zone |
+
+- Whenever you register a domain, the registrar normally **also gives you a DNS service** for its records.
+- Earlier in the course, the domain was registered through the **Route 53 console**, and a **Route 53 hosted zone** was used for its records. That is the "all-in-one AWS" setup.
+- **They are separate decisions.** The registrar holds the domain, and the **NS records at the registrar** decide **which DNS service** answers for it.
+
+### 2. Possible Combinations
+
+| Registrar | DNS service | Works? |
+|---|---|---|
+| Route 53 | Route 53 | **Yes** (the setup used so far) |
+| **GoDaddy** (or another third party) | **Route 53** | **Yes**, this lecture |
+| Route 53 | Another DNS provider | **Yes**: change the domain's name servers in Route 53 |
+| Third party | The same third party | **Yes** (their built-in DNS) |
+
+- The lecture's example: buy `example.com` at **GoDaddy**, but manage its DNS records in **Route 53**. It is "a perfectly acceptable combination".
+
+### 3. Steps: Third-Party Registrar with Route 53 DNS
+
+```
+1. Buy the domain at GoDaddy (registrar)
+2. Route 53 --> create a PUBLIC hosted zone for example.com
+3. Hosted zone details --> copy the 4 NS values (name servers)
+4. GoDaddy --> domain settings --> Nameservers --> Custom --> paste the 4 Route 53 name servers
+5. Manage all DNS records in Route 53 from now on
+```
+
+| Step | Where | Action |
+|---|---|---|
+| 1 | **Third-party registrar** (GoDaddy) | **Register** the domain (annual fee) |
+| 2 | **Route 53** | Create a **public hosted zone** with the **exact domain name** |
+| 3 | Route 53, hosted zone details | Find the **NS record set**: **4 name servers** (the lecture says "on the right-hand side" of the details) |
+| 4 | **Registrar's** domain settings | Choose **custom name servers** and enter the **4 Route 53 name servers** |
+| 5 | **Route 53** | Create your **A, AAAA, CNAME, Alias** records |
+
+**What happens afterwards:**
+- Resolvers follow the chain: root, then `.com` TLD, then **the TLD asks for the domain's name servers** (the ones you set at GoDaddy).
+- Those now point to **Route 53's name servers**, so Route 53 answers: it is the **source of truth** for the records.
+- This is the same lookup chain from the **What Is DNS?** lecture.
+
+### 4. Practical Details
+
+- **Create the public hosted zone first**, so you have the 4 name servers to paste.
+- Enter **all 4** name servers, exactly as shown, with no typos. Remove the registrar's default name servers.
+- **Propagation takes time.** NS changes can take **minutes to 48 hours** (NS records are cached with long TTLs).
+- **Don't mix the old and new** name servers, or some resolvers will get answers from the old DNS service.
+- **Before switching an existing live domain**, recreate all its records in the Route 53 hosted zone first, so nothing breaks at cutover.
+- If you registered the domain in **Route 53**, its **registered domain name servers** must match the hosted zone's NS values. They do automatically when you use the registration flow, but may not if you delete and recreate the hosted zone (new zones get **new** name servers).
+- The NS and SOA records created in the hosted zone are **required**. Don't delete them.
+- **DNSSEC, domain lock, and WHOIS privacy** are handled at the **registrar**, while record settings stay in **Route 53**.
+- A hosted zone costs **$0.50 per month** regardless of where the domain is registered.
+
+### 5. Key Facts to Remember
+
+- **Registrar ≠ DNS service.** A registrar looks similar but is a **different function**, even though most registrars include DNS features.
+- You can **register anywhere** and **host DNS in Route 53**.
+- To use Route 53 DNS for a third-party domain:
+  1. Create a **public hosted zone**.
+  2. Update the **NS (name server) records at the registrar** to the **4 Route 53 name servers**.
+- The **NS values at the registrar** decide who is authoritative for the domain.
+- You can't use a **private hosted zone** for this. It only answers inside your VPCs.
+- Route 53 is the **source of truth** for the records once the delegation is in place.
+- Domain registration is billed **yearly**, and the hosted zone **monthly**.
+
+### 6. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Domain purchased from GoDaddy, DNS managed in Route 53" | **Public hosted zone + update NS records at the registrar** |
+| "Which Route 53 resource do you create for a third-party domain?" | A **public hosted zone** |
+| "What do you enter at the third-party registrar?" | The **4 Route 53 name servers** (NS values) |
+| "Where does a domain's authoritative DNS get decided?" | The **NS records / name servers set at the registrar** |
+| "Do you have to register the domain with AWS to use Route 53?" | **No** |
+| "Difference between a registrar and a DNS service" | Registrar = **owns/sells the domain**. DNS service = **hosts the records**. |
+| "Domain registered in Route 53, DNS hosted elsewhere" | **Change the domain's name servers** in Route 53 |
+| "Which hosted zone type for internet-facing records?" | **Public** |
 
