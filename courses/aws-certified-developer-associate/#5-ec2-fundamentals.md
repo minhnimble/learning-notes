@@ -182,7 +182,6 @@ service httpd start
 - [x] Paste the **user data** script under advanced details
 - [x] Launch, wait for `running`, then open the public IPv4 in a browser and see "Hello World"
 - [x] Practice **stop**, **start**, and observe the public IPv4 change
-- [x] **Clean up**: terminate the instance
 
 ### 4. Exam-Style Recall
 
@@ -615,7 +614,6 @@ Users --80/443--> [Web SG: inbound 80/443 from 0.0.0.0/0]
 - [x] Create role `demoRoleForEC2` (trusted entity: **EC2**, policy: **IAM read-only**)
 - [x] Attach the role to the instance
 - [x] Re-run `aws iam list-users` and confirm it works
-- [x] **Clean up**: detach or delete the role and terminate the instance
 
 ### 5. Exam-Style Recall
 

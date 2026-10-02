@@ -229,7 +229,6 @@ Full spec table is in section 8.
 - [x] Create an **AMI** from the running instance, with a descriptive name
 - [x] Wait for the AMI to become **available**
 - [x] Launch a **new instance from the AMI** — no user data needed, Apache is already installed
-- [x] **Clean up**: terminate both instances when done
 
 ---
 
@@ -467,7 +466,6 @@ Full spec table is in section 8.
 - [x] Configure network access and a **security group** allowing NFS
 - [x] Launch multiple EC2 instances and mount the **same EFS file system** on each
 - [x] Confirm concurrent access from instances in **different AZs**
-- [x] **Clean up**: terminate instances and delete the file system
 
 ### Key Use Cases Demonstrated
 
@@ -514,28 +512,3 @@ Full spec table is in section 8.
 | "Windows file share across instances" | Not EFS — **FSx for Windows File Server** |
 | "Move block data between AZs" | **EBS snapshot** and recreate |
 | "Database needing extreme IOPS with data persistence" | **EBS (io2 Block Express)**, not Instance Store |
-
----
-
-## EBS & EFS Section Cleanup
-
-### TL;DR
-
-- Deleted the **EFS file system**, terminated all **EC2 instances**, deleted leftover **EBS volumes** and **snapshots**, and removed unused **security groups**.
-- Key gotcha: a security group **can't be deleted while an EC2 instance still references it** — terminate the instance(s) first and wait for the deletion to finish.
-
-### Hands-On Checklist
-
-- [x] Delete the **EFS file system** (enter its file system ID in the action menu)
-- [x] **Terminate** all running EC2 instances used in the demos
-- [x] Delete any remaining **EBS volumes** (right-click, delete)
-- [x] Delete any created **EBS snapshots** to avoid storage charges
-- [x] Delete unused **security groups**, keeping the account's default group
-- [x] If a security group deletion fails: wait for its EC2 instance(s) to finish terminating, then retry
-
-### Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Security group deletion fails with a dependency error" | An **EC2 instance still references it** — terminate the instance first |
-| "Avoid ongoing charges after a lab" | Delete **snapshots**, **volumes**, **file systems**, and terminate **instances** |

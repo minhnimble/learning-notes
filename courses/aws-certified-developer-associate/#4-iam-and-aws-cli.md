@@ -246,7 +246,6 @@
 - [x] Inspect **AdministratorAccess** and **IAMReadOnlyAccess** in the JSON view
 - [x] Create a custom policy with the visual and JSON editors
 - [x] Add the user back to the admin group
-- [x] Clean up unneeded groups and policies
 
 ### 5. Exam-Style Recall
 
@@ -464,7 +463,6 @@ The CLI/SDK looks for credentials in this order and uses the first found:
 - [x] Run `aws iam list-users`
 - [x] Remove the user from the admin group and see **access denied**
 - [x] Restore the group membership
-- [x] Clean up: delete the demo access key when no longer needed
 
 ### 5. Exam-Style Recall
 
@@ -860,5 +858,4 @@ The lecturer said "port 403" by mistake. HTTPS is **443**.
 - [ ] NLB, Listeners, **Add listener**: **TLS**, forward to a target group
 - [ ] Pick a security policy, a certificate, and (optionally) an **ALPN policy**
 - [ ] Test with `https://<your-domain>` and check the certificate in the browser
-- [ ] **Clean up**: delete the test listeners and load balancers, and delete unused certificates
 

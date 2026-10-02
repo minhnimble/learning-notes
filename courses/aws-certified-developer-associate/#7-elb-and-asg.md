@@ -669,7 +669,6 @@ Internet --HTTP/HTTPS--> [ALB SG: inbound 80/443 from 0.0.0.0/0]
 - [x] Open the ALB DNS name and refresh to see alternating responses
 - [x] Stop one instance and watch it go `unused` while traffic continues on the other
 - [x] Start it again and watch `initial` then `healthy`
-- [x] **Clean up**: delete the ALB and target group, and terminate the instances (ALBs bill hourly)
 
 ---
 
@@ -863,7 +862,6 @@ The listener now has **2 rules**: `DemoRule` (priority 5) and the **default rule
 - [x] Set action **Fixed response** (404, text/plain, custom message) and priority **5**
 - [x] Test `<alb-dns>/error` and confirm the 404 custom response
 - [x] Test `<alb-dns>/` and confirm it still load balances between both instances
-- [x] **Clean up** when finished: delete the ALB, target group, and extra SG, and terminate the instances (ALBs bill hourly)
 
 ---
 
@@ -1158,15 +1156,7 @@ The EC2 SG had only one HTTP rule, with **source = the ALB's SG**. Health checks
 - ALB balances **per HTTP request**, so it alternates more visibly.
 - No `X-Forwarded-For` here. With instance targets, the app sees the client's source IP directly.
 
-### 5. Cleanup (Cost Control)
-
-- **Delete `DemoNLB`.** This is the important one, because NLBs bill hourly.
-- Optionally delete `demo-tg-nlb`.
-- Optionally delete `demo-sg-nlb`. SGs are free, but remove the EC2 SG rule that references it first.
-- Release any Elastic IPs you allocated.
-- If you're done with the earlier demos, also delete the ALB and terminate the instances.
-
-### 6. ALB vs NLB: Differences Seen in the Demos
+### 5. ALB vs NLB: Differences Seen in the Demos
 
 | Aspect | ALB | NLB |
 |---|---|---|
@@ -1178,7 +1168,7 @@ The EC2 SG had only one HTTP rule, with **source = the ALB's SG**. Health checks
 | Security group | Always | Optional, recommended |
 | Balancing unit | Per HTTP request | Per connection (flow hash) |
 
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1191,7 +1181,7 @@ The EC2 SG had only one HTTP rule, with **source = the ALB's SG**. Health checks
 | "Refreshing the NLB URL doesn't switch instances every time" | Normal: **flow-hash, per-connection** balancing |
 | "Reduce cost after testing" | Delete the load balancer |
 
-### 8. Hands-On Checklist
+### 7. Hands-On Checklist
 
 - [x] Create the NLB (`DemoNLB`): internet-facing, IPv4, 3 AZs
 - [x] Note the fixed IP per AZ (or choose an Elastic IP)
@@ -1202,7 +1192,6 @@ The EC2 SG had only one HTTP rule, with **source = the ALB's SG**. Health checks
 - [x] Test the DNS name and observe failure, with targets **unhealthy**
 - [x] Add inbound HTTP on the EC2 SG with source = `demo-sg-nlb`
 - [x] Wait for **healthy** targets, then refresh the NLB DNS name to see the instance change
-- [x] **Clean up**: delete the NLB, then the target group and SG (optional)
 
 ---
 
@@ -2179,7 +2168,6 @@ ASG -> launches EC2 (launch template) -> registers in target group -> ALB routes
 - [x] Wait for the target to become **healthy**, then open the ALB URL and see "Hello World"
 - [x] Edit the group: **desired 2, max 2**, then verify the second instance and two alternating IPs
 - [x] Edit the group: **desired 1**, then verify that one instance is deregistered and terminated
-- [x] **Clean up**: delete the ASG (terminates its instances), then the ALB, target group, and unused SGs
 
 ---
 
@@ -2477,11 +2465,6 @@ CloudWatch, **Alarms**: **two alarms were created by the policy**.
 
 **Scale-in is slower than scale-out** (3 minutes versus 15 minutes). This protects availability. Scale-in also respects the **deregistration delay** and the ASG's **termination policy**.
 
-#### 5.7 Cleanup
-
-- **Delete the scaling policy** (which removes its alarms).
-- Then clean up the ASG, ALB, and other demo resources.
-
 ### 6. Key Facts to Remember
 
 - **Target tracking** creates and manages its own CloudWatch alarms (`AlarmHigh` and `AlarmLow`). **Step and simple scaling need alarms you create.**
@@ -2527,7 +2510,6 @@ CloudWatch, **Alarms**: **two alarms were created by the policy**.
 - [X] Open **CloudWatch, Alarms** and find the **`AlarmHigh`** and **`AlarmLow`** alarms
 - [x] Stop the load (`Ctrl+C` or reboot the instances)
 - [x] Wait about 15 minutes and watch the scale-in back to 1 instance
-- [x] **Clean up**: delete the scaling policy, then the ASG, ALB, target group, and unused SGs
 
 ---
 
