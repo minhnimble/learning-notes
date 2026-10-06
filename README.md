@@ -87,6 +87,7 @@ This repository is for containing the notes on the books that I read and the cod
   - [VPC Fundamentals](courses/aws-certified-developer-associate/%2310-vpc-fundamentals.md)
   - [Amazon S3 Introduction](courses/aws-certified-developer-associate/%2311-amazon-s3-introduction.md)
   - [AWS CLI, SDK, IAM Roles & Policies](courses/aws-certified-developer-associate/%2312-aws-cli-sdk-iam-roles-and-policies.md)
+  - [Advanced Amazon S3](courses/aws-certified-developer-associate/%2313-advanced-amazon-s3.md)
   - [Amazon S3 Security](courses/aws-certified-developer-associate/%2314-amazon-s3-security.md)
   - [CloudFront](courses/aws-certified-developer-associate/%2315-cloudfront.md)
   - [ECS, ECR & Fargate - Docker in AWS](courses/aws-certified-developer-associate/%2316-ecs-ecr-and-fargate.md)
