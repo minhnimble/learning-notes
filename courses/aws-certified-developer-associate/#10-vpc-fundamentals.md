@@ -48,6 +48,8 @@ Region
       └── AZ-b: [public subnet] [private subnet]
 ```
 
+- A **CIDR range** defines the VPC's IPs. Avoid overlapping CIDRs when connecting networks.
+
 ### 2. Subnets
 
 - Subnets **partition your network** inside the VPC.
@@ -185,21 +187,7 @@ Region
 - Spread across **at least 2 AZs** for high availability.
 - A fuller example is covered in the **Three Tier Architecture** lecture later in this section.
 
-### 8. Key Facts to Remember
-
-- **VPC = regional**, spans all AZs. **Subnet = one AZ.**
-- **Public subnet = has a route to an IGW.** Private subnet = no such route.
-- **Route tables** decide where traffic goes.
-- The **default VPC** has **one public subnet per AZ** and an attached IGW, and **no private subnets**.
-- **IGW:** managed, highly available, **two-way**, one per VPC.
-- **NAT Gateway:** managed, in a **public subnet**, **outbound only** for private subnets, needs an **Elastic IP**, **AZ-scoped** (one per AZ for HA).
-- **NAT instance:** self-managed, older, requires **source/destination check disabled**.
-- Private subnet route to the internet: **`0.0.0.0/0` to NAT**. NAT's own route: **`0.0.0.0/0` to IGW**.
-- A **CIDR range** defines the VPC's IPs. Avoid overlapping CIDRs when connecting networks.
-- **AWS reserves 5 IPs** per subnet.
-- Lambda in a VPC needs a **NAT Gateway** (or endpoints) to reach the internet.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -359,26 +347,12 @@ version account-id interface-id srcaddr dstaddr srcport dstport protocol packets
 | Inbound **ACCEPT**, then outbound **REJECT** for the reply | A **NACL** (SGs are stateful, so they wouldn't block the reply) |
 | **No records at all** | Traffic never reached the ENI (route table, IGW, or a different problem) |
 
-### 6. Key Facts to Remember
-
-- **NACL = subnet level, allow and deny, stateless, IP ranges, numbered rules.**
-- **SG = ENI/instance level, allow only, stateful, can reference other SGs.**
-- Inbound path: **NACL first, then SG**.
-- The **default NACL allows all** in and out. A **custom NACL denies all** until you add rules.
-- Use a **NACL to block a specific IP**. SGs can't deny.
-- **VPC Flow Logs** capture **IP traffic metadata** at **VPC, subnet, or ENI** level, **including AWS-managed services' ENIs** (ELB, RDS, ElastiCache, Aurora).
-- Flow logs include **accepted and rejected** traffic.
-- Destinations: **S3, CloudWatch Logs, Kinesis Data Firehose**.
-- Flow logs help with **connectivity troubleshooting**. They show metadata, not content.
-- Flow logs are **not real time**, and they don't change traffic. They only record it.
-
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
 | "Firewall at the subnet level" | **NACL** |
 | "Firewall at the instance / ENI level" | **Security group** |
-| "Stateful firewall" | **Security group** |
 | "Stateless firewall" | **NACL** |
 | "Explicitly deny traffic from a specific IP" | **NACL** |
 | "Only allow rules" | **Security group** |
@@ -443,6 +417,8 @@ VPC B  X    VPC C   (cannot talk, no transitivity)
 - To let B and C talk, create **a separate peering connection between B and C**.
 - **Scaling problem:** N VPCs fully meshed need N(N-1)/2 connections. As the number of VPCs grows, so does the number of connections.
 - Many VPCs: use **AWS Transit Gateway** (hub-and-spoke, covered in other exams) instead of a full mesh.
+- **VPC peering:** private VPC-to-VPC link, **CIDRs must not overlap**, **not transitive**, cross-account and cross-region supported.
+- Peering needs **route table entries** and **non-overlapping CIDRs** on both sides.
 
 ### 2. VPC Endpoints
 
@@ -545,17 +521,7 @@ Both connect on premises to a VPC. The lecturer: "same purpose, different method
 | **Dedicated, private, consistent** link from on premises | **Direct Connect** |
 | Many VPCs and on-premises networks in one hub | **Transit Gateway** (beyond this lecture) |
 
-### 7. Key Facts to Remember
-
-- **VPC peering:** private VPC-to-VPC link, **CIDRs must not overlap**, **not transitive**, cross-account and cross-region supported.
-- **VPC endpoints:** private access to **AWS services**. **Gateway** (S3, DynamoDB) and **Interface** (ENI, PrivateLink, the rest).
-- AWS services are **public by default**, so private subnets need an **endpoint** (or NAT) to reach them.
-- **Site-to-Site VPN:** **encrypted**, over the **public internet**, **minutes** to set up.
-- **Direct Connect:** **physical private line**, **not on the internet**, **at least a month** to set up.
-- VPN and DX connect **on premises to AWS**. Peering connects **VPC to VPC**. Endpoints connect **VPC to AWS services**.
-- Peering needs **route table entries** and **non-overlapping CIDRs** on both sides.
-
-### 8. Exam-Style Recall
+### 7. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -578,16 +544,6 @@ Both connect on premises to a VPC. The lecturer: "same purpose, different method
 
 ## VPC Cheat Sheet & Closing Comments
 
-### TL;DR
-
-- This is the **one-slide summary** of the whole VPC section. The lecturer says it is all you need for the VPC questions in the Developer exam, so **don't stress**.
-- **VPC** = Virtual Private Cloud. There is **one default VPC per region**, and you've been using it all along.
-- **Subnets** are tied to **one AZ**. **IGW** gives public subnets internet access. **NAT** gives private subnets outbound internet access.
-- **NACL** = **stateless**, subnet-level firewall. **SG** = **stateful**, instance/ENI-level firewall that **can reference other SGs**.
-- **VPC peering** = connect two VPCs, **no overlapping CIDRs**, **not transitive**.
-- **VPC endpoints** = **private access to AWS services**. **Flow Logs** = network traffic logs for debugging.
-- **On premises to AWS:** **Site-to-Site VPN** (over the public internet, encrypted) or **Direct Connect** (private physical line).
-
 ### 1. The Cheat Sheet
 
 | Component | What to remember |
@@ -606,65 +562,13 @@ Both connect on premises to a VPC. The lecturer: "same purpose, different method
 
 ### 2. Quick Comparisons
 
-#### 2.1 Security group vs NACL
-
-| | **Security group** | **NACL** |
-|---|---|---|
-| **Level** | EC2 instance / ENI | Subnet |
-| **State** | **Stateful** | **Stateless** |
-| **Rules** | Allow only | Allow and deny |
-| **Can reference other SGs** | **Yes** | No (IP ranges only) |
-
-#### 2.2 IGW vs NAT
+#### 2.1 IGW vs NAT
 
 | | **Internet Gateway** | **NAT Gateway / instance** |
 |---|---|---|
 | **For** | **Public** subnets | **Private** subnets |
 | **Direction** | Two-way | **Outbound only** |
 | **Placement** | Attached to the VPC | Sits in a **public subnet** |
-
-#### 2.3 On premises to AWS
-
-| | **Site-to-Site VPN** | **Direct Connect** |
-|---|---|---|
-| **Path** | **Public internet** (encrypted) | **Private physical line** |
-| **Setup** | Minutes | At least a month |
-
-### 3. Closing Comments from the Lecturer
-
-- The section was **heavy and had no hands-on** on purpose. It isn't needed for the Certified Developer level.
-- Remember a **few concepts** and you'll be set on VPC questions.
-- The course will **highlight specific VPC features** when they are needed later (for example NAT and endpoints with Lambda).
-- Come back to this section later if you want. **Don't stress** if you didn't understand everything.
-- The lecturer gave a bit more than the exam needs, "just to make sure we are on the same page". The course **gets more developed very soon**.
-
-### 4. Key Facts to Remember
-
-- **Default VPC:** one per region, with public subnets.
-- **Subnet = one AZ.** **VPC = regional.**
-- **IGW:** VPC level, internet access for **public** subnets.
-- **NAT:** internet access for **private** subnets (outbound).
-- **NACL = stateless, subnet. SG = stateful, instance/ENI, can reference SGs.**
-- **Peering:** no overlapping CIDRs, **not transitive**.
-- **Endpoints:** private access to AWS services.
-- **Flow Logs:** debug allowed or denied traffic.
-- **VPN** = encrypted over the internet. **DX** = private line.
-
-### 5. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Which VPC did we use for the EC2 instances in the course?" | The **default VPC** |
-| "Network partition tied to a single AZ" | **Subnet** |
-| "Gives public subnets internet access" | **Internet Gateway** |
-| "Private subnet instances need internet access" | **NAT Gateway / instance** |
-| "Stateless firewall at subnet level" | **NACL** |
-| "Stateful firewall that can reference other SGs" | **Security group** |
-| "Connect two VPCs, but traffic between B and C via A fails" | **Peering is not transitive** |
-| "Private access to AWS services from a VPC" | **VPC endpoint** |
-| "Debug whether traffic is blocked or allowed" | **VPC Flow Logs** |
-| "Encrypted on-premises link over the public internet" | **Site-to-Site VPN** |
-| "Direct private link from on premises to AWS" | **Direct Connect** |
 
 ---
 
@@ -743,6 +647,8 @@ Users
 - **Security groups:** the RDS SG allows the DB port **only from the application tier's SG**. The ElastiCache SG allows its port only from the app tier.
 - Data subnets typically have **no route to the internet at all** (not even via NAT).
 - **RDS Multi-AZ** or **Aurora** gives database HA across the AZs.
+- **Multi-AZ** everywhere gives availability.
+- Scenario answers usually combine **ELB + ASG + RDS/Aurora + ElastiCache + Route 53**.
 
 ### 3. Why This Design Works
 
@@ -761,6 +667,8 @@ Users
 Internet --80/443--> [ELB SG] --app port--> [App SG] --DB port--> [RDS SG]
                                                    \--6379--> [ElastiCache SG]
 ```
+
+- **Three tiers:** **web/ELB (public)**, **app/ASG (private)**, **data/RDS + ElastiCache (private, deeper)**.
 
 ### 4. LAMP Stack on EC2
 
@@ -807,19 +715,7 @@ Users --> [ELB] --> EC2 (AZ-a) --\
 - AWS publishes a **full reference architecture for WordPress**. The lecturer says you should now understand **almost all of it**: NAT gateways, internet gateways, Auto Scaling groups, subnets, Aurora, EFS, and caching.
 - The only parts not yet covered: **CloudFront** and **S3** (coming soon).
 
-### 6. Key Facts to Remember
-
-- **Three tiers:** **web/ELB (public)**, **app/ASG (private)**, **data/RDS + ElastiCache (private, deeper)**.
-- The **ELB goes in public subnets**. **EC2 and databases go in private subnets.**
-- **Route 53** resolves the user's request to the ELB.
-- **ELB to ASG instances** through route tables and security groups.
-- **ElastiCache** caches RDS data and stores **session data**.
-- **LAMP** = **Linux, Apache, MySQL, PHP**. Add **ElastiCache** for caching and **EBS** for local storage.
-- **EFS** shares files (such as WordPress images) across instances and AZs. **EBS** is per instance and AZ.
-- **Multi-AZ** everywhere gives availability.
-- Scenario answers usually combine **ELB + ASG + RDS/Aurora + ElastiCache + Route 53**.
-
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|

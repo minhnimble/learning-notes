@@ -69,23 +69,7 @@ You *can* install a database on an EC2 instance. RDS handles the operational wor
 - A restore **always creates a new DB instance**. It never overwrites the existing one.
 - **Manual snapshots** are user-triggered, have **no expiry**, and are kept until you delete them.
 
-#### 4.2 Read replicas vs Multi-AZ (preview)
-
-| | Read replicas | Multi-AZ |
-|---|---|---|
-| Purpose | **Scale reads** (performance) | **High availability and DR** |
-| Replication | **Asynchronous** | **Synchronous** |
-| Serves traffic | **Yes** (reads) | **No**. The standby is passive and only takes over on failover. |
-| Can be in another region | Yes | No (same region, different AZ) |
-
-- The lecture says read replicas are for **read performance** and Multi-AZ is for **disaster recovery**. That is the headline distinction.
-
-#### 4.3 Scaling
-- **Vertical:** change the **instance class**. This usually causes a short outage or failover.
-- **Horizontal:** add **read replicas**. This scales reads only, not writes.
-- **Storage:** grow it manually, or let **Storage Auto Scaling** do it.
-
-#### 4.4 Maintenance windows
+#### 4.2 Maintenance windows
 - A weekly window you choose for patching and upgrades.
 - Some changes (for example a minor engine patch) can cause **brief downtime** or a **Multi-AZ failover**.
 
@@ -123,21 +107,9 @@ Free space < 10%  AND  lasted >= 5 min  AND  >= 6 h since last change
 
 - The size of each increase is chosen by RDS: the largest of **10 GiB**, **10% of the current allocated storage**, or an amount **predicted from recent growth**.
 - Storage can only **grow**. It never shrinks automatically, and RDS has no way to shrink storage in place.
-
-### 6. Key Facts to Remember
-
-- RDS = **managed relational DB (SQL)**. Know the **engine list**.
-- **Managed means no SSH access** to the host. **RDS Custom** is the exception.
-- Storage is **EBS-backed**.
-- **PITR** restores to a **new** instance.
-- **Read replicas** scale reads. **Multi-AZ** is for HA and DR.
-- **Storage Auto Scaling** needs a **maximum storage threshold**. It triggers when free space is **under 10%** for **5+ minutes**, and **6+ hours** since the last change.
-- Storage Auto Scaling **avoids downtime and manual resizing**, which makes it good for unpredictable workloads.
-- RDS runs in your **VPC**. Control access with **security groups**, and encrypt with **KMS** (at rest, chosen at creation) and **TLS** (in transit).
 - Pricing comes from **instance hours**, **storage** (and provisioned IOPS if used), **backup storage beyond the free allocation**, and **data transfer**.
-- Aurora is covered separately and has its own scaling and replication model.
 
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -235,6 +207,8 @@ AWS normally **charges for data moving between AZs**. RDS read replicas are an e
 | **Same region** (same AZ or a different AZ) | **Free**. Example: primary in `us-east-1a`, replica in `us-east-1b`. |
 | **Cross-region** | **Charged** (inter-region data transfer). Example: `us-east-1` to `eu-west-1`. |
 
+- **Automated backups** must be **on** (retention above 0) on the source before you can create replicas for MySQL, MariaDB, and PostgreSQL.
+
 ### 2. Multi-AZ
 
 #### 2.1 Purpose
@@ -302,20 +276,14 @@ Application --reads + writes--> [DNS name (one endpoint)]
 | **Cross-AZ network cost** | **Free** in the same region, **charged** cross-region | Free (managed by RDS) |
 | **Can it be combined?** | **Yes**, a replica can be Multi-AZ | N/A |
 
-### 4. Read Replicas Set Up as Multi-AZ
+### 4. Single-AZ to Multi-AZ
 
-- **Question from the lecture:** can read replicas be set up as Multi-AZ for DR?
-- **Answer: Yes.** A common exam question.
-- Typical architecture: a **Multi-AZ primary** for HA, plus **read replicas** (each optionally Multi-AZ) for read scaling and cross-region DR.
-
-### 5. Single-AZ to Multi-AZ
-
-#### 5.1 Exam answer
+#### 4.1 Exam answer
 
 - It is a **zero-downtime operation**. **No need to stop the database.**
 - Steps: select the DB, click **Modify**, enable **Multi-AZ**, and apply.
 
-#### 5.2 What happens behind the scenes
+#### 4.2 What happens behind the scenes
 
 1. RDS takes a **snapshot** of the main database automatically.
 2. The snapshot is **restored into a new standby DB** in another AZ.
@@ -326,28 +294,12 @@ Application --reads + writes--> [DNS name (one endpoint)]
 - There may be a **brief performance impact** during the snapshot and sync, so many people do it off-peak.
 - Multi-AZ is **not** the same as a backup. A bad `DELETE` replicates to the standby instantly.
 
-### 6. Key Facts to Remember
-
-- **Read replicas = scale reads. Multi-AZ = survive failures.**
-- **Asynchronous** replication for replicas (eventually consistent). **Synchronous** for Multi-AZ.
-- Replicas are **read-only**: `SELECT` only.
-- **Up to 15** replicas, in the **same AZ, cross-AZ, or cross-region**.
-- Replicas must be **referenced by the application**. Multi-AZ is **transparent** (one DNS name).
-- **Promoting** a replica detaches it permanently.
-- The Multi-AZ **standby can't serve reads or writes** (classic instance deployment).
-- Same-region replication is **free**. **Cross-region replication costs money.**
-- **Automated backups** must be **on** (retention above 0) on the source before you can create replicas for MySQL, MariaDB, and PostgreSQL.
-- Replicas can themselves be **Multi-AZ**.
-- Single-AZ to Multi-AZ is **zero downtime** (snapshot, restore, sync).
-- Multi-AZ doesn't replace **backups**. It protects against infrastructure failure, not against bad data.
-
-### 7. Exam-Style Recall
+### 5. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
 | "Scale read traffic on RDS" | **Read replicas** |
 | "Main DB overloaded by reporting or analytics" | **Create a read replica** for the reporting workload |
-| "Disaster recovery / high availability for RDS" | **Multi-AZ** |
 | "Automatic failover with no application change" | **Multi-AZ** (one DNS name) |
 | "Synchronous replication" | **Multi-AZ** |
 | "Asynchronous replication" | **Read replicas** |
@@ -355,7 +307,6 @@ Application --reads + writes--> [DNS name (one endpoint)]
 | "Maximum number of read replicas" | **15** (MySQL, MariaDB, PostgreSQL) |
 | "Replica in another region" | **Cross-region read replica** (charged replication traffic) |
 | "Replication traffic cost, same region, different AZ" | **Free** |
-| "Replication traffic cost, cross-region" | **Charged** |
 | "Can anyone read from the Multi-AZ standby?" | **No** (classic Multi-AZ) |
 | "Can a read replica be Multi-AZ?" | **Yes** |
 | "Convert Single-AZ to Multi-AZ with no downtime" | **Modify, enable Multi-AZ** (snapshot, restore, sync) |
@@ -363,18 +314,22 @@ Application --reads + writes--> [DNS name (one endpoint)]
 | "Run `INSERT` on a read replica" | **Not allowed**: replicas are `SELECT` only |
 | "Turn a replica into a standalone database" | **Promote** the replica |
 | "Multi-AZ to scale reads" | **Wrong**: Multi-AZ doesn't add read capacity |
+| "Connection times out to RDS" | **Security group** or network (subnet and route) problem |
+| "Let only the application servers reach the database" | DB SG inbound on the DB port with **source = app's security group** |
+| "Authenticate to RDS with IAM instead of a password" | **IAM database authentication** (token valid 15 min, SSL required) |
+| "Database runs out of space automatically handled" | **Storage autoscaling** and a maximum storage threshold |
+| "Add read capacity from the console" | **Create read replica** |
+| "Change a Single-AZ database to Multi-AZ" | **Modify**, enable Multi-AZ (zero downtime) |
+| "Back up a DB manually and keep it forever" | **Manual snapshot** |
+| "Recover to 10 minutes ago" | **Point-in-time restore** (creates a new instance) |
+| "Copy a database to another region" | **Copy a snapshot** to the other region and restore |
+| "Can't delete the RDS instance" | **Deletion protection** is on. Disable it via **Modify**. |
+| "Connect an app to RDS endpoint after failover" | Use the **DNS endpoint**, and the DNS name flips to the new primary |
+| "Scale the DB instance size" | **Modify** the instance class (vertical scaling, brief downtime) |
 
 ---
 
 ## Amazon RDS Hands On
-
-### TL;DR
-
-- Created an **RDS for MySQL** instance using the **Free tier** template (single-AZ, `db.t4g.micro`, 20 GB, **public access = yes**) with initial database `mydb`.
-- Connected from a desktop SQL client (**SQLElectron**) using the instance **endpoint**, port **3306**, and the master credentials. Ran a quick `CREATE TABLE`, `INSERT`, and `SELECT`. (SQL itself is **out of scope** for the exam.)
-- Connection depends on two things: **public access** and the **security group** allowing your IP on the DB port.
-- Explored the main RDS features from the console: **read replica**, **Multi-AZ**, **monitoring** (CloudWatch metrics), **snapshots**, **point-in-time restore**, and **cross-region snapshot migration**.
-- To clean up, you must **disable deletion protection** first, then delete the database.
 
 ### 1. Starting the Wizard
 
@@ -382,8 +337,8 @@ Application --reads + writes--> [DNS name (one endpoint)]
 - **Creation method:**
   - **Standard create** (the lecture calls it "full configuration") shows every option.
   - **Easy create** uses recommended defaults.
-- **Engine options:** Aurora (MySQL- or PostgreSQL-compatible), MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, Db2.
 - The demo used **MySQL** to keep it simple, with the **default engine version**.
+- **Default ports:** MySQL/MariaDB **3306**, PostgreSQL **5432**, Oracle **1521**, SQL Server **1433**, Db2 **50000**. Aurora uses its MySQL or PostgreSQL port.
 
 ### 2. Templates and Availability Options
 
@@ -413,7 +368,7 @@ Application --reads + writes--> [DNS name (one endpoint)]
 | **Master username** | `admin` | Default for MySQL |
 | **Credentials management** | **Self-managed** | Alternative: **AWS Secrets Manager** manages the password. It is the **most secure** (and supports **automatic rotation**) but **costs extra**. |
 | **Master password** | A weak demo password | Never do this in real use |
-| **Database authentication** | **Password authentication** only | **IAM database authentication** is optional (see section 7) |
+| **Database authentication** | **Password authentication** only | **IAM database authentication** is optional (see RDS & Aurora Security) |
 
 #### 3.2 Instance configuration and storage
 
@@ -445,7 +400,6 @@ Application --reads + writes--> [DNS name (one endpoint)]
 | **Estimated monthly cost** | Free tier info | Free tier lasts **12 months** and applies to specific instance types |
 
 - Click **Create database**. Creation takes several minutes: **Creating**, then **Available**.
-- Free tier note: AWS has been moving newer accounts to a **Free plan / Paid plan** model, so the console labels can differ from the video.
 
 ### 4. Connecting to the Database
 
@@ -476,12 +430,7 @@ Application --reads + writes--> [DNS name (one endpoint)]
 - Allowing `0.0.0.0/0` makes it work from anywhere, but it is a security risk. Fine for a throwaway demo only.
 - Connecting also needs a **route to an Internet Gateway** in the DB's subnets. The default VPC has this.
 
-**Production pattern (exam-relevant):**
-
-```
-App (EC2/Lambda/ECS) --> [RDS in PRIVATE subnet, public access = No]
-                          SG inbound: DB port, SOURCE = the app's security group
-```
+- Production pattern: RDS in a **private subnet**, public access **No**, SG inbound on the DB port with **source = the app's security group**. No SSH to the host, only a SQL client over the DB port.
 
 ### 5. SQL Demo (Out of Scope for the Exam)
 
@@ -496,91 +445,14 @@ SELECT * FROM my_table;
 
 ### 6. Exploring RDS Features in the Console
 
-| Feature | Where | What it does |
-|---|---|---|
-| **Create read replica** | **Actions, Create read replica** | Adds read capacity. You can choose whether the replica is **Multi-AZ** (the lecture chose No and cancelled). |
-| **Monitoring** | **Monitoring** tab | CloudWatch metrics such as **CPU utilization** and **database connections**. Use them to decide when to **scale up** or add replicas. |
-| **Snapshots** | **Actions, Take snapshot** | A manual backup that stays until you delete it. |
-| **Restore** | From a snapshot, or **Actions, Restore to point in time** | **Always creates a new DB instance.** |
-| **Migrate snapshot** | **Copy snapshot** to another region | A way to get the data to another region. |
-| **Modify** | **Modify** button | Change instance class (vertical scaling), turn on **Multi-AZ**, storage settings, and so on. |
+- **Actions** menu: **Create read replica** (choose whether the replica is Multi-AZ; the lecture cancelled), **Take snapshot**, **Restore to point in time** (always creates a new DB instance), **Copy snapshot** to another region.
+- **Modify** button: instance class (vertical scaling), Multi-AZ, storage settings.
+- **Monitoring** tab: CloudWatch metrics such as CPU utilization and database connections, used to decide when to scale up or add replicas.
 
-- **Point-in-time restore** is under the DB's **Actions** menu (not the snapshot list). It uses automated backups plus transaction logs.
-- The lecturer's summary: RDS manages the database for you, including **replicas, Multi-AZ, instance-type scaling, backups, and monitoring**.
+### 7. Deleting the Database (Cost Control)
 
-### 7. Notes on Authentication Options
-
-| Method | How it works |
-|---|---|
-| **Password authentication** | Username and password (used in the demo) |
-| **IAM database authentication** | The app requests a **short-lived (15-minute) auth token** using its **IAM** credentials instead of a password. Supported on MySQL, MariaDB, and PostgreSQL. **Requires SSL/TLS.** |
-| **Password and Kerberos** | For Microsoft Active Directory integration |
-
-- **Secrets Manager** can store the credentials and **rotate** them automatically. The app fetches the secret at runtime.
-
-### 8. Deleting the Database (Cost Control)
-
-1. Select the DB, **Modify**.
-2. Scroll to the bottom and **disable Deletion protection**.
-3. **Continue**, then choose **Apply immediately**.
-4. When the modification finishes, choose **Actions, Delete**.
-5. **Uncheck "Create final snapshot"** (for the demo), and uncheck "Retain automated backups".
-6. Check the acknowledgment that **everything will be lost**.
-7. Type `delete me` and click **Delete**.
-
-- **Deletion protection** is on by default for databases created with some settings. It prevents accidental deletion.
-- Automated backups are deleted with the instance unless you choose to **retain** them.
-- Also delete the demo security group `demo-rds` and any leftover snapshots.
-- You pay for a running RDS instance (and storage and backups) while it exists. A database left running costs money after the free tier.
-
-### 9. Key Facts to Remember
-
-- **Default ports:** MySQL/MariaDB **3306**, PostgreSQL **5432**, Oracle **1521**, SQL Server **1433**, Db2 **50000**. Aurora uses its MySQL or PostgreSQL port.
-- You connect through the **endpoint DNS name**, and the **security group** must allow your source on the **DB port**.
-- **Public access = yes** gives a public IP, but traffic is still blocked unless the **SG allows it**. In production keep RDS **private**.
-- **No SSH** to the host. Use a SQL client over the DB port.
-- **Initial database name** is optional. If blank, only the instance is created.
-- **Free tier template** = single-AZ only. **Multi-AZ options** appear with the Production template, or by **modifying** later.
-- **Storage autoscaling** is enabled in the wizard, with a **maximum storage threshold**.
-- **Secrets Manager** gives the most secure credential management and rotation, at extra cost.
-- **IAM authentication** uses **15-minute tokens** and **SSL**.
-- **Restores create new instances.** They never overwrite the existing one.
-- You must **disable deletion protection** before you can delete.
-- RDS doesn't create the subnets. The **DB subnet group** must cover **at least 2 AZs**.
-
-### 10. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Can't connect to RDS from my laptop" | Check **public accessibility** and the **security group** (DB port, your IP) |
-| "Connection times out to RDS" | **Security group** or network (subnet and route) problem |
-| "Let only the application servers reach the database" | DB SG inbound on the DB port with **source = app's security group** |
-| "Store and rotate the DB password automatically" | **AWS Secrets Manager** |
-| "Authenticate to RDS with IAM instead of a password" | **IAM database authentication** (token valid 15 min, SSL required) |
-| "Which port for MySQL / PostgreSQL?" | **3306 / 5432** |
-| "Database runs out of space automatically handled" | **Storage autoscaling** and a maximum storage threshold |
-| "Add read capacity from the console" | **Create read replica** |
-| "Change a Single-AZ database to Multi-AZ" | **Modify**, enable Multi-AZ (zero downtime) |
-| "Back up a DB manually and keep it forever" | **Manual snapshot** |
-| "Recover to 10 minutes ago" | **Point-in-time restore** (creates a new instance) |
-| "Copy a database to another region" | **Copy a snapshot** to the other region and restore |
-| "Can't delete the RDS instance" | **Deletion protection** is on. Disable it via **Modify**. |
-| "Connect an app to RDS endpoint after failover" | Use the **DNS endpoint**, and the DNS name flips to the new primary |
-| "Scale the DB instance size" | **Modify** the instance class (vertical scaling, brief downtime) |
-
-### 11. Hands-On Checklist
-
-- [x] RDS console, **Databases**, **Create database**, **Standard create**
-- [x] Engine **MySQL**, default version, template **Free tier**
-- [x] Set username `admin`, **self-managed** credentials, and a password
-- [x] Instance `db.t4g.micro` (or default free tier class), **20 GB**, review **storage autoscaling**
-- [x] Connectivity: **default VPC**, **public access = Yes**, **new security group `demo-rds`**, port **3306**
-- [x] Monitoring **Standard**, **initial database name `mydb`**, then **Create database**
-- [x] Wait for status **Available**, then note the **endpoint** and **port**
-- [x] Check the SG `demo-rds` inbound rule: **TCP 3306 from your IP**
-- [x] Install **SQLElectron** and add a MySQL server using the endpoint, `admin`, the password, and `mydb`
-- [x] **Test** the connection, **Connect**, then run `CREATE TABLE`, `INSERT`, and `SELECT`
-- [x] Look at **Actions, Create read replica** (cancel), the **Monitoring** tab, and **snapshot and restore** options
+- **Deletion protection** must be turned off (**Modify**, apply immediately) before **Actions, Delete** works.
+- A final snapshot and retained automated backups are optional. Automated backups are deleted with the instance unless retained.
 
 ---
 
@@ -613,16 +485,6 @@ SELECT * FROM my_table;
 - Aurora is a **cluster** of DB instances plus one **cluster volume**. It isn't a single instance.
 
 ### 2. Key Benefits Over RDS
-
-| Area | Aurora |
-|---|---|
-| **Performance** | Up to **5x** MySQL on RDS, up to **3x** PostgreSQL on RDS |
-| **Storage** | **Auto-expands** from 10 GB (in 10 GB steps) to the maximum. You never provision it. |
-| **Read replicas** | Up to **15** (RDS MySQL and PostgreSQL: 15, but with slower replication) |
-| **Replica lag** | Typically **single-digit to low tens of ms**, because replicas read from the **same shared storage** |
-| **Failover** | Typically **under 30 s** (RDS Multi-AZ: about 60-120 s) |
-| **Availability** | **6 copies across 3 AZs** by default |
-| **Cost** | About **20% more** than RDS, but better efficiency and savings at scale |
 
 - The lecturer's point on storage: as a DBA/SysOps person you **don't monitor disk space**. It grows by itself.
 - You pay for the storage **actually used** (not what is provisioned), and it doesn't shrink automatically as a rule (newer versions can release space when data is deleted).
@@ -722,13 +584,10 @@ Clients --> [Reader endpoint] --> Replica 1 | Replica 2 | ... | Replica 15  (rea
 | **Automated patching with zero downtime** | Zero-downtime patching (ZDP) where possible |
 | **Advanced monitoring** | CloudWatch, Enhanced Monitoring, Performance Insights |
 | **Routine maintenance** | Handled by AWS |
-| **Backtrack** | Rewind the cluster to a point in time (section 7) |
+| **Backtrack** | Rewind the cluster to a point in time (see Backtrack below) |
 
 **Related (not in the lecture, but exam-adjacent):**
-- **Aurora Serverless v2**: capacity scales automatically in fine increments. Good for unpredictable or intermittent workloads.
-- **IAM database authentication** and **Secrets Manager** integration.
 - **Encryption** is chosen at **cluster creation**. To encrypt an unencrypted cluster, restore from an encrypted snapshot copy.
-- **Aurora I/O-Optimized** pricing option (no per-I/O charge) versus **Standard**.
 
 ### 7. Backtrack
 
@@ -753,6 +612,8 @@ Clients --> [Reader endpoint] --> Replica 1 | Replica 2 | ... | Replica 15  (rea
 | Feature | RDS (MySQL / PostgreSQL) | Aurora |
 |---|---|---|
 | Technology | Open-source engine on EBS | **Proprietary**, shared distributed storage |
+| Performance | Baseline | Up to **5x** MySQL on RDS, up to **3x** PostgreSQL on RDS |
+| Replica lag | Higher (asynchronous, own storage) | Typically **single-digit to low tens of ms** (replicas read the same shared storage) |
 | Storage | Provisioned, with optional auto scaling | **Auto-expands**, pay for use |
 | Data copies | 1 (plus a Multi-AZ standby) | **6 copies across 3 AZs** |
 | Read replicas | Up to 15, **asynchronous** | Up to **15**, share storage, **lower lag** |
@@ -764,21 +625,7 @@ Clients --> [Reader endpoint] --> Replica 1 | Replica 2 | ... | Replica 15  (rea
 | Cross-region | Cross-region replicas | Replicas and **Global Database** |
 | Cost | Lower | About **20% higher** |
 
-### 9. Key Facts to Remember
-
-- Aurora is **MySQL and PostgreSQL compatible**, but it is **not** MySQL or PostgreSQL.
-- **6 copies, 3 AZs. Write quorum 4/6, read quorum 3/6.**
-- **One writer** at a time. **Up to 15 replicas**.
-- **Writer endpoint = always the current writer. Reader endpoint = load-balances connections across replicas.**
-- Load balancing is **per connection**, not per statement.
-- Storage **auto-expands** (10 GB up to 128/256 TiB) with **no downtime** and no provisioning.
-- Failover typically **under 30 seconds**. Replicas are the failover targets, with **priority tiers**.
-- **Backtrack** is in place, up to 72 hours, **MySQL only**, and must be enabled at creation.
-- **Global Database** is the cross-region DR and low-latency option.
-- Aurora costs **more per hour** than RDS but is **more efficient at scale**.
-- You still can't SSH to the instances, because it is a managed service.
-
-### 10. Exam-Style Recall
+### 9. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -789,7 +636,6 @@ Clients --> [Reader endpoint] --> Replica 1 | Replica 2 | ... | Replica 15  (rea
 | "Load balance reads across all replicas" | **Aurora reader endpoint** |
 | "Scale read replicas automatically" | **Aurora Auto Scaling** (1 to 15 replicas) |
 | "Fastest automatic failover for a relational database" | **Aurora** (typically under 30 s) |
-| "Maximum read replicas" | **15** |
 | "Write quorum / read quorum" | **4 of 6 / 3 of 6** |
 | "Undo a bad change by rewinding to a point in time without restoring" | **Backtrack** (Aurora MySQL) |
 | "Cross-region DR with sub-second replication lag" | **Aurora Global Database** |
@@ -798,18 +644,18 @@ Clients --> [Reader endpoint] --> Replica 1 | Replica 2 | ... | Replica 15  (rea
 | "Which is more expensive: Aurora or RDS?" | **Aurora** (about 20%), but more efficient |
 | "Does the load balancing of the reader endpoint happen per query?" | **No**, per **connection** |
 | "Which instance can be promoted if the writer fails?" | **Any replica** (by failover priority) |
+| "High I/O workload, predictable cost, no per-I/O charge" | **Aurora I/O-Optimized** |
+| "Low or moderate I/O, pay per request" | **Aurora Standard** |
+| "Replica in another AZ for fast failover" | **Aurora replica** (reader) in a different AZ |
+| "Writes sent to a reader are forwarded to the writer" | **Local write forwarding** |
+| "Restore Aurora to a time yesterday" | **PITR** (new cluster) or **Backtrack** (in place, MySQL) |
+| "Default Aurora MySQL / PostgreSQL port" | **3306 / 5432** |
+| "Can't connect to Aurora from my laptop" | **Public access** and **security group** (DB port, your IP) |
+| "Delete an Aurora cluster" | Delete **instances first**, then the **cluster** |
 
 ---
 
 ## Amazon Aurora - Hands On
-
-### TL;DR
-
-- Created an **Aurora MySQL-compatible cluster** (Production template) with a **writer** and a **reader** instance in **different AZs**. This costs money, and the lecturer says following along is optional.
-- Key choices: **Aurora Standard vs I/O-Optimized** storage, **provisioned (db.t3.medium)** vs **Serverless v2 (ACUs)**, and whether to create an **Aurora replica** in another AZ.
-- The cluster gets a **writer endpoint** and a **reader endpoint**, and each instance also has its own **instance endpoint**. **Apps should use the cluster endpoints**, not instance endpoints.
-- Walked through the **Actions** menu: add readers, **cross-region read replica**, **point-in-time restore**, **replica Auto Scaling** (target 60%, 1 to 15 replicas), and **Add AWS Region** (Global Database).
-- To delete: remove the **reader instance**, then the **writer instance**, then the **cluster**.
 
 ### 1. Cost Warning
 
@@ -865,12 +711,8 @@ Clients --> [Reader endpoint] --> Replica 1 | Replica 2 | ... | Replica 15  (rea
 
 #### 3.4 Availability and durability
 
-- Option: **Create an Aurora Replica / reader node in a different AZ**.
-  - Benefits: **higher availability**, **extra read capacity**, and **fast failover** (the reader is promoted to writer).
-  - Costs a **second instance**.
-- Without a replica, a failure means Aurora must **create a new instance** (slower).
-- The demo created the replica to show Aurora's full behavior.
-- Storage is **already 6 copies across 3 AZs** whether or not you add a replica. The replica adds **compute** redundancy.
+- The demo created a **reader in a different AZ** to show Aurora's full behavior (it costs a second instance).
+- Storage is **already 6 copies across 3 AZs** with or without a replica. The replica adds **compute** redundancy and a fast failover target.
 
 ### 4. Wizard: Connectivity and Additional Configuration
 
@@ -905,15 +747,8 @@ Clients --> [Reader endpoint] --> Replica 1 | Replica 2 | ... | Replica 15  (rea
   - A **writer instance**.
   - A **reader instance** in a **different AZ**.
 - Only **one writer** exists. Reads can go to the reader. This is the "different instances for writing and reading" point in the lecture.
-- Open the cluster to see the endpoints:
+- Open the cluster to see the writer, reader, and per-instance endpoints (the reader's endpoint appears once it finishes creating).
 
-| Endpoint | Behavior |
-|---|---|
-| **Writer endpoint** (cluster endpoint) | **Always points to the current writer**, even after a failover |
-| **Reader endpoint** | **Always points to an available reader**. It load-balances **connections** across all replicas. |
-| **Instance endpoint** | One specific instance. Each instance has its own. The reader's endpoint appears once it finishes creating. |
-
-- **Your application should use the writer and reader endpoints.** They stay valid when instances fail over or replicas are added or removed.
 - Connecting works like RDS: the endpoint DNS name, port 3306, the master credentials, and `mydb`. The security group must allow your source IP.
 
 ### 6. Features Explored in the Console
@@ -940,8 +775,6 @@ The lecture opened the policy form and cancelled it.
 | **Scaling cooldowns** | Optional scale-out and scale-in periods |
 | **Capacity** | **Min 1, max 15** replicas |
 
-- Behavior: if average utilization goes **above 60%**, Aurora **adds replicas**. When it falls, it **removes** them. It is a **target tracking** policy (same idea as EC2 ASG).
-- It uses **Application Auto Scaling** and pairs with the **reader endpoint**, so apps never track replica URLs.
 - It scales **readers only**. The writer never auto-scales (use Serverless v2 for compute that scales).
 
 #### 6.3 Add AWS Region (Global Database)
@@ -950,61 +783,6 @@ The lecture opened the policy form and cancelled it.
 - It was **not possible in the demo** for two reasons:
   - The engine version must **support Global Database**.
   - The **instance class must be large enough**. `db.t3.medium` wasn't, so the lecturer would need to change to a larger class (for example a `large`).
-- Benefits (from the overview): **cross-region DR**, **low-latency reads** near users, and typical replication lag **under 1 second**.
-
-### 7. Key Facts to Remember
-
-- Aurora has **two engine flavors**: MySQL-compatible and PostgreSQL-compatible.
-- **Standard vs I/O-Optimized** is a **storage billing mode**. It isn't a performance tier.
-- **Provisioned** = you pick an instance class. **Serverless v2** = you set **min/max ACU**.
-- Adding an **Aurora replica in a different AZ** gives **fast failover** and **read scaling**.
-- **Writer endpoint** = current writer. **Reader endpoint** = load balancing across replicas (**per connection**).
-- **Instance endpoints** exist, but apps should use the **cluster endpoints**.
-- **Replica Auto Scaling:** metric (**CPU** or **connections**), target, **1 to 15 replicas**.
-- **Local write forwarding** lets you send writes to a reader, and the cluster forwards them to the writer.
-- **Global Database** needs a **supported engine version** and **instance class**.
-- **Cross-region read replica** and **Global Database** are two different features.
-- **Backup retention** is **1 to 35 days**. **PITR** creates a **new cluster**.
-- **Encryption** is decided **at creation**.
-- **Deleting:** remove the **instances first**, then the **cluster**. A cluster with no instances **still costs storage** until deleted.
-
-### 8. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Endpoint that always points to the Aurora primary" | **Writer (cluster) endpoint** |
-| "Spread read connections across Aurora replicas" | **Reader endpoint** |
-| "Automatically add Aurora read replicas under load" | **Aurora replica Auto Scaling** (CPU or connections, 1 to 15) |
-| "Aurora scales compute with unpredictable demand" | **Serverless v2** (ACUs) |
-| "High I/O workload, predictable cost, no per-I/O charge" | **Aurora I/O-Optimized** |
-| "Low or moderate I/O, pay per request" | **Aurora Standard** |
-| "Replica in another AZ for fast failover" | **Aurora replica** (reader) in a different AZ |
-| "Replica in another region" | **Cross-region read replica** or **Global Database** |
-| "Cross-region DR with sub-second lag" | **Aurora Global Database** |
-| "Writes sent to a reader are forwarded to the writer" | **Local write forwarding** |
-| "Authenticate to Aurora with IAM tokens" | **IAM database authentication** |
-| "Restore Aurora to a time yesterday" | **PITR** (new cluster) or **Backtrack** (in place, MySQL) |
-| "Max Aurora replicas" | **15** |
-| "Default Aurora MySQL / PostgreSQL port" | **3306 / 5432** |
-| "Can't connect to Aurora from my laptop" | **Public access** and **security group** (DB port, your IP) |
-| "Delete an Aurora cluster" | Delete **instances first**, then the **cluster** |
-
-### 9. Hands-On Checklist
-
-- [x] Check the **estimated monthly cost** and decide whether to follow along
-- [x] RDS console, **Create database**, **Standard create**, **Aurora (MySQL Compatible)**
-- [x] Keep the default engine version, template **Production**
-- [x] Cluster identifier `database-2`, username `admin`, set a password
-- [x] Storage: **Aurora Standard** (review **I/O-Optimized**)
-- [x] Instance: **`db.t3.medium`** (burstable). Look at the **Serverless v2** (min/max ACU) option.
-- [x] Availability: **Create an Aurora replica** in a different AZ
-- [x] Connectivity: **don't connect to EC2**, **IPv4**, default VPC, **public access = Yes**, **new SG `demo-database-aurora`**, port **3306**
-- [x] Additional configuration: **disable Enhanced Monitoring**, initial database `mydb`, **backup retention 1 day**; review **local write forwarding**, **encryption**, **backtrack**, **deletion protection**
-- [x] **Create database** and wait for the writer and reader to become **Available**
-- [x] Open the cluster and note the **writer endpoint**, **reader endpoint**, and **instance endpoints**
-- [x] Review **Actions**: add reader, cross-region read replica, restore to point in time
-- [x] Open **Add replica auto scaling**: target **60%**, min **1**, max **15**, then **cancel**
-- [x] Open **Add AWS Region** and see why it isn't available (version and instance size)
 
 ---
 
@@ -1144,33 +922,7 @@ Unencrypted DB --> [Take snapshot] --> [Copy snapshot with encryption enabled (K
 - Related: **Database Activity Streams** (Aurora, and RDS Oracle/SQL Server) send a near-real-time activity feed to **Kinesis**, for compliance use.
 - **CloudTrail** records **API calls** to RDS (who created or deleted a DB). It is separate from DB audit logs, which record **queries**.
 
-### 7. Security Layers at a Glance
-
-| Layer | Control |
-|---|---|
-| **Data at rest** | **KMS** encryption (set at creation) |
-| **Data in transit** | **TLS** with AWS CA certificates |
-| **Who can connect (login)** | **Password**, **IAM authentication**, **Kerberos** |
-| **Who can reach the port** | **Security groups** (and NACLs), private subnets |
-| **Who can manage the DB** | **IAM policies** on the RDS API |
-| **What happened** | **Audit logs** to **CloudWatch Logs**, **CloudTrail** for API calls |
-| **OS access** | **None** (RDS Custom is the exception) |
-| **Secrets** | **Secrets Manager** with rotation |
-
-### 8. Key Facts to Remember
-
-- Encryption at rest is **decided at creation** and uses **KMS**.
-- **Unencrypted master means unencrypted replicas.**
-- To encrypt an existing DB: **snapshot, encrypted copy, restore** (a new DB).
-- In-flight encryption uses **TLS**, and clients need the **AWS root certificates**.
-- **IAM database authentication** = a **15-minute token** over **TLS**, no password. Not for Oracle and SQL Server.
-- **Security groups** are the main network control. Reference the **app's SG** as the source.
-- **No SSH**, except **RDS Custom**.
-- **Audit logs expire**, so send them to **CloudWatch Logs** for retention.
-- Aurora encryption works the same way, applied to the **whole cluster** (instances, storage, backups, snapshots).
-- You can **share encrypted snapshots** across accounts only if they use a **customer managed KMS key**.
-
-### 9. Exam-Style Recall
+### 7. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1183,8 +935,6 @@ Unencrypted DB --> [Take snapshot] --> [Copy snapshot with encryption enabled (K
 | "How long is the IAM DB auth token valid?" | **15 minutes** |
 | "IAM auth requirement" | **TLS** (SSL) connection |
 | "Rotate DB credentials automatically" | **AWS Secrets Manager** |
-| "Restrict which servers can reach the DB" | **Security group** with source = the app's SG |
-| "SSH into the RDS instance" | **Not possible.** Use **RDS Custom** (Oracle/SQL Server) or EC2. |
 | "Track which queries were run on the DB" | **Audit logs** |
 | "Keep DB audit logs for a long time" | **Export to CloudWatch Logs** (set retention) |
 | "Who deleted the DB instance?" | **CloudTrail** |
@@ -1252,6 +1002,9 @@ App N --/
 | **Max idle connections percentage** | How many idle connections the proxy keeps warm |
 | **Connection borrow timeout** | How long a client waits for a free connection (default **120 s**) |
 | **Idle client connection timeout** | Closes idle client connections (default **30 minutes**) |
+
+- It reduces **database load and open connections**, not query latency (it adds a small hop).
+- **Pinning** reduces multiplexing, so avoid session-level state where you can.
 
 ### 3. Benefit 2: Faster Failover
 
@@ -1335,20 +1088,7 @@ App (IAM role) --IAM auth token--> [RDS Proxy] --credentials from Secrets Manage
 
 - **Cost:** billed **per vCPU-hour** of the provisioned DB instance (Aurora Serverless v2 is billed per **ACU-hour**). It is not free, so use it when pooling or failover handling is needed.
 
-### 9. Key Facts to Remember
-
-- **RDS Proxy = managed connection pooler** for RDS and Aurora.
-- Three main benefits: **connection pooling**, **faster failover (up to 66%)**, and **IAM authentication enforcement** with **Secrets Manager**.
-- **Serverless**, **auto scaling**, and **multi-AZ** highly available.
-- **No code change** other than the endpoint.
-- **Never public.** It is reachable **only from inside the VPC**.
-- **Lambda** is the classic use case.
-- Supports **MySQL, PostgreSQL, MariaDB, SQL Server, Aurora MySQL, and Aurora PostgreSQL**.
-- It reduces **database load and open connections**, not query latency (it adds a small hop).
-- **Pinning** reduces multiplexing, so avoid session-level state where you can.
-- The DB and proxy **security groups** must allow each other.
-
-### 10. Exam-Style Recall
+### 9. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1445,6 +1185,8 @@ Application  ----------------------->  [ElastiCache]
 - **Cache invalidation:** a cache can hold **stale data**, so you need a strategy (for example **TTL**, or deleting or updating entries when the DB changes).
   - The lecture calls this "the whole difficulty" of caching.
   - The goal is that **only current data** is served.
+- A cache is **not** a system of record. The **database remains the source of truth**.
+- Related services: **DAX** (cache for **DynamoDB**), **CloudFront** (cache at the edge for content), **API Gateway caching**. They solve different caching problems.
 
 ### 4. Architecture 2: User Session Store
 
@@ -1486,20 +1228,7 @@ User's next request --> App instance B --reads session--> [ElastiCache] --> stil
 - Pick **Memcached** for a **simple, multi-threaded, horizontally scaled** cache where losing the cache is acceptable.
 - Sorted sets give an **ordered ranking**, so they suit **gaming leaderboards**.
 
-### 6. Key Facts to Remember
-
-- ElastiCache = **managed Redis, Memcached, or Valkey**, in memory, with very low latency.
-- Use it to **offload read-heavy workloads from databases** and to **hold session state**.
-- It requires **application code changes**. It is not transparent like **RDS Proxy**.
-- **Cache hit** = served from the cache. **Cache miss** = read the DB, then populate the cache.
-- **Invalidating or expiring** cached data (**TTL**) is the hard part. Stale data is the risk.
-- **Redis**: Multi-AZ auto-failover, read replicas, **AOF** durability, backup and restore, sets and sorted sets.
-- **Memcached**: sharding, multi-threaded, **no HA, no replication, no persistence**.
-- ElastiCache lives in a **VPC** and is **not** reachable over the internet.
-- A cache is **not** a system of record. The **database remains the source of truth**.
-- Related services: **DAX** (cache for **DynamoDB**), **CloudFront** (cache at the edge for content), **API Gateway caching**. They solve different caching problems.
-
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1518,40 +1247,37 @@ User's next request --> App instance B --reads session--> [ElastiCache] --> stil
 | "Which cache engine has no replication?" | **Memcached** |
 | "Cache for DynamoDB" | **DAX**, not ElastiCache |
 | "Cache static content close to users" | **CloudFront** |
+| "Run ElastiCache on premises" | **AWS Outposts** |
+| "Controls which subnets the cache can run in" | **Subnet group** |
+| "Password-protect a Redis cluster" | **Redis AUTH token** (needs **in-transit encryption**) |
+| "Fine-grained user permissions on Redis" | **User group ACL (RBAC)** |
+| "Encrypt cache data on disk / in backups" | **Encryption at rest** (KMS) |
+| "Limit which apps can reach the cache" | **Security group** (source = the app's SG) |
+| "Cache that needs no capacity management" | **ElastiCache Serverless** |
+| "Redis with a primary and up to 5 read replicas, single shard" | **Cluster mode disabled** |
+| "Scale writes by partitioning data across shards" | **Cluster mode enabled** |
+| "Failover and availability for the cache" | **Multi-AZ with auto-failover** (needs replicas) |
+| "Endpoint for read-only traffic" | **Reader endpoint** |
+| "Send slow queries to CloudWatch" | **Slow log** delivery to CloudWatch Logs |
+| "Connect to ElastiCache from outside the VPC" | **Not directly possible.** Use VPN, a bastion host, or an app inside the VPC. |
+| "Redis replacement, open source, recommended" | **Valkey** |
 
 ---
 
 ## ElastiCache Hands On
 
-### TL;DR
-
-- Created a **node-based ElastiCache for Redis OSS** cluster named `DemoCluster`, with **cluster mode disabled**, **Multi-AZ off**, **0 replicas**, and a **micro node type** to keep cost low.
-- The wizard options map closely to RDS: engine and version, port, parameter group, node type, **subnet group**, **encryption at rest and in transit**, **access control**, **security groups**, **backups**, **maintenance window**, and **log delivery to CloudWatch Logs**.
-- Engine choices now include **Valkey** (a Redis-compatible replacement, the recommended option), **Redis OSS**, and **Memcached**.
-- Two deployment options: **Serverless** or **node-based cluster**. The demo used node-based so you can see every setting.
-- Connecting needs **application code** and VPC access, so the lecturer didn't demo it. The console shows the **primary endpoint**, the **reader endpoint**, nodes, metrics, logs, and network security.
-- To clean up: **Actions, Delete**, skip the final backup, and type the cluster name.
-
 ### 1. Starting the Wizard
 
-#### 1.1 Engine
+- **Engine:** **Redis OSS** in the demo. **Valkey** is the recommended open-source replacement and shows the same wizard options. **Memcached** is the other engine.
 
-| Option | Notes |
-|---|---|
-| **Valkey** | Open-source **replacement for Redis**. It is the **recommended** choice and offers the same options. |
-| **Redis OSS** | **Used in the demo** |
-| **Memcached** | The other classic ElastiCache engine |
-
-- The lecturer says Valkey and Redis have the **exact same options** in the wizard.
-
-#### 1.2 Deployment option
+#### 1.1 Deployment option
 
 | Option | What it is |
 |---|---|
 | **Serverless** | Capacity scales automatically and you don't pick node types. Billed on **data stored** and **compute used (ECPUs)**. |
 | **Node-based cluster** | **You choose node type, node count, and shards.** Billed per **node-hour**. **Used in the demo.** |
 
-#### 1.3 Creation method
+#### 1.2 Creation method
 
 | Method | What it does |
 |---|---|
@@ -1656,56 +1382,6 @@ User's next request --> App instance B --reads session--> [ElastiCache] --> stil
 redis-cli -h <primary-endpoint> -p 6379 ping   # expect: PONG
 ```
 
-- The console resembles **RDS** because the service is similar. ElastiCache is for **Redis, Valkey, and Memcached**.
-
-### 5. Key Facts to Remember
-
-- ElastiCache engines: **Valkey, Redis OSS, Memcached**. Valkey is the recommended Redis replacement.
-- Two deployment modes: **Serverless** and **node-based**.
-- **Cluster mode disabled** = 1 shard, 1 primary, up to **5 replicas**. **Enabled** = multiple shards.
-- **Multi-AZ** needs replicas. **Auto-failover** promotes a replica.
-- A **subnet group** controls which subnets the nodes can use.
-- **Encryption at rest** uses **KMS**. **Encryption in transit** uses **TLS**.
-- **Redis AUTH** and **user group ACLs** need **in-transit encryption**.
-- **Security groups** control network access, and there is **no public access**.
-- Backups, maintenance windows, and CloudWatch Logs delivery work like **RDS**.
-- **Primary endpoint** for writes, **reader endpoint** for reads.
-- Default ports: **Redis 6379**, **Memcached 11211**.
-- You must **write code** to use the cache. There is no "turn it on" mode.
-
-### 6. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Run ElastiCache on premises" | **AWS Outposts** |
-| "Controls which subnets the cache can run in" | **Subnet group** |
-| "Password-protect a Redis cluster" | **Redis AUTH token** (needs **in-transit encryption**) |
-| "Fine-grained user permissions on Redis" | **User group ACL (RBAC)** |
-| "Encrypt cache data on disk / in backups" | **Encryption at rest** (KMS) |
-| "Encrypt data between app and cache" | **Encryption in transit** (TLS) |
-| "Limit which apps can reach the cache" | **Security group** (source = the app's SG) |
-| "Cache that needs no capacity management" | **ElastiCache Serverless** |
-| "Redis with a primary and up to 5 read replicas, single shard" | **Cluster mode disabled** |
-| "Scale writes by partitioning data across shards" | **Cluster mode enabled** |
-| "Failover and availability for the cache" | **Multi-AZ with auto-failover** (needs replicas) |
-| "Endpoint for read-only traffic" | **Reader endpoint** |
-| "Send slow queries to CloudWatch" | **Slow log** delivery to CloudWatch Logs |
-| "Connect to ElastiCache from outside the VPC" | **Not directly possible.** Use VPN, a bastion host, or an app inside the VPC. |
-| "Redis replacement, open source, recommended" | **Valkey** |
-
-### 7. Hands-On Checklist
-
-- [x] ElastiCache console, **Create cache**, choose engine **Redis OSS** (or **Valkey**)
-- [x] Deployment option: **Node-based cluster**, creation method: **configure and create**
-- [x] **Cluster mode: Disabled**, name `DemoCluster`, location **AWS Cloud**
-- [x] **Multi-AZ: off**, **auto-failover: leave default**
-- [x] Node type **micro** (`t2`, `t3`, or `t4g`), **replicas = 0**
-- [x] Create a **subnet group** `my-first-subnet-group` in your VPC
-- [x] Review **encryption at rest** and **encryption in transit**, then **disable in transit** for the demo
-- [x] Review **access control** (Redis AUTH vs user group ACL), **security groups**, **backup**, **maintenance window**, **log delivery**, and **tags**
-- [x] Review the summary, then click **Create** and wait for **Available**
-- [x] Open the cluster and note the **primary endpoint** and **reader endpoint**, then check **nodes, metrics, logs, and network security**
-
 ---
 
 ## ElastiCache Strategies
@@ -1789,6 +1465,8 @@ user = get_user(17)
 ```
 
 **How to spot it:** a **`get`** function that **checks the cache first**, **falls back to the DB when the result is `None`**, then **sets the cache**.
+
+- ElastiCache requires **application code changes**. These patterns live in **your code**.
 
 ### 3. Strategy 2: Write-Through
 
@@ -1883,7 +1561,7 @@ cache.set(user_id, record, ex=300)   # Redis: expire after 300 seconds (5 minute
 - **Write-through** is more involved. It is an **optimization on top of lazy loading**, not a strategy on its own. **Don't make it your first priority.** Add it if you need to reduce staleness.
 - **TTL** is usually a good idea, **except when using write-through** (per the lecture), since write-through already keeps entries fresh. Set TTLs to **sensible values for your app**.
 - **Only cache data that makes sense** (profiles, blog posts), and **not data that must be exact** (pricing, bank balances).
-- **Caching is hard.** This lecture is only an introduction.
+- You can be asked to **read pseudocode** and name the strategy.
 
 ### 7. Additional Concepts (Beyond the Lecture)
 
@@ -1895,20 +1573,7 @@ cache.set(user_id, record, ex=300)   # Redis: expire after 300 seconds (5 minute
 | **Redis eviction policy** | The default on ElastiCache for Redis is **`volatile-lru`** (evict least recently used keys **that have a TTL**). Other policies exist (`allkeys-lru`, `noeviction`, and so on). **Memcached** uses LRU. |
 | **Memory headroom** | Reserve memory so backups and replication don't push the node into swap or errors. |
 
-### 8. Key Facts to Remember
-
-- **Lazy loading = cache-aside = lazy population.** It **reads the cache first**, loads from the DB on a miss, then **writes to the cache**.
-- **Cache hit** = data in the cache. **Cache miss** = not in the cache, so go to the DB.
-- **Lazy loading:** a miss = **3 round trips**. **Stale data possible.** Only **requested** data is cached. A cache failure is **not fatal**.
-- **Write-through:** **writes to the DB and the cache**. **Never stale.** **Write penalty.** **Missing data** until written. **Cache churn.**
-- **Write-through is usually combined with lazy loading.**
-- **TTL** controls how long an item lives. **LRU** evicts the least recently used item when memory is full.
-- **Too many evictions** means **scale up or out**.
-- You can be asked to **read pseudocode** and name the strategy.
-- ElastiCache requires **application code changes**. These patterns live in **your code**.
-- Don't cache data where **staleness is unacceptable**.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1959,6 +1624,9 @@ cache.set(user_id, record, ex=300)   # Redis: expire after 300 seconds (5 minute
 | **Network** | Runs **inside your VPC**, with no public access. Access it through **security groups**. |
 | **Default port** | **6379** |
 
+- Redis-compatible, so **existing Redis clients and apps** work with little change.
+- Runs in a **VPC** only, and is **not** publicly accessible.
+
 ### 2. MemoryDB vs ElastiCache for Redis
 
 | Aspect | **ElastiCache for Redis** | **MemoryDB for Redis** |
@@ -1972,7 +1640,6 @@ cache.set(user_id, record, ex=300)   # Redis: expire after 300 seconds (5 minute
 | **Cost** | Lower | **Higher** |
 | **Pick it when** | You want to **offload a database** | You want **Redis speed and durability** in one service |
 
-- **Lecture's key idea:** Redis (via ElastiCache) is meant as a **cache with some durability**. MemoryDB is **really a database** with a Redis-compatible API.
 - Using MemoryDB avoids running **two systems** (a cache and a database) and the **cache invalidation** problems that come with them.
 
 ### 3. How Durability Works
@@ -1992,6 +1659,7 @@ Write is acknowledged only after the log has stored it.
 - A **failover** promotes a replica that is **consistent with the log**, so **no data loss**.
 - **Consistency:** reads from the **primary** are **strongly consistent**. Reads from **replicas** are **eventually consistent**.
 - **Snapshots** (backups) are stored in **S3**, and you can restore or keep them for retention.
+- Highly available: **Multi-AZ**, with automatic failover and **no data loss**.
 
 ### 4. Scaling and Architecture
 
@@ -2017,7 +1685,6 @@ Write is acknowledged only after the log has stored it.
 - **Media streaming**: metadata, watch history, and personalization.
 - **Microservices:** many services needing a shared, **Redis-compatible, in-memory database**.
 - Also: shopping carts, real-time bidding, IoT state, and counters.
-- **Lecture's example:** a fleet of microservices that need a Redis-compatible in-memory database means **MemoryDB**. You get **ultra-fast in-memory speed** plus a **Multi-AZ transaction log** for **fast recovery and durability**.
 
 ### 7. Choosing the Right In-Memory Option
 
@@ -2030,19 +1697,7 @@ Write is acknowledged only after the log has stored it.
 | **Durable key-value or document store** (not in memory) | **DynamoDB** |
 | **Relational data** with SQL | **RDS / Aurora** |
 
-### 8. Key Facts to Remember
-
-- **MemoryDB = durable Redis-compatible in-memory database.** It is a **database**, not a cache.
-- **Durability comes from the Multi-AZ transaction log.**
-- Microsecond reads, single-digit millisecond writes, and over **160 million requests per second**.
-- Scales from **tens of GB to hundreds of TB**.
-- Highly available: **Multi-AZ**, with automatic failover and **no data loss**.
-- Redis-compatible, so **existing Redis clients and apps** work with little change.
-- Runs in a **VPC** only, and is **not** publicly accessible.
-- **Higher cost** than ElastiCache, because it provides durability.
-- It **doesn't need a separate backing database** like ElastiCache does.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -2052,8 +1707,6 @@ Write is acknowledged only after the log has stored it.
 | "Ultra-fast performance with data durability" | **MemoryDB** |
 | "Over 160 million requests per second" | **MemoryDB** |
 | "Microservices need a shared Redis-compatible in-memory database" | **MemoryDB** |
-| "Cache in front of RDS to reduce load" | **ElastiCache**, not MemoryDB |
-| "Cache for DynamoDB" | **DAX** |
 | "What provides MemoryDB's durability?" | **Multi-AZ transaction log** |
 | "Where are MemoryDB snapshots stored?" | **S3** |
 | "Do I need a separate database behind MemoryDB?" | **No**, it is the database |

@@ -123,28 +123,19 @@ At its core S3 is storage, so the use cases are broad:
 - AWS **recommends multipart for objects over about 100 MB**, because it gives **parallel uploads, faster throughput, and retry of just a failed part**.
 - The 50 TB figure is the newer limit. Older material (and older exam prep) says **5 TB**. If an exam question says 5 TB, that is the older number.
 
-#### 4.4 Metadata
+#### 4.4 Metadata and tags
 
-- A list of **key-value pairs** attached to the object.
-- Can be **system-defined** (for example Content-Type, Content-Length, Last-Modified) or **user-defined** (custom keys, sent as `x-amz-meta-*` headers).
-- Used to describe the file (for example content type or custom attributes).
-- Metadata is set **at upload**. Changing user metadata later means **copying the object onto itself**.
+- **Metadata:** key-value pairs, **system-defined** or **user-defined** (`x-amz-meta-*`), set at upload.
+- **Tags:** up to **10** Unicode key-value pairs per object, used for security conditions and lifecycle rules.
+- Both are covered in detail in the S3 Object Tags & Metadata section.
 
-#### 4.5 Tags
-
-- **Unicode key-value pairs, up to 10 per object.**
-- Useful for **security** and **lifecycle**:
-  - **Security:** use tags in **IAM policy conditions** or access control.
-  - **Lifecycle:** apply **lifecycle rules** to objects with certain tags.
-- Also useful for **cost allocation** and **analytics filtering** (extras).
-
-#### 4.6 Version ID
+#### 4.5 Version ID
 
 - If **versioning is enabled** on the bucket, each object also has a **version ID**.
 - With versioning off, the version ID is `null`.
 - Versioning comes in a later lecture.
 
-#### 4.7 Object anatomy
+#### 4.6 Object anatomy
 
 ```
 Object
@@ -168,20 +159,7 @@ Object
 | **Pricing** | Pay for **storage**, **requests**, **data transfer out**, and **optional features**. Upload into S3 is free. |
 | **Storage classes** | Standard, Intelligent-Tiering, Standard-IA, One Zone-IA, Glacier Instant/Flexible/Deep Archive (later lectures) |
 
-### 6. Key Facts to Remember
-
-- **S3 = object storage**, "infinitely scaling".
-- **Buckets are regional**, and the console shows all of them in a global list.
-- **Classic rule: bucket names are globally unique.** The newer account regional namespace relaxes this by adding a suffix.
-- Bucket names: **no uppercase, no underscores, not an IP address**, start with a **lowercase letter or number**, not start with `xn--`, not end with `-s3alias`.
-- **Key = prefix + object name.** S3 has **no real directories**.
-- **Max object size 50 TB** (older docs: 5 TB). **Over 5 GB means multipart upload.**
-- Metadata = key-value pairs (system or user). **Tags = up to 10** Unicode pairs, used for **security and lifecycle**.
-- **Version ID** exists only if **versioning is on**.
-- Use cases: **backup, DR, archive, hybrid cloud, hosting, media, data lake, software delivery, static websites**.
-- Examples: **NASDAQ** (S3 Glacier, 7 years) and **Sysco** (analytics).
-
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -200,19 +178,22 @@ Object
 | "Replicate data to another region for disaster recovery" | **S3 cross-region replication** (later lecture) |
 | "Archive data cheaply for years" | **S3 Glacier** storage classes |
 | "Host a static website without servers" | **S3 static website hosting** |
+| "Bucket creation fails: name already exists" | Bucket names are **globally unique** (use the **Account Regional namespace** to avoid it) |
+| "Use the same bucket name in multiple regions or accounts" | **Account Regional namespace** |
+| "Default access on a new bucket" | **Private**, with **Block Public Access on** |
+| "Object URL returns AccessDenied" | Object or bucket is **not public** |
+| "Pre-signed URL permissions" | Same as the **identity that generated it** |
+| "Pre-signed URL expires" | **Yes**, after the set time |
+| "Create a pre-signed URL from the CLI" | `aws s3 presign` |
+| "Default encryption for new buckets" | **SSE-S3** |
+| "Bucket type for low-latency use cases" | **Directory bucket** |
+| "Are S3 folders real?" | **No.** They are **key prefixes**. |
+| "S3 URI format" | `s3://bucket/key` |
+| "Where do you see buckets from all regions?" | The **S3 console list** (global view) |
 
 ---
 
 ## S3 Hands On
-
-### TL;DR
-
-- Created a **general purpose** S3 bucket in `eu-west-1` (Ireland) with the defaults: **ACLs disabled**, **Block all public access ON**, **versioning OFF**, **SSE-S3 encryption** with **Bucket Key** enabled.
-- **Bucket names must be unique.** The name `test` failed because someone already owns it. Fixes: keep incrementing a unique name, or use the new **Account Regional namespace**, where AWS adds an account-and-region suffix so any name works.
-- The console lists **buckets from all regions** in one place, but each bucket lives in one region.
-- Uploaded `coffee.jpg`. **Open** in the console worked, but the **Object URL** returned **AccessDenied**.
-- Why: **Open** uses a **pre-signed URL** (your credentials encoded in a signature). The plain **Object URL** is public, and the bucket blocks public access.
-- Created an `images` "folder", uploaded `beach.jpg` into it, then deleted the folder by typing **permanently delete**.
 
 ### 1. Creating the Bucket
 
@@ -234,24 +215,13 @@ Object
 - Everything except the **name** was left at its default.
 - Click **Create bucket**.
 
-#### 1.2 Bucket naming: Global vs Account Regional namespace
-
-| | **Global namespace** (classic) | **Account Regional namespace** (new) |
-|---|---|---|
-| **Uniqueness** | Name must be **unique across all AWS accounts and regions** | Name only needs to be unique **within your account and region** |
-| **How** | You pick the whole name | You pick a name, and AWS **appends a suffix** with your **account number and region** |
-| **Same name in several regions or accounts?** | **No** | **Yes** (each gets its own suffix) |
-| **Collisions** | Common | **None** |
-| **Recommended going forward?** | Legacy | **Yes** |
+#### 1.2 Name collisions
 
 **Demo of the problem:**
 1. Name the bucket `test` and click **Create bucket**.
 2. Error: **a bucket with the same name already exists**. Someone else owns `test`.
 3. Trying `stephane-demo-s3-v6` also failed (taken). The lecturer kept incrementing (v7 ... v12) until one worked.
 4. The Account Regional option avoids this loop. You can name it `demo`, and the full name becomes the name plus the account and region suffix.
-
-- The exact suffix format can change, so check the current S3 docs.
-- If an exam question describes the classic behavior, the answer is still "**bucket names are globally unique**".
 
 ### 2. Viewing Your Buckets
 
@@ -307,21 +277,7 @@ Pre-signed URL:  https://my-bucket.s3.eu-west-1.amazonaws.com/coffee.jpg
                  &X-Amz-Expires=...&X-Amz-Signature=...
 ```
 
-#### 5.3 Pre-signed URL details
-
-| Property | Detail |
-|---|---|
-| **What it is** | A URL containing a **signature** that proves **who made the request** |
-| **Credentials** | Built from **your credentials**. The secret key isn't in the URL, but the **signature** and **access key ID** are. |
-| **Permissions** | It carries **the permissions of the identity that created it** (here, the lecturer's) |
-| **Expiry** | **Time-limited.** After it expires, the URL stops working. |
-| **Who can use it** | **Anyone who has the URL**, until it expires. Treat it like a temporary secret. |
-| **Use case** | Give **temporary access** to a private object (download) or let someone **upload** to a specific key, without making the bucket public or sharing credentials |
-| **Created by** | The console (Open), the **CLI** (`aws s3 presign`), or an **SDK** |
-
-- The lecturer: "obviously this URL is only for me" (it uses his credentials). In practice anyone you give the URL to can use it while it is valid.
-- Later in the section: how to **make the object public** so the plain Object URL works too (it needs **Block Public Access** turned off plus a **bucket policy**).
-- Pre-signed URLs come up again in the exam (for example **S3 uploads from clients** and **CloudFront signed URLs**).
+- A pre-signed URL carries a **signature** and the **permissions of the identity that created it**, and it **expires**. Anyone holding it can use it until then (details in the S3 Pre-signed URLs section).
 
 ### 6. Folders (Prefixes)
 
@@ -332,9 +288,7 @@ Pre-signed URL:  https://my-bucket.s3.eu-west-1.amazonaws.com/coffee.jpg
 3. The destination now reads `s3://<bucket>/images/`.
 4. Go up one level: you see the `images/` folder, and inside it `beach.jpg`.
 
-- This looks like **Google Drive or Dropbox**, but S3 has **no real folders**.
 - The object's key is **`images/beach.jpg`**. `images/` is just a **prefix**.
-- The console creates a **zero-byte object named `images/`** to show an empty folder.
 
 #### 6.2 Delete a folder
 
@@ -344,54 +298,6 @@ Pre-signed URL:  https://my-bucket.s3.eu-west-1.amazonaws.com/coffee.jpg
 
 - Deleting a folder deletes **every object under that prefix**.
 - With **versioning off**, deletion is **permanent**. With versioning on, a delete only adds a **delete marker**.
-
-### 7. Key Facts to Remember
-
-- A new bucket is **private**: **Block Public Access ON**, **ACLs disabled**, and **encrypted by default (SSE-S3)**.
-- **General purpose** buckets are the standard type. **Directory** buckets are for low-latency use cases.
-- **Global namespace** names must be unique worldwide. **Account Regional namespace** removes the clash with a suffix.
-- The console **lists buckets from all regions**, but each bucket is **regional**.
-- **Object URL = public URL.** It returns **AccessDenied** for a private object.
-- **Open in the console = pre-signed URL**, which works because it carries **your identity and permissions**.
-- A pre-signed URL is **time-limited** and anyone holding it can use it until it expires.
-- "Folders" are **prefixes** in the key. Deleting a folder deletes **every object with that prefix**.
-- **AccessDenied (403)** on a public URL for a private bucket is expected behavior, not a bug.
-- S3 pricing and settings like **versioning**, **encryption**, and **public access** are covered in the next lectures.
-
-### 8. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Bucket creation fails: name already exists" | Bucket names are **globally unique** (use the **Account Regional namespace** to avoid it) |
-| "Use the same bucket name in multiple regions or accounts" | **Account Regional namespace** |
-| "Default access on a new bucket" | **Private**, with **Block Public Access on** |
-| "Object URL returns AccessDenied" | Object or bucket is **not public** |
-| "Give someone temporary access to a private object" | **Pre-signed URL** |
-| "Pre-signed URL permissions" | Same as the **identity that generated it** |
-| "Pre-signed URL expires" | **Yes**, after the set time |
-| "Create a pre-signed URL from the CLI" | `aws s3 presign` |
-| "Default encryption for new buckets" | **SSE-S3** |
-| "Bucket type for low-latency use cases" | **Directory bucket** |
-| "Are S3 folders real?" | **No.** They are **key prefixes**. |
-| "S3 URI format" | `s3://bucket/key` |
-| "Where do you see buckets from all regions?" | The **S3 console list** (global view) |
-
-### 9. Hands-On Checklist
-
-- [x] S3 console, **Create bucket**, pick a region (for example `eu-west-1`)
-- [x] Bucket type **General purpose**
-- [x] Try the name `test` and see the **"bucket already exists"** error
-- [x] Use a unique name (or the **Account Regional namespace**)
-- [x] Keep **ACLs disabled**, **Block all public access ON**, **versioning disabled**, **SSE-S3** with **Bucket Key**
-- [x] **Create bucket**, then find it in the bucket list (note that **all regions** are shown, and try the search)
-- [x] Open the bucket and **Upload** `coffee.jpg`
-- [x] Click the object and review its **properties** (key, size, type, **Object URL**)
-- [x] Click **Open** and confirm the image displays (**pre-signed URL**)
-- [x] Copy the **Object URL**, open it in a new tab, and confirm **AccessDenied**
-- [x] Compare the two URLs and spot the **signature** in the long one
-- [x] **Create folder** `images`, then upload `beach.jpg` into it
-- [x] Go up a level and see the folder, then **delete** the folder (type **permanently delete**)
-- [x] Keep the bucket for the next S3 lectures. **Clean up at the end of the section:** **empty** the bucket, then **delete** it.
 
 ---
 
@@ -483,19 +389,7 @@ Allow in bucket policy       /
 | **Grant access to another account** | `Principal` set to the **other account's** ARN (**cross-account access**) |
 | **Require HTTPS** (extra) | **Deny** when `aws:SecureTransport` is `false` |
 
-**Force-encryption example (extra, matches the lecture's use case):**
-
-```json
-{
-  "Effect": "Deny",
-  "Principal": "*",
-  "Action": "s3:PutObject",
-  "Resource": "arn:aws:s3:::example-bucket/*",
-  "Condition": {
-    "StringNotEquals": { "s3:x-amz-server-side-encryption": "AES256" }
-  }
-}
-```
+- Force-encryption policy examples (`StringNotEquals` on `s3:x-amz-server-side-encryption`, `Null` on the SSE-C header) are in the S3 Default Encryption section.
 
 ### 5. Access Scenarios (Lecture Diagrams)
 
@@ -588,22 +482,9 @@ IAM user in Account B --> [Bucket policy in Account A: allow that principal] -->
 
 - The console's single toggle **Block all public access** turns on all four.
 - The lecture's rule: if the bucket should never be public, **leave these on**.
+- Public buckets cause **data leaks**, so use them only for intended public content.
 
-### 8. Key Facts to Remember
-
-- S3 security: **IAM policies**, **bucket policies**, **ACLs** (rare, can be disabled), **encryption**, and **Block Public Access**.
-- **Bucket policy = JSON, resource-based, bucket-wide.** The most common method.
-- Key elements: **Resource, Effect, Action, Principal** (plus optional Condition).
-- **Principal `*`** means anyone. **Resource `bucket/*`** means all objects.
-- Access is granted if **(IAM allows OR bucket policy allows) AND no explicit deny**.
-- **Public bucket:** bucket policy with `GetObject` for `*`, **and** Block Public Access off.
-- **Cross-account access:** use a **bucket policy**.
-- **EC2 to S3:** use an **IAM role**, not an IAM user.
-- **Force encryption at upload:** a **Deny** statement in the bucket policy with a **Condition**.
-- **Block Public Access** overrides public policies and can be set at **bucket or account** level.
-- **ACLs are disabled by default** and not recommended.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -621,18 +502,19 @@ IAM user in Account B --> [Bucket policy in Account A: allow that principal] -->
 | "In a bucket policy, what does `Principal: *` mean?" | **Anyone** |
 | "In a bucket policy, what does the `*` in the Resource ARN mean?" | **All objects** in the bucket |
 | "Format of a bucket policy" | **JSON** |
+| "Make an S3 object readable by anyone via its URL" | **Bucket policy** (`s3:GetObject`, `Principal: *`) plus **Block Public Access off** |
+| "Resource ARN for all objects in a bucket" | `arn:aws:s3:::bucket-name/*` |
+| "Which action lets users download an object?" | **`s3:GetObject`** |
+| "Which action lets users list a bucket?" | **`s3:ListBucket`** (on the bucket ARN, no `/*`) |
+| "Tool that helps write a bucket policy" | **AWS Policy Generator** |
+| "Safest way to give temporary access to a private object" | **Pre-signed URL** |
+| "Block public access across the whole account" | **Account-level Block Public Access** |
+| "Principal `*` in a bucket policy" | **Anyone**, including anonymous users |
+| "Prevent accidental public exposure" | Keep **Block Public Access** on |
 
 ---
 
 ## S3 Security: Bucket Policy Hands On
-
-### TL;DR
-
-- Made the `coffee.jpg` object reachable through its **public Object URL** in two steps: (1) turn **off Block Public Access** on the bucket, then (2) attach a **bucket policy** that allows `s3:GetObject` for everyone.
-- The policy was built with the **AWS Policy Generator**: Type **S3 Bucket Policy**, Effect **Allow**, Principal `*`, Action **GetObject**, Resource **`<bucket-arn>/*`**.
-- The **`/*`** matters. `GetObject` is an **object-level** action, so the resource must point at the objects, not at the bucket itself.
-- Result: the Object URL that returned **AccessDenied** earlier now shows the image. **Every object in the bucket is public**, not just `coffee.jpg`.
-- Public buckets are **dangerous**. Only do this when you really want public data.
 
 ### 1. Why Two Steps?
 
@@ -643,10 +525,8 @@ Two independent controls must both allow public access:
 | **Block Public Access** (safety net) | **ON** (blocks everything) | **Turned off** |
 | **Bucket policy** (the actual permission) | **None** | **Added** an Allow `GetObject` for `*` |
 
-- **Block Public Access overrides the bucket policy.** With it on, a public policy is rejected or ignored.
 - **Turning off Block Public Access alone grants nothing.** The bucket policy is what grants access.
 - Order: turn off Block Public Access **first**. With `BlockPublicPolicy` on, the console won't even let you save a public bucket policy.
-- If **account-level** Block Public Access is on, turn it off there too, because it overrides the bucket setting.
 
 ### 2. Step 1: Turn Off Block Public Access
 
@@ -692,12 +572,6 @@ Steps:
 - It looks like `arn:aws:s3:::<your-bucket>`.
 - **Append `/*`** to it.
 
-| ARN | Matches | Use for |
-|---|---|---|
-| `arn:aws:s3:::my-bucket` | The **bucket itself** | Bucket-level actions (for example `s3:ListBucket`) |
-| `arn:aws:s3:::my-bucket/*` | **Every object** in the bucket | Object-level actions (for example `s3:GetObject`) |
-
-- The lecturer: objects within a bucket come **after a slash**, and the **`*`** stands for all of them.
 - Without `/*`, the `GetObject` statement matches nothing and **access stays denied**.
 - To scope it down, use a prefix: `arn:aws:s3:::my-bucket/images/*`.
 
@@ -726,7 +600,6 @@ Steps:
 
 #### 3.5 What the policy means
 
-- **Anyone** (`Principal: *`) is **allowed** (`Effect: Allow`) to **read** (`s3:GetObject`) **any object** (`/*`) in this bucket.
 - It allows reading objects. It does **not** allow listing, uploading, or deleting.
 - Anonymous visitors can fetch an object **only if they know its URL**.
 
@@ -751,54 +624,7 @@ Steps:
 | Object still denied | An **explicit deny** elsewhere, or the object is **encrypted with SSE-KMS** and anonymous users can't use the key |
 | Object **uploaded by another account** is denied | Object ownership. Keep **ACLs disabled** (bucket owner enforced). |
 
-### 6. Cleanup and Safety
-
-- **Don't leave a bucket public** after the demo. To undo:
-  1. **Delete the bucket policy** (or remove the public statement).
-  2. **Re-enable Block all public access.**
-- If you will not use the bucket, **empty it and delete it** at the end of the section.
-- To verify nothing is public, check the bucket's **Permissions overview** and **IAM Access Analyzer for S3**.
-- Safer ways to share: **pre-signed URLs** for temporary access, or **CloudFront with Origin Access Control** to keep the bucket private.
-
-### 7. Key Facts to Remember
-
-- A **public bucket** needs **both**: **Block Public Access off** and a **bucket policy** allowing `s3:GetObject` to `Principal: *`.
-- **Block Public Access overrides** bucket policies. Turn it off **first**.
-- Object-level actions need the **`/*`** resource ARN. Bucket-level actions use the bare bucket ARN.
-- The **AWS Policy Generator** builds the JSON for you. **Policy examples** in the console show common patterns.
-- A policy with `GetObject` for `*` makes **all objects** in the bucket readable by anyone with the URL.
-- **Object URL** works for public objects only. A **pre-signed URL** works for private objects, using the creator's permissions.
 - Stray spaces or typos in the ARN break the policy.
-- Public buckets cause **data leaks**, so use them only for intended public content.
-
-### 8. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Make an S3 object readable by anyone via its URL" | **Bucket policy** (`s3:GetObject`, `Principal: *`) plus **Block Public Access off** |
-| "Public bucket policy was saved but objects are still denied" | **Block Public Access** is still on |
-| "Resource ARN for all objects in a bucket" | `arn:aws:s3:::bucket-name/*` |
-| "Which action lets users download an object?" | **`s3:GetObject`** |
-| "Which action lets users list a bucket?" | **`s3:ListBucket`** (on the bucket ARN, no `/*`) |
-| "Tool that helps write a bucket policy" | **AWS Policy Generator** |
-| "Safest way to give temporary access to a private object" | **Pre-signed URL** |
-| "Block public access across the whole account" | **Account-level Block Public Access** |
-| "Principal `*` in a bucket policy" | **Anyone**, including anonymous users |
-| "Prevent accidental public exposure" | Keep **Block Public Access** on |
-
-### 9. Hands-On Checklist
-
-- [x] Open the bucket, **Permissions** tab
-- [x] **Block public access (bucket settings)**, **Edit**, untick **Block all public access**, save, and confirm
-- [x] Check the **Permissions overview** now says objects can be public
-- [x] Scroll to **Bucket policy** (none yet), look at the **Policy examples**, then open the **Policy generator**
-- [x] Generator: type **S3 Bucket Policy**, effect **Allow**, principal `*`, service **Amazon S3**, action **GetObject**
-- [x] Copy the **bucket ARN** from the bucket's Properties tab and paste it as the ARN, then **append `/*`**
-- [x] **Add Statement**, **Generate Policy**, and copy the JSON
-- [x] Paste it into the **Bucket policy** editor, remove any stray spaces, and **Save changes**
-- [x] Open `coffee.jpg`, copy the **Object URL**, and open it in a new tab (or private window)
-- [x] Confirm the image displays (it was **AccessDenied** before)
-- [x] **Clean up:** delete the bucket policy and re-enable **Block all public access** (or empty and delete the bucket at the end of the section)
 
 ---
 
@@ -903,21 +729,10 @@ User --> http://bucket.s3-website-region.amazonaws.com --> [S3 bucket: index.htm
 | **Costs** | Pay for storage, requests, and data transfer out. Static hosting itself has no extra fee. |
 | **Not for** | Server-side rendering, databases, or secret handling. Use **EC2, Lambda, or Amplify** for those. |
 
-### 6. Key Facts to Remember
-
-- S3 can host **static websites** only (no server-side code).
-- The **website URL depends on the region** (dash or dot style after `s3-website`).
-- Website endpoints are **HTTP only**. Use **CloudFront** for HTTPS.
-- It requires **public read access**: **Block Public Access off** plus a **bucket policy** with `s3:GetObject`.
-- **403 Forbidden** means the bucket isn't public, so **add a bucket policy**.
-- The **bucket name** matters if you use a **custom domain** with Route 53.
-- Enable the feature with **Static website hosting** in the bucket's Properties, and set an **index document**.
-
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
-| "Host a static website without servers" | **S3 static website hosting** |
 | "S3 website returns 403 Forbidden" | The bucket isn't **public**. Add a **bucket policy** (and turn off Block Public Access). |
 | "S3 website needs HTTPS" | Put **CloudFront** in front |
 | "Does the S3 website endpoint support HTTPS?" | **No**, HTTP only |
@@ -926,18 +741,18 @@ User --> http://bucket.s3-website-region.amazonaws.com --> [S3 bucket: index.htm
 | "Point `www.example.com` at an S3 website" | **Route 53 Alias record**, with a bucket named the same as the domain |
 | "Serve a private bucket's content publicly without making the bucket public" | **CloudFront with OAC** |
 | "Policy needed so website visitors can read objects" | **`s3:GetObject`** for `Principal: *` on `bucket/*` |
+| "Where do you enable S3 static website hosting?" | Bucket **Properties**, **Static website hosting** |
+| "Required setting for a static website bucket" | An **index document** (and the file must exist) |
+| "Default page shown for the root URL" | The **index document** |
+| "Website shows 404 on the root" | **Index document is missing** |
+| "Custom page for errors" | The **error document** |
+| "Serve the site over HTTPS" | **CloudFront** in front of the bucket |
+| "Redirect all requests to another host" | Hosting type **Redirect requests for an object** |
+| "Files hosted must be..." | **Publicly readable** (for the website endpoint) |
 
 ---
 
 ## S3 Website Hands On
-
-### TL;DR
-
-- Enabled **static website hosting** on the existing bucket: **Properties**, then **Static website hosting**, then **Edit**, then **Host a static website**, with **index document** `index.html`.
-- Uploaded `beach.jpg` and `index.html`. The **index document must exist as an object** in the bucket, or the site has nothing to serve.
-- Opened the **bucket website endpoint** (shown at the bottom of Properties after enabling hosting). It rendered the page "I love coffee. Hello world!" plus `coffee.jpg`.
-- It works only because the **public bucket policy** from the previous lecture is still in place. The console warns that all content must be **publicly readable**.
-- `beach.jpg` also loads. The bucket policy covers **every object** (`/*`), not just one file.
 
 ### 1. Starting Point
 
@@ -973,7 +788,6 @@ User --> http://bucket.s3-website-region.amazonaws.com --> [S3 bucket: index.htm
 | **Error document** | Optional | Served on errors such as a 404. |
 | **Redirection rules** | Optional | JSON routing rules, an advanced option. |
 
-- The **warning in the console**: to use the bucket as a **website endpoint**, **all content must be publicly readable**. That was handled in the previous lecture.
 - The index document **name is just a setting**. The file isn't created for you, so you upload it.
 
 ### 4. Upload `index.html`
@@ -995,7 +809,6 @@ A minimal equivalent (the course file isn't in the transcript, so this is my ver
 ```
 
 - The page references `coffee.jpg` by a **relative path**, so the image must sit next to `index.html` in the bucket.
-- **Without `index.html`**, opening the website endpoint returns an error (typically **404** because the index document is missing).
 
 ### 5. Open the Website
 
@@ -1014,70 +827,13 @@ A minimal equivalent (the course file isn't in the transcript, so this is my ver
 
 - This confirms: static hosting is on, and the **public bucket policy** lets anyone read every object.
 
-### 6. Website Endpoint vs Object URL
-
-| | **Website endpoint** | **Object URL (REST endpoint)** |
-|---|---|---|
-| **Example** | `http://<bucket>.s3-website[-.]<region>.amazonaws.com` | `https://<bucket>.s3.<region>.amazonaws.com/coffee.jpg` |
-| **Request for `/`** | Serves the **index document** | Not meaningful (returns the bucket listing or an error) |
-| **HTTPS** | **No** (HTTP only) | Yes |
-| **Error document and redirects** | **Yes** | No |
-| **Access** | **Public reads only** | Public, pre-signed, IAM, or OAC |
-
-- The page itself is loaded from the **website endpoint**. The image inside it was loaded from the same endpoint, because the path is relative.
-
-### 7. Troubleshooting
+### 6. Troubleshooting
 
 | Symptom | Likely cause |
 |---|---|
-| **403 Forbidden** | Objects not public: **Block Public Access** on, bucket policy missing, or `/*` missing in the Resource ARN |
-| **404 Not Found** (on the root) | **`index.html` isn't uploaded**, or the index document name doesn't match (it's case-sensitive) |
 | **404 on an image** | Wrong file name or path in the HTML (keys are case-sensitive) |
-| Browser says **"Not secure"** | Website endpoints are **HTTP only**. Put **CloudFront** in front for HTTPS. |
 | Old content after an update | Browser cache, or a **CloudFront** cache if you use one |
 | **No website endpoint shown** | Static website hosting wasn't saved, or you are in the wrong bucket |
-
-### 8. Key Facts to Remember
-
-- Enable it in **Properties, Static website hosting**. Choose **Host a static website** and set the **index document**.
-- The **index document must be uploaded** as an object. Setting its name isn't enough.
-- The **bucket website endpoint** appears at the bottom of Properties after you enable hosting.
-- Needs **public reads**: **Block Public Access off** plus a **bucket policy** with `s3:GetObject` on `bucket/*`.
-- The policy covers **all objects**, so `beach.jpg` was public too.
-- Website endpoints are **HTTP only**. Use **CloudFront** for HTTPS.
-- The website feature is for **static content** only.
-- **403** means the bucket isn't public. **404** means the object or index is missing.
-- Clean up when done: a **public bucket** is a data-leak risk.
-
-### 9. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Where do you enable S3 static website hosting?" | Bucket **Properties**, **Static website hosting** |
-| "Required setting for a static website bucket" | An **index document** (and the file must exist) |
-| "Default page shown for the root URL" | The **index document** |
-| "Website shows 403 Forbidden" | Bucket isn't public: add a **bucket policy** and turn off **Block Public Access** |
-| "Website shows 404 on the root" | **Index document is missing** |
-| "Custom page for errors" | The **error document** |
-| "Serve the site over HTTPS" | **CloudFront** in front of the bucket |
-| "Redirect all requests to another host" | Hosting type **Redirect requests for an object** |
-| "Does the website endpoint support HTTPS?" | **No** |
-| "Files hosted must be..." | **Publicly readable** (for the website endpoint) |
-
-### 10. Hands-On Checklist
-
-- [x] Confirm the bucket is still **public**: Block Public Access **off**, and the **bucket policy** allowing `GetObject` for `*` on `/*`
-- [x] **Upload** `beach.jpg` (you should now have `coffee.jpg` and `beach.jpg`)
-- [x] **Properties**, scroll to **Static website hosting**, **Edit**
-- [x] **Enable**, **Host a static website**, **Index document** = `index.html`, then **Save changes**
-- [x] Notice the **warning** about public content
-- [x] **Upload `index.html`** (it references `coffee.jpg`)
-- [x] Go back to **Properties** and copy the **Bucket website endpoint**
-- [x] Open the endpoint in a new tab and confirm the page and the coffee image show
-- [x] Right-click the image, **open in new tab**, and see the public object URL
-- [x] Open `beach.jpg` and confirm it loads too
-- [x] (Optional) Edit `index.html` to show `beach.jpg`, re-upload, and refresh
-- [x] **Clean up:** disable website hosting, delete the public bucket policy, re-enable **Block all public access**, or **empty and delete** the bucket at the end of the section
 
 ---
 
@@ -1205,20 +961,7 @@ Two common ways to "roll back" (extras beyond the lecture):
 | **Replication** | Needs versioning on **both** the source and destination buckets |
 | **Static website** | A new `index.html` upload creates a new version, and the site serves the latest one right away |
 
-### 8. Key Facts to Remember
-
-- Versioning is enabled at the **bucket level**.
-- Each upload to the same key creates a **new version** with its own **version ID**.
-- Best practice: **enable versioning**. It protects against deletes and enables rollback.
-- A normal **delete** adds a **delete marker**. Older versions remain, and the delete is **reversible**.
-- Deleting a **specific version ID** is **permanent**.
-- Objects from **before** versioning was enabled have version ID **`null`**.
-- **Suspending** versioning **keeps** all existing versions. It's a **safe** operation.
-- You **can't fully disable** versioning once enabled, only **suspend** it.
-- **All versions cost storage.** Use **lifecycle rules** to manage old versions.
-- Replication and Object Lock **require** versioning.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1235,19 +978,16 @@ Two common ways to "roll back" (extras beyond the lecture):
 | "Reduce the cost of old versions" | **Lifecycle rule** on **noncurrent versions** |
 | "Which features require versioning?" | **Replication** and **Object Lock** |
 | "A GET without a version ID returns..." | The **current (latest) version** |
+| "Undo an overwrite of an S3 object" | **Versioning**, then delete the latest version or copy the old one back |
+| "Console toggle to see versions and delete markers" | **Show versions** |
+| "GET on an object whose latest version is a delete marker" | **404 Not Found** |
+| "Update a static website without losing the old page" | **Versioning** plus re-upload |
+| "Why is storage cost rising in a versioned bucket?" | **All versions are stored** (add lifecycle rules) |
+| "Console prompt `permanently delete`" | A delete of a **specific version** or **delete marker** |
 
 ---
 
 ## S3 Versioning - Hands On
-
-### TL;DR
-
-- **Enabled versioning** on the bucket: **Properties**, **Bucket Versioning**, **Edit**, **Enable**.
-- **Updated the website:** edited `index.html` to say "I **really** love coffee", then uploaded it again. The site showed the new text, and S3 **kept the old file as a previous version**.
-- **Show versions** toggle: files uploaded **before** versioning (`coffee.jpg`, `beach.jpg`, and the first `index.html`) have version ID **`null`**. The new `index.html` has a **real version ID**.
-- **Rollback:** with **Show versions** on, selected the **specific version ID** of the new `index.html` and deleted it (**permanent delete**). The site went back to "I love coffee".
-- **Delete marker:** with **Show versions** off, deleted `coffee.jpg` (plain **delete**). S3 added a **delete marker**, and the image returned **404**.
-- **Restore:** deleted the **delete marker** (permanently). The previous `coffee.jpg` came back.
 
 ### 1. Enable Versioning
 
@@ -1256,9 +996,6 @@ Two common ways to "roll back" (extras beyond the lecture):
 3. Select **Enable**, then **Save changes**.
 
 - From now on, **overwriting a file adds a new version** instead of replacing it.
-- Versioning is **bucket-wide**, and applies to every object.
-- Once enabled, you can only **suspend** it, never return to "unversioned".
-- Files that already exist are **not changed**. They stay as the **`null` version** until you overwrite or delete them.
 
 ### 2. Update the Website (Create a New Version)
 
@@ -1299,7 +1036,6 @@ Goal: return the site from "I really love coffee" to "I love coffee".
 
 - Deleting a **specific version** is **permanent and cannot be undone**. The lecturer calls it **destructive**.
 - The **previous version** (the `null` one) automatically **becomes the current version**.
-- Alternative rollback that keeps history: **copy the old version onto the same key**. That creates a **new latest version** with the old content, and nothing is lost.
 
 ### 4. Delete Without a Version ID (Delete Marker)
 
@@ -1331,76 +1067,16 @@ After:   DELETE MARKER (current, new version ID)
 4. Refresh the website. The **coffee image is back**.
 
 - Deleting the delete marker **restores the previous version** as the current one.
-- This is the standard way to **undelete** an object in a versioned bucket.
-- Lecturer's invitation: play around, add as many versions as you want, delete them, and see what happens.
 
-### 6. Two Kinds of Delete
-
-| Action | Console prompt | Result | Reversible? |
-|---|---|---|---|
-| **Delete** an object (**Show versions off**, or API with no version ID) | Type `delete` | Adds a **delete marker**. Data is kept. | **Yes**, delete the marker |
-| **Delete a specific version ID** (**Show versions on**) | Type `permanently delete` | **Removes that version permanently** | **No** |
-| **Delete the delete marker** (by its version ID) | Type `permanently delete` | Marker removed, **object restored** | N/A |
-
-- The words in the prompt (`delete` vs `permanently delete`) tell you which kind of delete it is.
-
-### 7. Troubleshooting
+### 6. Troubleshooting
 
 | Symptom | Likely cause |
 |---|---|
 | Website still shows the **old text** after uploading | **Browser cache.** Force-refresh. Also check you uploaded to the **same key** and the right bucket. |
 | New upload didn't create a version | Versioning is **off or suspended** (it would overwrite the `null` version) |
 | Can't see old versions in the console | **Show versions** is **off** |
-| Object "deleted" but storage is still used | A **delete marker** hides it. Older versions still exist and cost money. |
 | Image 404 after a delete | A **delete marker** is the current version. Delete the marker to restore. |
-| Rollback removed the wrong version | Version deletion is **permanent**. Check the version ID and date before deleting. |
 | Can't delete the bucket | It must be **empty of all versions and delete markers**. Use **Empty bucket** or a lifecycle rule. |
-
-### 8. Key Facts to Remember
-
-- Enable at **Properties, Bucket Versioning**. It applies to the **whole bucket**.
-- **Re-uploading the same key** creates a **new version**. The old one is **kept**.
-- Pre-existing objects have version ID **`null`**.
-- **Show versions** reveals version IDs and delete markers.
-- **Plain delete = delete marker.** The object looks deleted but its data remains. A GET returns **404**.
-- **Delete by version ID = permanent.** Cannot be undone.
-- **Delete the delete marker = restore.**
-- Rollback options: **delete the newest version**, or **copy an older version over the key**.
-- Every version is **billed as storage**. Use **lifecycle rules** to expire old versions.
-- Versioning can only be **suspended**, never fully removed.
-
-### 9. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Undo an overwrite of an S3 object" | **Versioning**, then delete the latest version or copy the old one back |
-| "Object deleted by mistake in a versioned bucket" | **Delete the delete marker** |
-| "What does a normal delete do in a versioned bucket?" | **Adds a delete marker** |
-| "How to permanently delete one version" | **Delete it by version ID** |
-| "Objects uploaded before versioning was enabled" | Version ID **`null`** |
-| "Console toggle to see versions and delete markers" | **Show versions** |
-| "GET on an object whose latest version is a delete marker" | **404 Not Found** |
-| "Update a static website without losing the old page" | **Versioning** plus re-upload |
-| "Why is storage cost rising in a versioned bucket?" | **All versions are stored** (add lifecycle rules) |
-| "Console prompt `permanently delete`" | A delete of a **specific version** or **delete marker** |
-
-### 10. Hands-On Checklist
-
-- [x] Open the bucket, **Properties**, **Bucket Versioning**, **Edit**, **Enable**, and **Save changes**
-- [x] Open the **website endpoint** and note the text "I love coffee"
-- [x] Edit your local `index.html` to say "I **really** love coffee"
-- [x] **Upload** the same `index.html` again, then refresh the website and confirm the new text
-- [x] Turn **Show versions** on and verify:
-  - [x] `beach.jpg` and `coffee.jpg` have version ID **`null`**
-  - [x] `index.html` has **two versions** (one `null`, one with a real ID)
-- [x] **Roll back:** with **Show versions** on, select the **newest `index.html`** version, **Delete**, type `permanently delete`, and confirm
-- [x] Refresh the website and confirm it shows **"I love coffee"** again
-- [x] Turn **Show versions** off, select `coffee.jpg`, **Delete**, type `delete`, and confirm
-- [x] Turn **Show versions** on and find the **delete marker** on `coffee.jpg`
-- [x] Force-refresh the website and confirm the image is **gone** (404 when opened directly)
-- [x] **Restore:** select the **delete marker**, **Delete**, type `permanently delete`, and confirm
-- [x] Refresh the website and confirm the **coffee image is back**
-- [x] **Clean up** at the end of the section: **empty** the bucket (all versions and markers), then **delete** it, and remove the public policy first if you keep the bucket
 
 ---
 
@@ -1471,31 +1147,14 @@ After:   DELETE MARKER (current, new version ID)
 
 | Topic | Detail |
 |---|---|
-| **Existing objects** | Replication applies to **new objects** created **after** the rule is enabled. Use **S3 Batch Replication** to copy existing objects and retry failed ones. |
-| **Delete markers** | Replicating **delete markers** is **optional** (a setting on the rule). |
-| **Permanent deletes** | **Deleting a specific version ID is not replicated**, which protects against malicious deletes. |
-| **No chaining** | If bucket A replicates to B, and B replicates to C, objects from A are **not** copied on to C. Replicas aren't re-replicated. |
 | **Filtering** | A rule can target a **prefix** and/or **tags**. |
 | **Storage class** | The destination can use a **different storage class** (for example Glacier) to save cost. |
 | **Encryption** | SSE-S3 objects replicate. **SSE-KMS** objects need extra setup (a KMS key for the destination and role permissions). |
-| **Replication Time Control (RTC)** | Optional feature with an SLA: **99.99% of objects within 15 minutes**, with metrics and notifications. |
+| **Replication Time Control (RTC)** | Optional feature with an SLA: **99.9% of objects within 15 minutes**, with metrics and notifications. (The S3 features page also quotes 99.99% as the typical result.) |
 | **Lifecycle actions** | Lifecycle transitions and expirations are **not replicated**. Configure them on each bucket. |
 | **Same-account vs cross-account ownership** | In cross-account setups, you can change **object ownership** to the destination bucket owner. |
 
-### 5. Key Facts to Remember
-
-- **CRR = cross-region. SRR = same-region.**
-- **Versioning is required on both buckets.**
-- Replication is **asynchronous**.
-- S3 needs an **IAM role** to read the source and write the destination.
-- Buckets can be in **different accounts**.
-- **CRR:** compliance, lower latency, cross-account.
-- **SRR:** log aggregation, prod and test live replication.
-- By default only **new objects** are replicated. **Batch Replication** handles existing ones.
-- **No replication chaining.**
-- Replication is **not a backup against bad data**. It copies overwrites and (optionally) delete markers too. Use **versioning** and **lifecycle** for history.
-
-### 6. Exam-Style Recall
+### 5. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1511,7 +1170,6 @@ After:   DELETE MARKER (current, new version ID)
 | "Compliance requires data in another region" | **CRR** |
 | "Existing objects aren't in the destination" | Use **S3 Batch Replication** |
 | "Replicate within 15 minutes with an SLA" | **S3 Replication Time Control (RTC)** |
-| "A to B to C, will A's objects reach C?" | **No** (no chaining) |
 
 ---
 
@@ -1571,29 +1229,7 @@ Objects written to Bucket 2:   copied to Bucket 3   (yes)
 - To get data into bucket 3 as well, add a **second rule from bucket 1 to bucket 3**. One source can replicate to **multiple destinations**.
 - Extra: **bidirectional (two-way) replication** between two buckets is possible, and S3 doesn't loop, because replicas aren't re-replicated.
 
-### 5. Putting It Together (with the Previous Lecture)
-
-| Topic | Behavior |
-|---|---|
-| **Versioning** | Required on **both** buckets |
-| **Direction** | Source to destination, **asynchronous** |
-| **New objects** | Replicated automatically |
-| **Existing objects / failed objects** | **S3 Batch Replication** |
-| **Delete markers** | **Optional** setting |
-| **Permanent (version ID) deletes** | **Never** replicated |
-| **Chaining (A to B to C)** | **Not supported** |
-
-- Replication is **not a backup against bad writes**. An overwrite in the source replicates to the target as a new version. Rely on **versioning** and **lifecycle** for history.
-
-### 6. Key Facts to Remember
-
-- Replication covers **new objects only**. Use **S3 Batch Replication** for **existing** and **failed** objects.
-- **Delete markers:** replication is **optional**.
-- **Version ID deletes:** **not replicated**, to prevent malicious deletes.
-- **No chaining:** replicas aren't replicated again.
-- All of this assumes **versioning on both buckets** and an **IAM role** for S3.
-
-### 7. Exam-Style Recall
+### 5. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1605,20 +1241,19 @@ Objects written to Bucket 2:   copied to Bucket 3   (yes)
 | "Bucket 1 to 2 to 3: does an object from 1 reach 3?" | **No**, there is **no chaining** |
 | "Get the same objects into three buckets" | **Multiple rules** from the one source |
 | "Replication copies delete markers by default" | **No**, it is an **optional** setting |
+| "After enabling replication, which objects are copied?" | **New objects only** |
+| "Delete markers aren't appearing in the destination" | Enable **delete marker replication** |
+| "Delete a specific version in the source: what happens in the target?" | **Not replicated** (prevents malicious deletes) |
+| "What must be enabled on source and destination?" | **Versioning** |
+| "How does S3 get permission to copy the objects?" | An **IAM role** (created by the console) |
+| "Version ID of a replicated object" | **Same** as the source |
+| "Replicate to a bucket in another account" | Supported, with a **destination bucket policy** |
+| "Where do you configure replication?" | Source bucket, **Management**, **Replication rules** |
+| "Replicate only objects under a prefix" | A rule **filter** (prefix and/or tags) |
 
 ---
 
 ## S3 Replication - Hands On
-
-### TL;DR
-
-- Created **two buckets with versioning enabled**: an **origin** bucket (`eu-west-1`) and a **replica** bucket (`us-east-1`). Different regions makes this **CRR**.
-- Created a replication rule (`DemoReplicationRule`) on the origin bucket: **Management**, **Replication rules**, **Create replication rule**. Scope: **all objects**. Destination: the replica bucket. IAM role: **create new role**.
-- Chose **not** to replicate existing objects. Enabling a rule only replicates **new uploads**. Existing objects need an **S3 Batch Operations** job (Batch Replication).
-- Uploading `coffee.jpg` made it appear in the replica bucket within about **10 seconds**, with the **same version ID** as the source.
-- `beach.jpg` was uploaded **before** the rule, so it was **not replicated**. Uploading it again created a new version, which was then replicated.
-- **Delete markers are not replicated by default.** After enabling **delete marker replication** on the rule, deleting `coffee.jpg` in the origin bucket (which adds a delete marker) was replicated.
-- **Deleting a specific version ID** (a permanent delete) in the origin bucket is **never replicated**.
 
 ### 1. Create the Two Buckets
 
@@ -1631,10 +1266,6 @@ Objects written to Bucket 2:   copied to Bucket 3   (yes)
 
 - Create each bucket separately (the lecturer used two browser tabs). **Versioning is required on both**, because replication only works with versioning.
 - Bucket names must be unique. Use your own names (or the Account Regional namespace).
-- **Destination region:**
-  - A **different region** gives **CRR** (the demo used `us-east-1`).
-  - The **same region** gives **SRR**.
-  - Everything else in the demo is the same either way.
 - Enable versioning when you create the bucket (the **Bucket Versioning** section of the create page), or later in **Properties**.
 
 ### 2. Upload a File Before Setting Up Replication
@@ -1669,8 +1300,6 @@ Objects written to Bucket 2:   copied to Bucket 3   (yes)
 
 - **CRR vs SRR is detected from the buckets' regions.** You don't pick the type.
 - If the destination bucket **doesn't have versioning**, the console warns you and offers to enable it.
-- The **IAM role** is created for you with the right permissions. In real setups you can reuse a role.
-- **Cross-account:** also add a **bucket policy on the destination** that allows the replication role to write.
 
 #### 3.3 The "replicate existing objects?" prompt
 
@@ -1694,7 +1323,6 @@ After saving, the console asks: **Replicate existing objects?**
 5. Turn **Show versions** on in the replica bucket. The version ID is **the same** as in the origin bucket.
 
 **Takeaways:**
-- Replication is **asynchronous**. It takes seconds here, but can take **minutes or longer** for large objects or bursts. **Replication Time Control (RTC)** adds an SLA (99.99% of objects within 15 minutes).
 - **Version IDs are preserved** in the replica.
 - The replica object also carries the metadata and tags of the source object.
 
@@ -1714,9 +1342,6 @@ After saving, the console asks: **Replicate existing objects?**
 3. Check **Delete marker replication**.
 4. **Save**.
 
-- **By default, delete markers are not replicated.** Enabling this option replicates them.
-- This is important for the exam.
-
 #### 6.2 Test: replicated delete marker
 
 1. In the **origin** bucket, select `coffee.jpg` and **Delete** (type `delete`).
@@ -1733,82 +1358,14 @@ After saving, the console asks: **Replicate existing objects?**
 3. That version is **permanently removed** from the origin bucket.
 4. Check the **replica** bucket: the same version is **still there**.
 
-- The lecturer's summary: **only delete markers are replicated, not deletes of specific versions.**
-- **Why:** to **avoid malicious (or accidental) permanent deletes** spreading to the replica.
-- The replica bucket is therefore a safe copy against permanent deletes in the source. Combine it with **versioning** and a separate **lifecycle** for long-term history.
-
-### 7. What Gets Replicated: Summary
-
-| Action in the origin bucket | Replicated to the replica? |
-|---|---|
-| New object upload (after the rule) | **Yes** |
-| New version of an existing key (after the rule) | **Yes** |
-| Object uploaded **before** the rule | **No** (needs **Batch Replication**) |
-| **Delete** (adds a delete marker) | **Only if delete marker replication is enabled** |
-| **Delete of a specific version ID** | **Never** |
-| Lifecycle transitions and expirations (extra) | **No** |
-| Objects that are themselves replicas (extra) | **No** (no chaining) |
-
-### 8. Troubleshooting
+### 7. Troubleshooting
 
 | Symptom | Likely cause |
 |---|---|
 | Object not showing in the replica after a minute | Replication is **asynchronous**. Refresh, and check the object's **replication status** in its Properties (PENDING, COMPLETED, FAILED). |
-| Old objects aren't there | They existed **before** the rule. Use a **Batch Operations** job. |
 | Replication status **FAILED** | Missing **IAM** permissions, a missing **destination bucket policy** (cross-account), or **SSE-KMS** setup missing |
 | Can't create the rule | **Versioning isn't enabled** on the source or destination |
-| Delete in the origin didn't show in the replica | **Delete marker replication** is off |
-| Permanent delete didn't replicate | **By design** |
 | Object in the replica shows status **REPLICA** | Normal. That is how replicated objects are labelled. |
-
-### 9. Key Facts to Remember
-
-- Replication needs **versioning on both buckets** and an **IAM role** for S3.
-- The rule lives on the source bucket: **Management, Replication rules**.
-- **CRR or SRR** is determined by whether the buckets are in different regions.
-- A rule can cover **all objects** or a **prefix/tag filter**, and the destination can be in the **same or another account**.
-- **Only new objects replicate.** Use **S3 Batch Operations (Batch Replication)** for existing ones.
-- **Version IDs are preserved** in the replica.
-- **Delete markers:** replicated only if **delete marker replication** is enabled. It is off by default.
-- **Deletes by version ID are never replicated.**
-- Replication is **asynchronous**, usually seconds, with **RTC** as an optional SLA (15 minutes).
-- Two **separate** features: the **replication rule**, and the **Batch Operations job** for existing objects.
-
-### 10. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Replicate objects that existed before enabling replication" | **S3 Batch Operations (Batch Replication)** |
-| "After enabling replication, which objects are copied?" | **New objects only** |
-| "Delete markers aren't appearing in the destination" | Enable **delete marker replication** |
-| "Delete a specific version in the source: what happens in the target?" | **Not replicated** (prevents malicious deletes) |
-| "What must be enabled on source and destination?" | **Versioning** |
-| "How does S3 get permission to copy the objects?" | An **IAM role** (created by the console) |
-| "Version ID of a replicated object" | **Same** as the source |
-| "Replicate to a bucket in another account" | Supported, with a **destination bucket policy** |
-| "Where do you configure replication?" | Source bucket, **Management**, **Replication rules** |
-| "Replicate only objects under a prefix" | A rule **filter** (prefix and/or tags) |
-| "SLA for replication time" | **Replication Time Control**: 99.99% within 15 minutes |
-| "Is replication synchronous?" | **No**, asynchronous |
-
-### 11. Hands-On Checklist
-
-- [x] Create the **origin** bucket in one region (for example `eu-west-1`) with **versioning enabled**
-- [x] Create the **replica** bucket in another region (for example `us-east-1`, or the same region for SRR) with **versioning enabled**
-- [x] Upload `beach.jpg` to the **origin** bucket (before any rule exists)
-- [x] Origin bucket, **Management**, **Replication rules**, **Create replication rule**
-- [x] Name it `DemoReplicationRule`, status **Enabled**, scope **all objects**
-- [x] Destination: **a bucket in this account**, enter the replica bucket name, and note it detects **Cross-Region Replication**
-- [x] IAM role: **Create new role**, then save
-- [x] When asked about existing objects, choose **No**
-- [x] Confirm the **replica bucket is still empty**
-- [x] Upload `coffee.jpg` to the origin bucket, then refresh the replica bucket after about 10 seconds
-- [x] Turn **Show versions** on in both buckets and confirm the **same version ID**
-- [x] Upload `beach.jpg` again to the origin bucket and confirm the **new version** replicates
-- [x] **Edit the rule**, enable **Delete marker replication**, and save
-- [x] **Delete** `coffee.jpg` in the origin bucket (type `delete`), then confirm the **delete marker** appears in the replica bucket
-- [x] In the origin bucket, **permanently delete a specific version** (for example one of `beach.jpg`'s) and confirm it is **still in the replica bucket**
-- [x] **Clean up:** delete the replication rule, **empty** both buckets (all versions and delete markers), **delete both buckets**, and delete the **IAM role** the console created
 
 ---
 
@@ -1998,20 +1555,7 @@ The lecturer says **you don't need to memorize the numbers**, just understand ho
 - Lifecycle rules are the topic of an upcoming lecture.
 - **Transition order:** you can move **down** the ladder (hot to cold). Moving back up needs a **restore or copy**.
 
-### 10. Key Facts to Remember
-
-- **Durability is 11 nines for all classes.** Only **availability, cost, and retrieval** change.
-- **Standard:** 99.99% availability, frequently accessed, survives **2 concurrent facility failures**.
-- **Standard-IA:** 99.9%, cheaper, **retrieval fee**, used for **DR and backups**.
-- **One Zone-IA:** **one AZ**, 99.5%, data **lost if the AZ is destroyed**, used for **secondary backups** and **re-creatable data**.
-- **Glacier Instant Retrieval:** **milliseconds**, **90-day** minimum.
-- **Glacier Flexible Retrieval:** **Expedited 1-5 min, Standard 3-5 h, Bulk 5-12 h (free)**, **90-day** minimum.
-- **Glacier Deep Archive:** **Standard 12 h, Bulk 48 h**, **180-day** minimum, **cheapest**.
-- **Intelligent-Tiering:** **automatic tiers**, **monitoring fee**, **no retrieval charge**.
-- You can **change the class manually** or with **Lifecycle rules**.
-- 99.99% availability is about **53 minutes of downtime per year**, so handle errors in code.
-
-### 11. Exam-Style Recall
+### 10. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -2031,18 +1575,20 @@ The lecturer says **you don't need to memorize the numbers**, just understand ho
 | "Automatically transition objects to cheaper classes over time" | **S3 Lifecycle rules** |
 | "Store for 7 years for compliance at lowest cost" | **Glacier Deep Archive** |
 | "Backup in DR that is accessed rarely, but rapidly when needed" | **Standard-IA** |
+| "Automatically move objects to cheaper storage over time" | **S3 Lifecycle rule** (transition actions) |
+| "Where do you configure lifecycle rules?" | Bucket **Management** tab |
+| "Change an object's storage class manually" | Edit **storage class** in the object's **Properties** (it **copies** the object) |
+| "Deprecated storage class" | **Reduced Redundancy** |
+| "Delete objects after 365 days automatically" | Lifecycle **expiration** action |
+| "Move old versions to Glacier in a versioned bucket" | Lifecycle on **noncurrent versions** |
+| "Minimum age to transition to Standard-IA" | **30 days** |
+| "Clean up incomplete multipart uploads" | Lifecycle rule action for **incomplete multipart uploads** |
+| "Don't know the access pattern, want automatic tiering" | **Intelligent-Tiering** |
+| "Default storage class for new objects" | **Standard** |
 
 ---
 
 ## S3 Storage Classes Hands On
-
-### TL;DR
-
-- Created a new bucket, uploaded `coffee.jpg`, and looked at the **Storage class** options on the upload page. The console shows a table with **designed for**, **number of AZs**, **minimum storage duration**, **minimum billable object size**, and **monitoring and auto-tiering fees**.
-- Uploaded the object as **Standard-IA**, then **changed its storage class** to **One Zone-IA** from the object's **Properties** (edit storage class). The lecturer notes you could also move it to Glacier Instant Retrieval or Intelligent-Tiering.
-- Created a **Lifecycle rule** (`DemoRule`) to **automate transitions**: **Standard-IA after 30 days**, **Intelligent-Tiering after 60 days**, **Glacier Flexible Retrieval after 180 days**.
-- **Reduced Redundancy** also appears in the list. It is **deprecated**, so the course doesn't cover it.
-- Main takeaways: pick a class **at upload**, **change it manually** per object, or **automate it** with lifecycle rules.
 
 ### 1. Create the Bucket and Upload an Object
 
@@ -2055,28 +1601,8 @@ The lecturer says **you don't need to memorize the numbers**, just understand ho
 
 ### 2. The Storage Class Options in the Console
 
-The console lists every class with a comparison table. The lecturer walks through them:
-
-| Class | Lecture description |
-|---|---|
-| **Standard** | The **default**, basic option |
-| **Intelligent-Tiering** | Use when you **don't know your access pattern** and want AWS to **tier automatically** |
-| **Standard-IA** | **Infrequently accessed** data that still needs **low latency** |
-| **One Zone-IA** | Data you can **recreate**, stored in **one AZ only**. **Risk of loss if the AZ is destroyed.** |
-| **Glacier Instant Retrieval** | Archive with **millisecond** retrieval |
-| **Glacier Flexible Retrieval** | Archive, retrieval in **minutes to hours** |
-| **Glacier Deep Archive** | **Long-term** archive, lowest cost |
-| **Reduced Redundancy** | **Deprecated.** Not covered in the course. Don't use it. |
-
-**Columns in the console table:**
-- **Designed for** (the use case).
-- **Number of AZs** (3 or more, or 1 for One Zone-IA).
-- **Minimum storage duration** (none, 30, 90, or 180 days).
-- **Minimum billable object size** (for example 128 KB for the IA classes).
-- **Monitoring and auto-tiering fees** (only Intelligent-Tiering).
-
-- The table gives the same facts as the previous lecture, so the exam-relevant details match.
-- Some console wording and the list of classes can differ by region and over time.
+- The upload page lists every class with a comparison table (designed for, number of AZs, minimum storage duration, minimum billable object size, monitoring fees). It shows the same facts as the Storage Classes Overview.
+- **Reduced Redundancy** also appears in the list. It is **deprecated** and not covered.
 
 ### 3. Upload as Standard-IA
 
@@ -2131,68 +1657,3 @@ The console lists every class with a comparison table. The lecturer walks throug
 
 - The console shows a **review timeline** of all the transitions. The lecturer's point: it is possible to **automate moving objects between tiers**.
 - The rule runs **daily in the background**. Transitions happen **after the days elapse**, so you won't see changes in this demo.
-
-#### 5.2 Other lifecycle actions in the same screen
-
-| Action | Purpose |
-|---|---|
-| **Move noncurrent versions** between classes | For **versioned** buckets, move **old versions** to cheaper storage |
-| **Expire current versions of objects** | **Delete** objects after N days |
-| **Permanently delete noncurrent versions** | Clean up old versions after N days |
-| **Delete expired object delete markers or incomplete multipart uploads** | Housekeeping that saves cost |
-
-- Lifecycle rules get a **dedicated lecture** next, so details like these will come again.
-
-#### 5.3 Rules the console enforces (extras)
-
-| Rule | Detail |
-|---|---|
-| **Order** | Transitions only go **down the ladder** (hot to cold). Standard, then Standard-IA, then Intelligent-Tiering, then Glacier, and so on. |
-| **To Standard-IA or One Zone-IA** | The object must be at least **30 days old** |
-| **Spacing** | Days for each later step must be **greater** than the step before it |
-| **Small objects** | By default objects **smaller than 128 KB** aren't transitioned to IA or Glacier classes (you can override with an object size filter) |
-| **Expiration vs transition** | If you also expire objects, the expiration days must be **after** the transitions |
-
-### 6. Key Facts to Remember
-
-- You choose the **storage class per object** at upload, and you can **change it later**.
-- Manually editing the class **copies the object** (new last-modified, and a new version if versioning is on).
-- **Lifecycle rules** automate moving objects between classes, using **days since creation**. They live in the bucket's **Management** tab.
-- Demo sequence: **Standard-IA at 30 days, Intelligent-Tiering at 60 days, Glacier Flexible Retrieval at 180 days.**
-- **One Zone-IA** stores data in **one AZ**, so it risks loss if that AZ is destroyed.
-- **Reduced Redundancy** is **deprecated**.
-- The console shows each class's **AZs, minimum storage duration, minimum object size, and fees**.
-- Lifecycle rules can also **expire objects** and **clean up old versions** and **incomplete multipart uploads**.
-- Moving to **Glacier Flexible or Deep Archive** means objects need a **restore** before they can be read.
-
-### 7. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Automatically move objects to cheaper storage over time" | **S3 Lifecycle rule** (transition actions) |
-| "Where do you configure lifecycle rules?" | Bucket **Management** tab |
-| "Change an object's storage class manually" | Edit **storage class** in the object's **Properties** (it **copies** the object) |
-| "Deprecated storage class" | **Reduced Redundancy** |
-| "Class that stores data in a single AZ" | **One Zone-IA** |
-| "Delete objects after 365 days automatically" | Lifecycle **expiration** action |
-| "Move old versions to Glacier in a versioned bucket" | Lifecycle on **noncurrent versions** |
-| "Minimum age to transition to Standard-IA" | **30 days** |
-| "Clean up incomplete multipart uploads" | Lifecycle rule action for **incomplete multipart uploads** |
-| "Don't know the access pattern, want automatic tiering" | **Intelligent-Tiering** |
-| "Default storage class for new objects" | **Standard** |
-
-### 8. Hands-On Checklist
-
-- [x] **Create** a new bucket (any region, unique name, defaults)
-- [x] **Upload** `coffee.jpg` and, on the upload page, review the **Storage class** table (AZs, minimum duration, minimum size, fees)
-- [x] Note the full list: **Standard, Intelligent-Tiering, Standard-IA, One Zone-IA, Glacier Instant, Glacier Flexible, Glacier Deep Archive, Reduced Redundancy (deprecated)**
-- [x] Upload with storage class **Standard-IA** and confirm it in the object list
-- [x] Open the object, **Properties**, **Storage class**, **Edit**, change to **One Zone-IA**, and save
-- [x] Confirm the class changed (the object's last-modified date updates)
-- [x] (Optional) Try **Glacier Instant Retrieval** or **Intelligent-Tiering**
-- [x] Bucket, **Management**, **Lifecycle rules**, **Create lifecycle rule** named `DemoRule`
-- [x] Scope **all objects** and tick the acknowledgment
-- [x] Choose **Move current versions of objects between storage classes**
-- [x] Add transitions: **Standard-IA at 30**, **Intelligent-Tiering at 60**, **Glacier Flexible Retrieval at 180** days
-- [x] Review the **timeline**, then create (or cancel) the rule
-- [x] **Clean up:** delete the lifecycle rule if you created it, **empty** the bucket, then **delete** the bucket (IA classes have 30-day minimum charges)

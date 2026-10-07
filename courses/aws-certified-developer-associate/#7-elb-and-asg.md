@@ -89,12 +89,6 @@ Horizontal:  [EC2]  ->  [EC2] [EC2] [EC2] [EC2]  (behind an ELB)
 | Scale reads | **RDS read replicas**, Aurora replicas, ElastiCache |
 | Manage sessions | ElastiCache, DynamoDB |
 
-**How ASG and ELB work together:**
-- The ASG **registers/deregisters** instances with the load balancer's target group as it scales.
-- The ELB **health check** can be used by the ASG (health check type = ELB) so failed instances get **replaced**.
-- The ASG can be told to launch instances in **multiple AZs** and rebalances if one becomes unavailable.
-- **Vertical scaling isn't automated by an ASG.** An ASG only changes the **number** of instances.
-
 ### 6. Scalability vs High Availability vs Elasticity
 
 | Term | Meaning | Example |
@@ -261,21 +255,7 @@ Internet --80/443--> [LB SG: inbound 80/443 from 0.0.0.0/0]
 - Common exam bug: targets show **unhealthy** because the target SG doesn't allow the LB SG.
 - Instances can then be placed in **private subnets** for extra protection.
 
-### 7. Other Facts to Remember
-
-- **Client IP:** ALB/CLB (HTTP) pass the original IP in **`X-Forwarded-For`** (plus `X-Forwarded-Proto`, `X-Forwarded-Port`). NLB with instance targets preserves the source IP.
-- **TLS termination:** the certificate lives on the LB (from **ACM**). Traffic to the targets can be plain HTTP, or re-encrypted.
-- **Stickiness:** ALB uses `AWSALB` cookies (or app cookies). It's configured in the **target group**, with a duration of 1 second to 7 days.
-- **Common error codes (ALB):**
-  - `4xx` = client error.
-  - `502` = bad response from target.
-  - `503` = no healthy or registered targets.
-  - `504` = target timed out.
-  - `5xx` = server/LB-side error.
-- **Multi-AZ:** ALB needs subnets in **at least 2 AZs**.
-- **Pricing:** hourly charge plus capacity units (**LCU/NLCU/GLCU**). Delete unused LBs.
-
-### 8. Exam-Style Recall
+### 7. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -331,7 +311,7 @@ Internet --80/443--> [LB SG: inbound 80/443 from 0.0.0.0/0]
 | **SNI** | Multiple TLS certificates and domains on one HTTPS listener |
 | **Cross-zone load balancing** | Always on at the ALB level, with **no inter-AZ data charge** |
 
-### 3. Routing Examples
+### 3. Listener Rules and Routing Examples
 
 | Need | Rule |
 |---|---|
@@ -340,8 +320,48 @@ Internet --80/443--> [LB SG: inbound 80/443 from 0.0.0.0/0]
 | Multiple domains | Host `api.example.com` goes to the API target group, `www.example.com` goes to the web target group |
 | Device detection (alternative) | `User-Agent` header condition |
 
-- Rules live on the **listener**. Lowest priority number is evaluated first, and the first match wins. The default rule runs last.
-- Multiple conditions in one rule are combined with **AND**.
+#### 3.1 Anatomy of a rule
+
+A rule = **priority** + **conditions (IF)** + **actions (THEN)**.
+
+#### 3.2 Conditions (what to match)
+
+| Condition | Matches on | Example |
+|---|---|---|
+| **Host header** | The `Host` header / domain name | `myapp.example.com`, `*.example.com` |
+| **Path** | The URL path | `/error`, `/users/*` |
+| **HTTP request method** | GET, POST, PUT, DELETE, etc. | `POST` |
+| **Source IP** | Client IP (CIDR) | `203.0.113.0/24` |
+| **Query string** | Key/value pairs in the URL | `?platform=mobile` |
+| **HTTP header** | Any custom or standard header | `User-Agent`, `X-Custom-Header` |
+
+- Multiple conditions can be combined in one rule. **All** conditions must match (AND).
+- Path patterns are **case-sensitive** and support wildcards (`*`, `?`).
+  - `/error` matches exactly `/error`.
+  - `/error/*` matches sub-paths.
+- Host headers are case-insensitive.
+- A path condition looks at the **path only**, not the query string. Use a query-string condition for `?key=value`.
+- Limits (defaults): ~5 match evaluations per rule, ~100 rules per ALB (not counting the default rule). Check the console's "rules limit" link for current quotas.
+
+#### 3.3 Actions (what to do on a match)
+
+| Action | What it does | Typical use |
+|---|---|---|
+| **Forward** | Sends to one or more **target groups** | Microservices routing (`/users` to users-TG, `/orders` to orders-TG) |
+| **Redirect** | Returns **301/302** to another URL (change protocol, host, port, path, query) | **HTTP to HTTPS**, domain migration |
+| **Fixed response** | ALB itself returns a custom HTTP code, content type, and body | Custom 404/403/503, maintenance page, block a path |
+| **Authenticate (Cognito / OIDC)** | Authenticates users before forwarding | Login for internal apps (**requires an HTTPS listener**) |
+
+- **Forward** can target **multiple target groups with weights** (for example 90/10), useful for **blue/green** and **canary** deployments.
+- **Fixed response** supports `2XX`, `4XX`, and `5XX` codes, with content types such as `text/plain`, `text/html`, `application/json`. The body is limited to ~1 KB.
+- Redirect and fixed-response actions are handled by the ALB. **No request reaches your targets.**
+
+#### 3.4 Priority
+
+- Range: **1 to 50,000**.
+- **Lower number = higher priority = evaluated first.** Rules are evaluated in ascending order and the **first match wins**.
+- The **default rule** has no priority number and is evaluated **last**. It catches everything that no other rule matched.
+- Best practice: leave gaps (10, 20, 30...) so you can insert rules later.
 
 ### 4. Why ALB Is Great for Microservices and Containers
 
@@ -377,10 +397,6 @@ Client -> [ALB Listener] -> [Rule] -> [Target Group] -> targets (health-checked)
 
 #### 5.3 Health checks
 
-- Configured **at the target group level**.
-- A target that fails is marked `unhealthy` and gets no traffic until it passes again.
-- The ALB **fails open**: if **all** targets are unhealthy, it routes to all of them anyway.
-
 | Setting | ALB default |
 |---|---|
 | Protocol / Port | HTTP / traffic port |
@@ -413,30 +429,15 @@ Client -> [ALB Listener] -> [Rule] -> [Target Group] -> targets (health-checked)
 | **`X-Forwarded-Port`** | Original port the client connected to |
 
 - Apps and logs should read `X-Forwarded-For` to get the real client IP.
-- The same trick applies to **NLB**? No. NLB with instance targets **preserves the source IP**, so it has no such header.
 
 ### 7. Security Groups
-
-**Correct setup:**
-
-```
-Internet --80/443--> [ALB SG: inbound 80/443 from 0.0.0.0/0]
-                                 |
-                                 v
-             [EC2 SG: inbound app port, SOURCE = ALB SG]
-```
 
 | SG | Inbound | Outbound |
 |---|---|---|
 | **ALB SG** | 80/443 from the clients (usually `0.0.0.0/0`) | Must allow the target port and the health check port to the targets. Default "all" works. |
 | **EC2 / target SG** | Target port with **source = ALB SG** (not a CIDR) | Default |
 
-- Only the **target's SG** should reference the ALB's SG. This means EC2 instances only accept traffic that comes through the ALB.
-- Referencing an SG (not an IP range) keeps working as ALB nodes scale and their IPs change.
-- If instances are reached directly by IP, the EC2 SG still allows `0.0.0.0/0`. Remove that rule.
-- Health check traffic also comes from the ALB, so the same rule covers it (or add the health check port).
-- Security groups are **stateful**. Return traffic is allowed automatically.
-- Direct access blocked by an SG shows up as a **timeout**, not "connection refused".
+- Same pattern as the ELB lecture (Security Considerations): the target SG references the ALB SG, so instances only accept traffic that came through the ALB.
 
 ### 8. Good to Know
 
@@ -447,7 +448,7 @@ Internet --80/443--> [ALB SG: inbound 80/443 from 0.0.0.0/0]
 - **Idle timeout**: 60 s by default.
 - **Access logs** go to S3 (disabled by default). **CloudWatch metrics** include `HTTPCode_ELB_5XX`, `HTTPCode_Target_5XX`, `TargetResponseTime`, `UnHealthyHostCount`.
 - **Error codes**: `502` = bad response from the target, `503` = no healthy targets, `504` = target timed out.
-- **Billing**: hourly charge plus **LCU** usage. Delete demo ALBs after use.
+- Pricing: hourly charge plus **LCU** (Load Balancer Capacity Units) usage.
 
 ### 9. Exam-Style Recall
 
@@ -459,30 +460,30 @@ Internet --80/443--> [ALB SG: inbound 80/443 from 0.0.0.0/0]
 | "Containers on random ports (ECS)" | **Dynamic port mapping** with ALB |
 | "Unhealthy instances shouldn't get traffic" | **Target group health checks** |
 | "App needs the client's real IP" | **`X-Forwarded-For`** header |
-| "Only the load balancer may reach EC2" | EC2 SG source = **ALB SG** |
 | "On-premises servers behind the ALB" | **IP** target type (private IPs over VPN/Direct Connect) |
 | "Serverless backend behind the ALB" | **Lambda** target group |
 | "Redirect HTTP to HTTPS" | Listener **redirect action** (80 to 443) |
 | "Static IP for the load balancer" | **NLB** (or Global Accelerator). Not ALB. |
 | "`503` from the ALB" | **No healthy targets** |
+| "Users can still reach instances by public IP" | EC2 SG allows `0.0.0.0/0`. Restrict to the ALB SG |
+| "Request times out when hitting the instance directly" | **Security group** is blocking it |
+| "Route `/api` and `/images` to different services" | **Path-based listener rules** with multiple target groups |
+| "Route by domain / subdomain" | **Host-header** rule |
+| "Return a custom error / maintenance page without hitting the servers" | **Fixed-response** action |
+| "Send 10% of traffic to a new version" | **Weighted forward** to two target groups |
+| "Require login before reaching the app" | **Authenticate-Cognito/OIDC** action on an HTTPS listener |
+| "Two rules match the same request" | The rule with the **lowest priority number** wins |
 
 ---
 
 ## Application Load Balancer (ALB) - Hands On - Part 1
-
-### TL;DR
-
-- Launched 2 EC2 instances, each serving a "Hello World" page from user data.
-- Created an internet-facing ALB, a security group for it, and a target group holding both instances.
-- Hitting the ALB DNS name and refreshing alternated between the two instances, which is round-robin load balancing.
-- Stopping one instance made the target group stop routing to it (health checks). Starting it again brought it back automatically.
 
 ### 1. Prerequisite: Backend EC2 Instances
 
 | Setting | Value used in demo | Notes |
 |---|---|---|
 | Count | 2 (launched together, second renamed to "My Second Instance") | Different AZs is best practice for HA |
-| AMI | Amazon Linux 2 | AL2 has hit end of support (scheduled June 2026). Use **Amazon Linux 2023** for new work |
+| AMI | Amazon Linux 2 | |
 | Instance type | t2.micro | Free-tier-eligible type |
 | Key pair | None | SSH isn't needed. Use **EC2 Instance Connect** (or SSM Session Manager) if access is needed |
 | Security group | Existing `Launch Wizard 1` | Allows HTTP (80) and SSH (22) inbound from anywhere |
@@ -505,66 +506,52 @@ echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 - Problem: 2 instances means 2 different URLs, and the IPs change on stop/start.
 - Goal: **one URL** that spreads load across both instances, which is the job of a load balancer.
 
-### 2. The Four ELB Types
+### 2. Creating the ALB: Step by Step
 
-| Type | Layer | Protocols | Use case |
-|---|---|---|---|
-| **ALB** (Application) | 7 | HTTP, HTTPS, gRPC, WebSocket | Web apps, microservices, containers. This demo |
-| **NLB** (Network) | 4 | TCP, UDP, TLS | Ultra-high performance (millions of req/sec), ultra-low latency, **static IP / Elastic IP per AZ** |
-| **GWLB** (Gateway) | 3 (+4) | IP, GENEVE (port 6081) | Route traffic through 3rd-party virtual appliances: firewalls, IDS/IPS, deep packet inspection |
-| **CLB** (Classic) | 4 and 7 | HTTP/S, TCP | Legacy, being phased out. **Not covered**, and not the answer for new designs |
-
-### 3. Creating the ALB: Step by Step
-
-#### 3.1 Basic configuration
+#### 2.1 Basic configuration
 - **Name**: `DemoALB`
 - **Scheme**: **Internet-facing** (public IPs, reachable from the internet). The alternative is **Internal** (private IPs only, for service-to-service traffic inside a VPC).
 - **IP address type**: IPv4 (dualstack is also available).
 
-#### 3.2 Network mapping
+#### 2.2 Network mapping
 - Pick the VPC and the AZs/subnets to deploy into.
 - Demo: selected **all AZs**.
 - **Rule: an ALB needs subnets in at least 2 AZs.** For an internet-facing ALB these must be public subnets (route to an Internet Gateway).
 - AWS puts an ALB node in each selected AZ.
 
-#### 3.3 Security group (for the ALB)
+#### 2.3 Security group (for the ALB)
 - Created a **new** SG: `demo-sg-load-balancer`, described as "Allow HTTP into ALB".
 - **Inbound**: HTTP (TCP 80) from `0.0.0.0/0` (anywhere).
 - **Outbound**: default (all traffic).
 - After creating it, refreshed the wizard, selected it, and **removed the default SG** so only one remained.
 - The ALB's SG is separate from the EC2 SG.
 
-#### 3.4 Listeners and routing
+#### 2.4 Listeners and routing
 - **Listener** = process that checks for connection requests using a protocol and port.
 - Demo: listener **HTTP : 80** with the default action **Forward to target group**.
 - Other listener options: HTTPS 443 (needs an ACM certificate) and redirect actions such as HTTP to HTTPS.
 
-#### 3.5 Target group (created inline from the wizard)
+#### 2.5 Target group (created inline from the wizard)
 - **Target type**: "Instances". The others are IP addresses, Lambda function, and Application Load Balancer.
 - **Name**: `demo-tg-alb`
 - **Protocol : Port**: HTTP : 80 (the port traffic is sent to on the targets)
 - **Protocol version**: HTTP1 (other options: HTTP2, gRPC)
-- **Health checks**: left at defaults (see section 6)
+- **Health checks**: left at defaults (see the ALB lecture, Target Groups)
 - **Register targets**: selected both EC2 instances, port 80, then clicked "Include as pending below" and "Create target group"
 - Back in the ALB wizard, **refreshed** the target group dropdown and selected `demo-tg-alb`.
 
-#### 3.6 Finish
+#### 2.6 Finish
 - Clicked **Create load balancer**, then "View load balancer".
 - State: **Provisioning**, then **Active** after a few minutes.
 - The ALB is given a **DNS name** (format `name-<id>.<region>.elb.amazonaws.com`).
 
-### 4. Testing Load Balancing
+### 3. Testing Load Balancing
 
 1. Copied the ALB **DNS name** into a browser and got "Hello World".
 2. Refreshed repeatedly: the response alternated between instance 1 and instance 2.
 3. That alternation proves the ALB distributes requests across targets.
 
-Notes:
-- The default algorithm is **round robin**. It can be switched to **least outstanding requests** in the target group attributes.
-- Always use the ALB's **DNS name**. Its IPs change over time, and there are no static IPs (use NLB or Global Accelerator if you need static IPs).
-- **Cross-zone load balancing is always on for ALB** at the load balancer level, so traffic is spread across all registered targets in all enabled AZs. There is **no inter-AZ data charge** for this on ALB.
-
-### 5. Demo of Health Checks and Failover
+### 4. Demo of Health Checks and Failover
 
 1. Target group, Targets tab: both instances showed **healthy**.
 2. **Stopped instance 1.**
@@ -586,99 +573,16 @@ Target health states:
 
 The lecturer said the stopped instance becomes "unhealthy". In the console it actually shows **unused**, because the instance isn't in the running state. A *running* instance whose app fails the check shows **unhealthy**.
 
-### 6. Target Group Health Check Defaults (ALB)
+- Recovery isn't instant: a restarted instance must pass the healthy threshold (5 checks x 30 s, about 2.5 min by default) before receiving traffic. The video skips this wait.
 
-| Setting | Default |
-|---|---|
-| Protocol / Port | HTTP / traffic port |
-| Path | `/` |
-| Interval | 30 s |
-| Timeout | 5 s |
-| Healthy threshold | 5 consecutive successes |
-| Unhealthy threshold | 2 consecutive failures |
-| Success codes | 200 |
+### 5. Security Group State in the Demo
 
-- Health checks are configured **per target group**, not per ALB.
-- Recovery isn't instant: a restarted instance must pass the healthy threshold (5 checks × 30 s ≈ 2.5 min by default) before receiving traffic. The video skips this wait.
-- If **all** targets in a target group are unhealthy, the ALB **fails open** and routes to all of them anyway, which is a common exam gotcha.
-
-### 7. Security Group Design
-
-**What the demo did:**
 - The ALB SG allows HTTP 80 from anywhere.
-- The EC2 SG (`Launch Wizard 1`) *also* allows HTTP 80 from anywhere. That is why each instance was still reachable directly by its public IP.
-
-**Best practice (exam-relevant):**
-```
-Internet --HTTP/HTTPS--> [ALB SG: inbound 80/443 from 0.0.0.0/0]
-                                   |
-                                   v
-                 [EC2 SG: inbound 80 with SOURCE = ALB SG (by SG ID)]
-```
-- Restrict the EC2 SG so it only accepts traffic **from the ALB's security group**, not from `0.0.0.0/0`.
-- Instances can then also live in private subnets.
-- Security groups are **stateful**, so return traffic is allowed automatically.
-- Referencing a **security group as the source** is the key technique. It survives IP changes and scaling.
-
-### 8. Key Facts to Remember
-
-**Client IP and proxy headers**
-- The app server sees the **ALB's private IP** as the source. The real client IP is in the **`X-Forwarded-For`** header.
-- Other headers: **`X-Forwarded-Port`** and **`X-Forwarded-Proto`**.
-- On NLB, the client IP is preserved by default for instance targets.
-
-**Features of ALB**
-- **Routing rules** on: URL **path**, **host** name, **query string**, **HTTP headers**, HTTP method, and source IP.
-  - Example: `?platform=mobile` goes to the mobile target group.
-  - Example: `/users` goes to the users service.
-- **Multiple target groups** behind one ALB (microservices).
-- Supports **HTTP/2, WebSockets, gRPC**, redirects (HTTP to HTTPS), fixed responses, and authentication (Cognito/OIDC).
-- Target types: **EC2 instances, ECS tasks, IP addresses (including on-premises via VPN/Direct Connect), Lambda functions**.
-- **Dynamic port mapping** for ECS. ALB can route to containers on random ports, which CLB can't do.
-- One ALB can serve **many applications**, whereas CLB needed one per app.
-
-**Other**
-- ALB is a **regional** service. It doesn't span regions.
-- Idle timeout: 60 s by default.
-- An ALB can't be assigned an Elastic IP. Use an **NLB** (which can sit in front of an ALB) or **Global Accelerator** if you need fixed IPs.
-- Pricing: hourly charge plus **LCU** (Load Balancer Capacity Units) usage.
-
-### 9. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "HTTP/HTTPS, path-based or host-based routing, microservices" | **ALB** |
-| "Millions of requests/sec, ultra-low latency, static IP, TCP/UDP" | **NLB** |
-| "Inspect traffic with 3rd-party firewall/IDS appliances" | **GWLB** |
-| "Unhealthy instance shouldn't get traffic" | **Target group health checks** |
-| "Backend needs the real client IP" | **`X-Forwarded-For`** header |
-| "Only allow traffic to EC2 from the load balancer" | EC2 SG source = **ALB SG** |
-| "ALB routes to containers on dynamic ports" | ECS + **dynamic port mapping** |
-| "Serverless backend behind the ALB" | **Lambda target group** |
-| "Redirect HTTP to HTTPS" | **Listener redirect rule** (80 to 443) |
-| "One entry point, many services" | **Listener rules to multiple target groups** |
-
-### 10. Hands-On Checklist
-
-- [x] Launch 2 EC2 instances with a web server user data script
-- [x] Verify each one directly
-- [x] Create a security group allowing HTTP 80 inbound for the ALB
-- [x] Create a target group (type: instances, HTTP:80) and register both instances
-- [x] Create an internet-facing ALB in at least 2 AZs with the HTTP:80 listener forwarding to the target group
-- [x] Wait for the ALB to become **Active**
-- [x] Open the ALB DNS name and refresh to see alternating responses
-- [x] Stop one instance and watch it go `unused` while traffic continues on the other
-- [x] Start it again and watch `initial` then `healthy`
+- The EC2 SG (`Launch Wizard 1`) *also* allows HTTP 80 from anywhere. That is why each instance was still reachable directly by its public IP (fixed in Part 2).
 
 ---
 
 ## Application Load Balancer (ALB) - Hands On - Part 2
-
-### TL;DR
-
-- **Network security:** changed the EC2 security group so HTTP is only allowed **from the ALB's security group** (not from anywhere). Direct access to the instance's public IP now times out, while access through the ALB still works.
-- **Listener rules:** added a rule to the ALB's HTTP:80 listener. If the **path is `/error`**, the ALB returns a **fixed response** (404, text/plain) and never reaches the EC2 instances.
-- Together these show that the ALB is the single controlled entry point, and it can make routing decisions at layer 7 itself.
 
 ### 1. Starting Point (End State of Part 1)
 
@@ -711,86 +615,19 @@ Only traffic coming **from the load balancer** should be able to reach the EC2 i
 | Browser to EC2 **public IP** directly | **Times out** | Source isn't the ALB SG, so the packet is silently dropped |
 | Browser to **ALB DNS name** | Works | Traffic arrives from the ALB, which is in the allowed SG |
 
-#### 2.4 Key concepts
+- SG changes take effect **immediately** and need no restart.
 
-- **SG referencing another SG as the source** means "allow traffic from any resource that has this SG attached".
-  - It doesn't depend on IP addresses, so it survives ALB IP changes and scaling. This is **the recommended pattern**.
-  - The ALB's nodes use private IPs inside your VPC, and the EC2 SG rule matches those via the ALB's SG.
-- **Timeout, not "connection refused"**: security groups *drop* denied traffic silently. This is a classic exam clue.
-  - Timeout usually means a **security group** or network problem.
-  - "Connection refused" usually means the SG was passed but nothing is listening on that port.
-- Security groups only have **allow** rules (no explicit deny). Removing the allow rule is how you block.
-- Security groups are **stateful**, so return traffic is allowed automatically.
-
-#### 2.5 Things the demo did not change (gotchas)
+#### 2.4 Things the demo did not change (gotchas)
 
 - The **SSH (22)** rule on `launch-wizard-1` was untouched. It's still open to anywhere, and EC2 Instance Connect relies on it. In production, restrict or remove it (use **SSM Session Manager** instead).
-- **Health checks** come from the ALB too. The health check port (by default, the traffic port, 80) is covered by the same SG rule. If you use a different health check port, allow it from the ALB SG as well, or targets will show **unhealthy**.
-- The **ALB's outbound rules** must allow traffic to the targets and the health check port. The default "all outbound" does this.
-- With this setup, the instances could also be moved to **private subnets** for extra protection.
 
-#### 2.6 Layered security model
-
-```
-Internet --HTTP/HTTPS--> [ALB SG: inbound 80/443 from 0.0.0.0/0]
-                                   |
-                                   v
-                 [EC2 SG: inbound 80, SOURCE = ALB SG (by SG ID)]
-```
-
-### 3. ALB Listener Rules
-
-#### 3.1 Where to find them
+### 3. ALB Listener Rules (Where to Find Them)
 
 **EC2, Load Balancers, DemoALB, Listeners tab, click the listener (HTTP:80), Rules section (listener rules).**
 
 - Each listener has its own set of rules.
 - Initially there is only the **default rule**: for every request, forward to `demo-tg-alb`.
 - You can add more rules of any complexity.
-
-#### 3.2 Anatomy of a rule
-
-A rule = **priority** + **conditions (IF)** + **actions (THEN)**.
-
-#### 3.3 Conditions (what to match)
-
-| Condition | Matches on | Example |
-|---|---|---|
-| **Host header** | The `Host` header / domain name | `myapp.example.com`, `*.example.com` |
-| **Path** | The URL path | `/error`, `/users/*` |
-| **HTTP request method** | GET, POST, PUT, DELETE, etc. | `POST` |
-| **Source IP** | Client IP (CIDR) | `203.0.113.0/24` |
-| **Query string** | Key/value pairs in the URL | `?platform=mobile` |
-| **HTTP header** | Any custom or standard header | `User-Agent`, `X-Custom-Header` |
-
-- Multiple conditions can be combined in one rule. **All** conditions must match (AND).
-- Path patterns are **case-sensitive** and support wildcards (`*`, `?`).
-  - `/error` matches exactly `/error`.
-  - `/error/*` matches sub-paths.
-- Host headers are case-insensitive.
-- A path condition looks at the **path only**, not the query string. Use a query-string condition for `?key=value`.
-- Limits (defaults): ~5 match evaluations per rule, ~100 rules per ALB (not counting the default rule). Check the console's "rules limit" link for current quotas.
-
-#### 3.4 Actions (what to do on a match)
-
-| Action | What it does | Typical use |
-|---|---|---|
-| **Forward** | Sends to one or more **target groups** | Microservices routing (`/users` to users-TG, `/orders` to orders-TG) |
-| **Redirect** | Returns **301/302** to another URL (change protocol, host, port, path, query) | **HTTP to HTTPS**, domain migration |
-| **Fixed response** | ALB itself returns a custom HTTP code, content type, and body | Custom 404/403/503, maintenance page, block a path |
-| **Authenticate (Cognito / OIDC)** | Authenticates users before forwarding | Login for internal apps (**requires an HTTPS listener**) |
-
-- **Forward** can target **multiple target groups with weights** (for example 90/10), useful for **blue/green** and **canary** deployments.
-- **Fixed response** supports `2XX`, `4XX`, and `5XX` codes, with content types such as `text/plain`, `text/html`, `application/json`. The body is limited to ~1 KB.
-- Redirect and fixed-response actions are handled by the ALB. **No request reaches your targets.**
-
-#### 3.5 Priority
-
-- Range: **1 to 50,000**.
-- **Lower number = higher priority = evaluated first.** Rules are evaluated in ascending order and the **first match wins**.
-- The **default rule** has no priority number and is evaluated **last**. It catches everything that no other rule matched.
-- Lecturer's phrasing ("one is highest, five is lower") means priority 1 is evaluated before priority 5.
-- Best practice: leave gaps (10, 20, 30...) so you can insert rules later.
 
 ### 4. Demo: Fixed-Response Rule for `/error`
 
@@ -816,52 +653,6 @@ The listener now has **2 rules**: `DemoRule` (priority 5) and the **default rule
 | `http://<alb-dns-name>/error` | `DemoRule` (priority 5) | **404**, `text/plain`, "not found custom error" |
 
 - The `/error` response came from the **ALB itself**, not from EC2. The ALB matched on layer 7 (the HTTP path) and answered directly.
-
-### 5. Key Facts to Remember
-
-**Security**
-- Best practice is EC2 SG source = **ALB SG**, not `0.0.0.0/0`.
-- SG changes take effect **immediately** and don't require a restart.
-- Timeout = SG/network block. Connection refused = reached the host, but no listener on that port.
-
-**Rules**
-- Rules are on **listeners**, not on the ALB as a whole and not on target groups.
-- **Path-based routing** (`/users`) and **host-based routing** (`api.example.com`) are ALB-only features. NLB and CLB can't do this.
-- Rules can route on query strings (`?platform=mobile`) and HTTP headers too.
-- One ALB with multiple listener rules and target groups can replace many classic load balancers (**cost saving**).
-- ALB rules only see HTTP(S) traffic. For TCP/UDP, use an NLB.
-
-**Related (helpful for the exam)**
-- **HTTP to HTTPS redirect:** a listener on port 80 with a default action of Redirect to HTTPS:443, status **301**.
-- **HTTPS listener** needs an **ACM certificate** (or an imported one). **SNI** lets one listener serve multiple certificates/domains.
-- The **X-Forwarded-For** header carries the client IP to your targets.
-- Sticky sessions (target-group setting) use a cookie (`AWSALB` for duration-based).
-
-### 6. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Only allow the ALB to reach EC2" | EC2 SG inbound source = **ALB SG** |
-| "Users can still reach instances by public IP" | EC2 SG allows `0.0.0.0/0`. Restrict to the ALB SG |
-| "Request times out when hitting the instance directly" | **Security group** is blocking it |
-| "Route `/api` and `/images` to different services" | **Path-based listener rules** with multiple target groups |
-| "Route by domain / subdomain" | **Host-header** rule |
-| "Route mobile vs desktop users" | **Query-string** or **HTTP header** (User-Agent) rule |
-| "Return a custom error / maintenance page without hitting the servers" | **Fixed-response** action |
-| "Force HTTPS" | **Redirect** action (80 to 443, 301) |
-| "Send 10% of traffic to a new version" | **Weighted forward** to two target groups |
-| "Require login before reaching the app" | **Authenticate-Cognito/OIDC** action on an HTTPS listener |
-| "Two rules match the same request" | The rule with the **lowest priority number** wins |
-
-### 7. Hands-On Checklist
-
-- [x] Edit the EC2 SG: delete HTTP `0.0.0.0/0`, add HTTP with source = **ALB SG**
-- [x] Test: direct EC2 public IP **times out**, ALB DNS still works
-- [x] Open the ALB, Listeners, HTTP:80, Rules
-- [x] Add rule `DemoRule` with condition **Path = `/error`**
-- [x] Set action **Fixed response** (404, text/plain, custom message) and priority **5**
-- [x] Test `<alb-dns>/error` and confirm the 404 custom response
-- [x] Test `<alb-dns>/` and confirm it still load balances between both instances
 
 ---
 
@@ -968,9 +759,7 @@ Defaults (worth knowing, but they can be changed):
 | Unhealthy threshold | 3 |
 | Timeout | 10 s for TCP and HTTPS, 6 s for HTTP |
 
-- Health checks are configured **per target group**, same as ALB.
 - Comparison: ALB health checks only support **HTTP/HTTPS** (and gRPC). NLB adds **TCP**.
-- If a target fails the checks, no new traffic goes to it. If **all** targets are unhealthy, the load balancer **fails open** and routes to all of them.
 
 ### 6. Other Facts to Remember
 
@@ -982,13 +771,6 @@ Defaults (worth knowing, but they can be changed):
 **Security groups**
 - Older NLBs had no SG at all. NLBs now support SGs. If your NLB has an SG, the targets' SG can allow traffic **from the NLB's SG**.
 - If the NLB has no SG and preserves client IPs, the targets' SGs must allow the **client IP ranges** (for example, `0.0.0.0/0` for a public service).
-
-**Cross-zone load balancing**
-- **Disabled by default on NLB** (each node sends only to targets in its own AZ). You can enable it, and then **inter-AZ data charges apply**.
-- On ALB, cross-zone is always on and has no inter-AZ charge for it.
-
-**TLS**
-- Supports **TLS termination** with an ACM certificate, and SNI for multiple certificates.
 
 **Connection behavior**
 - Uses **flow-hash** routing: the same connection goes to the same target.
@@ -1013,6 +795,8 @@ Defaults (worth knowing, but they can be changed):
 | Cross-zone LB | On (free) | Off by default (paid if enabled) |
 | Redirects, fixed responses, auth | Yes | No |
 | Lambda as target | Yes | No |
+| Security group | Always | Optional, recommended |
+| Balancing unit | Per HTTP request | Per connection (flow hash) |
 
 ### 8. Exam-Style Recall
 
@@ -1020,7 +804,6 @@ Defaults (worth knowing, but they can be changed):
 |---|---|
 | "UDP traffic" | **NLB** |
 | "TCP / non-HTTP protocol" | **NLB** |
-| "Millions of requests per second, ultra-low latency" | **NLB** |
 | "Clients need to whitelist fixed IP addresses" | **NLB with Elastic IPs** |
 | "Application accessible from only 1–3 IPs" | **NLB** |
 | "Static IP **and** path-based routing" | **NLB in front of ALB** |
@@ -1029,19 +812,15 @@ Defaults (worth knowing, but they can be changed):
 | "Health check on a plain TCP port" | **NLB** (TCP health check) |
 | "Real client IP without `X-Forwarded-For`" | NLB with instance targets (source IP preserved) |
 | "Need URL-path, host, or header routing" | **ALB**, not NLB |
-
+| "Targets behind NLB are unhealthy but the app is running" | **EC2 security group** doesn't allow the NLB SG (or its source IPs) |
+| "Allow both an ALB and an NLB to reach the same instances" | **Two inbound rules**, one per LB SG |
+| "NLB unreachable from the internet" | **NLB SG** inbound rule missing (if an SG is attached) |
+| "Health check for an HTTP app behind NLB" | HTTP/HTTPS check is possible, and TCP also works |
+| "Refreshing the NLB URL doesn't switch instances every time" | Normal: **flow-hash, per-connection** balancing |
 
 ---
 
 ## Network Load Balancer (NLB) - Hands On
-
-### TL;DR
-
-- Created an internet-facing **NLB** (`DemoNLB`) across all 3 AZs, with its own security group (`demo-sg-nlb`).
-- Listener **TCP:80** forwards to a new target group (`demo-tg-nlb`, TCP:80) with the same 2 EC2 instances used in the ALB demos.
-- Targets went **unhealthy**. Cause: the EC2 security group only allowed HTTP from the **ALB's SG**, not the **NLB's SG**.
-- Fix: add an inbound HTTP rule on the EC2 SG with **source = NLB SG**. Targets turned healthy, and the NLB DNS name returned "Hello World" from both instances.
-- Main lesson: **unhealthy targets right after setup usually means a security group problem.**
 
 ### 1. Starting Point
 
@@ -1063,9 +842,7 @@ Defaults (worth knowing, but they can be changed):
 
 - Select the VPC and **all 3 AZs**, one subnet per AZ.
 - For each AZ, the console shows an **IPv4 address assigned by AWS**. This is the NLB's **fixed IP for that AZ**.
-- Instead of an AWS-assigned IP, you can pick an **Elastic IP** per AZ. Use this when clients must whitelist known IPs.
 - The demo used the AWS-assigned IPs.
-- Choose the IP mapping at creation. Changing the EIPs later generally means recreating the NLB.
 
 #### 2.3 Security group (for the NLB)
 
@@ -1074,14 +851,11 @@ Defaults (worth knowing, but they can be changed):
   - **Inbound**: HTTP (TCP 80) from `0.0.0.0/0`.
   - **Outbound**: default (all traffic).
 - Refreshed the wizard, selected it, and **removed the default SG**.
-- It works like the ALB's SG: it controls what can reach the load balancer.
 - An SG can be attached at creation or added to an existing NLB later. Once an NLB has an SG, you can't remove all SGs from it.
 
 #### 2.4 Listener and routing
 
-- Listener protocol options: **TCP, UDP, TCP_UDP, TLS**.
 - Demo: **TCP : 80**, default action **forward to target group**.
-- The NLB doesn't understand HTTP. It passes the TCP stream through, so there are no path or host rules.
 
 #### 2.5 Target group (created inline)
 
@@ -1145,6 +919,7 @@ The EC2 SG had only one HTTP rule, with **source = the ALB's SG**. Health checks
 4. Target group **protocol and port** match what the app serves.
 5. If the health check port differs from the traffic port, open that port too.
 6. NACLs and routing aren't blocking the traffic.
+- Main lesson: **unhealthy targets right after setup usually means a security group problem.**
 
 ### 4. Testing Load Balancing
 
@@ -1154,44 +929,6 @@ The EC2 SG had only one HTTP rule, with **source = the ALB's SG**. Health checks
   - Browsers reuse keep-alive connections, so you can stay on one target for a bit.
   - A new connection (new tab, private window, or `curl`) can land on the other target.
 - ALB balances **per HTTP request**, so it alternates more visibly.
-- No `X-Forwarded-For` here. With instance targets, the app sees the client's source IP directly.
-
-### 5. ALB vs NLB: Differences Seen in the Demos
-
-| Aspect | ALB | NLB |
-|---|---|---|
-| Listener protocols | HTTP, HTTPS | TCP, UDP, TCP_UDP, TLS |
-| Target group protocol | HTTP / HTTPS | TCP / UDP / TCP_UDP / TLS |
-| Health check protocols | HTTP, HTTPS | TCP, HTTP, HTTPS |
-| IP per AZ | Not fixed | **Fixed** (AWS-assigned or Elastic IP) |
-| Listener rules (path, host, etc.) | Yes | No |
-| Security group | Always | Optional, recommended |
-| Balancing unit | Per HTTP request | Per connection (flow hash) |
-
-### 6. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Targets behind NLB are unhealthy but the app is running" | **EC2 security group** doesn't allow the NLB SG (or its source IPs) |
-| "Only the load balancer should reach the instances" | EC2 SG source = **LB's SG** |
-| "Allow both an ALB and an NLB to reach the same instances" | **Two inbound rules**, one per LB SG |
-| "Fixed IPs for clients to whitelist" | **NLB + Elastic IPs**, one per AZ |
-| "NLB unreachable from the internet" | **NLB SG** inbound rule missing (if an SG is attached) |
-| "Health check for an HTTP app behind NLB" | HTTP/HTTPS check is possible, and TCP also works |
-| "Refreshing the NLB URL doesn't switch instances every time" | Normal: **flow-hash, per-connection** balancing |
-| "Reduce cost after testing" | Delete the load balancer |
-
-### 7. Hands-On Checklist
-
-- [x] Create the NLB (`DemoNLB`): internet-facing, IPv4, 3 AZs
-- [x] Note the fixed IP per AZ (or choose an Elastic IP)
-- [x] Create SG `demo-sg-nlb` (HTTP 80 from anywhere), attach it, and remove the default SG
-- [x] Listener TCP:80 forwarding to a new target group
-- [x] Target group `demo-tg-nlb`: instances, TCP:80, HTTP health check (threshold 2, timeout 2 s, interval 5 s)
-- [x] Register both instances and create the NLB
-- [x] Test the DNS name and observe failure, with targets **unhealthy**
-- [x] Add inbound HTTP on the EC2 SG with source = `demo-sg-nlb`
-- [x] Wait for **healthy** targets, then refresh the NLB DNS name to see the instance change
 
 ---
 
@@ -1296,19 +1033,7 @@ Step by step:
 - **Pricing:** hourly charge plus **GLCU** (Gateway Load Balancer Capacity Units).
 - The lecturer said hands-on is "extremely difficult", so expect **no deep-dive question**. Know what it is and how the traffic flows.
 
-### 8. Comparing the Three Modern ELBs
-
-| Feature | ALB | NLB | GWLB |
-|---|---|---|---|
-| Layer | 7 | 4 | **3** (+4 for load balancing) |
-| Protocols | HTTP, HTTPS, gRPC, WebSocket | TCP, UDP, TLS | **IP packets via GENEVE (UDP 6081)** |
-| Main use | Web apps, microservices | Extreme performance, static IPs, TCP/UDP | **Route traffic through 3rd-party appliances** |
-| Routing | Path, host, header, query string | Port and protocol | None (transparent forwarding) |
-| Target types | Instance, IP, Lambda | Instance, IP, ALB | **Instance, IP** |
-| Static/Elastic IP | No | Yes | No |
-| Health checks | HTTP, HTTPS, gRPC | TCP, HTTP, HTTPS | TCP, HTTP, HTTPS |
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1371,6 +1096,8 @@ Client 1 -> ALB -> EC2-A            Client 3 -> ALB -> EC2-B  (always)
 
 The lecture says stickiness works with cookies on all three. That is accurate for ALB and CLB, but the NLB has no HTTP awareness, so it can't use cookies.
 
+- If the **target becomes unhealthy or is deregistered**, the ALB routes the client to a **healthy** target and updates the cookie.
+
 ### 3. Why Use It (and Why Not)
 
 | | Detail |
@@ -1402,6 +1129,8 @@ There are two types: **duration-based** and **application-based**.
 
 **From the lecturer:** you don't need to memorize every cookie name. Know that there are **application-based** and **duration-based** cookies, and that they have specific names. This will matter again with **CloudFront**, where cookies must be forwarded for stickiness to work through the CDN.
 
+- Clients must accept **cookies**. Without them, stickiness doesn't work.
+
 ### 5. Demo: Enabling Stickiness on an ALB
 
 **Before:** opening the ALB DNS name in a new tab and refreshing bounced between the **3 instances**.
@@ -1426,17 +1155,9 @@ There are two types: **duration-based** and **application-based**.
 
 **Undo:** target group, Edit attributes, turn stickiness **off** to return to normal balancing.
 
-### 6. Key Facts to Remember
-
-- Stickiness is configured on the **target group** (ALB) or on the **load balancer** (CLB), not on a listener rule.
-- **Duration range: 1 s to 7 days.** Default: **1 day (86,400 s)**.
-- If the **target becomes unhealthy or is deregistered**, the ALB routes the client to a **healthy** target and updates the cookie.
 - With **weighted forwarding** across multiple target groups, you can also enable **target-group stickiness at the rule level**, so a client stays with the same target group.
-- Clients must accept **cookies**. Without them, stickiness doesn't work.
-- The **Network tab** in browser dev tools (Chrome and Firefox) is a handy way to inspect the cookies.
-- Stickiness helps with session state, but it is a workaround. It isn't real high availability.
 
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1517,6 +1238,8 @@ The lecture states the 25% figure for AZ-A. The AZ-B figure (50% ÷ 8 = 6.25%) f
 | Resilience | Better: a node can use targets in other AZs | A node only has its own AZ's targets |
 
 - If you turn it **off**, keep the **number of targets per AZ balanced** to avoid hot spots.
+- The setting is about **how a node distributes traffic**, not about whether AZs are used at all.
+- DNS splits traffic across **AZ nodes**, not across instances. That is why unequal instance counts per AZ matter when cross-zone is off.
 
 ### 3. Defaults and Charges by Load Balancer
 
@@ -1552,16 +1275,7 @@ The lecture states the 25% figure for AZ-A. The AZ-B figure (50% ÷ 8 = 6.25%) f
 #### 4.4 CLB
 - Not demonstrated. It is **previous generation** and being retired, so it is not expected on the exam.
 
-### 5. Key Facts to Remember
-
-- The setting is about **how a node distributes traffic**, not about whether AZs are used at all.
-- DNS splits traffic across **AZ nodes**, not across instances. That is why unequal instance counts per AZ matter when cross-zone is off.
-- **ALB:** cross-zone is on at the LB level and **can only be turned off per target group**.
-- **NLB/GWLB:** enabling cross-zone is a **cost decision** (inter-AZ data transfer).
-- **Weighing it up:** even distribution and better use of capacity versus lower latency and lower cost.
-- The lecture's tip: delete the demo load balancers when done. NLB and GWLB bill hourly.
-
-### 6. Exam-Style Recall
+### 5. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1642,6 +1356,7 @@ Client --HTTPS (encrypted, public internet)--> [Load Balancer]
 - An ALB re-encrypting to the targets doesn't validate the target's certificate, so self-signed certificates work.
 - Compliance requirements (for example, "encrypt everything in transit") may need **re-encryption or passthrough**.
 - The LB's **security group** must allow **inbound 443** for HTTPS.
+- SSL terminated on the LB means the **backend sees plain HTTP**. Use `X-Forwarded-Proto` to tell whether the client originally used HTTPS.
 
 ### 4. The Certificate: X.509 and ACM
 
@@ -1653,6 +1368,7 @@ Client --HTTPS (encrypted, public internet)--> [Load Balancer]
   - Validation options: **DNS validation** (works well with Route 53) or **email validation**.
 - ACM certificates are **regional**. The certificate must be in the **same region** as the load balancer. (For CloudFront it must be in **us-east-1**.)
 - ACM wasn't shown in this lecture. It only gave the concept.
+- Expired certificates cause browser errors, so watch expiry (use ACM's automatic renewal, or CloudWatch/EventBridge alerts for imported certs).
 
 ### 5. Setting Up an HTTPS Listener
 
@@ -1709,6 +1425,8 @@ Client --> [ALB] ------+
 
 So SNI (certificates) and host-based **listener rules** (routing) work together to serve many sites from one ALB.
 
+- If the HTTPS site fails to load, check that the **SG allows 443**, and that the **certificate is valid, unexpired, and matches the domain**.
+
 ### 7. Certificate Support by Load Balancer
 
 | Load balancer | Certificates | Notes |
@@ -1722,18 +1440,7 @@ So SNI (certificates) and host-based **listener rules** (routing) work together 
 - **Wildcard certificates** (`*.example.com`) can cover many subdomains with one certificate.
 - Default quota: about **25 additional certificates per ALB** (this can change).
 
-### 8. Key Facts to Remember
-
-- **Termination at the LB** offloads encryption work from the EC2 instances.
-- The **default certificate is mandatory** on an HTTPS/TLS listener.
-- SNI requires the **newer generation** load balancers.
-- ACM auto-renews **only ACM-issued** certificates.
-- Certificates must be in the **same region** as the LB.
-- Expired certificates cause browser errors, so watch expiry (use ACM's automatic renewal, or CloudWatch/EventBridge alerts for imported certs).
-- **CloudFront** is another SNI-capable service and comes up again later in the course.
-- SSL terminated on the LB means the **backend sees plain HTTP**. Use `X-Forwarded-Proto` to tell whether the client originally used HTTPS.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1741,7 +1448,6 @@ So SNI (certificates) and host-based **listener rules** (routing) work together 
 | "Data encrypted while traveling over the network" | **In-flight encryption** |
 | "Offload SSL/TLS from the EC2 instances" | **SSL termination** at the load balancer |
 | "Where do you manage/renew the certificates?" | **ACM (AWS Certificate Manager)** |
-| "Use a certificate bought from a third-party CA" | **Import it into ACM** |
 | "Multiple SSL certificates on one load balancer" | **ALB or NLB with SNI** |
 | "SNI support" | **ALB, NLB, CloudFront** |
 | "Which load balancer doesn't support SNI?" | **CLB** |
@@ -1751,6 +1457,61 @@ So SNI (certificates) and host-based **listener rules** (routing) work together 
 | "Client tells the server the hostname it wants" | **SNI** |
 | "Encrypt all the way to the EC2 instances" | **Re-encrypt** (HTTPS to targets) or **TLS passthrough** on NLB |
 | "Force all HTTP users onto HTTPS" | **Redirect action**, port 80 to 443 |
+| "Enable HTTPS on an ALB" | Add an **HTTPS listener (443)** with an **ACM certificate** |
+| "Enable TLS on an NLB" | Add a **TLS listener** with a certificate |
+| "Use a certificate from a third-party CA" | **Import into ACM** (private key, body, chain) |
+| "Imported certificate expired" | Imported certificates **don't auto-renew**. Re-import a new one. |
+| "Certificate in the wrong region" | ACM certificates are **regional**, and must match the LB's region |
+| "Advanced TLS protocol negotiation setting on NLB" | **ALPN policy** |
+
+---
+
+## Elastic Load Balancer - SSL Certificates - Hands On
+
+### 1. Adding an HTTPS Listener on an ALB
+
+#### 1.1 Steps in the console
+
+1. EC2, **Load Balancers**, select the ALB, **Listeners** tab, **Add listener**.
+2. **Protocol**: **HTTPS**. The port defaults to **443**.
+3. **Default action**: **Forward to** a target group. The lecture says "if clients use port 443 over HTTPS, forward to a specific target group".
+4. **Secure listener settings**:
+   - **Security policy** (SSL/TLS negotiation policy).
+   - **Default SSL/TLS server certificate** (source, see section 3).
+5. **Add** the listener.
+
+### 2. Adding a TLS Listener on an NLB
+
+#### 2.1 Steps in the console
+
+1. EC2, **Load Balancers**, select the NLB, **Listeners** tab, **Add listener**.
+2. **Protocol**: **TLS** (port usually 443).
+3. **Default action**: forward to a target group (the demo used the existing demo target group).
+4. **Security policy**: choose the policy you want.
+5. **Default SSL/TLS certificate**: from ACM, IAM, or import.
+6. **ALPN policy** (optional, advanced).
+7. **Add** the listener.
+
+#### 2.2 ALPN (Application-Layer Protocol Negotiation)
+
+- A TLS extension that lets the client and server agree on the application protocol (for example HTTP/2) during the handshake.
+- The lecturer called it an advanced setting and skipped it.
+- Console options: **None**, **HTTP1Only**, **HTTP2Only**, **HTTP2Optional**, **HTTP2Preferred**.
+- Know it exists. It isn't a common exam topic.
+
+### 3. Where the Certificate Comes From
+
+| Source | Details | Recommended? |
+|---|---|---|
+| **ACM** (AWS Certificate Manager) | Certificates you requested from ACM or imported into ACM. Automatic renewal for ACM-issued public certificates. | **Yes** |
+| **IAM** | Certificate stored in IAM. Only needed in **regions where ACM isn't available**. | **No** (legacy) |
+| **Import** | Paste the **private key**, **certificate body**, and **certificate chain**. The console imports it **into ACM**. | Yes, for third-party certificates |
+
+- **In the demo:** the ACM dropdown was empty, because there were no certificates yet. That is why the lecturer only showed the options.
+- **Import details:**
+  - Private key: **PEM-encoded**, unencrypted (no passphrase).
+  - Certificate body: the PEM-encoded certificate.
+  - Certificate chain: the intermediate CA certificates, optional but usually needed.
 
 ---
 
@@ -1846,7 +1607,6 @@ Users --> [ELB] +--> EC2 #2 (healthy)    <-- new users go here
 | "Very short requests, want fast instance replacement" | **Low value** (for example 30 s) |
 | "Long uploads or long-lived requests" | **High value** |
 | "What happens to new requests during draining?" | Routed to **other healthy targets** |
-| "Where is it configured on an ALB?" | **Target group attributes** |
 | "Target state while draining" | **`draining`** |
 
 ---
@@ -1919,6 +1679,8 @@ Users --> [ELB] --> EC2 (in ASG)
 | **Custom** | Your own signal (through the API) | For special cases |
 
 - The **health check grace period** (default **300 s**) gives a new instance time to boot before health checks can fail it.
+- **Instances launched by an ASG can be terminated by it.** Store no state on them (use S3, EBS snapshots, RDS, ElastiCache, and so on).
+- Default **scale-in** choice: the ASG terminates an instance in the AZ with the **most instances** first, to keep the AZs balanced.
 
 ### 4. Launch Template
 
@@ -1939,6 +1701,7 @@ An ASG needs a **launch template** that describes **how to launch instances**.
 - **Launch configurations** are the older mechanism. They are **deprecated**, and AWS recommends **launch templates**. The idea is the same, but templates are **versioned** and support newer features (mixed instance types, Spot and On-Demand mix, and so on).
 - Settings on the **ASG itself** (not in the template): **min / desired / max**, **subnets/AZs**, **load balancer target group**, **health check type**, and **scaling policies**.
 - **Mixed instances policy:** an ASG can combine several instance types and **On-Demand + Spot** in one group.
+- Related features to know by name: **instance refresh** (rolling replace to a new AMI), **lifecycle hooks** (run actions at launch or terminate), and **warm pools** (pre-initialized instances).
 
 ### 5. Scaling Policies and CloudWatch Alarms
 
@@ -1962,30 +1725,7 @@ CloudWatch metric (for example, average CPU of the ASG)
 - **Auto** scaling is the combination of a **policy + alarm**, with no manual work.
 - You can define **scale-out policies** (add instances) and **scale-in policies** (remove instances).
 
-**Types of scaling policies (a preview of the next lectures):**
-
-| Type | Idea |
-|---|---|
-| **Target tracking** | Keep a metric near a target (for example, average CPU at 50%). Simplest option, and it creates the alarms for you. |
-| **Simple / step scaling** | Add or remove instances when a CloudWatch alarm fires. Step scaling varies the amount by how far the metric is from the threshold. |
-| **Scheduled** | Scale at known times (for example, a sale on Friday at 9 am) |
-| **Predictive** | Uses machine learning on history to scale ahead of the load |
-
-### 6. Key Facts to Remember
-
-- ASG = **horizontal scaling only**. Vertical scaling (bigger instance) is manual.
-- The ASG is **free**. The EC2 instances, EBS volumes, and load balancer are not.
-- `min <= desired <= max`, and the ASG never goes outside min or max.
-- An ASG **replaces unhealthy instances**. Turn on the **ELB health check type** so it reacts to app failures.
-- **Instances launched by an ASG can be terminated by it.** Store no state on them (use S3, EBS snapshots, RDS, ElastiCache, and so on).
-- The **launch template** defines what gets launched. **Launch configurations are deprecated.**
-- The ASG **registers and deregisters instances** with the target group automatically.
-- Spreading instances over **multiple AZs** gives high availability, and the ASG **rebalances** them.
-- **Cooldown** (default **300 s**) stops the ASG from launching or terminating again before the last action has had effect.
-- Default **scale-in** choice: the ASG terminates an instance in the AZ with the **most instances** first, to keep the AZs balanced.
-- Related features to know by name: **instance refresh** (rolling replace to a new AMI), **lifecycle hooks** (run actions at launch or terminate), and **warm pools** (pre-initialized instances).
-
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1994,8 +1734,6 @@ CloudWatch metric (for example, average CPU of the ASG)
 | "Remove instances when load drops" | **Scale in** |
 | "Minimum and maximum number of instances" | ASG **min / max capacity** |
 | "How many instances the ASG is trying to run now" | **Desired capacity** |
-| "Replace instances that fail health checks" | **ASG self-healing** |
-| "Replace instances that fail application health checks" | ASG health check type = **ELB** |
 | "Register new instances with the load balancer automatically" | **ASG attached to a target group** |
 | "Defines AMI, instance type, user data, SGs, IAM role for the ASG" | **Launch template** |
 | "Launch configuration" | **Deprecated**, use a launch template |
@@ -2003,19 +1741,19 @@ CloudWatch metric (for example, average CPU of the ASG)
 | "Cost of using an ASG" | **Free**. Pay only for the resources. |
 | "Scale to a schedule / ahead of a known spike" | **Scheduled scaling** |
 | "Make an instance bigger automatically" | Not an ASG feature (**vertical** scaling) |
+| "ASG launches instances with the same configuration each time" | **Launch template** |
+| "Where do you choose subnets/AZs for an ASG?" | On the **ASG**, not the launch template |
+| "Set desired above max" | Not allowed. Raise **max** first (`min <= desired <= max`). |
+| "Spread instances across AZs evenly" | **AZ distribution: balanced best effort** |
+| "Why did the ASG launch or terminate an instance?" | **Activity history** |
+| "New instance keeps being terminated and replaced" | Failing health checks: check the **SG** and **user data** |
+| "Scale in: which instance is removed?" | The **termination policy**, by default from the AZ with the most instances |
+| "Instances terminate mid-request during scale-in" | Increase the **deregistration delay** |
+| "Manual instances still running when the ASG is created" | They are **not** managed by the ASG |
 
 ---
 
 ## Auto Scaling Groups Hands On
-
-### TL;DR
-
-- Created a **launch template** (`my demo template`) and an **ASG** (`Demo ASG`) attached to the existing ALB target group (`demo-tg-alb`).
-- The ASG launched an instance by itself to reach the **desired capacity (1)**. The instance registered in the target group, turned **healthy**, and the ALB served "Hello World".
-- **Health checks:** enabled both **EC2** and **ELB** types, so the ASG replaces instances the load balancer marks unhealthy.
-- **Scale out:** set desired to **2** (raising max to 2 first). The ASG launched a second instance, and the ALB alternated between two IPs.
-- **Scale in:** set desired back to **1**. The ASG picked one instance, deregistered it from the target group, and terminated it.
-- The **Activity** tab (activity history) is where you see why the ASG launched or terminated instances.
 
 ### 1. Prerequisite
 
@@ -2034,7 +1772,7 @@ EC2, Auto Scaling Groups, **Create Auto Scaling group**, name it `Demo ASG`, the
 | Setting | Value used | Notes |
 |---|---|---|
 | Name / description | `my demo template` / "templates" | Launch templates are **versioned**. This is **version 1**. |
-| AMI | Amazon Linux 2 (x86), free tier eligible | AL2 is reaching end of support. Use **Amazon Linux 2023** for new work. |
+| AMI | Amazon Linux 2 (x86), free tier eligible | |
 | Instance type | `t2.micro` | Free tier eligible |
 | Key pair | `EC2 tutorial` | Optional. Not needed if you use EC2 Instance Connect or SSM. |
 | Subnet | **Not in the launch template** | Chosen on the **ASG** |
@@ -2122,52 +1860,7 @@ ASG -> launches EC2 (launch template) -> registers in target group -> ALB routes
    - The instance is first **deregistered from the target group** (the **deregistration delay** applies, so in-flight requests can finish), and then terminated.
 3. The ASG ends with **1 instance**.
 
-- **Which instance is terminated?** The **default termination policy** favors the AZ with the most instances first, then applies further tie-breakers (such as the oldest launch template version or instance). You don't choose it manually.
 - Manually changing desired capacity is one of several triggers. Scaling policies (next lecture) do this automatically.
-
-### 10. Key Facts to Remember
-
-- An ASG **creates instances to match the desired capacity**, and it does this from the **launch template**.
-- **Subnets/AZs and the target group** are set on the **ASG**. The launch template holds AMI, instance type, user data, SG, key pair, IAM role, and storage.
-- The ASG **auto-registers** instances in the attached **target group** and **deregisters** them on termination.
-- Health check types: **EC2** (default) and **ELB** (optional, enable it to catch application failures). The demo turned on both.
-- **Self-healing:** unhealthy instances are **terminated and replaced**.
-- To scale manually, change **desired capacity** (and **max** if needed).
-- **Activity history** (Activity tab) explains every launch and termination and is the first place to debug.
-- **Newly launched instances show `unhealthy` briefly** while user data runs. That is normal, not an error.
-- **Terminating an ASG instance by hand** makes the ASG launch a replacement, since the count drops below desired.
-- **Deleting the ASG** terminates its instances.
-
-### 11. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "ASG launches instances with the same configuration each time" | **Launch template** |
-| "Where do you choose subnets/AZs for an ASG?" | On the **ASG**, not the launch template |
-| "Attach ASG instances to a load balancer" | Attach the **target group** to the ASG |
-| "ASG replaces instances that fail app-level checks" | Enable **ELB health checks** on the ASG |
-| "Set desired above max" | Not allowed. Raise **max** first (`min <= desired <= max`). |
-| "Spread instances across AZs evenly" | **AZ distribution: balanced best effort** |
-| "Why did the ASG launch or terminate an instance?" | **Activity history** |
-| "New instance keeps being terminated and replaced" | Failing health checks: check the **SG** and **user data** |
-| "What determines how many instances run right now?" | **Desired capacity** |
-| "Scale in: which instance is removed?" | The **termination policy**, by default from the AZ with the most instances |
-| "Instances terminate mid-request during scale-in" | Increase the **deregistration delay** |
-| "Manual instances still running when the ASG is created" | They are **not** managed by the ASG |
-
-### 12. Hands-On Checklist
-
-- [x] **Terminate** all running EC2 instances
-- [x] Create the launch template `my demo template`: AL2/AL2023, `t2.micro`, SG, user data (no subnet)
-- [x] Create ASG `Demo ASG` and select the template (version 1)
-- [x] Instance launch options: reset instance types to the template, multiple AZs, **balanced best effort**
-- [x] Attach the existing target group `demo-tg-alb`
-- [x] Enable **EC2 + ELB health checks**
-- [x] Set **desired = min = max = 1**, no scaling policies, no notifications, then create
-- [x] Check **Activity**, **Instance management**, and **EC2, Instances** for the new instance
-- [x] Wait for the target to become **healthy**, then open the ALB URL and see "Hello World"
-- [x] Edit the group: **desired 2, max 2**, then verify the second instance and two alternating IPs
-- [x] Edit the group: **desired 1**, then verify that one instance is deregistered and terminated
 
 ---
 
@@ -2228,6 +1921,7 @@ ASG -> launches EC2 (launch template) -> registers in target group -> ALB routes
 
 - **Adjustment types:** change in capacity (+/- N), **exact** capacity, or **percent** change.
 - These need **more setup** than target tracking, but give **finer control**.
+- Scaling policies only change **instance count** (horizontal), never instance size.
 
 ### 4. Scheduled Scaling
 
@@ -2293,6 +1987,7 @@ Ignore the action     Proceed: launch or terminate instances
 - The default cooldown mainly applies to **simple scaling** policies. **Target tracking** and **step scaling** use **instance warmup** instead.
 - The cooldown can also be set **per policy**.
 - The value trades off **stability** (longer) against **responsiveness** (shorter).
+- If **several policies** fire at once, the ASG follows the one that gives the **largest capacity** for scale-out.
 
 ### 8. Making Scaling Faster and More Responsive
 
@@ -2304,20 +1999,10 @@ Ignore the action     Proceed: launch or terminate instances
    - **Basic monitoring** publishes metrics every **5 minutes**. **Detailed monitoring** publishes every **1 minute**, at extra cost.
    - Faster metric updates mean quicker reactions. Enable **detailed monitoring** on the instances (launch template) and **group metrics collection** on the ASG (1-minute granularity).
 3. Tune the **health check grace period** and **instance warmup** to match your real startup time.
+- Group-average metrics mean **one busy instance** doesn't fully drive scaling.
+- Newly launched instances need **warm-up time**, so scaling isn't instant.
 
-### 9. Key Facts to Remember
-
-- **Target tracking** = pick a metric and a target, and AWS handles the alarms. It is the simplest and recommended default.
-- **Step scaling** is preferred over **simple scaling**. Both need **your CloudWatch alarms**.
-- **Scheduled** = known times. **Predictive** = forecast from history. **Dynamic** = reacts to live metrics.
-- The **default cooldown is 300 s**, and it prevents scaling thrash.
-- **Never scales outside min/max.** Scheduled actions can change min and max themselves.
-- If **several policies** fire at once, the ASG follows the one that gives the **largest capacity** for scale-out.
-- **CPU** is the general-purpose metric. **`ALBRequestCountPerTarget`** needs an ALB or a target group. **Network** is for I/O-heavy apps.
-- **Custom metrics** are pushed to **CloudWatch**.
-- Scaling policies only change **instance count** (horizontal), never instance size.
-
-### 10. Exam-Style Recall
+### 9. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -2337,19 +2022,20 @@ Ignore the action     Proceed: launch or terminate instances
 | "Metrics update too slowly" | Enable **detailed monitoring** (1-minute) |
 | "Which policy needs you to create the alarms?" | **Simple / step scaling** |
 | "Scale to a size beyond the maximum" | Not possible. Raise **max capacity** first. |
+| "Which policy creates the CloudWatch alarms for you?" | **Target tracking** |
+| "Add 10% of the group when an alarm fires" | **Simple scaling** (percentage change) |
+| "Known promotion or event next week" | **Scheduled action** |
+| "Predictive scaling, check the forecast without scaling" | **Forecast only** mode |
+| "ASG didn't scale beyond N instances" | **Max capacity** reached |
+| "Why did the ASG scale in slowly?" | Scale-in alarm needs about **15 minutes** of low metric data |
+| "Simulate CPU load for testing" | `stress` (or `stress-ng`) on an instance |
+| "Where do you see why an instance was launched or terminated?" | ASG **Activity history** |
+| "Where do you see the alarms that target tracking made?" | **CloudWatch, Alarms** |
+| "Remove the policy's alarms" | **Delete the scaling policy** |
 
 ---
 
 ## Auto Scaling Groups - Scaling Policies Hands On
-
-### TL;DR
-
-- The ASG's **Automatic scaling** tab has three categories: **dynamic scaling policies**, **predictive scaling policies**, and **scheduled actions**.
-- **Scheduled actions** and **predictive scaling** were only walked through, not demoed. Predictive scaling needs days of history.
-- The demo built a **target tracking** policy: **average CPU utilization = 40%**. AWS **created two CloudWatch alarms** for it (`AlarmHigh` to scale out, `AlarmLow` to scale in).
-- Load was generated with the **`stress`** tool on an instance. CPU hit 100%, `AlarmHigh` fired, and the ASG scaled **1 to 2 to 3** instances (capped by max = 3).
-- After the load stopped (instances rebooted), `AlarmLow` fired after about 15 minutes and the ASG scaled back **3 to 2 to 1**.
-- **Scale out is fast and scale in is slow**. This is deliberate.
 
 ### 1. The Automatic Scaling Tab
 
@@ -2361,17 +2047,13 @@ Ignore the action     Proceed: launch or terminate instances
 
 ### 2. Scheduled Actions (Walkthrough)
 
-- Use them for events you **know in advance**. Lecture example: a big promotion **next Saturday**.
 - Settings on a scheduled action:
   - **Desired**, **min**, and **max** capacity to apply.
   - **Recurrence**: once, or repeating (hourly, daily, weekly, monthly, or a **cron** expression).
   - **Start time** and optional **end time**. A **time zone** can be set.
-- It is **time-based**, not metric-based. It runs alongside dynamic policies.
-- Example: every Friday at 5 pm, set **min = 10**.
 
 ### 3. Predictive Scaling (Walkthrough)
 
-- **Machine-learning driven.** It looks at **past load**, builds a **forecast**, and scales **before** the load arrives.
 - You pick:
   - A **metric**: **CPU utilization**, **network in**, **network out**, **ALB request count per target**, or a **custom metric**.
   - A **target value**, for example **50% CPU**.
@@ -2379,24 +2061,15 @@ Ignore the action     Proceed: launch or terminate instances
 - Modes:
   - **Forecast only**: generates forecasts so you can check them, but doesn't scale.
   - **Forecast and scale**: acts on the forecast.
-- Why it wasn't demoed: it needs **history**. The lecturer would have to run it for about a week with real traffic. AWS's minimum is **24 hours** of data, and it uses up to **14 days**.
-- It suits **cyclical, repeating** patterns.
+- Not demoed: it needs history, about a week of real traffic.
 
 ### 4. Dynamic Scaling Policy Types (Console Tour)
-
-| Type | How you configure it |
-|---|---|
-| **Target tracking** | Name, **metric**, **target value**. AWS creates the alarms. **This is the one demoed.** |
-| **Step scaling** | Name, **your CloudWatch alarm**, and **steps** by how far the metric is from the threshold. Example: very high, add 10. High, add 1. |
-| **Simple scaling** | Name, **your CloudWatch alarm**, and **one action**: add/remove N capacity units, set exact capacity, or change by a percentage. |
 
 **Simple scaling details from the lecture:**
 - The **alarm must exist beforehand**. You select it in the policy.
 - Action example: **add 2 capacity units**, or **add 10% of the group**.
 - "Add capacity units in increments of at least 2" is the **minimum adjustment magnitude**. It applies to percentage changes.
 - Actions can be **scale out** (add), **scale in** (remove), or **set to** an exact size.
-
-**Step scaling** is preferred over simple scaling today. Both need you to create the alarms.
 
 ### 5. Demo: Target Tracking on CPU
 
@@ -2452,7 +2125,6 @@ CloudWatch, **Alarms**: **two alarms were created by the policy**.
 | **`AlarmLow`** | **Scale in** (remove instances) | CPU **below 28%** for **15 datapoints within 15 minutes** |
 
 - The lecture says "20 eights", which is a caption error for **28%**. The scale-in threshold is roughly **70% of the target** (40 x 0.7 = 28).
-- **Don't edit or delete these alarms by hand.** They belong to the policy. Deleting the policy removes them.
 - Alarm view: CPU rose, `AlarmHigh` went to **In alarm**, and the scaling activity followed.
 
 #### 5.6 Scale in
@@ -2464,52 +2136,6 @@ CloudWatch, **Alarms**: **two alarms were created by the policy**.
 5. The CPU graph showed it rising, then falling below the low threshold, then the scale-in.
 
 **Scale-in is slower than scale-out** (3 minutes versus 15 minutes). This protects availability. Scale-in also respects the **deregistration delay** and the ASG's **termination policy**.
-
-### 6. Key Facts to Remember
-
-- **Target tracking** creates and manages its own CloudWatch alarms (`AlarmHigh` and `AlarmLow`). **Step and simple scaling need alarms you create.**
-- Target tracking scales **out fast** (3 datapoints, 3 minutes) and **in slowly** (15 datapoints, 15 minutes).
-- The **scale-in threshold** is about **70% of the target**.
-- Max capacity **limits** dynamic scaling. The ASG never exceeds it.
-- The policy changes **desired capacity**, and the ASG launches or terminates instances to match.
-- Group-average metrics mean **one busy instance** doesn't fully drive scaling.
-- **Activity history** shows the cause for each scaling action. **CloudWatch, Alarms** shows the alarm state.
-- **Predictive scaling** needs **history** (at least 24 hours) and can run in **forecast only** mode first.
-- **Scheduled actions** set **min/max/desired** at specific times, once or on a recurring schedule.
-- Newly launched instances need **warm-up time**, so scaling isn't instant.
-
-### 7. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Keep average CPU at a target value" | **Target tracking** policy |
-| "Which policy creates the CloudWatch alarms for you?" | **Target tracking** |
-| "Which policies require you to create the alarms?" | **Simple and step scaling** |
-| "Scale by different amounts depending on the alarm value" | **Step scaling** |
-| "Add 10% of the group when an alarm fires" | **Simple scaling** (percentage change) |
-| "Known promotion or event next week" | **Scheduled action** |
-| "Recurring pattern, scale ahead using forecasts" | **Predictive scaling** |
-| "Predictive scaling, check the forecast without scaling" | **Forecast only** mode |
-| "ASG didn't scale beyond N instances" | **Max capacity** reached |
-| "Why did the ASG scale in slowly?" | Scale-in alarm needs about **15 minutes** of low metric data |
-| "Simulate CPU load for testing" | `stress` (or `stress-ng`) on an instance |
-| "Where do you see why an instance was launched or terminated?" | ASG **Activity history** |
-| "Where do you see the alarms that target tracking made?" | **CloudWatch, Alarms** |
-| "Remove the policy's alarms" | **Delete the scaling policy** |
-
-### 8. Hands-On Checklist
-
-- [x] Open the ASG, **Automatic scaling** tab, and review the three categories
-- [x] Skim the **Scheduled action** form (desired/min/max, recurrence, start/end time)
-- [x] Skim the **Predictive scaling** form (metric, target value, mode)
-- [x] Skim **simple** and **step** scaling (alarm, action)
-- [x] Create a **target tracking** policy: **Average CPU utilization = 40**
-- [x] Edit the ASG: **max capacity = 3** (keep min/desired = 1)
-- [x] EC2 Instance Connect to the instance, install `stress`, run `stress -c 4`
-- [x] Watch **Monitoring** (CPU) and **Activity history** for the scale-out (1, then 2, then 3)
-- [X] Open **CloudWatch, Alarms** and find the **`AlarmHigh`** and **`AlarmLow`** alarms
-- [x] Stop the load (`Ctrl+C` or reboot the instances)
-- [x] Wait about 15 minutes and watch the scale-in back to 1 instance
 
 ---
 
@@ -2548,6 +2174,7 @@ After:   [new] [new] [new] [new] [new]
 ```
 
 - The name comes from the behavior: instances are **terminated and new ones come up** over time.
+- It works with **ELB health checks**: replacements must pass before the rollout continues.
 
 ### 3. Key Settings
 
@@ -2574,6 +2201,7 @@ After:   [new] [new] [new] [new] [new]
 - Set it to about your **real startup time** (boot, user data, app start).
 - Too short means the ASG may terminate more old instances before the new ones can take traffic.
 - Too long means the refresh takes longer than it needs to.
+- New instances register with the **target group** and old ones **deregister** (the **deregistration delay** applies), so users are not cut off mid-request.
 
 ### 4. Other Options Worth Knowing
 
@@ -2591,6 +2219,7 @@ The lecture covers only the two main settings. The API has more:
 - **Cancel** an in-progress refresh with `CancelInstanceRefresh`.
 - Check progress with `DescribeInstanceRefreshes`. Statuses include `Pending`, `InProgress`, `Successful`, `Failed`, and `Cancelled`.
 - Only **one** instance refresh can run at a time per ASG.
+- The ASG's **instance maintenance policy** (seen in the ASG hands-on) also controls min/max healthy percentages during replacements.
 
 ### 5. Instance Refresh vs Other Approaches
 
@@ -2601,19 +2230,7 @@ The lecture covers only the two main settings. The API has more:
 | **Instance Refresh** | **Automated rolling replacement** with min healthy % and warmup | Takes time, and temporarily reduces capacity (unless max healthy is used) |
 | **New ASG (blue/green)** | Create a new ASG with the new template and switch traffic | More resources and more setup |
 
-### 6. Key Facts to Remember
-
-- **Instance Refresh** = update the **whole ASG** to a new launch template by **replacing instances gradually**.
-- It is started with **`StartInstanceRefresh`**.
-- **Minimum healthy percentage** = how much capacity must stay healthy. **Lower means faster**, and **higher means safer**.
-- **Instance warmup** = time before a new instance is considered ready.
-- New instances register with the **target group** and old ones **deregister** (the **deregistration delay** applies), so users are not cut off mid-request.
-- The launch template is **versioned**, so you can point the ASG at the new version and refresh.
-- It works with **ELB health checks**: replacements must pass before the rollout continues.
-- The ASG's **instance maintenance policy** (seen in the ASG hands-on) also controls min/max healthy percentages during replacements.
-- Instance Refresh is **rolling**. It is not the same as blue/green.
-
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|

@@ -50,18 +50,11 @@
 | "Grant only what's needed" | **Least privilege** |
 | "Can a group contain another group?" | **No.** Groups hold users only |
 | "IAM is regional or global?" | **Global** |
+| "Where do IAM users sign in?" | The **account sign-in URL** (ID or alias) |
 
 ---
 
 ## IAM Users & Groups Hands On
-
-### TL;DR
-
-- IAM is **global**: users created once work in every Region.
-- Created a user with **console access**, a custom password, and a forced password change at first sign-in.
-- Created an **admin group** with the **AdministratorAccess** policy and added the user, so permissions come from the group.
-- Signed in as the new user (in a private window) through the **account-specific sign-in URL**.
-- **Tags** organize and track resources (for example `Department: Development`).
 
 ### 1. Steps
 
@@ -76,24 +69,6 @@
 
 - Sign-in URL format: `https://<account-id-or-alias>.signin.aws.amazon.com/console`. An **account alias** makes it friendlier.
 - Keep **root** and **IAM user** credentials in a password manager.
-
-### 2. Hands-On Checklist
-
-- [x] Confirm IAM shows as a **global** service
-- [x] Create an IAM user with console access and a custom password
-- [x] Require a password reset at first sign-in
-- [x] Create a group with **AdministratorAccess** and add the user
-- [x] Add tags to the user
-- [x] Create an **account alias** and note the sign-in URL
-- [x] Sign in as the IAM user in a private window
-
-### 3. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "User created in one Region, usable in another" | IAM is **global** |
-| "Where do IAM users sign in?" | The **account sign-in URL** (ID or alias) |
-| "Simplest way to manage permissions for many users" | **Groups** |
 
 ---
 
@@ -203,17 +178,12 @@
 | "No policy mentions the action" | **Implicit deny** |
 | "Find permissions a user never used" | **IAM Access Advisor** |
 | "Which users have old access keys or no MFA?" | **IAM Credentials Report** |
+| "User can list but not create IAM users" | **IAMReadOnlyAccess** |
+| "Full access to every service" | **AdministratorAccess** (`*` on `*`) |
 
 ---
 
 ## IAM Policies Hands-on
-
-### TL;DR
-
-- User "Stephane" has **AdministratorAccess** through the admin group. Removing him from the group makes `list users` fail with **access denied**.
-- Attaching **IAMReadOnlyAccess** directly to the user restores viewing (list/get) but not creating.
-- Policies can come from **groups and directly from the user** at the same time.
-- Custom policies can be built with the **visual editor** or the **JSON editor**.
 
 ### 1. Demo Flow
 
@@ -238,22 +208,6 @@
 
 - **Visual editor:** pick a service, actions, and resources.
 - **JSON editor:** paste or write the document directly.
-
-### 4. Hands-On Checklist
-
-- [x] Remove the user from the admin group and confirm **access denied** when listing users
-- [x] Attach **IAMReadOnlyAccess** to the user and confirm read access
-- [x] Inspect **AdministratorAccess** and **IAMReadOnlyAccess** in the JSON view
-- [x] Create a custom policy with the visual and JSON editors
-- [x] Add the user back to the admin group
-
-### 5. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "User can list but not create IAM users" | **IAMReadOnlyAccess** |
-| "User in group A (allow) and has a direct deny" | **Deny wins** |
-| "Full access to every service" | **AdministratorAccess** (`*` on `*`) |
 
 ---
 
@@ -296,16 +250,12 @@
 | "MFA app on a phone" | **Virtual MFA device** (TOTP) |
 | "Protect the most sensitive account" | **Root user MFA** |
 | "Max MFA devices per user" | **8** |
+| "Set password rules for all IAM users" | **Account password policy** |
+| "MFA setup with a phone app" | Scan a **QR code**, enter two consecutive codes |
 
 ---
 
 ## IAM MFA Hands On
-
-### TL;DR
-
-- Found the **password policy** in IAM, Account settings, and customized length, character types, expiration, and reuse.
-- Enabled **MFA on the root account** using an authenticator app (Twilio Authy) by scanning a QR code.
-- Signed in with root, entered the password, then the **MFA code**.
 
 ### 1. Password Policy
 
@@ -319,20 +269,6 @@
 3. Choose the type (authenticator app, security key, or hardware token).
 4. For an app: **scan the QR code**, enter **two consecutive codes**.
 5. Sign out, sign back in as root, and enter the MFA code after the password.
-
-### 3. Hands-On Checklist
-
-- [x] Review and customize the IAM **password policy**
-- [x] Enable **MFA on the root user** with an authenticator app
-- [x] Scan the QR code and confirm with two consecutive codes
-- [x] Sign in as root and complete the MFA step
-
-### 4. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Set password rules for all IAM users" | **Account password policy** |
-| "MFA setup with a phone app" | Scan a **QR code**, enter two consecutive codes |
 
 ---
 
@@ -380,6 +316,9 @@
 | "Access keys per user" | **2** |
 | "Secret access key lost" | Create a new key. The secret can't be retrieved |
 | "Programmatic access to AWS from code" | **SDK** |
+| "CLI returns access denied but the console works" | Check **which credentials/profile** the CLI is using and their permissions |
+| "Where does `aws configure` store the keys?" | `~/.aws/credentials` |
+| "EC2 needs AWS API access" | An **IAM role**, not stored keys |
 
 ---
 
@@ -406,22 +345,9 @@
 - To upgrade later, run the newest installer again.
 - If the install fails, follow the troubleshooting section of the installation guide.
 
-### 2. Hands-On Checklist
-
-- [x] Download the AWS CLI v2 macOS `.pkg`
-- [x] Complete the installer (all users)
-- [x] Run `aws --version` and see the version
-
 ---
 
 ## Using AWS CLI Hands On
-
-### TL;DR
-
-- Created an **access key** for the IAM user (IAM, user, **Security credentials**, **Create access key**, use case **CLI**).
-- Ran `aws configure` and entered the **Access Key ID**, **Secret Access Key**, **default Region** (for example `eu-west-1`), and **output format**.
-- `aws iam list-users` returns the same data as the console.
-- Removing the user from the admin group made the CLI fail with **access denied**: **the CLI uses the same IAM permissions as the console.**
 
 ### 1. Configure
 
@@ -440,38 +366,13 @@ aws configure
 | Named profiles | `aws configure --profile <name>`, then `--profile <name>` on commands |
 | Security | Never share the keys. Delete the key when you're done with the demo |
 
-### 2. Credential Provider Chain (CLI and SDK)
-
-The CLI/SDK looks for credentials in this order and uses the first found:
-
-1. Command-line options (`--profile`, `--region`)
-2. Environment variables (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`)
-3. Credentials/config files (`~/.aws/credentials`, `~/.aws/config`)
-4. Container credentials (ECS tasks)
-5. **Instance profile credentials** (EC2, from an attached role)
-
-### 3. Permission Demo
+### 2. Permission Demo
 
 - List users: works with admin permissions.
 - Remove the user from the admin group: the same command fails with **AccessDenied**.
 - Add the user back to the admin group to continue with later demos.
 
-### 4. Hands-On Checklist
-
-- [x] Create an access key for the IAM user (use case: CLI)
-- [x] `aws configure` with key ID, secret, Region, and output format
-- [x] Run `aws iam list-users`
-- [x] Remove the user from the admin group and see **access denied**
-- [x] Restore the group membership
-
-### 5. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "CLI returns access denied but the console works" | Check **which credentials/profile** the CLI is using and their permissions |
-| "Where does `aws configure` store the keys?" | `~/.aws/credentials` |
-| "Credential source order" | Flags, then env vars, then files, then container, then instance profile |
-| "EC2 needs AWS API access" | An **IAM role**, not stored keys |
+- The CLI/SDK credential lookup order is covered in the AWS CLI Profiles section (#12).
 
 ---
 
@@ -552,16 +453,12 @@ The CLI/SDK looks for credentials in this order and uses the first found:
 | "Who can assume the role?" | Defined in the **trust policy** |
 | "Credentials that expire automatically" | Role via **STS** |
 | "Service reading S3 from EC2 without keys" | **EC2 instance profile** with a role |
+| "Role for an EC2 instance" | Trusted entity: **EC2** (AWS service) |
+| "What lets EC2 assume the role?" | The role's **trust policy** |
 
 ---
 
 ## Creating IAM Roles in AWS Hands On
-
-### TL;DR
-
-- Created an IAM role for **EC2**: trusted entity **AWS service**, use case **EC2**.
-- Attached **IAMReadOnlyAccess**, named it `DemoRoleForEC2`, and confirmed it in the roles list.
-- It's used in the EC2 section (attached to an instance so the instance can call IAM without stored keys).
 
 ### 1. Steps
 
@@ -571,21 +468,6 @@ The CLI/SDK looks for credentials in this order and uses the first found:
 4. **Role name:** `DemoRoleForEC2`. The trust policy lets **EC2** assume the role.
 5. Review and **Create role**.
 6. The role appears in the roles list.
-
-### 2. Hands-On Checklist
-
-- [x] Open IAM, **Roles**, **Create role**
-- [x] Choose **AWS service** and the **EC2** use case
-- [x] Attach the **IAMReadOnlyAccess** policy
-- [x] Name it `DemoRoleForEC2`, review the trust policy, and create it
-- [x] Confirm it appears in the roles list
-
-### 3. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Role for an EC2 instance" | Trusted entity: **EC2** (AWS service) |
-| "What lets EC2 assume the role?" | The role's **trust policy** |
 
 ---
 
@@ -602,56 +484,26 @@ The CLI/SDK looks for credentials in this order and uses the first found:
 | | Credentials Report | Access Advisor |
 |---|---|---|
 | Scope | **Account** (all users) | One **user / group / role / policy** |
-| Format | **CSV** download | Console tab (**Access Advisor**) |
 | Answers | "Whose credentials need attention?" | "Which permissions are actually used?" |
-| Main use | Audit password, MFA, and key status | Trim unused permissions |
 
-### 2. Exam-Style Recall
+### 2. Details
+
+| Aspect | Credentials Report | Access Advisor |
+|---|---|---|
+| Where | IAM, **Credential report**, **Download** | IAM, user (or role/group/policy), **Access Advisor** tab |
+| Contents | About 23 CSV columns: user ARN, creation time, **password enabled/last used/last changed/next rotation**, **MFA active**, **access key** status (active, last rotated, last used, last service used) | Allowed services and their **last accessed** time |
+| Limits | Regenerate **at most once every 4 hours** (a recent report is reused) | Look-back up to **400 days**. Action-level detail only for some services (S3, EC2, IAM, Lambda) |
+| Use | Spot inactive users, missing MFA, old or unused access keys | Remove permissions that are never used |
+
+- Demo: generate and download the Credentials Report, then open Access Advisor on a user.
+
+### 3. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
 | "Account-wide listing of users and credential status" | **Credentials Report** |
 | "See which services a user hasn't used" | **Access Advisor** |
 | "Reduce permissions to least privilege using real usage" | **Access Advisor** |
-
----
-
-## Practical IAM Security Tools Hands On
-
-### TL;DR
-
-- Generated and downloaded the **Credentials Report** (IAM, **Credential report**, **Download**).
-- Opened **Access Advisor** on a user to see services and their last-accessed time.
-
-### 1. Credentials Report
-
-| Aspect | Detail |
-|---|---|
-| Format | **CSV**, with about 23 columns |
-| Freshness | Can be generated **at most once every 4 hours** (an existing recent report is reused) |
-| Includes | User ARN, creation time, **password enabled**, **password last used**, **last changed**, **next rotation**, **MFA active**, and **access key** status (active, last rotated, last used, last service used) |
-| Purpose | Spot inactive users, missing MFA, and old or unused access keys |
-
-### 2. Access Advisor
-
-| Aspect | Detail |
-|---|---|
-| Where | IAM, user (or role/group/policy), **Access Advisor** tab |
-| Shows | Allowed services and their **last accessed** time |
-| Tracking period | Up to **400 days** |
-| Action-level detail | Available for some services (for example S3, EC2, IAM, Lambda) |
-| Benefit | Remove permissions that are never used |
-
-### 3. Hands-On Checklist
-
-- [x] Generate and download the **Credentials Report**
-- [x] Read the columns (password, MFA, access key dates)
-- [x] Open **Access Advisor** for a user and review last-accessed services
-
-### 4. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
 | "Report includes MFA status and key rotation for all users" | **Credentials Report** |
 | "How often can it be regenerated?" | Once every **4 hours** |
 | "Access Advisor look-back period" | **400 days** |
@@ -719,10 +571,6 @@ The CLI/SDK looks for credentials in this order and uses the first found:
 
 ## IAM in AWS - Summary
 
-### TL;DR
-
-- **Users** = real people. **Groups** = users sharing permissions. **Policies** = JSON permissions. **Roles** = identities for AWS services. **MFA + password policy** = account security. **CLI/SDK + access keys** = programmatic access. **Credentials Report + Access Advisor** = auditing.
-
 ### Quick Reference
 
 | Concept | Remember |
@@ -737,125 +585,3 @@ The CLI/SDK looks for credentials in this order and uses the first found:
 | CloudShell | Free browser shell, 1 GB persistent storage per Region |
 | Credentials Report | Account-level CSV, at most every 4 hours |
 | Access Advisor | User-level last-accessed data, up to 400 days |
-
----
-
-## Elastic Load Balancer - SSL Certificates - Hands On
-
-### TL;DR
-
-- Walkthrough of adding an **HTTPS listener** on an **ALB** and a **TLS listener** on an **NLB**. Nothing was actually created, because the demo account had no certificate in ACM.
-- **ALB:** listener protocol **HTTPS**, port **443**, forward to a target group, with a **security policy** and a **default certificate**.
-- **NLB:** listener protocol **TLS**, forward to a target group, with a **security policy**, a **default certificate**, and an optional **ALPN policy**.
-- Certificate source, for both: **ACM** (recommended), **IAM** (not recommended), or **import** (paste private key, certificate body, and chain, which imports it into ACM).
-- Exam angle: the **default certificate is required** on any HTTPS/TLS listener, and **ACM** is the place to manage certificates.
-
-### 1. Adding an HTTPS Listener on an ALB
-
-#### 1.1 Steps in the console
-
-1. EC2, **Load Balancers**, select the ALB, **Listeners** tab, **Add listener**.
-2. **Protocol**: **HTTPS**. The port defaults to **443**.
-3. **Default action**: **Forward to** a target group. The lecture says "if clients use port 443 over HTTPS, forward to a specific target group".
-4. **Secure listener settings**:
-   - **Security policy** (SSL/TLS negotiation policy).
-   - **Default SSL/TLS server certificate** (source, see section 3).
-5. **Add** the listener.
-
-The lecturer said "port 403" by mistake. HTTPS is **443**.
-
-#### 1.2 Listener settings explained
-
-| Setting | Detail |
-|---|---|
-| **Protocol : Port** | HTTPS : 443 |
-| **Default action** | Forward to a target group (or redirect, fixed response, or authenticate) |
-| **Security policy** | Controls which TLS versions and ciphers the ALB accepts. Leave the default unless you need **backward compatibility with older SSL/TLS versions**. |
-| **Default certificate** | **Required.** Used when no other certificate matches or the client sends no SNI. |
-| **Additional certificates** | Can be added after creation (the listener's **Certificates** tab) for **SNI** and multiple domains |
-
-- Older security policies accept legacy protocol versions. They help old clients but **weaken security**.
-- The target group behind an HTTPS listener can use **HTTP** (SSL termination) or **HTTPS** (re-encryption).
-- The ALB's **security group** must allow **inbound TCP 443**.
-
-### 2. Adding a TLS Listener on an NLB
-
-#### 2.1 Steps in the console
-
-1. EC2, **Load Balancers**, select the NLB, **Listeners** tab, **Add listener**.
-2. **Protocol**: **TLS** (port usually 443).
-3. **Default action**: forward to a target group (the demo used the existing demo target group).
-4. **Security policy**: choose the policy you want.
-5. **Default SSL/TLS certificate**: from ACM, IAM, or import.
-6. **ALPN policy** (optional, advanced).
-7. **Add** the listener.
-
-#### 2.2 ALPN (Application-Layer Protocol Negotiation)
-
-- A TLS extension that lets the client and server agree on the application protocol (for example HTTP/2) during the handshake.
-- The lecturer called it an advanced setting and skipped it.
-- Console options: **None**, **HTTP1Only**, **HTTP2Only**, **HTTP2Optional**, **HTTP2Preferred**.
-- Know it exists. It isn't a common exam topic.
-
-#### 2.3 Behavior worth knowing
-
-- The NLB **terminates TLS** on a TLS listener, so the certificate lives on the NLB.
-- The NLB can forward to targets as **TLS** (re-encrypt) or plain **TCP**.
-- With a plain **TCP** listener there is **no termination**. The encrypted stream passes through to the targets (**TLS passthrough**), and the targets hold the certificate.
-- The NLB supports **SNI**, so a TLS listener can hold multiple certificates.
-
-### 3. Where the Certificate Comes From
-
-| Source | Details | Recommended? |
-|---|---|---|
-| **ACM** (AWS Certificate Manager) | Certificates you requested from ACM or imported into ACM. Automatic renewal for ACM-issued public certificates. | **Yes** |
-| **IAM** | Certificate stored in IAM. Only needed in **regions where ACM isn't available**. | **No** (legacy) |
-| **Import** | Paste the **private key**, **certificate body**, and **certificate chain**. The console imports it **into ACM**. | Yes, for third-party certificates |
-
-- **In the demo:** the ACM dropdown was empty, because there were no certificates yet. That is why the lecturer only showed the options.
-- **Import details:**
-  - Private key: **PEM-encoded**, unencrypted (no passphrase).
-  - Certificate body: the PEM-encoded certificate.
-  - Certificate chain: the intermediate CA certificates, optional but usually needed.
-  - **Imported certificates don't auto-renew.** You must renew and re-import them before they expire.
-- **Region rule:** the ACM certificate must be in the **same region** as the load balancer.
-- **Requesting a public ACM certificate:** ACM, **Request certificate**, enter the domain (or a wildcard such as `*.example.com`), and validate by **DNS** (easy with Route 53) or **email**.
-
-### 4. Key Facts to Remember
-
-- ALB uses the **HTTPS** listener protocol. NLB uses **TLS**. Both listen on **443** by convention.
-- The **default certificate is mandatory** on the listener.
-- The **security policy** sets the allowed TLS versions and ciphers. An older policy supports legacy clients but is less secure.
-- **ACM** is the recommended home for certificates. **IAM** is legacy.
-- The console's **import** option puts the certificate into ACM.
-- The same listener can hold **more certificates** (SNI) after creation.
-- Common pattern: **HTTP:80** listener with a **redirect action** to **HTTPS:443** (301).
-- If the HTTPS site fails to load, check that the **SG allows 443**, and that the **certificate is valid, unexpired, and matches the domain**.
-
-### 5. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Enable HTTPS on an ALB" | Add an **HTTPS listener (443)** with an **ACM certificate** |
-| "Enable TLS on an NLB" | Add a **TLS listener** with a certificate |
-| "Where do you store and manage the certificates?" | **ACM** |
-| "Use a certificate from a third-party CA" | **Import into ACM** (private key, body, chain) |
-| "Imported certificate expired" | Imported certificates **don't auto-renew**. Re-import a new one. |
-| "Support clients with older TLS versions" | Choose an older **security policy** |
-| "Which certificate is mandatory on the listener?" | The **default certificate** |
-| "Certificate in the wrong region" | ACM certificates are **regional**, and must match the LB's region |
-| "Encrypt traffic all the way to EC2" | **Re-encrypt** (HTTPS/TLS to targets) or **NLB TCP passthrough** |
-| "Advanced TLS protocol negotiation setting on NLB" | **ALPN policy** |
-| "Redirect HTTP to HTTPS" | Listener **redirect action** (80 to 443) |
-
-### 6. Hands-On Checklist
-
-- [ ] Request or import a certificate in **ACM** (same region as the load balancer)
-- [ ] ALB, Listeners, **Add listener**: **HTTPS : 443**, forward to a target group
-- [ ] Pick a **security policy** (default is fine) and the **default certificate** from ACM
-- [ ] Make sure the ALB **security group allows inbound 443**
-- [ ] (Optional) Add an **HTTP:80 to HTTPS:443 redirect** listener rule
-- [ ] NLB, Listeners, **Add listener**: **TLS**, forward to a target group
-- [ ] Pick a security policy, a certificate, and (optionally) an **ALPN policy**
-- [ ] Test with `https://<your-domain>` and check the certificate in the browser
-

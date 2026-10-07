@@ -124,11 +124,7 @@ service httpd start
 - Instances get a **private IPv4** address (stable) and, in a public subnet, a **public IPv4** address (changes on stop/start).
 - **Security groups** control inbound and outbound traffic (detailed later in this section).
 
-### 5. Free Tier Reference
-
-- See "AWS Budget Setup, section 5" for the current Free Tier rules.
-
-### 6. Exam-Style Recall
+### 5. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -136,18 +132,13 @@ service httpd start
 | "User data runs as which user?" | **root** |
 | "Bootstrap script needs to run on every boot" | Cloud-init config (`scripts-user` per boot), not default user data |
 | "Change an instance's CPU/RAM" | Stop, change **instance type**, start (vertical scaling) |
+| "Public IP changed after restart" | Normal. Use an **Elastic IP** for a fixed address |
+| "Stopped instance still costs money" | Its **EBS volumes** (and any Elastic IP) keep billing |
+| "Automatically recover a failed instance" | **CloudWatch alarm** with a recover/reboot/terminate action |
 
 ---
 
 ## EC2 Instance Launch Hands On
-
-### TL;DR
-
-- Launched an **Amazon Linux** instance from the EC2 console with a name, tags, an AMI, a key pair, a security group, and user data.
-- User data installed **httpd** and served a "Hello World" page.
-- Practiced **start, stop, and terminate**, and noticed the **public IP changes** after stop/start.
-
-> **Note (2026):** the lecture uses **Amazon Linux 2**, which reached **end of support on 2026-06-30**. Use **Amazon Linux 2023** for new work.
 
 ### 1. Launch Parameters
 
@@ -171,25 +162,6 @@ service httpd start
 
 - A **CloudWatch alarm** can be attached to stop, terminate, reboot, or recover an instance automatically.
 - The **private IP stays** across stop/start. The **public IPv4 changes**. Use an **Elastic IP** for a stable public address.
-
-### 3. Hands-On Checklist
-
-- [x] EC2 console, **Instances**, **Launch instances**
-- [x] Name the instance and add tags
-- [x] Choose the Amazon Linux AMI (AL2023 for new work) and a `t2.micro`/`t3.micro`
-- [x] Create or select a **key pair**
-- [x] Configure the **security group**
-- [x] Paste the **user data** script under advanced details
-- [x] Launch, wait for `running`, then open the public IPv4 in a browser and see "Hello World"
-- [x] Practice **stop**, **start**, and observe the public IPv4 change
-
-### 4. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Public IP changed after restart" | Normal. Use an **Elastic IP** for a fixed address |
-| "Stopped instance still costs money" | Its **EBS volumes** (and any Elastic IP) keep billing |
-| "Automatically recover a failed instance" | **CloudWatch alarm** with a recover/reboot/terminate action |
 
 ---
 
@@ -347,61 +319,26 @@ Users --80/443--> [Web SG: inbound 80/443 from 0.0.0.0/0]
 | "Block a specific IP address" | SGs can't deny. Use a **Network ACL** |
 | "Default outbound behavior of a new SG" | **All allowed** |
 | "Windows remote access port" | **3389** (RDP) |
+| "Web page times out after launch" | Inbound **HTTP/HTTPS rule missing** on the SG |
+| "Instance can't reach the internet" | Check **outbound** rules (and the route table) |
+| "SG change needs an instance restart" | **No.** Changes apply immediately |
+| "Two SGs on one instance conflict" | They don't conflict. Rules are a **union** of allows |
 
 ---
 
 ## Security Groups Hands On
-
-### TL;DR
-
-- Found the security group by its **ID** in the EC2 console and edited its **inbound** and **outbound** rules.
-- Confirmed that a **missing inbound rule causes a timeout**, and that opening the port fixes it.
-- Reviewed that **outbound is open by default**, and that it can be restricted (for example to only 443).
-- Attached **multiple security groups** to one instance.
 
 ### 1. Where to Find Security Groups
 
 - EC2 console, **Network and Security**, **Security Groups**. Each group has a unique **ID** (`sg-...`).
 - An instance's **Security** tab shows the groups attached to it.
 
-### 2. Inbound Rules
+### 2. Demo
 
-| Goal | Rule |
-|---|---|
-| Users reach the web app | **HTTP 80** from `0.0.0.0/0` |
-| Admin logs in over SSH | **SSH 22** from your IP |
-| App connects to a MySQL database | **TCP 3306** from the app's IP range or SG |
-
-- If the HTTP rule is missing, users see a **timeout** in the browser. Adding the rule fixes it without a restart.
-- If port 22 isn't open, an SSH attempt **times out**, which points to a SG misconfiguration.
-
-### 3. Outbound Rules
-
-- Default: **all outbound allowed**, so instances can reach the internet freely.
-- To limit egress (for example to reduce data exfiltration risk), replace the default with specific rules such as **HTTPS 443** only.
-
-### 4. Multiple Security Groups
-
-- An instance can carry several SGs. Rules are **unioned**.
-- Example: one SG for web ports (80/443) and another for admin access (22), each managed separately.
-
-### 5. Hands-On Checklist
-
-- [x] Locate the instance's security group and its ID
-- [x] Review the **inbound** rules (SSH 22, HTTP 80)
-- [x] Remove the HTTP rule and observe the browser **timeout**
-- [x] Add the rule back and confirm the page loads
-- [x] Review the default **outbound** rule (all traffic)
-- [x] Attach a second security group to the instance and confirm rules combine
-
-### 6. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Web page times out after launch" | Inbound **HTTP/HTTPS rule missing** on the SG |
-| "Instance can't reach the internet" | Check **outbound** rules (and the route table) |
-| "SG change needs an instance restart" | **No.** Changes apply immediately |
-| "Two SGs on one instance conflict" | They don't conflict. Rules are a **union** of allows |
+- Removing the **HTTP 80** inbound rule made the page **time out**. Adding it back fixed it without a restart.
+- With **port 22** closed, an SSH attempt **times out**.
+- Outbound is open by default. It can be restricted, for example to **HTTPS 443** only, to reduce data exfiltration risk.
+- A second SG attached to the same instance combined with the first (rules are a union).
 
 ---
 
@@ -432,12 +369,7 @@ Users --80/443--> [Web SG: inbound 80/443 from 0.0.0.0/0]
 - Uses `ec2-user` as the default user on Amazon Linux.
 - **EC2 Instance Connect Endpoint** lets you connect to instances that have **no public IPv4 address**.
 
-### 3. Common Issues
-
-- Usually a **security group rule** or a **command typo**.
-- The next sections cover the exact SSH command and a troubleshooting list.
-
-### 4. Exam-Style Recall
+### 3. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -450,13 +382,6 @@ Users --80/443--> [Web SG: inbound 80/443 from 0.0.0.0/0]
 
 ## Using SSH to Connect to an EC2 Instance on Linux/Mac
 
-### TL;DR
-
-- Prerequisites: a **public IPv4**, **port 22 open**, and the downloaded **`.pem` key**.
-- Command: `ssh -i <key>.pem ec2-user@<public-ip>`.
-- If SSH complains that the key is too open: `chmod 0400 <key>.pem`.
-- Confirm with `whoami` and `ping google.com`, then `exit`.
-
 ### 1. Prerequisites
 
 - The instance has a **public IPv4 address**.
@@ -467,7 +392,7 @@ Users --80/443--> [Web SG: inbound 80/443 from 0.0.0.0/0]
 
 1. Copy the **Public IPv4 address** from the instance's overview page.
 2. Change into the directory that holds the `.pem` file (`cd`, `ls`).
-3. Fix permissions if needed:
+3. Fix permissions if SSH reports `UNPROTECTED PRIVATE KEY FILE` / `Permissions 0644 ... are too open`:
 
    ```bash
    chmod 0400 EC2Tutorial.pem
@@ -484,22 +409,6 @@ Users --80/443--> [Web SG: inbound 80/443 from 0.0.0.0/0]
 
 - Running `ssh ec2-user@<public-ip>` **without `-i`** fails with an authentication error, because no key is offered.
 - On stop/start the **public IP changes**, so update the command.
-
-### 3. Permission Errors
-
-| Error | Cause | Fix |
-|---|---|---|
-| `Permissions 0644 for 'key.pem' are too open` / "UNPROTECTED PRIVATE KEY FILE" | Key file readable by others | `chmod 0400 key.pem` |
-| `Permission denied (publickey)` | Wrong key or wrong username | Use the key pair assigned to the instance and the right user |
-
-### 4. Hands-On Checklist
-
-- [x] Get the instance's public IPv4
-- [x] Place the `.pem` file in a directory without spaces in its name
-- [x] `chmod 0400` the key
-- [x] `ssh -i <key>.pem ec2-user@<public-ip>`
-- [x] Run `whoami` and `ping google.com`
-- [x] `exit` the session
 
 ---
 
@@ -536,12 +445,6 @@ Users --80/443--> [Web SG: inbound 80/443 from 0.0.0.0/0]
 
 ## Using EC2 Instance Connect to Connect to EC2 Instances
 
-### TL;DR
-
-- Connect from the console: select the instance, **Connect**, **EC2 Instance Connect**, **Connect**.
-- No key file to manage, since a **temporary key** is used for the session.
-- The **SG must still allow port 22**, and the default user is **`ec2-user`** on Amazon Linux.
-
 ### 1. How It Works
 
 1. In the console, choose the instance and click **Connect**.
@@ -555,30 +458,15 @@ Users --80/443--> [Web SG: inbound 80/443 from 0.0.0.0/0]
 | Agent | Preinstalled on Amazon Linux 2023 and Amazon Linux 2, and on recent Ubuntu |
 | Permissions | IAM policy allowing `ec2-instance-connect:SendSSHPublicKey` |
 
-### 2. Hands-On Checklist
-
-- [x] Select the instance, click **Connect**, choose **EC2 Instance Connect**
-- [x] Keep the default user `ec2-user`
-- [x] Run `whoami` and `ping google.com`
-- [x] If the connection fails, confirm the SG allows **port 22**
-
-### 3. Exam-Style Recall
+### 2. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
-| "Browser-based SSH, no key pair handling" | **EC2 Instance Connect** |
 | "Instance Connect fails to connect" | SG missing **inbound 22** |
-| "No public IP, still need SSH" | **EC2 Instance Connect Endpoint** or **Session Manager** |
 
 ---
 
 ## IAM Roles for EC2 Instances Demo
-
-### TL;DR
-
-- **Never** run `aws configure` with personal access keys on an EC2 instance. Anyone with access to the instance can steal them.
-- Attach an **IAM role** instead. The instance receives **temporary, auto-rotated credentials** from the **instance metadata service**.
-- Demo: role `demoRoleForEC2` with **IAM read-only** access lets the instance run `aws iam list-users` with no stored keys.
 
 ### 1. Why Not Store Credentials on the Instance
 
@@ -607,15 +495,7 @@ Users --80/443--> [Web SG: inbound 80/443 from 0.0.0.0/0]
 - A role attached to a **running** instance takes effect within a short time. No restart is needed.
 - The role can be swapped or detached later.
 
-### 4. Hands-On Checklist
-
-- [x] Connect to the instance (EC2 Instance Connect)
-- [x] Confirm `aws iam list-users` fails without credentials
-- [x] Create role `demoRoleForEC2` (trusted entity: **EC2**, policy: **IAM read-only**)
-- [x] Attach the role to the instance
-- [x] Re-run `aws iam list-users` and confirm it works
-
-### 5. Exam-Style Recall
+### 4. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|

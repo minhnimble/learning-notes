@@ -14,7 +14,6 @@
 - **Two versions:**
   - **IMDSv1:** call the URL directly. Simple, but less secure.
   - **IMDSv2:** **two steps**. First a **`PUT`** to get a **session token**, then **`GET`** with the token in a **header**. More secure, and the default on newer AMIs such as **Amazon Linux 2023**.
-- The hands-on is in the next lecture.
 
 ### 1. What Is IMDS?
 
@@ -150,24 +149,11 @@ curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
 - Identify the **region** (derived from the AZ) for scripts.
 - Build **self-configuring AMIs**.
 
-### 8. Key Facts to Remember
-
-- **IMDS URL:** `http://169.254.169.254/latest/meta-data/`.
-- It is **reachable only from the instance** and **needs no IAM role** to call.
-- **Metadata** = instance information. **User data** = launch script. **Both** come from the same endpoint.
-- You can get the **IAM role name** and its **temporary credentials**, but **not the attached policies**.
-- **IMDSv1** = direct `GET`. **IMDSv2** = **`PUT` for a token, then `GET` with the token header**.
-- **IMDSv2 is more secure** (SSRF protection) and is the **default on Amazon Linux 2023**.
-- Token TTL: **1 to 21,600 seconds**.
-- **Hop limit 1** by default. Use **2** for containers.
-- Setting **IMDSv2 required** disables **IMDSv1**.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
 | "How does an EC2 instance retrieve its own instance ID or IP?" | **Instance metadata** at `169.254.169.254` |
-| "IP address used for instance metadata" | **`169.254.169.254`** |
 | "Instance needs its own details without an IAM role" | **IMDS** |
 | "Get the IAM role name or credentials from inside an instance" | `/latest/meta-data/iam/security-credentials/` |
 | "Find which policies are attached to the role via IMDS" | **Not possible** |
@@ -180,20 +166,18 @@ curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
 | "Script using plain `curl` to IMDS fails on a new instance" | The instance **requires IMDSv2** (use a token) |
 | "Container can't reach IMDSv2" | Increase the **hop limit to 2** |
 | "Access metadata from your laptop" | **Not possible** (link-local, instance only) |
+| "401 Unauthorized when calling `169.254.169.254`" | The instance **requires IMDSv2**. Get a **token** first. |
+| "How to get an IMDSv2 token" | **`PUT`** to `/latest/api/token` with the TTL header |
+| "Where to find the IAM role credentials from inside EC2" | `/latest/meta-data/iam/security-credentials/<role-name>` |
+| "Metadata call returns 404 for IAM credentials" | **No IAM role** attached |
+| "Give a running instance an IAM role" | **Actions, Security, Modify IAM role** |
+| "Retrieve the instance's private IP from inside" | `meta-data/local-ipv4` |
+| "Is the credentials JSON permanent?" | **No**, temporary with an **expiration** |
+| "Make IMDSv1 requests work on a new instance" | Choose **V1 and V2** (token optional), or use Amazon Linux 2 |
 
 ---
 
 ## AWS EC2 Instance Metadata - Hands On
-
-### TL;DR
-
-- Launched an **Amazon Linux 2023** instance (`DemoEC2`) and queried the **instance metadata service (IMDS)** from inside it using **EC2 Instance Connect**.
-- A plain `curl` to `169.254.169.254` (**IMDSv1 style**) returned **401 Unauthorized**, because AL2023 requires **IMDSv2**.
-- **IMDSv2 works in two steps:** a **`PUT`** request gets a **token**, then every metadata **`GET`** sends the token in a **header**.
-- Paths ending in **`/`** are "directories" (more data inside). Paths **without** a trailing slash are **values** (for example `hostname`, `local-ipv4`).
-- Without an IAM role, the credentials path returned **not found**. After attaching a role (**Actions, Security, Modify IAM role**), a JSON with an **access key ID, secret access key, token, and expiration** appeared.
-- The CLI and SDKs read these credentials automatically. This is how an instance uses its IAM role.
-- Clean up by **terminating** the instance.
 
 ### 1. Launch the Instance
 
@@ -208,23 +192,13 @@ curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
 
 ### 2. The Metadata Version Setting
 
-- Location: **Advanced details**, **Metadata version**.
-
-| Option | Meaning |
-|---|---|
-| **V1 and V2 (token optional)** | Both work. Plain `curl` and token-based calls are accepted. |
-| **V2 only (token required)** | Only token-based calls work. IMDSv1 requests get **401**. |
-
-- The lecturer says Amazon Linux 2 is "V2 only" by default, but he meant **Amazon Linux 2023**. The AL2023 default is **V2 only**.
-- With **Amazon Linux 2** you can pick **V1 and V2** or **V2 only**. The default there is **V1 and V2 (optional)**.
-- The setting can be changed later: **Actions, Instance settings, Modify instance metadata options**.
-- Related fields: **Metadata response hop limit** (default **1**) and **Allow tags in metadata**.
+- Location: **Advanced details**, **Metadata version**: **V1 and V2 (token optional)** or **V2 only (token required)**. Amazon Linux 2023 defaults to V2 only, Amazon Linux 2 to V1 and V2. (The lecturer misspoke and said Amazon Linux 2.)
+- Change it later: **Actions, Instance settings, Modify instance metadata options**. Related fields: **hop limit** (default 1) and **Allow tags in metadata**.
 
 ### 3. Connect to the Instance
 
 1. Select the instance, **Connect**, **EC2 Instance Connect**, **Connect**.
 2. You get a browser shell inside the instance.
-3. The metadata IP is **link-local**, so it **only works from inside the instance**, not from your laptop.
 
 ### 4. IMDSv1 Fails (401 Unauthorized)
 
@@ -233,35 +207,13 @@ curl http://169.254.169.254/latest/meta-data/
 ```
 
 - Result: **401 Unauthorized**. Add `-v` to see the HTTP status.
-- It would work on an **Amazon Linux 2** instance with IMDSv1 enabled.
 - Reason: this instance **requires IMDSv2**, so any request without a token is rejected.
 
 ### 5. IMDSv2: Get a Token, Then Query
 
-#### 5.1 Step 1: get the token with a PUT
-
-```bash
-TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" \
-  -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
-echo $TOKEN
-```
-
-- A **`PUT`** to `/latest/api/token`.
-- The **`X-aws-ec2-metadata-token-ttl-seconds`** header sets how long the token lasts (**1 to 21,600 s**).
-- `echo $TOKEN` prints the token, a long random string.
-- The lecturer copied these commands from the **IMDSv2 documentation**. They are long, so keep a copy.
-- The token is stored only in the shell variable. If you reconnect, **get a new token**.
-
-#### 5.2 Step 2: query metadata with the token header
-
-```bash
-curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
-  http://169.254.169.254/latest/meta-data/
-```
-
-- Now there is **no 401**. The output is a list of metadata entries.
-- The lecturer removed `-v` (verbose) to get **cleaner output**.
-- **Typos matter:** a missing space or wrong path gives an error or **404 Not Found**.
+- Ran the two commands from the lecture (copied from the IMDSv2 documentation, so keep a copy): the `PUT` for the token, then the `GET` with the `X-aws-ec2-metadata-token` header.
+- `echo $TOKEN` prints a long random string. The token lives only in the shell variable, so after reconnecting you must **get a new token**.
+- With the token the `GET` returns the list of metadata entries instead of **401**. A typo or wrong path gives an error or **404**.
 
 ### 6. Navigating the Metadata Tree
 
@@ -281,7 +233,6 @@ curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta
 
 - `hostname` returns the **instance's hostname**. The lecturer's point: "this is how the EC2 instance knows its own host name".
 - `local-ipv4` returns the **private IP**.
-- Other useful values: `instance-id`, `instance-type`, `ami-id`, `placement/availability-zone`, `public-ipv4`, `security-groups`.
 
 ### 7. Credentials and IAM Roles
 
@@ -308,16 +259,8 @@ curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
   http://169.254.169.254/latest/meta-data/iam/security-credentials/<role-name>
 ```
 
-| Path | What it is |
-|---|---|
-| `iam/info` | Info about the attached **instance profile** |
-| `iam/security-credentials/` | The **IAM role name** |
-| `iam/security-credentials/<role-name>` | **Temporary credentials of your IAM role** (this is what the SDK and CLI use) |
-| `identity-credentials/ec2/security-credentials/ec2-instance` | The instance's own **identity credentials**, used by AWS services such as Systems Manager. It is **not** your IAM role. |
-
-- The lecturer's overall point still holds: **IAM role credentials come from the metadata service**.
-- Exam-relevant path: **`iam/security-credentials/<role-name>`**.
-- If the `iam/security-credentials/` path returns **404**, **no IAM role is attached** to the instance.
+- `iam/info`, `iam/security-credentials/` (role name), and `iam/security-credentials/<role-name>` (temporary credentials) are the IAM role paths from the lecture.
+- `identity-credentials/ec2/security-credentials/ec2-instance` is the instance's own **identity credentials**, used by AWS services such as Systems Manager. It is **not** your IAM role.
 
 #### 7.3 The credentials JSON
 
@@ -335,58 +278,6 @@ curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
 - `ASIA...` access keys are **temporary** (STS) credentials.
 - The lecturer guesses the expiry is "maybe 24 hours, probably more like one hour". It is **hours** (typically about 6 on EC2), and AWS **rotates them automatically** before expiry.
 - **Never share or paste these credentials.** Anyone holding them can act as the role until they expire.
-- You don't call this yourself in normal use. The **AWS CLI and SDKs** find and refresh these credentials **behind the scenes**. The lecture shows the mechanism, so you understand it.
-
-### 8. Cleanup
-
-- **Terminate** the instance when done.
-- If you created a role only for the demo, remove it (unattach from the instance first).
-- Delete the demo security group if you don't need it.
-
-### 9. Key Facts to Remember
-
-- **IMDS URL:** `http://169.254.169.254/latest/meta-data/`, **from inside the instance only**.
-- **AL2023 instances require IMDSv2** by default. A plain request returns **401 Unauthorized**.
-- **IMDSv2:** `PUT` to `/latest/api/token` (TTL header), then `GET` with **`X-aws-ec2-metadata-token`**.
-- **Trailing slash** = directory. **No trailing slash** = value.
-- Common values: `hostname`, `local-ipv4`, `public-ipv4`, `instance-id`, `placement/availability-zone`.
-- **IAM role credentials:** `iam/security-credentials/<role-name>` (temporary, auto-rotated).
-- **No role attached** means the IAM credentials path returns **404**.
-- Attach or change a role: **Actions, Security, Modify IAM role** (takes effect in about **30 seconds**).
-- The **SDK and CLI** use IMDS automatically to get role credentials, with no keys stored on the instance.
-- Metadata **doesn't reveal** which IAM policies the role has.
-
-### 10. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "401 Unauthorized when calling `169.254.169.254`" | The instance **requires IMDSv2**. Get a **token** first. |
-| "How to get an IMDSv2 token" | **`PUT`** to `/latest/api/token` with the TTL header |
-| "Header used to send the token" | **`X-aws-ec2-metadata-token`** |
-| "Where to find the IAM role credentials from inside EC2" | `/latest/meta-data/iam/security-credentials/<role-name>` |
-| "Metadata call returns 404 for IAM credentials" | **No IAM role** attached |
-| "Give a running instance an IAM role" | **Actions, Security, Modify IAM role** |
-| "How the SDK gets AWS credentials on EC2 without keys" | **From IMDS**, via the instance role |
-| "Retrieve the instance's private IP from inside" | `meta-data/local-ipv4` |
-| "Is the credentials JSON permanent?" | **No**, temporary with an **expiration** |
-| "Make IMDSv1 requests work on a new instance" | Choose **V1 and V2** (token optional), or use Amazon Linux 2 |
-
-### 11. Hands-On Checklist
-
-- [x] Launch an EC2 instance `DemoEC2` with **Amazon Linux 2023**, no key pair, SSH allowed, **no IAM role**
-- [x] Open **Advanced details** and note the **Metadata version** options (V1 and V2, or V2 only)
-- [x] Connect with **EC2 Instance Connect**
-- [x] Run `curl http://169.254.169.254/latest/meta-data/` and confirm **401 Unauthorized**
-- [x] Get a token: `TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")`
-- [x] Run `echo $TOKEN` to see the token
-- [x] Query with the header: `curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/`
-- [x] Read the values `hostname` and `local-ipv4` (no trailing slash)
-- [x] Query `iam/security-credentials/` and confirm **404** (no role yet)
-- [x] Attach a role: **Actions, Security, Modify IAM role**, then wait about 30 seconds
-- [x] Query `iam/security-credentials/` again (with the slash) to see the **role name**
-- [x] Query `iam/security-credentials/<role-name>` to see the **access key, secret key, token, and expiration**
-- [x] (Optional) Browse `identity-credentials/ec2/` to compare
-- [x] **Clean up:** terminate the instance and remove any demo role or security group
 
 ---
 
@@ -538,6 +429,7 @@ region = eu-west-1
 ```
 
 - For many accounts, **SSO or role assumption** is safer than storing long-term keys per account.
+- In `config`, named profiles are written **`[profile <name>]`**. In `credentials`, **`[<name>]`**.
 
 ### 6. Credential Lookup Order (Exam-Relevant Context)
 
@@ -563,19 +455,7 @@ The CLI and SDKs search for credentials in this general order:
 - Set a **default region** per profile so you don't pass `--region` all the time.
 - Consider a shell prompt that shows the **active profile**.
 
-### 8. Key Facts to Remember
-
-- A **profile** = a named set of credentials and settings.
-- Files: **`~/.aws/credentials`** and **`~/.aws/config`**.
-- **`aws configure`** = default profile. **`aws configure --profile <name>`** = named profile.
-- **`--profile <name>`** targets a profile. No flag means **default**.
-- **`AWS_PROFILE`** sets the profile for a whole shell session.
-- In `config`, named profiles are written **`[profile <name>]`**. In `credentials`, **`[<name>]`**.
-- A new profile shows **None** for its access key when you start configuring.
-- **Not an exam topic** per the lecturer, but **useful in real life**.
-- **Credentials order:** CLI options, environment variables, profile files, container credentials, **instance profile (IMDS)**.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -661,6 +541,7 @@ aws sts get-session-token \
 - **`ASIA...`** access key IDs are **temporary (STS)** keys. Long-term IAM user keys start with **`AKIA...`**.
 - The lecture's credentials expired **one hour** after being issued. The transcript doesn't show the command line, so that was probably set with `--duration-seconds`. Without it, the default for an IAM user is 12 hours.
 - Credentials from `GetSessionToken` **can't be used to call most IAM and STS operations** unless MFA information is included, and they **can't be used to call `AssumeRole`'s IAM-user-restricted features** such as creating new users (check the STS docs for the exact rule).
+- It is a **demo-heavy, optional** lecture. The exam only needs the **API name**.
 
 ### 3. Step 1: Register an MFA Device (Console)
 
@@ -750,6 +631,7 @@ export AWS_SESSION_TOKEN=$(echo "$creds" | jq -r .Credentials.SessionToken)
 
 - Run with `source ./mfa.sh 123456`.
 - Many teams use helper tools or **IAM Identity Center (SSO)** to avoid doing this by hand.
+- Profile setup uses `aws configure --profile <name>`, and **you must add the session token by hand**.
 
 ### 6. Why Bother? Enforcing MFA with IAM Policies (Extras)
 
@@ -782,18 +664,7 @@ An IAM policy can **deny** actions unless MFA was used, using the condition key 
 - Exam rule of thumb: the question says **MFA with CLI or SDK**, so the answer is **STS `GetSessionToken`**.
 - A question about **switching to a role in another account** points to **STS `AssumeRole`**.
 
-### 8. Key Facts to Remember
-
-- **MFA with CLI/SDK:** call **`sts get-session-token`** with the **MFA serial number** and **token code**.
-- Output: **AccessKeyId, SecretAccessKey, SessionToken, Expiration**. All are **temporary**.
-- To use the credentials, **include the session token**: `aws_session_token` in a profile, or `AWS_SESSION_TOKEN` in the environment.
-- Virtual MFA serial number = the **device ARN**. Token code = the **6-digit** code.
-- IAM user duration: **15 min to 36 hours** (default 12 h). Root user: **up to 1 hour**.
-- `aws:MultiFactorAuthPresent` lets IAM policies **require MFA**.
-- Profile setup uses `aws configure --profile <name>`, and **you must add the session token by hand**.
-- It is a **demo-heavy, optional** lecture. The exam only needs the **API name**.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -886,19 +757,12 @@ Use an SDK when your **application** needs to talk to AWS:
 
 ### 5. Credentials and Region
 
-- The SDK finds credentials through the **default credential provider chain**, in roughly this order:
-
-| Order | Source |
-|---|---|
-| 1 | **Explicit code** settings or parameters |
-| 2 | **Environment variables** (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`) |
-| 3 | **Shared credentials and config files** (`~/.aws/credentials`, `~/.aws/config`, profiles) |
-| 4 | **Container credentials** (ECS task role) |
-| 5 | **Instance profile credentials** (EC2 role, through **IMDS**) |
+- The SDK finds credentials through the same **default credential provider chain** as the CLI (see AWS CLI Profiles), with explicit settings in code first.
 
 - On **EC2, ECS, and Lambda**, use an **IAM role**. **Never hardcode access keys** in code.
 - **Region:** the SDK needs a region. If none is configured, it uses **`us-east-1`** by default. Set it with `AWS_REGION` or `AWS_DEFAULT_REGION`, the config file, or in code.
 - In **Lambda**, credentials and region come from the **execution role** and the `AWS_REGION` variable automatically.
+- **Exam:** know **when** to use an SDK, namely **programmatic access from application code**.
 
 ### 6. Tiny Examples (Extras)
 
@@ -933,23 +797,12 @@ console.log(Buckets.map(b => b.Name));
 - Keep the SDK **up to date** for security fixes and new service features.
 - Pin versions in production, and use **v3 modular packages** in JavaScript to keep bundles small (extra).
 
-### 8. Key Facts to Remember
-
-- **SDK = call AWS APIs from application code**, available in many languages.
-- Languages named in the lecture: **Java, .NET, Node.js, PHP, Python, Go, Ruby, C++**.
-- **The AWS CLI uses the Python SDK (Boto3).**
-- The SDK is used to call services such as **S3 and DynamoDB**.
-- The SDK uses the **same credential chain** as the CLI, and the **default region is `us-east-1`** if none is set.
-- Practice comes in the **Lambda** section.
-- **Exam:** know **when** to use an SDK, namely **programmatic access from application code**.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
 | "Call AWS services from application code" | **AWS SDK** |
 | "What does the AWS CLI use under the hood?" | **Python SDK, Boto3** |
-| "Python SDK name" | **Boto3** |
 | "Which languages have official AWS SDKs?" | **Java, .NET, Node.js, PHP, Python, Go, Ruby, C++** and more |
 | "Application on EC2 needs AWS access without keys" | **SDK + IAM role** (credentials from IMDS) |
 | "SDK region when none is configured" | **`us-east-1`** |
@@ -1083,18 +936,10 @@ def call_with_backoff(fn, max_attempts=6, base=1.0, cap=30.0):
             time.sleep(random.uniform(0, delay))   # full jitter
 ```
 
-### 5. Key Facts to Remember
-
-- **Two limit types:** **API rate limits** and **service quotas**.
-- **Throttling** errors (too many API calls) are fixed with **exponential backoff** (intermittent) or an **API throttling limit increase** (consistent).
-- **Service quota exceeded** (for example too many vCPUs) means **request a service limit increase** (support ticket, console, or **Service Quotas API**).
-- **AWS SDK = automatic retries with exponential backoff.** Raw API calls = **you implement it**.
 - Backoff doubles the wait: **1, 2, 4, 8, 16 seconds**, and so on.
-- Examples: **`DescribeInstances` 100/s**, **S3 `GetObject` 5,500/s per prefix**, **On-Demand Standard 1,152 vCPUs**.
 - **Jitter** prevents synchronized retries.
-- Quotas are **per account and per region**.
 
-### 6. Exam-Style Recall
+### 5. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1168,6 +1013,7 @@ Your code ──> build request ──> sign with secret key (SigV4) ──> HTT
 | 4. **Signature** | HMAC-SHA256 of the string to sign, using the signing key, and add it to the request |
 
 - The signature is tied to the **service, region, and date**, so it can't be reused elsewhere.
+- Signatures are **time-limited** and scoped to the **date, region, and service**.
 
 ### 4. The Two Ways to Send the Signature
 
@@ -1270,19 +1116,7 @@ https://my-bucket.s3.eu-west-1.amazonaws.com/coffee.jpg
 | **`AccessDenied`** after a valid signature | Authentication worked, but **IAM or the bucket policy** doesn't allow the action |
 | **`Request has expired`** (pre-signed URL) | The URL's **`X-Amz-Expires`** window ended |
 
-### 9. Key Facts to Remember
-
-- **SigV4 = Signature Version 4**, the way AWS API requests are **signed** with your credentials.
-- AWS uses the signature to know **who you are** and that you're **authorized** (authorization is then checked by IAM).
-- The **CLI and SDK sign automatically**.
-- **Two ways to send it:** the **`Authorization` header**, or the **query string** with **`X-Amz-Signature`**.
-- The **secret key is never transmitted**.
-- **Pre-signed URLs** use the **query string** form.
-- **Public S3 reads** don't need a signature.
-- The signing process has **four steps**, but you **don't need to compute it** for the exam.
-- Signatures are **time-limited** and scoped to the **date, region, and service**.
-
-### 10. Exam-Style Recall
+### 9. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|

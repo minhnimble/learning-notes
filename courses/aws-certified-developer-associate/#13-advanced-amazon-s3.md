@@ -50,6 +50,11 @@ Standard
 | **Small objects** | By default, objects **under 128 KB** are **not** transitioned to IA or Glacier classes |
 | **Spacing** | Each later transition must happen **after** the earlier one |
 | **Early deletion fees** | Moving or deleting before the class's **minimum storage duration** can bill the remaining days |
+| **Transition cost** | Each transition is a **request charge**, so moving millions of tiny objects can cost more than it saves |
+| **Expiration is irreversible** | In an **unversioned** bucket, expired objects are **gone**. In a **versioned** one they are recoverable until noncurrent versions are deleted |
+| **Glacier Flexible and Deep Archive** | Objects there need a **restore** before they can be read |
+
+- The **timeline view** lets you check the whole plan before creating the rule.
 
 ### 2. Lifecycle Rule Components
 
@@ -158,20 +163,7 @@ Use it to create or improve lifecycle rules (when to move to Standard-IA)
 
 - They work **together**: a lifecycle rule can transition objects **into** Intelligent-Tiering.
 
-### 7. Key Facts to Remember
-
-- **Lifecycle rules = transition actions + expiration actions.**
-- Rules apply to the **whole bucket**, a **prefix**, or **tags**.
-- Transitions go **down the waterfall** only, from hot to cold.
-- **Expiration** can delete **logs**, **old versions**, and **incomplete multipart uploads**.
-- **Versioned bucket:** use **noncurrent version** actions for old versions.
-- **S3 Analytics** recommends **Standard to Standard-IA** timing only, with a **daily CSV** after **24 to 48 hours**.
-- Re-creatable data that is rarely read: **One Zone-IA**.
-- "Immediate for N days, then wait hours": **Standard, then Glacier Flexible Retrieval**.
-- "Recoverable deletes": **versioning + delete markers**, with older versions moved to cheaper classes.
-- Rules live in the bucket's **Management** tab.
-
-### 8. Exam-Style Recall
+### 7. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -189,22 +181,19 @@ Use it to create or improve lifecycle rules (when to move to Standard-IA)
 | "S3 Analytics output format" | **CSV report** |
 | "Access pattern unknown, no manual tuning" | **Intelligent-Tiering** |
 | "Move an object back to Standard" | **Copy it** (lifecycle can't transition up) |
+| "Automatically move objects between storage classes" | **Lifecycle rule**, transition action |
+| "Where do you create lifecycle rules?" | Bucket **Management** tab |
+| "Old versions of overwritten objects" | **Noncurrent versions** |
+| "Remove old versions to save cost" | **Permanently delete noncurrent versions** |
+| "Expire current versions in a versioned bucket" | Adds a **delete marker** |
+| "Apply a rule only to a folder or department" | **Prefix** or **tag** filter |
+| "Which classes can a lifecycle transition to?" | Colder classes only (the waterfall) |
+| "Minimum days before moving to Standard-IA" | **30** |
+| "Does a lifecycle rule run immediately?" | No, **daily in the background** |
 
 ---
 
 ## S3 Lifecycle Rules - Hands On
-
-### TL;DR
-
-- Created a lifecycle rule (`DemoRule`) from the bucket's **Management** tab. Scope: **all objects in the bucket** (with the acknowledgment ticked).
-- The console offers **five rule actions**:
-  1. **Move current versions** between storage classes
-  2. **Move noncurrent versions** between storage classes
-  3. **Expire current versions** of objects
-  4. **Permanently delete noncurrent versions**
-  5. **Delete expired object delete markers or incomplete multipart uploads**
-- The demo configured actions 1 to 4 and left action 5 unconfigured. The console then shows a **timeline** of everything that will happen to current and noncurrent versions.
-- Creating the rule starts it **in the background**. Nothing visible changes during the demo, because transitions take days.
 
 ### 1. Create the Rule
 
@@ -213,30 +202,11 @@ Use it to create or improve lifecycle rules (when to move to Standard-IA)
 3. **Choose a rule scope:** **Apply to all objects in the bucket**.
 4. Tick the acknowledgment that the rule applies to **all objects in the bucket**.
 
-| Scope option | Meaning |
-|---|---|
-| **Limit the scope using filters** | Restrict the rule by **prefix**, **object tags**, or **object size** |
-| **Apply to all objects in the bucket** | The rule covers everything. The console asks you to **acknowledge** this, because it is broad. |
-
 - The demo used the **whole bucket**. In real buckets, filter by **prefix or tag** so a rule doesn't touch data you didn't intend (for example `logs/` only).
 
 ### 2. The Five Rule Actions
 
-| # | Action | Applies to | Purpose |
-|---|---|---|---|
-| 1 | **Move current versions of objects between storage classes** | Current versions | **Transition** to colder classes |
-| 2 | **Move noncurrent versions of objects between storage classes** | Old versions | Transition **old versions** to colder classes |
-| 3 | **Expire current versions of objects** | Current versions | **Delete** objects after N days |
-| 4 | **Permanently delete noncurrent versions of objects** | Old versions | Remove **old versions** after N days |
-| 5 | **Delete expired object delete markers or incomplete multipart uploads** | Housekeeping | Clean up **leftover delete markers** and **abandoned multipart uploads** |
-
-- Actions 1 and 3 act on the **current version**. Actions 2 and 4 act on **noncurrent versions** (the old ones).
-- The lecturer says "five different use cases" and goes through them one by one.
-
-**What "current" and "noncurrent" mean:**
-- The **current version** is the most recent one, the one a normal GET returns.
-- A **noncurrent version** is an older one, **overwritten by a newer version** (or hidden behind a delete marker).
-- The lecturer explains current versions with a **versioned bucket**. In an **unversioned** bucket every object is simply the current version, so actions 1 and 3 still apply, while actions 2 and 4 have nothing to act on.
+Console actions: (1) move current versions between storage classes, (2) move noncurrent versions between storage classes, (3) expire current versions, (4) permanently delete noncurrent versions, (5) delete expired delete markers or incomplete multipart uploads. Current versions are what a normal GET returns. Noncurrent versions are older ones, replaced by a newer version or hidden behind a delete marker.
 
 ### 3. Action 1: Move Current Versions Between Storage Classes
 
@@ -252,13 +222,11 @@ The demo's transitions (days counted **from object creation**):
 
 - Click **Add transition** for each step. "You can have as many transitions as you want."
 - **Tick the acknowledgment** the console shows about transition costs and small objects. The lecturer mentions it.
-- The ladder only goes **colder**, and each step must be **after** the previous one. See the constraints below.
 
 ### 4. Action 2: Move Noncurrent Versions Between Storage Classes
 
 - Demo transition: **Glacier Flexible Retrieval after 90 days**.
 - Reason from the lecture: old versions are rarely retrieved ("after 90 days we won't need it for retrieval"), so archive them.
-- Days are counted **from when the version became noncurrent** (that is, when a newer version replaced it), not from its original creation.
 - You can add more transitions, and there is an option to **keep the N newest noncurrent versions** untouched (extra).
 
 ### 5. Actions 3 and 4: Expiration
@@ -269,92 +237,20 @@ The demo's transitions (days counted **from object creation**):
 | **Permanently delete noncurrent versions** | After **700 days** | **Permanently removes** old versions |
 
 - **Expiration must come after the last transition.** The demo's last transition is at 365 days, and expiry is at 700.
-- The lecturer notes the field allows a maximum-style value at the bottom of the page. Treat **700** as just his example.
 - In a versioned bucket, expiring current versions only **hides** the object behind a delete marker. To really free space you also need action 4 and action 5.
 
 ### 6. Action 5: Delete Markers and Incomplete Multipart Uploads (Not Configured)
 
-| Option | Purpose |
-|---|---|
-| **Delete expired object delete markers** | Remove **delete markers** that no longer have any versions behind them |
-| **Delete incomplete multipart uploads** | **Abort** partial uploads older than N days (for example **7 days**). The previous lecture suggested about **2 weeks**. |
-
-- The lecturer showed the action but didn't set it. It is cheap to turn on, since **incomplete multipart uploads** cost storage but don't appear in normal listings.
-- **Expired object delete markers** and **expiring current versions** can't be combined in the same rule in some console versions. Check what your console allows.
+- Shown but not configured in the demo: **delete expired object delete markers** and **delete incomplete multipart uploads** (for example after 7 days; the lecture suggested about 2 weeks).
+- Some console versions don't let **expired delete markers** and **expire current versions** share a rule.
 
 ### 7. Review the Timeline and Create
 
 - The console shows a **timeline** for the rule, with separate lines for **current versions** and **noncurrent versions**.
 
-| Timeline item (demo) | Day |
-|---|---|
-| Current: Standard-IA | 30 |
-| Current: Intelligent-Tiering | 60 |
-| Current: Glacier Instant Retrieval | 90 |
-| Current: Glacier Flexible Retrieval | 180 |
-| Current: Glacier Deep Archive | 365 |
-| Current: **expire** | 700 |
-| Noncurrent: Glacier Flexible Retrieval | 90 |
-| Noncurrent: **permanently delete** | 700 |
-
 - Click **Create rule**. The rule "will act in the background to do what it's supposed to be doing".
-- Lifecycle runs **once a day**, so actions happen with up to about a day of delay.
 - You can **edit, disable, or delete** the rule later from the same page.
-
-### 8. Constraints and Warnings (Extras)
-
-| Constraint | Detail |
-|---|---|
-| **Minimum age for IA classes** | Transition to **Standard-IA or One Zone-IA** needs the object to be at least **30 days old** |
-| **Waterfall order** | Only transitions to **colder** classes. You can skip steps. |
-| **Spacing** | Each later transition must be **later** than the previous one |
-| **Small objects** | By default, objects **under 128 KB** aren't transitioned to IA or Glacier classes (the console warns about this) |
-| **Early deletion fees** | Moving or deleting before a class's **minimum storage duration** (30 / 90 / 180 days) can bill the remaining days |
-| **Transition cost** | Each transition is a **request charge**, so moving millions of tiny objects can cost more than it saves |
-| **Expiration is irreversible** | In an **unversioned** bucket, expired objects are **gone**. In a **versioned** one they are recoverable until noncurrent versions are deleted. |
-| **Glacier Flexible and Deep Archive** | Objects there need a **restore** before they can be read |
-
-### 9. Key Facts to Remember
-
-- Lifecycle rules live in the bucket's **Management** tab.
-- A rule can have **five action types**: transition current, transition noncurrent, expire current, delete noncurrent, and clean up delete markers or incomplete multipart uploads.
-- **Current** = latest version. **Noncurrent** = overwritten or older versions.
-- Demo ladder: **Standard-IA 30, Intelligent-Tiering 60, Glacier Instant 90, Glacier Flexible 180, Deep Archive 365**, expire at **700**.
-- **Noncurrent** transitions and deletions count days from when the version **became noncurrent**.
-- The **timeline view** lets you check the whole plan before creating the rule.
-- The rule works in the **background**, daily.
-- Scope the rule with **prefix, tags, or size** in real buckets.
-- Use **S3 Analytics** to choose the number of days for Standard to Standard-IA (previous lecture).
-
-### 10. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Automatically move objects between storage classes" | **Lifecycle rule**, transition action |
-| "Where do you create lifecycle rules?" | Bucket **Management** tab |
-| "Delete objects automatically after N days" | **Expiration** action |
-| "Old versions of overwritten objects" | **Noncurrent versions** |
-| "Remove old versions to save cost" | **Permanently delete noncurrent versions** |
-| "Clean up abandoned multipart uploads" | **Delete incomplete multipart uploads** action |
-| "Expire current versions in a versioned bucket" | Adds a **delete marker** |
-| "Apply a rule only to a folder or department" | **Prefix** or **tag** filter |
-| "Which classes can a lifecycle transition to?" | Colder classes only (the waterfall) |
-| "Minimum days before moving to Standard-IA" | **30** |
-| "Does a lifecycle rule run immediately?" | No, **daily in the background** |
-
-### 11. Hands-On Checklist
-
-- [x] Open your bucket, **Management**, **Lifecycle rules**, **Create lifecycle rule**
-- [x] Name it `DemoRule`, choose **Apply to all objects in the bucket**, and tick the acknowledgment
-- [x] Review the **five rule actions**
-- [x] Tick **Move current versions of objects between storage classes** and add: **Standard-IA at 30**, **Intelligent-Tiering at 60**, **Glacier Instant Retrieval at 90**, **Glacier Flexible Retrieval at 180**, **Glacier Deep Archive at 365**, then tick the acknowledgment
-- [x] Tick **Move noncurrent versions of objects between storage classes** and add **Glacier Flexible Retrieval at 90**
-- [x] Tick **Expire current versions of objects** and set **700 days**
-- [x] Tick **Permanently delete noncurrent versions of objects** and set **700 days**
-- [x] Look at (but you don't need to set) **Delete expired object delete markers or incomplete multipart uploads**
-- [x] Review the **timeline** for current and noncurrent versions
-- [x] Click **Create rule**
-- [x] **Clean up:** if this is a throwaway bucket, **delete the lifecycle rule**, **empty** the bucket (all versions), and **delete** it. A broad rule on a real bucket can transition or delete data you wanted.
+- Creating the rule starts it **in the background**. Nothing visible changes during the demo, because transitions take days.
 
 ---
 
@@ -394,7 +290,7 @@ The demo's transitions (days counted **from object creation**):
 
 - Prefix and suffix can be **combined**.
 - Don't create **overlapping** prefix/suffix rules for the same event type in one bucket. S3 rejects ambiguous configurations.
-- For richer filtering (object size, metadata, and so on), use **EventBridge** (section 5).
+- For richer filtering (object size, metadata, and so on), use **EventBridge** (section 6).
 
 ### 3. Use Case: Thumbnails
 
@@ -447,6 +343,7 @@ S3 sends data to another service, so that service must **allow S3**. You attach 
 
 - The **`aws:SourceArn`** condition limits it to **your bucket**, which prevents the **confused deputy** problem. Add `aws:SourceAccount` as well (extra).
 - **EventBridge** needs **no** destination policy for the S3 to EventBridge hop. You just **enable** it on the bucket.
+- **Never use `Principal: *`** in production. Use the **S3 service principal** plus **`aws:SourceArn`**.
 
 ### 6. Amazon EventBridge Integration
 
@@ -487,18 +384,7 @@ S3 bucket --(all events)--> [EventBridge] --rules--> 18+ services (Step Function
 - If the destination is **misconfigured** (missing policy, wrong ARN), **the notification configuration fails to save**, because S3 tests the destination when you create it (SNS, SQS).
 - For **Lambda**, S3 invokes the function **asynchronously**. Failed invocations follow Lambda's retry and **dead-letter** settings (extra).
 
-### 9. Key Facts to Remember
-
-- S3 events: **created, removed, restored, replication**, and more.
-- Filter by **prefix and suffix** (direct) or **richer patterns** (EventBridge).
-- Direct targets: **SNS, SQS, Lambda**. Fourth path: **EventBridge**.
-- **Permissions come from resource policies** on SNS, SQS, and Lambda. **Not IAM roles.**
-- All events can go to **EventBridge**, with **18+ targets**, **advanced filtering**, **archive and replay**.
-- Delivery: usually **seconds**, sometimes **a minute or longer**, **at least once**.
-- Use case: **thumbnail generation**. Avoid **recursive triggers**.
-- You can create **many notification configurations** per bucket.
-
-### 10. Exam-Style Recall
+### 9. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -516,20 +402,18 @@ S3 bucket --(all events)--> [EventBridge] --rules--> 18+ services (Step Function
 | "How fast are events delivered?" | **Within seconds**, sometimes a minute or longer |
 | "Thumbnail function triggers itself forever" | Output to the **same bucket and prefix** as the trigger. Use a **separate bucket or prefix**. |
 | "Events delivered more than once" | **At-least-once** delivery. Make the consumer **idempotent**. |
+| "S3 event notification to SQS fails to save" | **Missing SQS access policy** allowing S3 |
+| "First message in the queue after setup" | The **S3 test event** |
+| "Event name for an upload" | **`ObjectCreated:Put`** (or `Post`, `Copy`, `CompleteMultipartUpload`) |
+| "Find which object triggered the event" | **`s3.object.key`** in the message |
+| "React to uploads and generate thumbnails" | **S3 event to SQS or Lambda** |
+| "Send S3 events to many AWS services" | **EventBridge** integration |
+| "Restrict an SQS policy to a specific bucket" | **`aws:SourceArn`** condition |
+| "Which queue types work as S3 destinations?" | **Standard** SQS only |
 
 ---
 
 ## S3 Event Notifications - Hands On
-
-### TL;DR
-
-- Created a bucket, then went to **Properties**, **Event notifications**. There are two options: **Create event notification** (SNS, SQS, or Lambda), or turn on the **Amazon EventBridge** integration to send all events to EventBridge.
-- Built an event notification (`DemoEventNotification`) for **all object create events**, with **SQS** as the destination and a queue named `DemoS3Notification`.
-- **The first save failed**: S3 tests the destination, and the queue's **access policy** didn't allow S3 to send messages.
-- **Fix:** edit the queue's **access policy** (the demo used the **Policy Generator**: SQS queue policy, Allow, `SendMessage`, the queue ARN). After that, the save succeeded.
-- S3 sent a **test event** message to the queue, which the lecturer deleted.
-- Uploaded `coffee.jpg`, then polled the queue. The message had **`eventName: ObjectCreated:Put`** and the object **key `coffee.jpg`**. A consumer (for example a thumbnail generator) would process it from there.
-- The demo policy used **`Principal: *`**, which is **very permissive**. Use a tighter policy outside demos (see section 4.3).
 
 ### 1. Create the Bucket
 
@@ -541,16 +425,7 @@ S3 bucket --(all events)--> [EventBridge] --rules--> 18+ services (Step Function
 
 ### 2. Event Notifications in the Bucket
 
-- Bucket, **Properties** tab, scroll to **Event notifications**.
-- Two options:
-
-| Option | What it does |
-|---|---|
-| **Create event notification** | A **direct** notification to **Lambda, SNS, or SQS** (the demo's path) |
-| **Amazon EventBridge** | Set to **On**, and **all events** go to EventBridge. Then use **rules** to route them to **18+ services**. |
-
-- The lecturer says the EventBridge path is "a bit more complicated" and shows only the direct path.
-- You can use **both** at the same time.
+- Bucket, **Properties** tab, **Event notifications** offers two options: **Create event notification** (direct to Lambda, SNS, or SQS, the demo's path) and **Amazon EventBridge** (On, then route with rules). The demo shows only the direct path.
 
 ### 3. Create the Event Notification
 
@@ -564,21 +439,12 @@ S3 bucket --(all events)--> [EventBridge] --rules--> 18+ services (Step Function
 
 #### 3.2 Event types
 
-| Choice | Demo |
-|---|---|
-| **All object create events** | **Selected.** Fires whenever an object is created (Put, Post, Copy, multipart upload complete). |
-| Object removal events | Not selected |
-| Object restore events | Not selected |
-| Replication, lifecycle, tagging, and more | Not selected |
-
-- You can pick **individual event types** for finer control (for example only `Put`).
-- The console lists all the event types on the right-hand side. The lecturer notes there are many.
-
 #### 3.3 Destination
 
-- Three options: **Lambda function**, **SNS topic**, **SQS queue**.
 - The demo chose **SQS queue**, which needs a queue to exist first.
 - Choose the queue from the **dropdown** (after creating it and refreshing), or **enter its ARN**.
+
+- Event types: **All object create events** (Put, Post, Copy, multipart complete). Destination: **SQS queue** (it must exist first), picked from the dropdown or entered as an ARN.
 
 ### 4. Create the SQS Queue and Fix Permissions
 
@@ -589,15 +455,11 @@ S3 bucket --(all events)--> [EventBridge] --rules--> 18+ services (Step Function
 3. **Create queue**.
 4. Back in the S3 tab, **refresh** the page, then reopen the notification setup to see the queue in the dropdown.
 
-- It must be a **Standard** queue. **FIFO queues aren't supported** as S3 event destinations.
-
 #### 4.2 The error (the problem)
 
 1. Back in S3, choose **DemoS3Notification** as the SQS destination and click **Save changes**.
 2. **Error:** the console can't **validate the destination configuration** (the lecturer calls it an "unknown error").
 3. **Why:** when you save, S3 **sends a test message** to the queue. The queue's access policy doesn't allow S3 to write, so it is **denied**.
-
-- This is the **exam-relevant lesson**: S3 needs permission **on the destination**, through a **resource policy**, **not an IAM role**.
 
 #### 4.3 The fix: edit the queue's access policy
 
@@ -608,23 +470,7 @@ S3 bucket --(all events)--> [EventBridge] --rules--> 18+ services (Step Function
 4. **Add Statement**, **Generate Policy**, and paste the JSON into the access policy box.
 5. **Save**.
 
-**Resulting policy (demo, too permissive):**
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": "SQS:SendMessage",
-      "Resource": "arn:aws:sqs:eu-west-1:123456789012:DemoS3Notification"
-    }
-  ]
-}
-```
-
-**Recommended version (restricts to your bucket):**
+The demo policy used `Principal: *` (too permissive). The **recommended version** restricts it to your bucket:
 
 ```json
 {
@@ -643,9 +489,6 @@ S3 bucket --(all events)--> [EventBridge] --rules--> 18+ services (Step Function
   ]
 }
 ```
-
-- `Principal: *` lets **anyone** send messages to your queue. That is fine for a throwaway demo, but **unsafe in real use**.
-- The **`aws:SourceArn`** and **`aws:SourceAccount`** conditions limit it to your bucket and account, which prevents the **confused deputy** problem.
 
 **Then:**
 1. Return to the S3 notification page and **Save changes** again.
@@ -701,8 +544,6 @@ S3 bucket --(all events)--> [EventBridge] --rules--> 18+ services (Step Function
 }
 ```
 
-- Imagine **automating a thumbnail**: a worker (for example Lambda or an EC2 app) **reads this message** from the queue, downloads `coffee.jpg`, and creates the thumbnail.
-- The event is delivered **within seconds**, and **at least once**, so the same message can occasionally appear twice.
 - **Delete the message** when done. A consumer must delete it after processing, or it reappears after the **visibility timeout**.
 
 ### 7. Troubleshooting
@@ -714,55 +555,8 @@ S3 bucket --(all events)--> [EventBridge] --rules--> 18+ services (Step Function
 | Queue doesn't show in the S3 dropdown | **Refresh** the page, or enter the **ARN** |
 | Upload works but **no message** arrives | The **event type, prefix, or suffix** filter doesn't match, or you didn't wait long enough. Poll again. |
 | Only the **test event** appears | The notification works, but no new object matched. Upload a file. |
-| Duplicate messages | **At-least-once** delivery. Make the consumer **idempotent**. |
-| **FIFO queue** can't be selected | **FIFO is not supported** as an S3 destination |
 | **KMS-encrypted queue** fails | The key policy must also allow `s3.amazonaws.com` to use the key |
 | Notifications stop after editing the policy | A condition (`SourceArn`, `SourceAccount`) doesn't match your bucket or account |
-
-### 8. Key Facts to Remember
-
-- Configure events in the bucket's **Properties, Event notifications**.
-- Direct destinations: **Lambda, SNS, SQS**. Or turn on **EventBridge** to send all events there.
-- **S3 needs a resource policy** on the destination. The error "**unable to validate destination**" means the policy is missing.
-- S3 sends a **test event** (`s3:TestEvent`) when you save a notification.
-- A real event message carries **`eventName`** (for example `ObjectCreated:Put`) and the **object key**.
-- Filters: **prefix and suffix**. Event types: create, remove, restore, replication, and more.
-- **Never use `Principal: *`** in production. Use the **S3 service principal** plus **`aws:SourceArn`**.
-- Destination queue must be **Standard** and **in the same region** as the bucket.
-- The use case: **react to uploads automatically** (thumbnails, processing pipelines).
-
-### 9. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "S3 event notification to SQS fails to save" | **Missing SQS access policy** allowing S3 |
-| "Permission model for S3 event notifications" | **Resource policy on the destination**, not an IAM role |
-| "First message in the queue after setup" | The **S3 test event** |
-| "Event name for an upload" | **`ObjectCreated:Put`** (or `Post`, `Copy`, `CompleteMultipartUpload`) |
-| "Find which object triggered the event" | **`s3.object.key`** in the message |
-| "React to uploads and generate thumbnails" | **S3 event to SQS or Lambda** |
-| "Send S3 events to many AWS services" | **EventBridge** integration |
-| "Restrict an SQS policy to a specific bucket" | **`aws:SourceArn`** condition |
-| "Notifications can be duplicated" | **At-least-once** delivery |
-| "Which queue types work as S3 destinations?" | **Standard** SQS only |
-
-### 10. Hands-On Checklist
-
-- [x] **Create a bucket** (for example in `eu-west-1`) with a unique name
-- [x] Bucket, **Properties**, scroll to **Event notifications** and review the two options (**Create event notification** and **Amazon EventBridge**)
-- [x] **Create event notification**: name `DemoEventNotification`, no prefix or suffix
-- [x] Event types: **All object create events**
-- [x] Destination: **SQS queue** (leave the form open, or come back later)
-- [x] In **SQS** (same region), **create a Standard queue** `DemoS3Notification`
-- [x] Back in S3, **refresh**, choose the queue, and **Save changes**. Confirm the **validation error**.
-- [x] In the **queue's access policy**, add a statement allowing S3 to `SQS:SendMessage` (the **Policy Generator**, or the tighter policy with `aws:SourceArn`), then **Save**
-- [x] Return to the S3 notification and **Save changes**. Confirm it **succeeds**.
-- [x] In SQS, **Send and receive messages**, **Poll for messages**, find the **test event**, and **delete** it
-- [x] **Upload `coffee.jpg`** to the bucket
-- [x] **Poll** the queue and open the new message. Find **`eventName: ObjectCreated:Put`** and **key `coffee.jpg`**.
-- [x] **Delete** the message
-- [x] (Optional) Turn on the **EventBridge** integration and see that it adds a second path
-- [x] **Clean up:** delete the event notification, **delete the SQS queue**, **empty and delete** the bucket, and remove the permissive policy
 
 ---
 
@@ -908,18 +702,7 @@ Range: bytes=0-49
 - **Combine them:** Transfer Acceleration with multipart upload gives the biggest gain for large, far-away uploads.
 - **Extras:** for global reads of the same content, use **CloudFront** (caching at the edge). For very high-throughput, low-latency workloads, there is **S3 Express One Zone**. Neither is covered in this lecture.
 
-### 6. Key Facts to Remember
-
-- S3 baseline: **100-200 ms first-byte latency**.
-- **3,500 PUT/COPY/POST/DELETE** and **5,500 GET/HEAD** per second **per prefix**.
-- **Unlimited prefixes**, so total throughput scales with prefixes (4 prefixes = **22,000 reads per second**).
-- **Prefix** = the path between the bucket and the file name.
-- **Multipart upload:** **recommended above 100 MB**, **mandatory above 5 GB**, **parallel** uploads.
-- **Transfer Acceleration:** **edge location** to S3 over the **private AWS network**. Works for **upload and download**. **Compatible with multipart**.
-- **Byte-range fetches:** **parallel GETs**, **retry smaller ranges**, or fetch **only a portion** (for example a header).
-- Over **200 edge locations** (per the lecture), more than regions.
-
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1073,18 +856,7 @@ Application: "find objects where Project = Blue" ----------+
 - **Other options (extras):** **OpenSearch/Elasticsearch** for full-text or complex search, **Athena** over **S3 Inventory** (the list of all objects and some metadata) for batch queries, and **S3 Metadata** (newer feature) for queryable metadata tables.
 - **S3 Select / Athena** look **inside** an object's contents. They don't search by tags or metadata across objects.
 
-### 6. Key Facts to Remember
-
-- **Metadata** = key-value pairs on the object. **User-defined metadata must start with `x-amz-meta-`.**
-- **System metadata** (for example `Content-Type`, `Content-Length`) is **set by AWS**.
-- **Tags** = key-value pairs for **permissions, analytics, lifecycle**.
-- **Neither metadata nor tags can be searched** in S3.
-- To search, **build an external index**, for example in **DynamoDB**.
-- Metadata comes back **with the object**. Tags need a **separate call**.
-- Object limits: **10 tags**, and about **2 KB** of user metadata.
-- To change metadata after upload, **copy the object**. Tags can be edited **directly**.
-
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|

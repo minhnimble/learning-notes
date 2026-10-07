@@ -135,20 +135,9 @@ Browser  --> connects to 9.10.11.12
 - Route 53 can be your **domain registrar** (where you buy `example.com`).
 - Route 53 can also host your **DNS zone**, acting as the **authoritative name server** in step 7 above.
 - The coming section covers how to **manage a DNS server on your own** with Route 53: record types, routing policies, and health checks.
-
-### 7. Key Facts to Remember
-
-- DNS translates **hostnames to IP addresses**.
-- The hierarchy is **root, then TLD, then SLD, then subdomain**, and the **FQDN** is the full name.
-- **Registrar** = where you buy the domain. **Name server** = resolves queries. **Zone file** = holds the records.
-- **Root and TLD servers** return **NS referrals**. The **authoritative server** returns the **answer** (for example an **A record**).
-- The **local DNS server** does the **recursive lookups** and **caches** results.
-- **A record** = hostname to **IPv4**. **AAAA** = hostname to **IPv6**. **CNAME** = hostname to another hostname. **NS** = which name servers handle a domain.
 - Caching duration is controlled by the record's **TTL** (Route 53 section).
-- DNS runs on **port 53**.
-- **Route 53** = AWS's **registrar** and **authoritative DNS** service.
 
-### 8. Exam-Style Recall
+### 7. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -159,8 +148,6 @@ Browser  --> connects to 9.10.11.12
 | "`.com`, `.org`, `.gov`" | **Top-level domains (TLDs)** |
 | "`amazon.com`" | **Second-level domain** |
 | "`api.www.example.com`" | **FQDN** (fully qualified domain name) |
-| "Record type that maps a name to an IPv4 address" | **A record** |
-| "Record type that maps a name to an IPv6 address" | **AAAA record** |
 | "Record type that points a name to another name" | **CNAME** |
 | "Record that says which name servers hold a domain" | **NS record** |
 | "Which server first receives the browser's DNS question?" | **Local DNS server** (ISP or company) |
@@ -209,6 +196,7 @@ Client --connects directly--> EC2 instance (public IP 54.22.33.44)
 - You write a **DNS record** in a **hosted zone** in Route 53.
 - When a client asks for `example.com`, Route 53 answers with the IP, and the client connects straight to the instance.
 - Route 53 **only answers DNS questions**. It never carries the actual traffic.
+- **100% availability SLA**. This is a classic exam fact.
 
 ### 2. Anatomy of a DNS Record
 
@@ -326,26 +314,12 @@ EC2 (api)    --"database.example.internal?"--> [Private hosted zone] --> private
 - Domain registration is **not refundable**, and registered domains **auto-renew** by default.
 - You can also **transfer** a domain in or out of Route 53.
 
-### 6. Key Facts to Remember
-
-- Route 53 = **authoritative DNS** + **domain registrar** + **health checking**.
-- **100% availability SLA**. This is a classic exam fact.
-- **Port 53**, which is the origin of the name.
-- A record has **name, type, value, routing policy, and TTL**.
-- **A** = IPv4, **AAAA** = IPv6, **CNAME** = hostname to hostname, **NS** = name servers for the hosted zone.
-- **CNAME can't be used at the zone apex** (`example.com`). It works on subdomains.
-- **Hosted zone** = a container of records. **Public** = internet clients. **Private** = VPC clients only.
-- **TTL** is how long resolvers **cache** the answer.
-- Route 53 **doesn't route actual traffic**. It responds to DNS queries, and the client then connects to the resolved address.
-- Costs: **$0.50 per hosted zone per month** plus **about $12 per year** for a domain.
-
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
 | "Highly available, scalable, fully managed, authoritative DNS" | **Route 53** |
 | "Only AWS service with a 100% availability SLA" | **Route 53** |
-| "Register a domain name in AWS" | **Route 53 (registrar)** |
 | "Why is it called Route 53?" | **DNS port 53** |
 | "Map a hostname to an IPv4 address" | **A record** |
 | "Map a hostname to an IPv6 address" | **AAAA record** |
@@ -365,15 +339,6 @@ EC2 (api)    --"database.example.internal?"--> [Private hosted zone] --> private
 
 ## Route 53 - Registering a Domain
 
-### TL;DR
-
-- You can **register a domain name directly in Route 53** (Route 53 acts as the **registrar**). It costs money: about **$12-13 per year** for a `.com` in the demo, depending on the TLD. **It is not free and not refundable.**
-- Registering a domain gives you a **public hosted zone** for it, containing an **NS record** and an **SOA record**.
-- The **NS record** points to Route 53's name servers, so **Route 53 becomes the source of truth** for the domain's DNS records.
-- Key options: **duration**, **auto-renew**, **contact info**, and **privacy protection** (turn it on to hide your personal details and reduce spam).
-- Registration can take **a few minutes to a few hours**.
-- Following along is **optional**. If you don't want to pay, just watch.
-
 ### 1. Where to Start
 
 - Console: **Route 53**, **Registered domains** (left menu), **Register domains**.
@@ -393,7 +358,7 @@ EC2 (api)    --"database.example.internal?"--> [Private hosted zone] --> private
 6. Fill in **contact information**.
 7. Enable **privacy protection**.
 8. **Review**, accept the **terms and conditions**, and **submit**. This is the point where you are charged.
-9. Wait for the registration to complete, then **verify** it (section 5).
+9. Wait for the registration to complete, then **verify** it (section 4).
 
 ### 3. Key Settings
 
@@ -421,24 +386,12 @@ EC2 (api)    --"database.example.internal?"--> [Private hosted zone] --> private
 - It protects you from **spam** and unwanted solicitation.
 - Route 53 provides privacy protection at **no extra cost** for most TLDs. Some TLDs don't support it.
 
-### 4. Cost
-
-| Item | Detail |
-|---|---|
-| **Domain registration** | **About $12-13 per year** for `.com` (varies by TLD). Charged when you **submit**. |
-| **Hosted zone** | **$0.50 per month** for each hosted zone |
-| **Refund** | Domain registration is generally **non-refundable** |
-
-- The lecturer's warning: **don't submit** if you don't want to pay.
-- Clean up unused hosted zones. They bill monthly even if you don't use them.
-- If the domain is registered, the **registration fee** is a separate, annual charge from the hosted zone fee.
-
-### 5. Verifying the Registration
+### 4. Verifying the Registration
 
 - Registration is **not instant**. It can take **a few minutes to a few hours** (occasionally longer).
 - To confirm, go to **Hosted zones** and open your domain's hosted zone.
 
-#### 5.1 What you should see
+#### 4.1 What you should see
 
 | Record | Purpose |
 |---|---|
@@ -448,204 +401,27 @@ EC2 (api)    --"database.example.internal?"--> [Private hosted zone] --> private
 - The lecturer's own zone had **4 records** because of earlier use. A fresh one has **2**: NS and SOA.
 - **Don't delete the NS or SOA records.** They are required for the zone to work.
 
-#### 5.2 What this means
+#### 4.2 What this means
 
 - Because the domain's NS records point to Route 53, **any DNS records you add to this hosted zone** (for example an A record) are what the internet sees.
 - **Route 53 is the source of truth** for the domain's DNS.
 - The next lecture covers **creating records** in the hosted zone.
 
-### 6. Registrar vs Hosted Zone
-
-| | **Domain registration** | **Hosted zone** |
-|---|---|---|
-| **What it is** | The **purchase** of the name (ownership and renewal) | The **DNS records** that say where the name points |
-| **Where** | **Registered domains** | **Hosted zones** |
-| **Billing** | Yearly | **$0.50 per month** |
-| **Created by** | You register the domain | **Automatically** when you register through Route 53, or **manually** for external domains |
-
-- **Registered with Route 53:** the **hosted zone is created for you**, and the domain's name servers already point to it.
-- **Registered elsewhere** (for example GoDaddy):
-  1. Create a **public hosted zone** in Route 53.
-  2. Copy the **4 NS values** Route 53 gives you.
-  3. Update the **name servers at the other registrar** to those 4 values.
-- The registrar and the DNS host **can be different companies**. Route 53 doesn't require you to register the domain with AWS.
-
-### 7. Key Facts to Remember
-
-- Route 53 is both a **registrar** and a **DNS service**.
-- Registering a domain costs about **$12-13 per year** and is **not free**.
-- **Auto-renew:** keep it on for domains you want to keep.
-- **Privacy protection** hides your personal contact details from WHOIS.
-- A new registered domain gets a **public hosted zone** with **NS and SOA** records.
-- The **NS record** points to the **Route 53 name servers**, making Route 53 the **source of truth** for the domain.
-- Registration can take **minutes to hours**.
-- A hosted zone costs **$0.50 per month**, separate from the registration fee.
-- Domain registration is **global** (not tied to a region).
-- You can **register a domain elsewhere** and still **host DNS in Route 53** by updating the name servers.
-
-### 8. Exam-Style Recall
+### 5. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
 | "Register a domain name in AWS" | **Route 53 registered domains** |
 | "Domain registered in Route 53, DNS records managed where?" | The **hosted zone** created for it |
-| "Domain bought from another registrar, want Route 53 DNS" | Create a **hosted zone**, then update the registrar's **NS records** |
 | "What two records exist in a new hosted zone?" | **NS** and **SOA** |
 | "What does the NS record in a hosted zone indicate?" | The **name servers** that answer queries for the domain |
 | "Hide personal contact info for a domain" | **Privacy protection** |
 | "Domain must not be lost accidentally at year end" | Keep **auto-renew on** |
-| "Cost of a hosted zone" | **$0.50 per month** |
 | "Domain registration fee is charged how often?" | **Yearly** |
-| "Registrar and DNS host must be the same company?" | **No** |
-
----
-
-## Route 53 - Registering a Domain
-
-### TL;DR
-
-- You can **register a domain name directly in Route 53** (Route 53 acts as the **registrar**). It costs money: about **$12-13 per year** for a `.com` in the demo, depending on the TLD. **It is not free and not refundable.**
-- Registering a domain gives you a **public hosted zone** for it, containing an **NS record** and an **SOA record**.
-- The **NS record** points to Route 53's name servers, so **Route 53 becomes the source of truth** for the domain's DNS records.
-- Key options: **duration**, **auto-renew**, **contact info**, and **privacy protection** (turn it on to hide your personal details and reduce spam).
-- Registration can take **a few minutes to a few hours**.
-- Following along is **optional**. If you don't want to pay, just watch.
-
-### 1. Where to Start
-
-- Console: **Route 53**, **Registered domains** (left menu), **Register domains**.
-- Use the **new console experience** (the lecturer says it is what you'll see going forward).
-- **Registered domains** and **Hosted zones** are two separate lists:
-  - **Registered domains** = domains you **bought** through Route 53.
-  - **Hosted zones** = **containers of DNS records**.
-- The lecturer's account already had a domain and a hosted zone from earlier use. **Yours will be empty.**
-
-### 2. Registration Flow
-
-1. **Search for a domain name**. Enter a name nobody else has taken.
-2. The console shows **availability and price** for different TLDs. In the demo, the chosen name was available for **US $13 per year**.
-3. **Select** the domain, which puts it in your **basket**.
-4. **Proceed to checkout**.
-5. Choose the **duration** (for example **1 year**) and the **auto-renew** setting.
-6. Fill in **contact information**.
-7. Enable **privacy protection**.
-8. **Review**, accept the **terms and conditions**, and **submit**. This is the point where you are charged.
-9. Wait for the registration to complete, then **verify** it (section 5).
-
-### 3. Key Settings
-
-#### 3.1 Duration and auto-renew
-
-| Setting | Detail |
-|---|---|
-| **Duration** | Number of years to register (for example 1 year) |
-| **Auto-renew** | **On:** the domain **renews automatically** each year. **Off:** it **expires** at the end of the term. |
-
-- **Keep auto-renew on** if you intend to keep using the domain. If it lapses, **someone else can buy it**, which is a real risk for a production domain.
-- Turn it **off** if you only want the domain for the course.
-- Auto-renew is **on by default** in the console, so uncheck it if you don't want another charge.
-
-#### 3.2 Contact information
-
-- **Pre-populated** from your account, and you can change it.
-- Three contacts: **registrant**, **admin**, and **tech**. The admin and tech contacts can be the **same as the registrant**.
-- This information is required by domain registration rules (**ICANN**).
-- **Verify your email:** AWS sends a **verification email** to the registrant contact. If you don't click the link in time, the domain can be **suspended**.
-
-#### 3.3 Privacy protection
-
-- **Enable it.** It **hides your real contact details** (address, phone, email) from the public **WHOIS** database.
-- It protects you from **spam** and unwanted solicitation.
-- Route 53 provides privacy protection at **no extra cost** for most TLDs. Some TLDs don't support it.
-
-### 4. Cost
-
-| Item | Detail |
-|---|---|
-| **Domain registration** | **About $12-13 per year** for `.com` (varies by TLD). Charged when you **submit**. |
-| **Hosted zone** | **$0.50 per month** for each hosted zone |
-| **Refund** | Domain registration is generally **non-refundable** |
-
-- The lecturer's warning: **don't submit** if you don't want to pay.
-- Clean up unused hosted zones. They bill monthly even if you don't use them.
-- If the domain is registered, the **registration fee** is a separate, annual charge from the hosted zone fee.
-
-### 5. Verifying the Registration
-
-- Registration is **not instant**. It can take **a few minutes to a few hours** (occasionally longer).
-- To confirm, go to **Hosted zones** and open your domain's hosted zone.
-
-#### 5.1 What you should see
-
-| Record | Purpose |
-|---|---|
-| **NS** | Lists the **4 AWS name servers** that answer DNS queries for this domain. It says "use the **AWS DNS** (Route 53) to answer queries". |
-| **SOA** | **Start of Authority**. Administrative information about the zone (primary name server, contact, serial number, refresh timers). Created automatically. |
-
-- The lecturer's own zone had **4 records** because of earlier use. A fresh one has **2**: NS and SOA.
-- **Don't delete the NS or SOA records.** They are required for the zone to work.
-
-#### 5.2 What this means
-
-- Because the domain's NS records point to Route 53, **any DNS records you add to this hosted zone** (for example an A record) are what the internet sees.
-- **Route 53 is the source of truth** for the domain's DNS.
-- The next lecture covers **creating records** in the hosted zone.
-
-### 6. Registrar vs Hosted Zone
-
-| | **Domain registration** | **Hosted zone** |
-|---|---|---|
-| **What it is** | The **purchase** of the name (ownership and renewal) | The **DNS records** that say where the name points |
-| **Where** | **Registered domains** | **Hosted zones** |
-| **Billing** | Yearly | **$0.50 per month** |
-| **Created by** | You register the domain | **Automatically** when you register through Route 53, or **manually** for external domains |
-
-- **Registered with Route 53:** the **hosted zone is created for you**, and the domain's name servers already point to it.
-- **Registered elsewhere** (for example GoDaddy):
-  1. Create a **public hosted zone** in Route 53.
-  2. Copy the **4 NS values** Route 53 gives you.
-  3. Update the **name servers at the other registrar** to those 4 values.
-- The registrar and the DNS host **can be different companies**. Route 53 doesn't require you to register the domain with AWS.
-
-### 7. Key Facts to Remember
-
-- Route 53 is both a **registrar** and a **DNS service**.
-- Registering a domain costs about **$12-13 per year** and is **not free**.
-- **Auto-renew:** keep it on for domains you want to keep.
-- **Privacy protection** hides your personal contact details from WHOIS.
-- A new registered domain gets a **public hosted zone** with **NS and SOA** records.
-- The **NS record** points to the **Route 53 name servers**, making Route 53 the **source of truth** for the domain.
-- Registration can take **minutes to hours**.
-- A hosted zone costs **$0.50 per month**, separate from the registration fee.
-- Domain registration is **global** (not tied to a region).
-- You can **register a domain elsewhere** and still **host DNS in Route 53** by updating the name servers.
-
-### 8. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Register a domain name in AWS" | **Route 53 registered domains** |
-| "Domain registered in Route 53, DNS records managed where?" | The **hosted zone** created for it |
-| "Domain bought from another registrar, want Route 53 DNS" | Create a **hosted zone**, then update the registrar's **NS records** |
-| "What two records exist in a new hosted zone?" | **NS** and **SOA** |
-| "What does the NS record in a hosted zone indicate?" | The **name servers** that answer queries for the domain |
-| "Hide personal contact info for a domain" | **Privacy protection** |
-| "Domain must not be lost accidentally at year end" | Keep **auto-renew on** |
-| "Cost of a hosted zone" | **$0.50 per month** |
-| "Domain registration fee is charged how often?" | **Yearly** |
-| "Registrar and DNS host must be the same company?" | **No** |
 
 ---
 
 ## Route 53 - Creating Our First Records
-
-### TL;DR
-
-- Created a **simple A record** in the public hosted zone: `test.<your-domain>` pointing to `11.22.33.44` (a made-up IP), **TTL 300 s**, **simple routing policy**.
-- The IP doesn't belong to a real server, so **loading the URL in a browser fails**. DNS still resolves correctly, because **Route 53 only answers the DNS question** and doesn't carry traffic.
-- Verified the record from the command line using **`nslookup`** (Windows) or **`dig`** (Mac/Linux), run from **AWS CloudShell**.
-- `dig` is more informative: its **ANSWER SECTION** shows the **record name, TTL, record type (A), and value**.
-- Later lectures route to a **real EC2 instance** and cover **routing policies**.
 
 ### 1. Creating the Record
 
@@ -660,15 +436,7 @@ EC2 (api)    --"database.example.internal?"--> [Private hosted zone] --> private
 7. **Routing policy**: **Simple routing**.
 8. Click **Create records**.
 
-#### 1.2 Fields explained
-
-| Field | Demo value | Notes |
-|---|---|---|
-| **Record name** | `test` (full name `test.<domain>`) | Enter any subdomain. Leave it **blank** for the **root/apex** domain. |
-| **Record type** | **A** | Many types exist. A, AAAA, CNAME, and NS are the ones to know. |
-| **Value** | `11.22.33.44` | Just a random value for the demo. Later it will be a real EC2 public IP. |
-| **TTL** | **300 s** | How long **resolvers cache** the answer |
-| **Routing policy** | **Simple** | Other policies come in later lectures |
+#### 1.2 Notes
 
 - You can enter **multiple IP addresses** in the value box (one per line). With simple routing, the client gets **all of them** and picks one.
 - You can create several records at once with **Add another record**.
@@ -684,6 +452,7 @@ EC2 (api)    --"database.example.internal?"--> [Private hosted zone] --> private
 - **Opening the URL in a browser doesn't work.** No server exists at `11.22.33.44`.
 - This shows that **DNS resolution and reaching the server are separate steps**. The DNS answer is correct even when nothing is listening at the IP.
 - To make the URL work, the A record must point to a **real server** (for example an EC2 instance), and that server must allow the traffic (security group, web server running).
+- **Route 53 answers DNS queries only.** Whether the destination actually works is a separate matter.
 
 ### 3. Testing from the Command Line
 
@@ -763,48 +532,21 @@ dig @<route53-ns-server> test.<your-domain>   # query Route 53 directly (skips c
 | Domain just registered and nothing resolves | Registration or propagation may still be in progress (minutes to hours) |
 | Record created in the wrong zone | Public vs private hosted zone mix-up. Check the **zone type** and **VPC association**. |
 
-- Windows tip: `nslookup` is built in.
-- The domain's **NS records at the registrar** must match the **hosted zone's NS values**, or public queries won't reach your records.
-
-### 5. Key Facts to Remember
-
-- Create records in a **hosted zone**: **name, type, value, TTL, routing policy**.
-- **A record** = hostname to **IPv4**. The default TTL in the console is **300 s**.
-- **Simple routing** is the default policy.
-- **Route 53 answers DNS queries only.** Whether the destination actually works is a separate matter.
-- **`nslookup`** (Windows) and **`dig`** (Mac/Linux) are the tools to test DNS. Both come from **`bind-utils`**.
-- **`dig`** shows the **TTL** and the **record type**.
-- **Cached answers** persist until the **TTL** expires, so changes aren't always instant.
-- **CloudShell** is a free browser-based terminal in the AWS console, with the AWS CLI preinstalled.
-- The record name is relative to the **hosted zone** (you type `test`, and the result is `test.<domain>`).
-
-### 6. Exam-Style Recall
+### 5. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
-| "Map a subdomain to an IPv4 address" | **A record** |
-| "How long resolvers cache a record" | **TTL** |
 | "Default routing policy" | **Simple routing** |
 | "Tool to test DNS resolution on Windows" | **`nslookup`** |
 | "Tool to test DNS resolution on Mac/Linux, shows TTL" | **`dig`** |
 | "DNS resolves correctly but the website doesn't load" | **Server / security group** problem, not DNS |
 | "DNS change isn't visible yet" | **Cached** until the TTL expires |
-| "Where do you create DNS records?" | In the **hosted zone** |
 | "Which record would you use to point to a real EC2 public IP?" | **A record** |
 | "Browser-based terminal in the AWS console" | **CloudShell** |
 
 ---
 
 ## Route 53 - EC2 Setup
-
-### TL;DR
-
-- Prep lecture for the Route 53 routing policy demos. It builds **3 EC2 instances in 3 different regions** and **1 ALB**, so later lectures have real endpoints to route to.
-- **Instances:** Frankfurt (`eu-central-1`), N. Virginia (`us-east-1`), Singapore (`ap-southeast-1`). Each is Amazon Linux 2, `t2.micro`, no key pair, with HTTP open to the world.
-- **User data** installs a web server that returns "Hello World" plus the instance's **Availability Zone**. This tells you which region answered when you test later.
-- **ALB:** `DemoRoute53ALB` in **Frankfurt**, internet-facing, forwarding HTTP:80 to the target group `demo-tg-route53`, which holds the Frankfurt instance.
-- **Verified** each endpoint in the browser and noted its IP and region in a text file. You need these values in the next lectures.
-- Key idea: **EC2 and ALB are regional. Route 53 is global.** Route 53 can point one domain name at resources in many regions.
 
 ### 1. Why This Setup?
 
@@ -827,7 +569,7 @@ Repeat the same steps in **each of the three regions**. Switch region with the *
 
 | Setting | Value | Notes |
 |---|---|---|
-| **AMI** | Amazon Linux 2 (x86) | AL2 is nearing end of support. **Amazon Linux 2023** works too (see the IMDSv2 note below). |
+| **AMI** | Amazon Linux 2 (x86) | **Amazon Linux 2023** works too (see the IMDSv2 note below). |
 | **Instance type** | `t2.micro` | Free tier eligible |
 | **Key pair** | **None** ("proceed without a key pair") | Use **EC2 Instance Connect** if you need shell access |
 | **Security group** | **Create new**, allow **HTTP (80)** from anywhere | The Frankfurt instance also allowed **SSH (22)** |
@@ -862,6 +604,7 @@ EC2_AVAIL_ZONE=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.16
 - **EC2 instances, security groups, key pairs, and AMI IDs are all regional.**
 - A security group created in Frankfurt **does not exist** in N. Virginia, so you create a new one in each region.
 - The console picks the **right AMI for the region** automatically. The AMI **ID differs** per region even for the same image.
+- **User data** sets up the web server on first boot, and the page shows the **AZ** so you can tell instances apart.
 
 ### 3. Creating the ALB (Frankfurt)
 
@@ -894,6 +637,7 @@ EC2_AVAIL_ZONE=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.16
 - An ALB is **regional** and **can only target resources in its own region**.
 - It is the endpoint for the **Alias record** demo later (alias to an ALB).
 - Its target group holds **one instance**, so every request returns the same "Hello" page.
+- Public IPv4 addresses of EC2 instances **change on stop/start**. Use an **Elastic IP** for a stable address.
 
 ### 4. Verifying Everything
 
@@ -915,18 +659,7 @@ ap-southeast-1   <public-ip>   ap-southeast-1b
 ALB (eu-central-1)  <alb-dns-name>
 ```
 
-### 5. Key Facts to Remember
-
-- **EC2, ALB, security groups, key pairs, and target groups are regional.** **Route 53 is global.**
-- One Route 53 domain can point to **resources in many regions** (the whole reason for this setup).
-- An **ALB can only route to targets in its own region** (and its own VPC, plus IPs reachable from it).
-- **User data** sets up the web server on first boot, and the page shows the **AZ** so you can tell instances apart.
-- The **instance metadata service** (`169.254.169.254`) provides the AZ, instance ID, and other details from inside the instance.
-- AMI IDs **differ by region**.
-- Public IPv4 addresses of EC2 instances **change on stop/start**. Use an **Elastic IP** for a stable address.
-- Delete everything after the Route 53 section: **3 instances and the ALB bill while they exist**.
-
-### 6. Exam-Style Recall
+### 5. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1083,23 +816,10 @@ dig @<route53-name-server> demo.<your-domain>
 - Some resolvers apply their own **minimum or maximum TTL**, so the real expiry can differ a bit from the configured value.
 - **NS records** in a hosted zone usually have a long TTL (the Route 53 default is **172,800 s, which is 48 hours**), so delegation changes at a registrar can take a long time to spread.
 
-### 7. Key Facts to Remember
-
-- **TTL = how long a DNS answer is cached**, in **seconds**.
-- **High TTL:** fewer queries and lower cost, but **slow changes and stale data**.
-- **Low TTL:** more queries and higher cost, but **fast changes**.
-- **TTL is mandatory on all records except Alias records.**
-- The **console default is 300 s**.
-- **Lower the TTL before a planned change**, wait for the old TTL to expire, change the record, then raise it again.
-- A record change in Route 53 is **not instantly visible to clients**. Resolvers serve the old answer until their cache expires.
-- `dig` shows the **remaining TTL** in the ANSWER SECTION, and it **counts down**.
-- Route 53 **bills per query**, so TTL directly affects cost.
-
-### 8. Exam-Style Recall
+### 7. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
-| "How long DNS resolvers cache a record" | **TTL** |
 | "Reduce the number of DNS queries and cost" | **Increase the TTL** |
 | "Change a DNS record and have clients see it quickly" | **Lower the TTL** (ideally before the change) |
 | "I changed the record, but clients still hit the old IP" | The **old answer is cached** until the TTL expires |
@@ -1192,6 +912,7 @@ myapp.mydomain.com  --(CNAME or Alias)-->  my-alb-123456.eu-central-1.elb.amazon
 | **EC2 DNS name** | Not supported. Use an **A record** with the instance's public IP (ideally an **Elastic IP**) instead. |
 
 - The lecture says some of these appear later in the course, and that it is fine if you haven't seen them yet.
+- An alias to an ALB, NLB, CloudFront, and so on **tracks the target's IP changes** with no action from you.
 
 ### 5. CNAME vs Alias
 
@@ -1250,22 +971,7 @@ All three records point to the **ALB** from the EC2 setup lecture (`DemoRoute53A
 
 **Takeaway:** the apex needs an **Alias**. The lecturer stresses this is something the exam may test.
 
-### 7. Key Facts to Remember
-
-- **CNAME = hostname to hostname. Alias = hostname to AWS resource.**
-- **Zone apex:** CNAME **not allowed**, Alias **allowed**.
-- Alias records are **A or AAAA**.
-- **Alias TTL can't be set.** It is managed by Route 53. TTL is mandatory on every other record.
-- **Alias queries to AWS resources are free.** CNAME queries are billed.
-- **Evaluate target health** gives an Alias a built-in health check.
-- **EC2 DNS names can't be Alias targets.**
-- S3: **website endpoints only** (not a plain bucket).
-- Alias is **Route 53-specific**. It isn't a standard DNS record type.
-- The zone apex is also called the **naked domain** or **root domain**.
-- An alias to an ALB, NLB, CloudFront, and so on **tracks the target's IP changes** with no action from you.
-- The alias target and the hosted zone can be in **different regions** (ELB targets are regional, but Route 53 is global).
-
-### 8. Exam-Style Recall
+### 7. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1407,38 +1113,11 @@ simple.<your-domain>.   20   IN   A   <virginia-ip>
 - After waiting out the 20 s TTL and refreshing: **"Hello from `us-east-1a`"**.
 - This shows simple routing with multiple values: **all values returned, random client-side pick.**
 
-### 4. Simple vs Multi-Value Answer (Preview)
-
-Both can return multiple IPs, but they are different:
-
-| | **Simple** (multiple values) | **Multi-value answer** |
-|---|---|---|
-| **Returns** | All values in the record | **Up to 8 healthy** records (randomly chosen) |
-| **Health checks** | **No** | **Yes** |
-| **Alias support** | One alias target only | No alias (A/AAAA with values) |
-| **Client picks** | Yes | Yes |
-| **Use for** | A single resource, or basic distribution | Client-side load balancing **with health awareness** |
-
-- **Multi-value answer is not a replacement for a load balancer.** It only improves availability by hiding unhealthy endpoints.
-
-### 5. Key Facts to Remember
-
-- A routing policy decides **how Route 53 answers DNS queries**. It doesn't route actual traffic.
-- **DNS only translates names.** The client connects to the endpoint itself.
-- **Simple** = no special logic. It is the **default policy**.
-- **Multiple values** in one simple record are **all returned**, and the **client picks randomly**.
-- With **Alias**, simple routing allows **one AWS resource target** only.
-- **Simple records can't have health checks.**
-- A **low TTL** (the demo used 20 s) makes record changes visible quickly.
-- Route 53 policies: **simple, weighted, failover, latency, geolocation, multi-value answer, geoproximity** (plus IP-based).
-- Changes to a record aren't visible until the **cached answer's TTL expires**.
-
-### 6. Exam-Style Recall
+### 4. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
 | "Route 53 returns the record value with no special logic" | **Simple routing** |
-| "Default routing policy" | **Simple** |
 | "A record with multiple IP values, client chooses" | **Simple routing** |
 | "Who picks among multiple values returned by simple routing?" | The **client**, at random |
 | "Routing policy that can't use health checks" | **Simple** |
@@ -1560,6 +1239,8 @@ dig weighted.<your-domain>
 
 **Why the browser doesn't change on every refresh:** the answer is **cached for the TTL**, browsers also cache DNS and reuse connections, and with a **70% weight** most answers are the same anyway. Use `dig` repeatedly (or a script) to see the distribution.
 
+- Lower the **TTL** before shifting weights so the change takes effect faster.
+
 ### 6. Weighted vs Simple (and Other Policies)
 
 | | **Simple** | **Weighted** |
@@ -1570,19 +1251,7 @@ dig weighted.<your-domain>
 | **Health checks** | **No** | **Yes** |
 | **Record ID needed** | No | **Yes** |
 
-### 7. Key Facts to Remember
-
-- **Weighted routing** = control the **% of DNS responses** per record.
-- **Share = weight / sum of weights.** The weights **needn't sum to 100**.
-- Records share the **same name and type**, and each has a unique **Record ID**.
-- **Weight 0** = no traffic. **All weights 0** = equal distribution.
-- **Health checks** can be attached to each record.
-- Main uses: **multi-region load balancing**, **testing a new version with a small share**, and **gradual traffic shifts**.
-- It splits **DNS answers**, so real traffic splits depend on **caching and client count**.
-- Lower the **TTL** before shifting weights so the change takes effect faster.
-- Weighted records can be **Alias** records.
-
-### 8. Exam-Style Recall
+### 7. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1694,6 +1363,7 @@ All use the **same name**: `latency.<your-domain>`, **type A**, **routing policy
 - Run CloudShell or an EC2 instance in **different regions** and use `dig`.
 - Use an online **multi-location DNS checker**.
 - Use `dig +subnet=<client-ip>/24 <name>` against a resolver or Route 53 name server that supports **EDNS Client Subnet**.
+- Answers can change as **latency measurements change** and when the **TTL cache** expires.
 
 ### 6. Health Checks and Failover Behavior
 
@@ -1703,7 +1373,7 @@ All use the **same name**: `latency.<your-domain>`, **type A**, **routing policy
 - Health checks are covered in the **next lecture**.
 - Alias records can use **Evaluate target health** instead of a separate health check.
 
-### 7. Latency vs Other Routing Policies
+### 7. Routing Policies Compared
 
 | Policy | Chooses the answer by | Typical use |
 |---|---|---|
@@ -1714,23 +1384,12 @@ All use the **same name**: `latency.<your-domain>`, **type A**, **routing policy
 | **Geolocation** | The user's **location** (country or continent) | Localization, legal or content restrictions |
 | **Geoproximity** | **Distance** with an adjustable **bias** | Shift load between regions |
 | **Multi-value answer** | Up to 8 **healthy** records | Client-side balancing with health awareness |
+| **IP-based** | The client's **IP range (CIDR)** you define | Known networks and ISPs |
 
 - **Latency** = fastest experience. **Geolocation** = content rules by location. They are often confused on the exam.
-
-### 8. Key Facts to Remember
-
-- **Latency-based routing** = answer with the **region that has the lowest latency** to the user.
 - Latency is **measured**, so it is **not strictly geography**.
-- You set a **Region** and a **Record ID** on every latency record. Records share the **same name and type**.
-- You **must specify the region** for records that have an **IP value**.
-- Each answer is **one record**. It is not a list.
-- Supports **health checks** and **Alias** records.
-- Unhealthy lowest-latency record: Route 53 uses the **next best healthy** one.
-- Route 53 **doesn't proxy traffic**. It only selects the DNS answer.
-- Answers can change as **latency measurements change** and when the **TTL cache** expires.
-- Testing needs a **different client location** (VPN, other region, or EDNS client subnet), and a **cleared cache**.
 
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1742,7 +1401,6 @@ All use the **same name**: `latency.<your-domain>`, **type A**, **routing policy
 | "What must you set on a latency record with an IP value?" | The **Region** |
 | "Lowest-latency region is unhealthy" | Route 53 returns the **next lowest-latency healthy** record |
 | "Is latency routing based on geographic distance?" | **No.** It is based on **measured network latency**. |
-| "What do latency records in a set share?" | The same **name and type** |
 | "How many values does a latency answer contain?" | **One** record |
 | "Does Route 53 forward the user's traffic to the closest region?" | **No.** It only returns the DNS answer. |
 | "Can a latency record be an Alias?" | **Yes** |
@@ -1829,6 +1487,7 @@ Healthy if MORE THAN 18% of checkers say healthy
 | **Health checker locations** | You can **choose which regions** the checkers run from |
 | **String matching** | Optional text to look for in the response |
 | **Invert health check status** | Flips the result (healthy becomes unhealthy and the reverse) |
+| **Latency graph** | Records latency measurements so you can chart latency over time (extra cost) |
 | **Disabled** | Stops checking, and the check is treated as healthy |
 
 #### 3.3 The 18% rule
@@ -1930,23 +1589,8 @@ Private EC2 instance (private subnet)
 - Health checks are **billed per check per month**, with higher prices for **non-AWS endpoints**, **fast (10 s) interval**, **HTTPS**, **string matching**, and **latency measurement** options.
 - **Calculated** and **CloudWatch alarm** health checks have their own (lower) pricing.
 - Check the current Route 53 pricing page for numbers.
-- **Delete** health checks you no longer need.
 
-### 8. Key Facts to Remember
-
-- Health checks are for **mainly public resources**. For **private** ones use a **CloudWatch alarm** health check.
-- **Three types:** **endpoint**, **calculated**, **CloudWatch alarm**.
-- **About 15 global health checkers**. **Healthy if more than 18%** report healthy.
-- **Interval:** **30 s** standard, **10 s** fast. **Protocols:** **HTTP, HTTPS, TCP**.
-- **HTTP/HTTPS healthy = 2xx or 3xx.** Text matching reads the **first 5,120 bytes**.
-- **Allow the Route 53 health checker IP ranges** (`ROUTE53_HEALTHCHECKS` in `ip-ranges.json`).
-- **Calculated check:** up to **255 children**, with AND/OR/at-least-N logic. Useful for **maintenance**.
-- **CloudWatch alarm check:** alarm in **ALARM** state means health check **unhealthy**.
-- Health checks have **CloudWatch metrics** and can trigger **SNS notifications**.
-- Health checks drive **automated DNS failover**, but **TTL caching** limits how fast clients switch.
-- **Simple routing** can't use health checks.
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -1964,21 +1608,22 @@ Private EC2 instance (private subnet)
 | "Health check fails but the app is fine" | Health checker **IP ranges blocked** by the SG/firewall |
 | "Where do you find the health checker IP ranges?" | **`ip-ranges.json`**, service **`ROUTE53_HEALTHCHECKS`** |
 | "View health check status as metrics" | **CloudWatch** (`us-east-1`) |
-| "Which routing policy can't use health checks?" | **Simple** |
 | "Health check for an Alias record to an ELB" | **Evaluate target health** |
 | "Health check state when its CloudWatch alarm is in ALARM" | **Unhealthy** |
+| "Check that the response contains specific text" | **String matching** (first 5,120 bytes) |
+| "Check faster than every 30 seconds" | **Fast interval (10 s)**, at higher cost |
+| "Mark unhealthy only after repeated failures" | **Failure threshold** |
+| "See how latency to the endpoint changes over time" | **Enable latency measurements** (latency graph) |
+| "Temporarily stop a health check without deleting it" | **Disable** it (it is then treated as healthy) |
+| "Reverse a check's result" | **Invert health check status** |
+| "Be alerted by email when a health check fails" | Create the **alarm and SNS notification** on the health check |
+| "Parent healthy only if all children are healthy" | **Calculated health check** (AND) |
+| "Parent healthy if at least one child is healthy" | **Calculated health check** (OR) |
+| "Does creating a health check change DNS answers?" | **No.** It must be **attached to a record**. |
 
 ---
 
 ## Route 53 - Health Checks Hands On
-
-### TL;DR
-
-- Created **3 endpoint health checks** (one per EC2 instance: `us-east-1`, `ap-southeast-1`, `eu-central-1`). Each uses the instance's **IP address**, **HTTP port 80**, and path `/`, with **standard (30 s)** interval and the other options left at defaults.
-- **Simulated a failure** by deleting the **HTTP inbound rule** from the Singapore instance's security group. After a short wait that health check turned **unhealthy**, and **View last failed check** showed a **connection timeout**.
-- Created a **calculated health check** that monitors the other 3 checks and reports healthy only when **all** of them are healthy. It turned **unhealthy** because one child was unhealthy.
-- Looked at the **CloudWatch alarm health check** option (region and alarm). It wasn't created, because no alarm existed. This is the option for **private resources**.
-- The health checks aren't attached to any DNS record yet. The **next lecture** uses them with Route 53 records (failover).
 
 ### 1. Starting Point
 
@@ -2010,27 +1655,11 @@ Private EC2 instance (private subnet)
 - **Path `/`:** the lecturer notes `/` is the same as the root of the site. In a real app, `/health` is common, because it can return the real health of the app and its dependencies.
 - **IP vs domain name:** an EC2 public IP **changes on stop/start**, which would break the check. Use an **Elastic IP**, or check by **domain name**.
 
-#### 2.2 Advanced configuration (all left at defaults)
+- Advanced options were left at defaults: standard **30 s** interval, failure threshold **3**, no string matching, latency graph, invert, or disable, and the recommended checker regions. A fast interval or the extra options cost more.
 
-| Option | What it does | Demo choice |
-|---|---|---|
-| **Request interval** | **Standard = every 30 s**, or **Fast = every 10 s** (costs more) | **Standard** |
-| **Failure threshold** | **Consecutive failures** needed to mark the endpoint unhealthy (1-10, default **3**) | Default |
-| **String matching** | Look for specific text in the **first 5,120 bytes** of the response | Off |
-| **Latency graph** | Records **latency measurements** so you can chart latency over time (extra cost) | Off |
-| **Invert health check status** | Flips the result: healthy becomes unhealthy and the reverse | Off |
-| **Disable health check** | Stops checking. A disabled check is treated as **healthy**. | Off |
-| **Health checker regions** | Which regions the checkers run from. The default is **recommended** (all regions). | **Recommended** |
+#### 2.2 Alarm notification (last step)
 
-- A fast interval or extra options (string matching, HTTPS, latency graph) **cost more**, which is why the lecturer keeps standard.
-- **Healthy** means **more than 18%** of the global checkers see a **2xx/3xx** response (see the Health Checks lecture).
-
-#### 2.3 Alarm notification (last step)
-
-- The wizard asks: **Do you want to be notified when this health check fails?**
-- This would create a **CloudWatch alarm** with an **SNS topic** (email or other subscription).
-- The demo chose **No**.
-- Useful in production, so you learn about failures without watching the console.
+- The wizard offers to **notify you when the check fails** (a CloudWatch alarm with an SNS topic). The demo chose **No**.
 
 ### 3. Creating the Three Checks
 
@@ -2063,8 +1692,6 @@ Private EC2 instance (private subnet)
 
 #### 4.3 What the timeout tells you
 
-- A **timeout** (not "connection refused") means packets were **dropped**: a **security group, NACL, or firewall** problem. That matches the rule we removed.
-- This is the same pattern as in the ALB lectures: a **security group block shows as a timeout**.
 - Other typical causes:
 
 | Failure message | Likely cause |
@@ -2073,8 +1700,6 @@ Private EC2 instance (private subnet)
 | **Connection refused** | Instance reachable but nothing listening on the port |
 | **HTTP status code 5xx/4xx** | App error or wrong path |
 | **String match failed** | Response didn't contain the expected text |
-
-- **Reminder:** the Route 53 health checker IP ranges must be allowed. In this demo HTTP was open to the world, so they were. The check fails once the rule is removed.
 
 ### 5. Calculated Health Check
 
@@ -2093,69 +1718,11 @@ Private EC2 instance (private subnet)
 #### 5.2 Result
 
 - The calculated check showed **Unhealthy**, because **one child (Singapore) is unhealthy**, and "all must be healthy" fails.
-- The lecturer's point: you can build **as complex a rule as you want** by combining checks. This also supports the maintenance use case: with "at least 2 of 3", one child can be taken down without failing the parent.
-- **Up to 255 children** are allowed.
 
 ### 6. CloudWatch Alarm Health Check (Not Created)
 
-#### 6.1 What the form asks for
-
-| Setting | Detail |
-|---|---|
-| **What to monitor** | **State of a CloudWatch alarm** |
-| **CloudWatch alarm region** | The region where the alarm lives |
-| **Alarm** | Pick the alarm to track |
-| **When data is insufficient** | Treat as **Healthy**, **Unhealthy**, or **Last known status** |
-
-- Use it for **private resources** (a private EC2 instance, a resource on premises). The Route 53 checkers can't reach them, but a **CloudWatch metric and alarm** can.
-- Mapping: alarm **OK** means healthy. Alarm **ALARM** means unhealthy.
-- **Not created in the demo:** there was **no alarm available** in the account. You must create the alarm first.
-
-### 7. Key Facts to Remember
-
-- Console path: **Route 53, Health checks, Create health check**.
-- **Three monitor types:** **Endpoint**, **Status of other health checks (calculated)**, **State of a CloudWatch alarm**.
-- Endpoint check settings: **IP or domain, protocol (HTTP/HTTPS/TCP), port, path**.
-- **Standard interval 30 s, fast 10 s.** Failure threshold default **3**.
-- **String matching** reads the **first 5,120 bytes**.
-- **Invert** flips the status. **Disable** stops checking (treated as healthy).
-- A **blocked security group** shows up as a **connection timeout** in **View last failed check**.
-- A **calculated check** can require **any, at least N, or all** children to be healthy (up to **255**).
-- **CloudWatch alarm checks** are the way to health check **private resources**.
-- Health checks **do nothing on their own** until you **attach them to DNS records** (next lecture).
-- Health checks are **billed monthly**, so delete the ones you don't need.
-
-### 8. Exam-Style Recall
-
-| If the question says... | Think... |
-|---|---|
-| "Health check shows unhealthy, instance is running fine" | **Security group/firewall** blocking the **Route 53 health checker IPs** |
-| "Why connection timeout in a failed check?" | Traffic is **blocked** (SG, NACL, firewall) |
-| "Check that the response contains specific text" | **String matching** (first 5,120 bytes) |
-| "Check faster than every 30 seconds" | **Fast interval (10 s)**, at higher cost |
-| "Mark unhealthy only after repeated failures" | **Failure threshold** |
-| "See how latency to the endpoint changes over time" | **Enable latency measurements** (latency graph) |
-| "Temporarily stop a health check without deleting it" | **Disable** it (it is then treated as healthy) |
-| "Reverse a check's result" | **Invert health check status** |
-| "Be alerted by email when a health check fails" | Create the **alarm and SNS notification** on the health check |
-| "Parent healthy only if all children are healthy" | **Calculated health check** (AND) |
-| "Parent healthy if at least one child is healthy" | **Calculated health check** (OR) |
-| "Health check for a private EC2 instance" | **CloudWatch alarm health check** |
-| "Does creating a health check change DNS answers?" | **No.** It must be **attached to a record**. |
-
-### 9. Hands-On Checklist
-
-- [x] Route 53, **Health checks**, **Create health check**
-- [x] Create a health check for the **`us-east-1`** instance: **Endpoint**, **IP address**, port **80**, path `/`
-- [x] Review the advanced options (**interval, failure threshold, string matching, latency graph, invert, disable, regions**), keep the defaults, and skip the alarm notification
-- [x] Create the same health check for **`ap-southeast-1`** and **`eu-central-1`**
-- [x] Confirm all three show **Healthy**
-- [x] In the **Singapore instance's security group**, **delete the HTTP inbound rule**
-- [x] Wait a minute or two, then confirm `ap-southeast-1` turns **Unhealthy**
-- [x] Open it and use **View last failed check** to see the **connection timeout**
-- [x] Create a **calculated health check** over the 3 checks, set to **healthy when all are healthy**, and confirm it shows **Unhealthy**
-- [x] Open **Create health check, State of a CloudWatch alarm** to see the options (no alarm to select)
-- [x] **Next lecture:** attach the health checks to Route 53 records
+- **Not created** in the demo: no CloudWatch alarm existed in the account (create the alarm first).
+- The form asks for the **alarm's region**, the **alarm**, and what to do on **insufficient data** (healthy, unhealthy, or last known status).
 
 ---
 
@@ -2207,6 +1774,7 @@ Client --> [Route 53] --yes--> Primary record   (EC2, eu-central-1)
 
 - **Both unhealthy:** Route 53 fails open and still returns an answer (the primary, per AWS docs) rather than nothing.
 - For more than two tiers or finer control, combine failover with other policies using **Traffic Flow** or **nested records** (for example weighted or latency records, each with a failover pair).
+- Route 53 **doesn't proxy traffic** during failover. Clients just get a different IP.
 
 ### 3. Demo: Creating the Failover Records
 
@@ -2260,30 +1828,10 @@ Use **Add another record**, keeping the same name.
 
 ### 5. Failover vs Other Policies
 
-| Policy | Idea | Health checks |
-|---|---|---|
-| **Failover** | **Active-passive**: primary, with a secondary only on failure | **Required on primary** |
-| **Weighted** | Split by percentage (all records active) | Optional |
-| **Latency** | Lowest-latency region (all active) | Optional |
-| **Multi-value answer** | Up to 8 healthy records | Optional (per record) |
-| **Simple** | No logic | **Not supported** |
-
 - **Active-active** setups use weighted, latency, or multi-value with health checks.
 - **Active-passive** is the failover policy. The secondary often sits idle (or is a static **S3 website** or a smaller site) until needed.
 
-### 6. Key Facts to Remember
-
-- Failover routing = **active-passive** DR using **health checks**.
-- **One primary + one secondary.**
-- **Primary needs a health check.** Secondary's is optional.
-- Records share the **same name and type**, each has a **Record ID**, and a Failover type of **Primary** or **Secondary**.
-- Unhealthy primary means Route 53 returns the **secondary**. Recovery means it returns the **primary** again.
-- Failover happens at the **DNS answer** level and is limited by the **TTL** cache.
-- Use **Evaluate target health** for Alias records.
-- Health checks for **private resources** use a **CloudWatch alarm**.
-- Route 53 **doesn't proxy traffic** during failover. Clients just get a different IP.
-
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -2294,7 +1842,6 @@ Use **Add another record**, keeping the same name.
 | "Failover record types" | **Primary** and **Secondary** |
 | "Failover is slow even after the health check fails" | **TTL caching.** Lower the TTL. |
 | "Failover to a static S3 website when the app is down" | **Failover** with an **Alias** to the S3 website as secondary |
-| "Failover for a private resource" | **CloudWatch alarm health check** |
 | "Active-active across regions" | **Latency**, **weighted**, or **multi-value** (not failover) |
 | "Primary recovers" | Route 53 returns the **primary** again |
 | "Does Route 53 redirect the traffic itself?" | **No.** It only changes the DNS answer. |
@@ -2419,33 +1966,9 @@ All use the **same name**: `geo.<your-domain>`, **type A**, **routing policy Geo
 **The Mexico test:**
 - Mexico is **next to the US but not in the US**. It is in **North America**, and no North America record exists.
 - It falls to the **default record**. This shows that a **country record matches only that country**.
-
-### 8. Geolocation vs Latency vs Geoproximity
-
-| | **Geolocation** | **Latency** | **Geoproximity** |
-|---|---|---|---|
-| **Decided by** | The user's **location** (continent, country, state) | **Measured network latency** to AWS regions | **Geographic distance**, with an adjustable **bias** |
-| **Goal** | Rules by location (language, licensing) | Fastest response | Shift traffic between regions by distance |
-| **Default needed** | **Yes** (recommended) | No | No |
-| **Needs Traffic Flow** | No | No | Yes (in the console) |
-| **Same user, same answer?** | **Yes**, always | Can change as latency changes | Depends on bias |
-
-- **Geolocation** = "who the user is and where". **Latency** = "how fast". **Geoproximity** = "how near, adjustable". Don't mix them up on the exam.
-
-### 9. Key Facts to Remember
-
-- Geolocation routes by **user location**: **continent, country, or US state**.
-- The **most specific location wins**.
-- Always add a **default record**. Without one, unmatched users get no answer.
-- Records share the **same name and type**, with a **Record ID** each.
-- **Health checks** and **Alias** are supported.
-- It is **not** about speed. For performance use **latency routing**.
-- Location comes from the **resolver IP** (or EDNS client subnet), and it isn't perfectly accurate.
-- Typical uses: **localization**, **content restriction**, and **regional load balancing**.
 - A **country record doesn't cover its neighbors**. Mexico is not in the US record.
-- A **timeout** on a working DNS answer points to a **security group** issue.
 
-### 10. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -2459,7 +1982,6 @@ All use the **same name**: `geo.<your-domain>`, **type A**, **routing policy Geo
 | "Shift traffic toward a region using a bias" | **Geoproximity** |
 | "Smallest geolocation unit in the US" | **State** |
 | "Can geolocation records use health checks?" | **Yes** |
-| "Can a geolocation record be an Alias?" | **Yes** |
 | "What decides a user's location in Route 53?" | The **IP of the DNS resolver** (or the client subnet if EDNS is used) |
 | "DNS resolves correctly but the page times out" | **Security group** or firewall on the target |
 
@@ -2492,6 +2014,7 @@ All use the **same name**: `geo.<your-domain>`, **type A**, **routing policy Geo
 | **Negative** (decrease) | **Shrinks** | **Fewer** users and traffic |
 
 - Bias range: **-99 to +99** (Route 53 docs).
+- Supports **health checks**: an unhealthy resource is skipped (Route 53 docs).
 
 ### 2. Resource Types and Location
 
@@ -2510,6 +2033,8 @@ All use the **same name**: `geo.<your-domain>`, **type A**, **routing policy Geo
 - Traffic policies can **nest** several routing types (for example geoproximity combined with failover or weighted).
 - Traffic Flow has **extra cost**: a monthly charge per **policy record**.
 - Note: Route 53 has also added geoproximity as a **plain record routing policy** (no Traffic Flow) in the console. The lecture's exam point is still "Traffic Flow is needed to use the bias". Check the current console.
+- **Bias 0** = plain nearest-resource routing.
+- It's still **DNS-level** routing, limited by the **TTL cache**.
 
 ### 4. How the Bias Works (Lecture Diagrams)
 
@@ -2566,6 +2091,7 @@ All use the **same name**: `geo.<your-domain>`, **type A**, **routing policy Geo
 |---|---|---|---|
 | **Decided by** | **Distance** between user and resource, plus a **bias** | The user's **location** (continent, country, state) | **Measured network latency** to AWS regions |
 | **Tunable** | **Yes**, with the bias | No (fixed rules) | No |
+| **Same user, same answer?** | Depends on the bias | **Yes**, always | Can change as latency changes |
 | **Needs a default** | No | **Yes** (recommended) | No |
 | **Non-AWS endpoints** | **Yes** (lat/long) | Yes | Not directly (AWS regions only) |
 | **Requires Traffic Flow** | **Yes** (per the lecture) | No | No |
@@ -2575,23 +2101,11 @@ All use the **same name**: `geo.<your-domain>`, **type A**, **routing policy Geo
 - **Geolocation** = "by who and where, fixed".
 - **Latency** = "fastest".
 
-### 7. Key Facts to Remember
-
-- Geoproximity routes by the **geographic location of users and resources**.
-- The **bias** changes the size of a resource's geographic area: **increase to attract more, decrease to shed traffic**.
-- **Bias 0** = plain nearest-resource routing.
-- **AWS resources:** specify the **region**. **Non-AWS resources:** specify **latitude and longitude**.
-- Needs **Route 53 Traffic Flow** to use the bias (per the lecture).
-- The exam use case: **shift traffic from one region to another** by adjusting the bias.
-- Supports **health checks**: an unhealthy resource is skipped (Route 53 docs).
-- It's still **DNS-level** routing, limited by the **TTL cache**.
-
-### 8. Exam-Style Recall
+### 7. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
 | "Route based on user and resource locations, with the ability to shift traffic" | **Geoproximity** |
-| "Shift traffic from one region to another" | **Geoproximity bias** |
 | "Send more traffic to a region" | **Increase the bias** |
 | "Send less traffic to a region" | **Decrease the bias** (negative) |
 | "Bias = 0 on all resources" | Nearest resource wins |
@@ -2656,6 +2170,7 @@ Records for example.com:
 
 - CIDR blocks can be **IPv4 or IPv6**.
 - Records in the set share the **same name and type**, and each has a **Record ID**.
+- Include a **default** record for non-matching clients.
 
 ### 3. Lecture Example
 
@@ -2679,29 +2194,10 @@ Records for example.com:
 
 ### 5. IP-Based vs Other Policies
 
-| Policy | Decided by | Typical use |
-|---|---|---|
-| **IP-based** | The **client's IP range (CIDR)** you define | Known networks and ISPs, performance, cost |
-| **Geolocation** | The user's **continent, country, or state** | Localization, content restrictions |
-| **Latency** | **Measured latency** to AWS regions | Fastest response |
-| **Geoproximity** | **Distance** plus **bias** | Shifting traffic between regions |
-| **Weighted** | **Percentages** | Splits and canaries |
-| **Failover** | **Health** | Active-passive DR |
-
 - **IP-based** is the only one where **you define the client ranges** yourself.
-
-### 6. Key Facts to Remember
-
-- **IP-based routing** = route by the **client IP**, using **CIDR blocks** you define.
-- Built from a **CIDR collection**, **locations**, and **records** that reference them.
-- Use cases: **performance** and **cost reduction** when you **know the client IP ranges**.
-- Include a **default** record for non-matching clients.
-- Supports **health checks** and **Alias**.
-- Records share the **same name and type**, with a **Record ID** each.
-- Matching uses the **resolver IP** (or the client subnet with EDNS).
 - It is **DNS-level**, so answers are cached for the **TTL**.
 
-### 7. Exam-Style Recall
+### 6. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -2709,9 +2205,6 @@ Records for example.com:
 | "Route a specific ISP's customers to a specific endpoint" | **IP-based routing** |
 | "Define a list of CIDR blocks and map each to an endpoint" | **IP-based routing** (CIDR collection) |
 | "Optimize performance or reduce network cost for known client networks" | **IP-based routing** |
-| "Route by country or continent" | **Geolocation** |
-| "Route to the lowest-latency region" | **Latency** |
-| "Shift traffic by adjusting a bias" | **Geoproximity** |
 | "What catches clients that match no CIDR?" | The **default** record |
 
 ---
@@ -2824,43 +2317,24 @@ dig multi.<your-domain>
 
 **Tip:** the record is only re-added once Route 53 sees the health check as healthy again, and resolvers may still serve the 2-IP answer until the **60 s TTL** expires.
 
-### 7. Multi-Value vs Other Policies
+- **Unhealthy records are excluded** from answers.
+- **TTL caching** limits how fast clients see changes.
 
-| Policy | Idea | Health checks | Returns |
-|---|---|---|---|
-| **Multi-value answer** | Several healthy records, client picks | **Yes** | **Up to 8** values |
-| **Simple** | No logic | **No** | All values in the record |
-| **Weighted** | Percentage split | Yes | One record per query |
-| **Latency** | Lowest latency region | Yes | One record per query |
-| **Failover** | Active-passive | Yes (required on primary) | One record per query |
-| **Geolocation / Geoproximity / IP-based** | Location, distance, or client IP | Yes | One record per query |
+### 7. Multi-Value vs Other Policies
 
 - Multi-value is the only policy that **returns several healthy values** at once for client-side choice.
 
-### 8. Key Facts to Remember
-
-- **Multi-value answer** = **up to 8 healthy records** returned, and the **client chooses**.
-- **Health checks** are what make it better than simple routing with multiple values.
-- **Not a replacement for an ELB.** It is client-side balancing.
-- Each record holds **one value**, with the **same name and type** and a **Record ID**.
-- **Unhealthy records are excluded** from answers.
-- **TTL caching** limits how fast clients see changes.
-- **Invert health check status** is a quick way to **simulate** an unhealthy endpoint in a demo.
-- This is the **last routing policy** covered in the section (alongside simple, weighted, latency, failover, geolocation, geoproximity, and IP-based).
-
-### 9. Exam-Style Recall
+### 8. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
 | "Return multiple healthy IPs and let the client choose" | **Multi-value answer** |
 | "Maximum records returned in a multi-value answer" | **8** |
 | "Client-side load balancing with health checks" | **Multi-value answer** |
-| "Is multi-value a replacement for an ELB?" | **No** |
 | "Simple routing returned an unhealthy IP" | Use **multi-value answer** with health checks |
 | "Which policy returns several values but filters out unhealthy ones?" | **Multi-value answer** |
 | "Quickly simulate an unhealthy health check" | **Invert health check status** |
 | "Can a multi-value record be an Alias?" | **No** |
-| "Does Route 53 route the traffic?" | **No.** It only returns DNS answers. |
 
 ---
 
@@ -2933,20 +2407,10 @@ dig multi.<your-domain>
 - The NS and SOA records created in the hosted zone are **required**. Don't delete them.
 - **DNSSEC, domain lock, and WHOIS privacy** are handled at the **registrar**, while record settings stay in **Route 53**.
 - A hosted zone costs **$0.50 per month** regardless of where the domain is registered.
-
-### 5. Key Facts to Remember
-
 - **Registrar ≠ DNS service.** A registrar looks similar but is a **different function**, even though most registrars include DNS features.
-- You can **register anywhere** and **host DNS in Route 53**.
-- To use Route 53 DNS for a third-party domain:
-  1. Create a **public hosted zone**.
-  2. Update the **NS (name server) records at the registrar** to the **4 Route 53 name servers**.
-- The **NS values at the registrar** decide who is authoritative for the domain.
 - You can't use a **private hosted zone** for this. It only answers inside your VPCs.
-- Route 53 is the **source of truth** for the records once the delegation is in place.
-- Domain registration is billed **yearly**, and the hosted zone **monthly**.
 
-### 6. Exam-Style Recall
+### 5. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
@@ -2954,8 +2418,6 @@ dig multi.<your-domain>
 | "Which Route 53 resource do you create for a third-party domain?" | A **public hosted zone** |
 | "What do you enter at the third-party registrar?" | The **4 Route 53 name servers** (NS values) |
 | "Where does a domain's authoritative DNS get decided?" | The **NS records / name servers set at the registrar** |
-| "Do you have to register the domain with AWS to use Route 53?" | **No** |
 | "Difference between a registrar and a DNS service" | Registrar = **owns/sells the domain**. DNS service = **hosts the records**. |
 | "Domain registered in Route 53, DNS hosted elsewhere" | **Change the domain's name servers** in Route 53 |
 | "Which hosted zone type for internet-facing records?" | **Public** |
-

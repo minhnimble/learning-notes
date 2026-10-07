@@ -146,17 +146,7 @@ Edge locations / Points of Presence         content delivery and DNS, outside th
 - Resources are Region-specific, and availability, quotas, and pricing differ by Region. Using one Region for the whole course keeps every demo consistent and easy to find.
 - Verify a service's availability in your Region on the **AWS Global Infrastructure** Regional Services page if a demo doesn't work as expected.
 
-### 5. Hands-On Checklist
-
-- [x] Open the console and find the **Region selector**
-- [x] Switch Regions and observe how the visible resources change
-- [x] Review **recently visited**, **AWS Health**, and cost widgets on the home page
-- [x] Search for a service (for example **Route 53**) with the search bar
-- [x] Browse the **Services** menu by category
-- [x] Notice which services are **global** (no Region choice) and which are **Region-scoped**
-- [x] Choose a Region to use throughout the course
-
-### 6. Exam-Style Recall
+### 5. Exam-Style Recall
 
 | If the question says... | Think... |
 |---|---|
