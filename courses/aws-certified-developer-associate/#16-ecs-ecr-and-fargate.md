@@ -45,7 +45,7 @@ Server (for example an EC2 instance)
 | **Amazon ECR** (Elastic Container Registry) | **Private** | **AWS-managed** registry. Access is controlled with **IAM**, and it integrates with **ECS and EKS**. |
 | **Amazon ECR Public Gallery** | **Public** | The **public** repository option within ECR |
 
-- **Amazon ECR** supports Docker images and **OCI** images, **image scanning**, **lifecycle policies**, and **cross-Region and cross-account replication**.
+- ECR features and how ECS pulls from it are covered in **Amazon ECR**.
 
 ### 4. Docker vs Virtual Machines
 
@@ -405,3 +405,603 @@ Scaling **tasks** doesn't add **instances**. If the cluster runs out of CPU or R
 | "Task count scaling vs instance scaling (EC2 launch type)" | They are **different**: you must also scale the **EC2 instances** |
 | "Simplest ECS auto scaling, no instances to scale" | **Fargate** |
 | "Scale EC2 instances when ECS lacks capacity to place tasks" | **ECS cluster capacity provider** with managed scaling (not plain ASG scaling) |
+
+---
+
+## Amazon ECS - Rolling Updates
+
+### TL;DR
+
+- A **rolling update** replaces an ECS service's tasks with a new task definition revision (v1 to v2), a few at a time. Two settings control the pace: **minimum healthy percent** and **maximum percent**.
+- **Defaults: minimum healthy percent 100, maximum percent 200.**
+- **Minimum healthy percent** = the **lowest** number of running, healthy tasks allowed during the update (as a % of the desired count). Below 100 means old tasks can be **stopped first**.
+- **Maximum percent** = the **highest** number of tasks allowed during the update. Above 100 means new tasks can be **started first**.
+- The lecture warns this may appear in **only one exam question**, so know the two worked examples below.
+
+### 1. The Two Settings
+
+The desired task count is **100%**.
+
+| Setting | Meaning | Effect on the update |
+|---|---|---|
+| **Minimum healthy percent** (default **100**) | **Lower limit** of running and healthy tasks, as % of desired. Rounded **up**. | **Below 100**: ECS may **stop old tasks** before starting new ones. **At 100**: it can't stop anything until new tasks are healthy. |
+| **Maximum percent** (default **200**) | **Upper limit** of tasks (old plus new), as % of desired. Rounded **down**. | **Above 100**: ECS may **start new tasks** before stopping old ones. **At 100**: it must stop old tasks first. |
+
+- Set them so ECS can **stop or start at least one task**, or the deployment gets **stuck** (ECS sends a service event saying it was unable to stop or start tasks).
+- The default pair (100 / 200) starts the new tasks **first**, then stops the old ones: no capacity loss, but it needs room for **up to double** the tasks (on the EC2 launch type, enough spare instance capacity).
+
+### 2. Worked Examples (4 Tasks)
+
+**Example A: minimum 50%, maximum 100%** (stop first, never exceed 4 tasks)
+
+| Step | Old tasks | New tasks | Total / capacity |
+|---|---|---|---|
+| Start | 4 | 0 | 4 (100%) |
+| 1. Stop 2 old (down to the minimum) | 2 | 0 | 2 (**50%**) |
+| 2. Start 2 new | 2 | 2 | 4 (100%) |
+| 3. Stop 2 old | 0 | 2 | 2 (**50%**) |
+| 4. Start 2 new | 0 | 4 | 4 (100%) |
+
+**Example B: minimum 100%, maximum 150%** (start first, never drop below 4)
+
+| Step | Old tasks | New tasks | Total / capacity |
+|---|---|---|---|
+| Start | 4 | 0 | 4 (100%) |
+| 1. Start 2 new (up to the maximum) | 4 | 2 | 6 (**150%**) |
+| 2. Stop 2 old | 2 | 2 | 4 (100%) |
+| 3. Start 2 new | 2 | 4 | 6 (**150%**) |
+| 4. Stop 2 old | 0 | 4 | 4 (100%) |
+
+- Example A **trades capacity for speed and cost** (it dips to 50%, no extra tasks needed). Example B **keeps full capacity** but needs **extra room**.
+- The lecture's opening line for Example A says "lose four tasks", it means **two**.
+
+### 3. Detecting a Failed Rolling Update
+
+| Method | Use it when | Notes |
+|---|---|---|
+| **Deployment circuit breaker** | Tasks **can't start** | Stops the failing deployment and can **roll back** to the previous revision |
+| **CloudWatch alarms** | You want to stop based on **application metrics** | Can also **roll back** |
+
+- You can use both. The deployment is marked failed when **either** criterion is met.
+- If an unhealthy task appears mid-deployment, ECS **replaces it** to hold the minimum healthy percent.
+
+### 4. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Update an ECS service from v1 to v2 gradually" | **Rolling update** (new task definition revision) |
+| "Settings that control a rolling update" | **Minimum healthy percent** and **maximum percent** |
+| "Default minimum healthy and maximum percent" | **100** and **200** |
+| "Replace tasks without ever dropping below full capacity" | Minimum healthy **100%**, maximum **above 100%** (for example 150%) |
+| "Update with no spare capacity, accept running fewer tasks" | Minimum healthy **below 100%** (for example 50%), maximum **100%** |
+| "Rolling update is stuck, no tasks start or stop" | The min and max settings **don't let ECS stop or start a task**. Adjust them. |
+| "Automatically roll back a failed ECS deployment" | **Deployment circuit breaker** (or CloudWatch alarms) with rollback |
+
+---
+
+## Amazon ECS - Solutions Architectures
+
+### TL;DR
+
+- **EventBridge + ECS (event-driven):** an S3 upload event triggers an EventBridge rule that **runs a Fargate task**. The task (with an **ECS task role**) processes the object and writes to **DynamoDB**. Fully **serverless**.
+- **EventBridge schedule + ECS (batch):** a **scheduled rule** (for example every hour) runs a Fargate task for **batch processing**.
+- **SQS + ECS (queue workers):** a service's tasks **poll an SQS queue**. **Service Auto Scaling** adds tasks as the queue grows.
+- **ECS events to EventBridge:** ECS publishes **task and service state changes** (for example a task **stopped**). A rule can alert an **SNS topic** to email admins.
+
+### 1. S3 Event Triggers an ECS Task
+
+```
+User --upload--> S3 bucket --event--> EventBridge rule --run task--> ECS task on Fargate
+                                                                      (ECS task role)
+                                                                       | get object from S3
+                                                                       | process it
+                                                                       +--> DynamoDB (results)
+```
+
+| Piece | Detail |
+|---|---|
+| **S3 to EventBridge** | **Enable EventBridge notifications** on the bucket. S3 then sends events such as **Object Created**, and the rule filters them. |
+| **Rule target** | The rule **runs an ECS task** on the **Fargate** cluster. It needs an **IAM role** that lets EventBridge run the task. |
+| **ECS task role** | Lets the container **read from S3** and **write to DynamoDB** |
+| **Result** | A **serverless** way to process images or objects with a **Docker container** |
+
+### 2. Scheduled ECS Task
+
+```
+EventBridge schedule (every 1 hour) --run task--> ECS task on Fargate (task role: S3 access)
+                                                   batch-processes files in S3
+```
+
+- A **new task** starts on each trigger and exits when done. Nothing runs between runs, so it is **fully serverless** and you pay only while the task runs.
+- Use **EventBridge Scheduler** (the newer, more scalable scheduler, with **rate**, **cron**, and **one-time** schedules in any time zone) or a scheduled rule.
+
+### 3. SQS Queue with an ECS Service
+
+```
+Producers --> SQS queue <--poll-- ECS service (tasks = workers)
+                                    ^
+              Service Auto Scaling: more messages in the queue --> more tasks
+```
+
+- The service's tasks **pull messages from the queue** and process them.
+- **Scale the service on the queue**: the docs recommend scaling on **backlog per task** (queue depth divided by running tasks, computed with CloudWatch **metric math**), which needs **Container Insights** for the running-task count. Scaling on raw queue depth can over-scale.
+- Messages a stopped task didn't finish **return to the queue** (mind the **visibility timeout**), and **task scale-in protection** keeps a busy task from being stopped.
+
+### 4. Reacting to ECS Events
+
+```
+ECS cluster --task state change (for example STOPPED, with a stopped reason)--> EventBridge rule --> SNS topic --> email to admins
+```
+
+- ECS sends **task state change**, **service action**, **deployment state change**, and **container instance state change** events to EventBridge.
+- A rule can match, for example, **tasks that stopped** (the event carries the **stopped reason**) and notify **SNS**, Lambda, and so on.
+- EventBridge gives you visibility into the **lifecycle of your containers**.
+
+### 5. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Process S3 uploads with a container, serverless" | S3, **EventBridge**, **ECS task on Fargate** with a **task role**, then DynamoDB |
+| "Run a container every hour" | **EventBridge schedule** (Scheduler or a scheduled rule) that runs a **Fargate task** |
+| "Containers that consume messages from a queue and scale with the queue" | **ECS service** polling **SQS**, with **Service Auto Scaling** |
+| "Notify admins when an ECS task stops" | **ECS task state change event**, **EventBridge** rule, **SNS** |
+| "How does the container access S3 and DynamoDB?" | **ECS task role** |
+| "S3 object created should start an ECS task" | **Enable EventBridge** notifications on the bucket, then an **EventBridge rule** with an ECS task target |
+
+---
+
+## Amazon ECS Task Definitions - Deep Dive
+
+### TL;DR
+
+- A **task definition** is **JSON** (the console has a UI that builds it) that tells ECS **how to run one or more Docker containers**. You can define **up to 10 containers** per task definition.
+- Key contents: **image name**, **container port** (and **host port** on EC2), **CPU and memory**, **environment variables**, **networking**, the **IAM task role**, and **logging** (for example CloudWatch).
+- **EC2 launch type + ALB:** leave the host port unset (**0**) for **dynamic host port mapping**. The ALB finds the random ports itself (not the Classic Load Balancer), so the instance security group must allow **all ports from the ALB's security group**.
+- **Fargate:** each task gets its own **ENI and private IP**, so only the **container port** matters, and the ALB hits **port 80** on every task.
+- The **IAM task role is set in the task definition**, not on the service. Every task of that definition inherits it.
+- **Environment variables:** hard-coded, **secrets from SSM Parameter Store or Secrets Manager** (resolved at launch), or **bulk from a file in S3**.
+- **Sharing data between containers** (sidecars): use a **bind mount** volume. On EC2 it lives on the **instance's storage**, on Fargate it is **ephemeral task storage** (20 to 200 GiB).
+
+### 1. What a Task Definition Contains
+
+| Setting | Detail |
+|---|---|
+| **Image name** | The container image (for example from **Docker Hub** or **ECR**) |
+| **Port mappings** | **Container port**, plus **host port** on EC2 |
+| **CPU and memory** | Required resources |
+| **Environment variables** | Plain values, secrets, or a file from S3 |
+| **Networking** | Network mode (Fargate uses **`awsvpc`**) |
+| **IAM role** | The **task role** (and the **execution role**) |
+| **Logging** | For example **CloudWatch Logs** |
+| **Volumes** | Shared storage between the task's containers |
+
+- The same task definition can hold **several containers**: your application plus **sidecars** (logging, metrics, tracing). **Limit: 10 containers per task definition**.
+
+### 2. Port Mappings on the EC2 Launch Type
+
+```
+Internet --> EC2 instance port 8080 (host port) --> container port 80 (Apache HTTP server)
+```
+
+| Setting | Meaning |
+|---|---|
+| **Container port** | The port the **app listens on inside the container** (for example 80) |
+| **Host port** | The port on the **EC2 instance** that maps to it (for example 8080). It **doesn't have to equal the container port**. **Not relevant on Fargate.** |
+
+**Dynamic host port mapping** (EC2 launch type with a load balancer):
+
+```
+Task definition: container port 80, host port 0 (not set)
+EC2 instance:  task 1 --> host port 32768, task 2 --> host port 32769, task 3 --> host port 32770 ...
+ALB (linked to the ECS service) discovers each task's random port and registers it in the target group
+```
+
+| Point | Detail |
+|---|---|
+| **How** | Define **only the container port** (host port **0** or unset). The host port becomes **random**, so **several tasks of one service fit on one instance**. |
+| **Who handles the random ports** | The **ALB**, because it is linked to the ECS service. It works with the **ALB only** (not the Classic Load Balancer, the older generation). |
+| **Security group** | The **EC2 instance's security group must allow any port from the ALB's security group**, because the host ports are unknown in advance |
+| **Network mode** | This is **bridge** mode on EC2 (dynamic host ports are **not** possible in `awsvpc` mode) |
+
+### 3. Port Mappings on Fargate
+
+```
+Internet --(80/443)--> ALB --(80)--> task 1 (ENI, private IP A)
+                                  --> task 2 (ENI, private IP B)   same container port on every task
+                                  --> task 3 (ENI, private IP C)
+```
+
+| Point | Detail |
+|---|---|
+| **No host** | There is no EC2 host, so you define **only the container port** |
+| **Networking** | Each task gets its **own ENI and private IP** (`awsvpc` mode, the only mode on Fargate) |
+| **ALB** | Connects to **every task on the same port** (for example 80) |
+| **Security groups** | The **task (ENI) security group allows port 80 from the ALB's security group**. The **ALB's security group allows 80 or 443 from the internet**. |
+
+### 4. IAM Roles: Defined in the Task Definition
+
+```
+Task definition A --(task role A: S3)-->        all tasks of service A can call S3
+Task definition B --(task role B: DynamoDB)-->  all tasks of service B can call DynamoDB
+```
+
+- The **task role** is assigned **per task definition**, **not per service**. Every task launched from it **assumes the role automatically**.
+- Different task definitions can have **different roles** (least privilege).
+- Exam question: "Where do you define the IAM role for an ECS task?" The answer is the **task definition**.
+- Don't confuse it with the **task execution role** (ECS pulling images, writing logs, reading secrets) or the **EC2 instance profile** (see **Amazon ECS**).
+
+### 5. Environment Variables
+
+| Source | Use for | Detail |
+|---|---|---|
+| **Hard-coded** (`environment`) | **Non-secret fixed values** such as a plain URL | Set directly in the task definition |
+| **SSM Parameter Store** or **Secrets Manager** (`secrets`) | **Sensitive values**: API keys, shared config, database passwords | The task definition **references** them. They are **fetched and resolved at launch** and **injected as environment variables**. Needs the **task execution role**. |
+| **Bulk file from S3** (`environmentFiles`) | Loading many variables at once | A **`.env`** file in S3 (UTF-8, **up to 10 files** per task definition). The **task execution role** needs S3 read access. |
+
+- If a variable is in both `environment` and a file, the **`environment` value wins**.
+- AWS recommends **Secrets Manager or Parameter Store** for sensitive data (S3 env files are ordinary S3 objects).
+
+### 6. Sharing Data Between Containers in a Task
+
+- A task can run **several containers**. **Sidecars** (also called side cars) help with **logging, metrics, and tracing**, and often need to **read what the app writes**.
+- Mount a **data volume** (a **bind mount**) into **both** containers. It works on **EC2 and Fargate**.
+
+```
+Task
+  app container(s)  --write--> /var/logs (shared bind mount)
+  sidecar container (metrics and logs) --read--> /var/logs
+```
+
+| Launch type | Where the bind mount lives | Lifecycle |
+|---|---|---|
+| **EC2** | The **EC2 instance's storage** | Tied to the **EC2 instance** |
+| **Fargate** | **Ephemeral task storage**. Default **20 GiB**, up to **200 GiB** (the lecture's 20 to 200 GB). | Tied to the **task**: when the task goes away, the storage goes too |
+
+- Bind mounts are **ephemeral**. For **persistent, shared** data across tasks, use **EFS**.
+- **Exam use case:** share data between containers, especially a **sidecar that ships metrics or logs** to another destination.
+
+### 7. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Maximum containers in one task definition" | **10** |
+| "Multiple tasks of one service on the same EC2 instance behind an ALB" | **Dynamic host port mapping** (host port **0**), bridge mode, **ALB** |
+| "Dynamic port mapping with a Classic Load Balancer" | **Not supported**. Use the **ALB**. |
+| "EC2 security group for dynamic host ports" | Allow **all ports** from the **ALB's security group** |
+| "Fargate task networking" | **`awsvpc`**: one **ENI and private IP** per task, only the **container port** is defined |
+| "Where is the IAM role for an ECS task defined?" | The **task definition** (the **task role**) |
+| "Store DB passwords for an ECS container" | **Secrets Manager** or **SSM Parameter Store**, referenced in the task definition |
+| "Load many environment variables from a file" | A **`.env` file in S3** (`environmentFiles`) |
+| "Share files between an app container and a logging sidecar" | A **bind mount** volume in the task |
+| "Fargate bind mount storage" | **Ephemeral storage**, lives and dies with the **task** |
+| "Persistent data shared across tasks and AZs" | **EFS** |
+
+---
+
+## Amazon ECS Task Definitions - Hands On
+
+Console tour of **Task definitions**, **Create new task definition**. Concepts (roles, ports, env vars, bind mounts) are in the previous lectures.
+
+### 1. Task Definition and Infrastructure
+
+| Setting | Demo value / options | Notes |
+|---|---|---|
+| **Family** | `wordpress` | |
+| **Infrastructure** | **AWS Fargate**, **Amazon EC2 instances**, or **both** | |
+| **CPU and memory** | **Fargate:** pick from **compatible CPU/memory combinations**. **EC2:** enter **any value**. | |
+| **Network mode** | **Fargate:** must be **`awsvpc`**. **EC2 only:** more options (bridge, host, and so on). | |
+| **Task role** | An IAM role for your containers' **AWS API calls** (the role the application uses) | Heavily tested |
+| **Task execution role** | An IAM role for the **container agent** to make AWS API requests **on your behalf** (pull images, logs) | The standard ECS role |
+
+### 2. Containers
+
+**Container 1:**
+
+| Setting | Demo value | Notes |
+|---|---|---|
+| **Name** | `wordpress` | |
+| **Image URI** | `wordpress` | A public image by default |
+| **Essential container** | **Yes** | At least **one** essential container is required. A task may have as many containers as needed. |
+| **Private registry authentication** | The **Secrets Manager ARN** of a secret holding the registry credentials | Pull images from a **private repository** instead of a public one |
+
+- Choose **Add container** to add more (the demo showed **Container 2**).
+- **Essential:** if an essential container fails or is killed, **the whole task stops**. A non-essential container can stop while the **task keeps running**. (An omitted setting means essential.)
+
+**Container settings:**
+
+| Section | What you can set |
+|---|---|
+| **Port mappings** | **Container port**, **protocol**, **port name**, and **app protocol** (**HTTP, HTTP2, gRPC**, or none), as many mappings as the app needs. The app protocol applies to **Service Connect**. |
+| **Resource allocation limits** | Container-level **vCPU** and **memory**, with **hard and soft limits** (useful when several containers share a task) |
+| **Environment variables** | **Key + value** (for example `FOO=BAR`), or **value from** the **ARN** of a **Secrets Manager** secret (for example `SECRET_DB_PASSWORD`) or an **SSM Parameter Store** parameter. Or **add from a file** hosted in **S3**. |
+| **Logging** | **Log collection**: natively to **CloudWatch** (set the **log group**, **region**, **stream prefix**, and **create group** option), or through **AWS FireLens** to **Splunk, Firehose, Kinesis, OpenSearch, S3**. Extra log configuration values can be added. |
+| **HealthCheck** | A container-level health command to confirm the container is still healthy |
+| **Timeouts** | **Start timeout** and **stop timeout** (see below) |
+| **Docker configuration, labels, resource limits** | Available, less important |
+
+- **Stop timeout:** how long ECS waits for the container to exit **before it is force-killed** (default **30 s**, maximum **120 s**).
+- **Start timeout:** how long to wait for a container to reach its **dependency condition** before giving up on **containers that depend on it**. (The lecture describes it as killing a container that doesn't start fast enough.)
+
+### 3. Storage
+
+- Add **volumes**: **bind mount** (give it a **volume name**) or **EFS**, as many as needed.
+- In each container, add a **mount point**: the **path** to mount the volume on, and the **volume (or another container's volume) it comes from**.
+- So data can be mounted from **EFS or a file system onto containers**, and **shared between containers**.
+
+### 4. Monitoring
+
+| Option | What it does |
+|---|---|
+| **Trace collection** | Sends traces to **AWS X-Ray** through a **sidecar**, the **AWS Distro for OpenTelemetry (ADOT)**. CPU and memory are **adjusted automatically** to fit the sidecar. |
+| **Metric collection** | Sends metrics to **CloudWatch** or **Amazon Managed Service for Prometheus**, using different libraries |
+
+### 5. Creating and Reviewing
+
+1. Choose **Create**.
+2. Review the settings in the **JSON** view of the task definition.
+3. To change anything, **create a new revision** and edit the settings one by one (task definitions are **versioned by revision**, not edited in place).
+
+---
+
+## Amazon ECS - Task Placements
+
+### TL;DR
+
+- **Task placement** decides **which EC2 instance a new task goes on**, and **which task to stop** when a service scales in. It applies to the **EC2 launch type**. **Fargate** has no placement strategies or constraints (AWS places the tasks).
+- **Strategies** (best effort): **binpack** (fill instances, **cost saving**), **random**, and **spread** (spread by AZ or instance ID, **high availability**). You can **mix** them.
+- **Constraints** (binding): **distinctInstance** (one task per instance) and **memberOf** (only instances matching a **cluster query language** expression).
+- Process: find instances with enough **CPU, memory, and ports**, apply **constraints**, then pick by **strategy**.
+- Exam focus: the difference between **binpack, spread, and random**.
+
+### 1. The Placement Process
+
+```
+New task (EC2 launch type)
+  1. Instances with enough CPU, memory, and ports for the task definition
+  2. ... that satisfy the placement CONSTRAINTS
+  3. ... best matching the placement STRATEGY
+  4. Place the task there
+```
+
+| | **Strategy** | **Constraint** |
+|---|---|---|
+| **Nature** | **Best effort**: ECS still places the task if the ideal spot isn't available | **Binding**: if no instance matches, the task stays **`PENDING`** |
+| **Used for** | Placing tasks **and choosing which to terminate** on scale-in | Restricting where tasks may run |
+
+- You set them in the **service definition** (or when running a task, via `placementStrategy` / `placementConstraints`).
+- The **default** for a **service** is **spread by Availability Zone**.
+
+### 2. Placement Strategies
+
+| Strategy | Behavior | Goal |
+|---|---|---|
+| **binpack** | Place tasks so the **least CPU or memory is left unused**. Fills one instance **before** using the next. Field: **`cpu`** or **`memory`**. | **Minimize the number of instances** = **lowest cost** |
+| **random** | Place tasks **randomly** | Simple, no logic |
+| **spread** | Spread tasks **evenly by a field**: `attribute:ecs.availability-zone`, `instanceId`, or another attribute | **High availability** (tasks across AZs or instances) |
+
+```
+binpack on memory:   [ task task task task ] [ task ] [        ]    fills instance 1, then 2, ...
+spread on AZ:        AZ-A [task]   AZ-B [task]   AZ-C [task]   then repeats
+```
+
+- **Scale-in behavior:** with **binpack**, ECS ends the task on the instance that would have the **most resources left** afterward. With **spread**, it keeps a **balance across AZs** (random within an AZ).
+- **Mix strategies in order**: for example **spread on AZ**, then **binpack on memory** within each AZ (the first strategy takes priority). Another example: spread on AZ, then spread on instance ID. The exam tests only the basics.
+
+### 3. Placement Constraints
+
+| Constraint | Behavior |
+|---|---|
+| **distinctInstance** | Each task goes on a **different container instance**. You never get two tasks of the service on one instance. |
+| **memberOf** | Place tasks only on instances that satisfy an **expression** in the **cluster query language**. |
+
+- Example `memberOf` expression: `attribute:ecs.instance-type =~ t2.*` (**only t2 instances**).
+- Built-in attributes include **instance type**, **Availability Zone**, **AMI ID**, **OS type**, and **CPU architecture**. You can add **custom attributes** too (for example `stack = prod`).
+
+### 4. Where It Applies
+
+| Capacity | Strategies | Constraints |
+|---|---|---|
+| **EC2 launch type** | Yes | Yes |
+| **ECS Managed Instances** | **No** (ECS spreads across AZs on a best-effort basis) | Yes |
+| **Fargate** | **No** (AWS finds the spot and spreads across AZs) | **No** |
+
+### 5. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Place ECS tasks on specific instances or control which task is terminated" | **Task placement strategies and constraints** (EC2 launch type) |
+| "Minimize cost / number of EC2 instances in the cluster" | **binpack** (on CPU or memory) |
+| "Maximize availability across AZs" | **spread** on `attribute:ecs.availability-zone` |
+| "No placement logic needed" | **random** |
+| "Never put two tasks of a service on the same instance" | **distinctInstance** constraint |
+| "Run tasks only on t2 instances" | **memberOf** with a cluster query expression |
+| "Placement strategies with Fargate" | **Not supported**. AWS manages placement. |
+| "Strategy vs constraint" | Strategies are **best effort**. Constraints are **binding**. |
+| "Default placement strategy for a service" | **Spread across Availability Zones** |
+
+---
+
+## Amazon ECR
+
+### TL;DR
+
+- **Amazon ECR (Elastic Container Registry)** stores and manages **Docker images** on AWS. Whenever the exam says **storing Docker images**, think **ECR**.
+- Two kinds: a **private** repository (your account or accounts) and a **public** repository on the [Amazon ECR Public Gallery](https://gallery.ecr.aws).
+- **Fully integrated with ECS.** Images are stored behind the scenes in **Amazon S3**.
+- **All access is protected by IAM.** ECS needs the right IAM role to pull images, and permission errors mean you should check the policies.
+- ECR also provides **image vulnerability scanning**, **versioning and image tags**, and **image lifecycle** management.
+
+### 1. Private vs Public Repositories
+
+| | **Private repository** | **Public repository** |
+|---|---|---|
+| **Visible to** | Your **account(s)** only (access via IAM and repository policies) | Anyone: published on the [Amazon ECR Public Gallery](https://gallery.ecr.aws) |
+| **Use for** | Your own application images | Sharing images publicly |
+| **Alternative** | | **Docker Hub** (also public) |
+
+- Image references use the **full name**: `<account-id>.dkr.ecr.<region>.amazonaws.com/<repository>:<tag>`.
+
+### 2. How ECS Pulls Images from ECR
+
+```
+ECR repository (images stored in S3 behind the scenes)
+        ^  pull (IAM-authorized)
+        |
+ECS cluster: EC2 instance / Fargate task  --> starts the container after the pull
+```
+
+| Launch type | The pull is authorized by | AWS managed policy |
+|---|---|---|
+| **EC2** | The **EC2 instance (container instance) role** | `AmazonEC2ContainerServiceforEC2Role` |
+| **Fargate** | The **task execution role** | `AmazonECSTaskExecutionRolePolicy` |
+
+- Minimum permissions to pull: **`ecr:GetAuthorizationToken`**, **`ecr:BatchGetImage`**, **`ecr:GetDownloadUrlForLayer`**.
+- The lecture shows only the EC2 case (an IAM role on the instance). On **Fargate** it is the **task execution role**.
+
+### 3. ECR Features
+
+| Feature | Detail |
+|---|---|
+| **Image scanning** | **Basic**: OS vulnerabilities, **on push** or manual. **Enhanced**: **Amazon Inspector**, OS and language packages, **continuous**. |
+| **Versioning and tags** | Multiple image versions per repository, identified by **tags** |
+| **Lifecycle policies** | Rules that **clean up unused images** automatically |
+| **Replication** | **Cross-Region and cross-account** replication |
+| **Formats** | **Docker** and **OCI** images and artifacts |
+
+### 4. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Store and manage Docker images on AWS" | **Amazon ECR** |
+| "Private Docker registry integrated with ECS" | **Amazon ECR** (private repository) |
+| "Publish container images publicly on AWS" | **ECR Public Gallery** |
+| "Scan container images for vulnerabilities" | **ECR image scanning** (basic or Inspector-based enhanced) |
+| "EC2 instance can't pull images from ECR" | The **instance role** lacks the **ECR permissions** (IAM) |
+| "Fargate task can't pull from private ECR" | The **task execution role** lacks the ECR permissions |
+| "Automatically delete old images" | **ECR lifecycle policy** |
+
+---
+
+## Amazon ECR - Hands On
+
+Goal: host the `nginxdemos/hello` image (until now pulled by ECS from **Docker Hub**) in a **private ECR repository**, using the CLI.
+
+### 1. Creating the Private Repository
+
+ECR console, **Create repository** (**Private**), name `demostephane`. Options (all left **disabled**):
+
+| Option | Meaning |
+|---|---|
+| **Tag immutability** | Prevents pushing the **same tag twice** (the push fails with `ImageTagAlreadyExistsException`) |
+| **Scan on push** | Scans each pushed image for vulnerabilities. The lecture says this repository-level setting is being phased out in favor of **registry-level scan settings** (**Amazon Inspector** enhanced scanning, or basic scanning with filters). The docs call registry-level the best practice. |
+| **Encryption (KMS)** | Encrypt the repository with **KMS**. **Can't be changed** after creation. |
+
+- **Private repositories** are pullable only with the right **IAM permissions**. **Public repositories** let **anyone** pull.
+- The new repository shows **0 images**. The **View push commands** button gives the commands for **macOS/Linux** or **Windows**.
+
+### 2. Prerequisites
+
+- **Docker** installed and **running** (`docker version` works).
+- **AWS CLI** installed and configured. The IAM principal needs **`ecr:GetAuthorizationToken`**, plus push or pull permissions on the repository. Without them, push and pull fail with an **IAM permission error**.
+
+### 3. Authenticate, Pull, Tag, and Push
+
+```
+# 1. Log in: the AWS CLI prints an ECR password, docker login uses it with the username AWS
+aws ecr get-login-password --region <region> \
+  | docker login --username AWS --password-stdin <account-id>.dkr.ecr.<region>.amazonaws.com
+# -> Login Succeeded
+
+# 2. Get an image (nothing of our own to build, so pull a public one)
+docker pull nginxdemos/hello
+
+# 3. Tag it with the ECR repository URI (this is how docker knows where to push)
+docker tag nginxdemos/hello:latest <account-id>.dkr.ecr.<region>.amazonaws.com/demostephane:latest
+
+# 4. Push
+docker push <account-id>.dkr.ecr.<region>.amazonaws.com/demostephane:latest
+```
+
+| Step | Detail |
+|---|---|
+| **`get-login-password`** | Returns a **temporary password** (token). Piped into `docker login` with the username **`AWS`**. Repeat per registry. |
+| **`docker tag`** | **Renames** the local image so its name includes the **ECR registry, repository, and tag** |
+| **`docker push`** | Docker sees the ECR address in the name and pushes **to ECR**. It works because the login was valid, otherwise you get an **IAM permission error**. |
+| **Pull from ECR** | `docker pull <account-id>.dkr.ecr.<region>.amazonaws.com/demostephane:latest` (same login and same permissions) |
+
+### 4. Result
+
+- Refresh the repository: it now shows the **`latest`** image, and you can open it for details.
+- A **task definition** can now use this ECR image URI instead of the Docker Hub image, so ECS would **pull from ECR**.
+
+---
+
+## Amazon EKS
+
+### TL;DR
+
+- **Amazon EKS (Elastic Kubernetes Service)** launches and manages **Kubernetes** clusters on AWS. **Kubernetes** is an **open-source**, **cloud-agnostic** system for automated deployment, scaling, and management of containerized apps.
+- EKS is the **alternative to ECS**: same goal (run containers), **different API**. ECS is **AWS-specific**, Kubernetes is **open source** and runs on any cloud (Azure, Google Cloud, on premises).
+- **Use EKS when** the company already runs Kubernetes (on premises or another cloud), wants the **Kubernetes API**, or wants **easier migration between clouds**.
+- In EKS the unit of work is a **Pod** (like an ECS task). Pods run on **nodes**. The keyword **pods** means Kubernetes/EKS.
+- Node types: **managed node groups**, **self-managed nodes**, and **Fargate** (no nodes at all). Newer: **EKS Auto Mode**.
+- Storage uses a **StorageClass** and a **CSI driver**: **EBS, EFS, FSx for Lustre, FSx for NetApp ONTAP**. **EFS** is the one that works with **Fargate**.
+
+### 1. ECS vs EKS
+
+| | **Amazon ECS** | **Amazon EKS** |
+|---|---|---|
+| **Based on** | **AWS's own** container orchestration | **Kubernetes** (open source) |
+| **Portability** | AWS only | **Cloud agnostic**: the same Kubernetes API on any cloud |
+| **Unit of work** | **Task** | **Pod** |
+| **Compute** | EC2 or Fargate | EC2 (managed or self-managed nodes) or Fargate |
+| **Choose when** | You want the simplest AWS-native option | You already use **Kubernetes**, want its API, or may **migrate between clouds** |
+
+- EKS runs **certified Kubernetes-conformant** clusters, so Kubernetes apps and tooling work without refactoring. AWS manages the **control plane**.
+
+### 2. Architecture
+
+```
+VPC (3 AZs, public and private subnets)
+  EKS worker nodes (EC2 instances, in an Auto Scaling group)
+     each node runs EKS Pods  (like ECS tasks)
+  Expose a Kubernetes service through a private or a public load balancer
+```
+
+### 3. Node Types
+
+| Option | Who manages the nodes | Details |
+|---|---|---|
+| **Managed node groups** | **AWS** creates and manages the nodes (EC2 instances) | Nodes belong to an **Auto Scaling group** managed by EKS. **On-Demand and Spot** supported. |
+| **Self-managed nodes** | **You** | **Most customization and control**. You create the nodes and **register** them to the cluster, in your own ASG. Use the prebuilt **EKS-optimized AMI** or build your own (harder). **On-Demand and Spot**. |
+| **AWS Fargate** | **No nodes to manage** | **Serverless**: no maintenance, you just run Pods |
+| **EKS Auto Mode** (newer) | **AWS manages the nodes and more** | Automatically provisions and scales instances, patches the OS, and optimizes cost |
+
+- **Hybrid Nodes** let you attach on-premises machines as nodes.
+
+### 4. Data Volumes
+
+- Create a **StorageClass** manifest on the cluster. It uses a **Container Storage Interface (CSI)** compliant driver (a keyword to know).
+
+| Storage | Notes |
+|---|---|
+| **Amazon EBS** | Block storage for a Pod |
+| **Amazon EFS** | Shared file system. The lecture says it is the **only** storage class that works with **Fargate**. |
+| **Amazon FSx for Lustre** | High-performance file system |
+| **Amazon FSx for NetApp ONTAP** | Managed NetApp file system |
+
+- AWS also provides CSI drivers for S3 (Mountpoint), S3 Files, FSx for OpenZFS, and File Cache.
+
+### 5. Exam-Style Recall
+
+| If the question says... | Think... |
+|---|---|
+| "Managed Kubernetes on AWS" | **Amazon EKS** |
+| "Company already uses Kubernetes on premises or in another cloud" | **Amazon EKS** |
+| "Containers portable across cloud providers" | **Kubernetes / EKS** (cloud agnostic) |
+| "Pods" | **Kubernetes / EKS** (the equivalent of ECS tasks) |
+| "EKS with no servers to manage" | **EKS on Fargate** |
+| "AWS-managed worker nodes in an ASG, Spot or On-Demand" | **EKS managed node groups** |
+| "Full control over worker nodes and the AMI" | **Self-managed nodes** |
+| "Persistent storage for EKS Pods" | A **StorageClass** with a **CSI driver** (EBS, EFS, FSx) |
+| "Shared storage for EKS Pods on Fargate" | **Amazon EFS** |
